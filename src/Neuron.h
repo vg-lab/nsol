@@ -21,7 +21,7 @@ namespace nsdl {
   protected:
 
     Soma _soma; 
-    vector<Neurite> _neurites;
+    Vector<Neurite> _neurites;
     
 
   };

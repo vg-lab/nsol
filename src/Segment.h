@@ -8,9 +8,12 @@
 #ifndef __NS_DATA_SEGMENT__
 #define __NS_DATA_SEGMENT__
 
+
 namespace nsdl {
   
   class Segment {
+
+  protected:
     
     
   };

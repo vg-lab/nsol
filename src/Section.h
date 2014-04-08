@@ -8,11 +8,21 @@
 #ifndef __NS_DATA_LIB_SECTION__
 #define __NS_DATA_LIB_SECTION__
 
+#include <Sections.h>
+#include <Segment.h>
+
+
+
 namespace nsdl {
 
   class Section {
-    
-    
+
+  protected:
+    Section *_parent;
+    Sections _childs;
+
+    Vector<Segment> _segments;
+
   };
 
 }
