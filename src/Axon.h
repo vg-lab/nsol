@@ -14,6 +14,10 @@ namespace nsdl {
 
   class Axon : public Neurite {
     
+  public:
+
+    Axon () : Neurite(Neurite::AXON) {};
+    
     
   };
 

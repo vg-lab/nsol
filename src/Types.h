@@ -12,6 +12,9 @@
 #include <list>
 #include <vector>
 
+#include <iostream>
+
+
 /* #include <boost/geometry/geometries/point.hpp> */
 
 
