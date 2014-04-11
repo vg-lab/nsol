@@ -12,7 +12,7 @@
 #include <list>
 #include <vector>
 
-#include <boost/geometry/geometries/point.hpp>
+/* #include <boost/geometry/geometries/point.hpp> */
 
 
 namespace nsdl {
