@@ -11,7 +11,19 @@
 namespace nsdl {
 
   class Soma {
+
+
+  public:
+    Soma () {}
     
+    Vec3f & center() { 
+      return _center;
+    }
+
+  protected:
+
+    Vec3f _center;
+
     
   };
 

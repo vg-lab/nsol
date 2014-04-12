@@ -25,7 +25,7 @@ namespace nsdl {
     
 
     //! Get the type of neurite
-    TDendriteType & DendriteType() {
+    TDendriteType & dendriteType() {
       return _dendriteType;
     };
 

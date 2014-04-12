@@ -28,7 +28,7 @@ namespace nsdl {
       _neuriteType = neuriteType;};
 
     //! Get the type of neurite
-    TNeuriteType & NeuriteType() {
+    TNeuriteType & neuriteType() {
       return _neuriteType;
     };
 

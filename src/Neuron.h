@@ -23,6 +23,7 @@ namespace nsdl {
     Neuron() {}
 
     Neurite * addNeurite(Neurite::TNeuriteType type = Neurite::DENDRITE) {
+
       if (type == Neurite::DENDRITE)
 	_neurites.push_back(new Dendrite());
       else if (type == Neurite::AXON)
@@ -43,6 +44,22 @@ namespace nsdl {
       /* for (int i = 0; i <  _neurites.size(); i++) */
       /* 	std::cout << _neurites[i].NeuriteType() << " "; */
       /* std::cout << std::endl; */
+
+
+    Dendrite * apicalDendrite() {
+      for (Vector<Neurite *>::iterator it = _neurites.begin(); 
+	   it != _neurites.end(); ++it) {
+	if ((*it)->asDendrite() && 
+	    ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
+	  return (*it)->asDendrite();
+      }
+      return NULL;
+    }
+
+
+    Soma & soma(void) {
+      return _soma;
+    }
 
 
 

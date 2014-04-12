@@ -18,6 +18,10 @@ namespace nsdl {
 
     Axon () : Neurite(Neurite::AXON) {};
     
+
+    //! Return pointer as an Axon object
+    virtual Axon * asAxon() { return this; }
+
     
   };
 
