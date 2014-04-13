@@ -23,12 +23,10 @@ namespace nsdl {
       _dendriteType = dendriteType;
     }
     
-
     //! Get the type of neurite
     TDendriteType & dendriteType() {
       return _dendriteType;
     };
-
     
     //! Return pointer to Dendrite objetc
     virtual Dendrite * asDendrite() { return this; }
@@ -39,6 +37,14 @@ namespace nsdl {
 
   };
 
+
+  //! Definition of pointer to Dendrite
+#if !BOOST
+  typedef  Dendrite * DendritePtr;
+#else
+  typedef  boost::shared_ptr<Dendrite> * DendritePtr;
+#endif
 }
+
 
 #endif

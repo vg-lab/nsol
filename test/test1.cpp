@@ -16,6 +16,7 @@ int main () {
 
   {
 
+    cout << "Testing neurite ops" << endl;
     Neuron neuron;
 
     Neurite * neurite = neuron.addNeurite();
@@ -31,6 +32,7 @@ int main () {
   {
     Neuron neuron;
     
+    cout << "Testing dendrite ops" << endl;
     Neurite * neurite = neuron.addNeurite();
     assert(neurite != NULL);
     assert(neurite->neuriteType() == Neurite::DENDRITE);
@@ -55,6 +57,7 @@ int main () {
 
   {
 
+    cout << "Testing soma ops" << endl;
     Neuron neuron;
 
     neuron.soma().center() = Vec3f(3.5,4.6,5.7);
