@@ -12,7 +12,7 @@ int main () {
 
 
 
-  // Dendrite tests
+  // Neurite tests
 
   {
 
@@ -27,6 +27,9 @@ int main () {
     assert(neurite2 != NULL);
     assert(neurite2->neuriteType() == Neurite::AXON);
 
+    assert(neuron.numNeurites() ==  2);
+    assert(neuron.numDendrites() ==  1);
+
   }
 
   {
@@ -40,14 +43,22 @@ int main () {
     assert(neurite->asDendrite()->dendriteType() == Dendrite::BASAL);
     assert(neuron.apicalDendrite() == NULL);
 
-    
+    assert(neuron.numNeurites() ==  1);
+    assert(neuron.numDendrites() ==  1);
+
     Dendrite * dendrite = neuron.addDendrite();
     assert(dendrite->dendriteType() == Dendrite::BASAL);
+
+    assert(neuron.numNeurites() ==  2);
+    assert(neuron.numDendrites() ==  2);
     
     Dendrite * dendrite2 = neuron.addDendrite(Dendrite::APICAL);
     assert(dendrite2->dendriteType() == Dendrite::APICAL);
 
     assert(neuron.apicalDendrite() != NULL);
+
+    assert(neuron.numNeurites() ==  3);
+    assert(neuron.numDendrites() ==  3);
 
     
   }

@@ -17,6 +17,7 @@ namespace nsdl {
 
   public:
 
+    //! Type of dendrite
     typedef enum TDendriteType {BASAL = 0, APICAL} TDendriteType;
     
     Dendrite (TDendriteType dendriteType = BASAL) : Neurite(Neurite::DENDRITE) {

@@ -12,41 +12,98 @@
 #include <Soma.h>
 #include <Neurite.h>
 #include <Dendrite.h>
+#include <Dendrites.h>
 
 namespace nsdl {
-  
+
+
+  /*! \class Neuron
+    \brief A class to represent neurons.
+    
+    TODO: extend long description
+  */  
   class Neuron {
 
   public:
     
-
+    /**
+     * Default Neuron class constructor.
+     * TODO: construct protected objects
+     */
     Neuron() {}
 
-    Neurite * addNeurite(Neurite::TNeuriteType type = Neurite::DENDRITE) {
-
-      if (type == Neurite::DENDRITE)
+    /**
+       * Method to add a new neurite to the neuron.
+       * @param neuriteType type of Neurite.
+       * @see Neurite::TNeuriteType
+       * @return pointer to the added neurite
+       */
+    NeuritePtr addNeurite(Neurite::TNeuriteType neuriteType = 
+			  Neurite::DENDRITE) {
+      if (neuriteType == Neurite::DENDRITE)
 	_neurites.push_back(new Dendrite());
-      else if (type == Neurite::AXON)
+      else if (neuriteType == Neurite::AXON)
 	_neurites.push_back(new Axon());
       else
 	return NULL;
-
       return  _neurites.back();
     };
 
-    Dendrite * addDendrite(Dendrite::TDendriteType dendriteType = Dendrite::BASAL) {
+    /**
+       * Method to add a new dendrite to the neuron.
+       * @param dendriteType type of Dendrite
+       * @see ndsl::Dendrite::TDendriteType
+       * @return pointer to the added dendrite
+       */
+    Dendrite * addDendrite(Dendrite::TDendriteType dendriteType = 
+			   Dendrite::BASAL) {
       _neurites.push_back(new Dendrite(dendriteType));
       return _neurites.back()->asDendrite();
     };
 
+    unsigned int numNeurites(void) {
+      return _neurites.size();
+    }
 
-      /* _neurites.push_back(Dendrite()); */
-      /* for (int i = 0; i <  _neurites.size(); i++) */
-      /* 	std::cout << _neurites[i].NeuriteType() << " "; */
-      /* std::cout << std::endl; */
+    unsigned int numDendrites(void) {
+      unsigned int nd = 0;
+      for (Vector<Neurite *>::iterator it = _neurites.begin(); 
+	   it != _neurites.end(); ++it) 
+	if ((*it)->asDendrite()) nd++;
+      return nd;
+    }
 
+    /**
+       * Method to get all the dendrites in a container. 
+       * Memory for the container is allocated.
+       * @return pointer to the container of Dendrites
+       */
+    Dendrites * dendrites(void) {
+      Dendrites *dendrites = new Dendrites;
+      for (Vector<Neurite *>::iterator it = _neurites.begin(); 
+	   it != _neurites.end(); ++it) 
+	if ((*it)->asDendrite())
+	  dendrites->push_back((*it)->asDendrite());      
+      return dendrites;
+    }
+    
+    /**
+       * Method to get all the basal dendrites in a container. 
+       * Memory for the container is allocated.
+       * @return pointer to the container of Dendrites
+       */
+    Dendrites * basalDendrites(void) {
+      // TODO: create a list of all basal dendrites
+      return new Dendrites;
+    }
 
-    Dendrite * apicalDendrite() {
+    /**
+       * Method to add a new dendrite to the neuron.
+       * @param dendriteType  .
+       * @see Neurite::TNeuriteType
+       * @return pointer to the added dendrite
+       */
+    Dendrite * apicalDendrite(void) {
       for (Vector<Neurite *>::iterator it = _neurites.begin(); 
 	   it != _neurites.end(); ++it) {
 	if ((*it)->asDendrite() && 
@@ -55,16 +112,15 @@ namespace nsdl {
       }
       return NULL;
     }
-
-
+    
+    
     Soma & soma(void) {
       return _soma;
     }
 
-
-
+  
   protected:
-
+    
     Soma _soma; 
     Vector<Neurite *> _neurites;
     
