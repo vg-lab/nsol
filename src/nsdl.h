@@ -9,6 +9,7 @@
 #define __NS_DATA_LIB_NSDL__
 
 
+// Ontology elements
 #include <Axon.h>
 #include <Dendrite.h>
 #include <Neurite.h>
@@ -23,6 +24,7 @@
 // Containers
 #include <Container/Sections.h>
 #include <Container/Segments.h>
+#include <Container/Neurites.h> 
 #include <Container/Dendrites.h> 
 
 

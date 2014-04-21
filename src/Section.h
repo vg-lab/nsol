@@ -24,12 +24,38 @@ namespace nsdl {
       _parent = NULL;
     }
 
+    NeuronPtr * neuron(void) {
+      return _neuron;
+    }
+
+    Section & parent (void) {
+      // TODO: handle the error of no parent
+      assert(_parent);
+      return *_parent;
+    }
+    
+    const Section & parent() const                                 
+    {
+      return const_cast< Section& >( *this ).parent();
+    }     
+
+    Section * parent_ptr (void) {
+      return _parent;
+    }
+
   protected:
-    Section *_neuron;
-    Section *_parent;
+
+    //! Parent neuron of the section
+    NeuronPtr *_neuron;
+
+    //! Parent section of this section
+    SectionPtr _parent;
+
+    //! Container of the childrens sections of this section
     Sections _childs;
+
+    //! Container of the segments of this section
     Segments _segments;
-    /* Vector<Segment> _segments; */
     
   };
   
