@@ -22,7 +22,6 @@
 
 namespace nsdl {
 
-
 #if __GNUC__ == 4
 #if  __GNUC_MINOR__ > 6
   //! Vector container template alias (gcc 4.7 min required)
@@ -40,11 +39,34 @@ namespace nsdl {
   
 #endif
 #endif
-
-
-typedef vmml::vector< 3, float > Vec3f;
-
   
+  
+  typedef vmml::vector< 3, float > Vec3f;
+  
+  
+  class Neuron;
+  class Neurite;
+  class Dendrite;
+  class Section;
+  class Segment;
+  //! Definition of pointers to objects
+#if !BOOST
+  typedef  Neuron * NeuronPtr;
+  typedef  Neurite * NeuritePtr;
+  typedef  Dendrite * DendritePtr;
+  typedef  Section * SectionPtr;
+  typedef  Segment * SegmentPtr;
+#else
+  typedef  boost::shared_ptr<Neuron> * NeuronPtr;
+  typedef  boost::shared_ptr<Neurite> * NeuritePtr;
+  typedef  boost::shared_ptr<Dendrite> * DendritePtr;
+  typedef  boost::shared_ptr<Section> * SectionPtr;
+  typedef  boost::shared_ptr<Segment> * SegmentPtr;
+#endif
+  
+
+
+
 
 
 

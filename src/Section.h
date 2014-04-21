@@ -8,8 +8,10 @@
 #ifndef __NS_DATA_LIB_SECTION__
 #define __NS_DATA_LIB_SECTION__
 
-#include <Sections.h>
+#include <Types.h>
 #include <Segment.h>
+#include <Container/Sections.h>
+#include <Container/Segments.h>
 
 
 
@@ -17,20 +19,20 @@ namespace nsdl {
   
   class Section {
     
+    Section () {
+      _neuron = NULL;
+      _parent = NULL;
+    }
+
   protected:
+    Section *_neuron;
     Section *_parent;
     Sections _childs;
-    
-    Vector<Segment> _segments;
+    Segments _segments;
+    /* Vector<Segment> _segments; */
     
   };
   
-/*   //! Definition of pointer to Dendrite */
-/* #if !BOOST */
-/*   typedef  Section * SectionPtr; */
-/* #else */
-/*   typedef  boost::shared_ptr<Section> * SectionPtr; */
-/* #endif */
   
 }
 

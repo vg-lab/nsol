@@ -1,5 +1,5 @@
 /**
- * @file    Section.h
+ * @file    nsdl.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
@@ -9,20 +9,21 @@
 #define __NS_DATA_LIB_NSDL__
 
 
-#include<Axon.h>
-#include<Dendrite.h>
-#include<Neurite.h>
-#include<Neuron.h>
-#include<Section.h>
-#include<Segment.h>
-#include<Sinapsis.h>
-#include<Soma.h>
-#include<Spine.h>
-#include<Types.h>
+#include <Axon.h>
+#include <Dendrite.h>
+#include <Neurite.h>
+#include <Neuron.h>
+#include <Section.h>
+#include <Segment.h>
+#include <Synapse.h>
+#include <Soma.h>
+#include <Spine.h>
+#include <Types.h>
 
 // Containers
-/* #include<Sections.h> */
-#include<Dendrites.h> 
+#include <Container/Sections.h>
+#include <Container/Segments.h>
+#include <Container/Dendrites.h> 
 
 
 #endif

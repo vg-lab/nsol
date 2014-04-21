@@ -9,6 +9,7 @@
 #define __NS_DATA_LIB_NEURITE_
 
 #include <Types.h>
+/* #include <Neuron.h> */
 #include <Section.h>
 
 namespace nsdl {
@@ -46,15 +47,11 @@ namespace nsdl {
     TNeuriteType _neuriteType;
 
     Vector <Section> _sections;
+
+    //    NeuronPtr _neuron;
     
   };
 
-  //! Definition of pointer to Dendrite
-#if !BOOST
-  typedef  Neurite * NeuritePtr;
-#else
-  typedef  boost::shared_ptr<Neurite> * NeuritePtr;
-#endif
 
 }
 

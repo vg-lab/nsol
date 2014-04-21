@@ -39,12 +39,6 @@ namespace nsdl {
   };
 
 
-  //! Definition of pointer to Dendrite
-#if !BOOST
-  typedef  Dendrite * DendritePtr;
-#else
-  typedef  boost::shared_ptr<Dendrite> * DendritePtr;
-#endif
 }
 
 

@@ -12,7 +12,7 @@
 #include <Soma.h>
 #include <Neurite.h>
 #include <Dendrite.h>
-#include <Dendrites.h>
+#include <Container/Dendrites.h>
 
 namespace nsdl {
 
@@ -126,6 +126,14 @@ namespace nsdl {
     
 
   };
+
+/*   //! Definition of pointer to Dendrite */
+/* #if !BOOST */
+/*   typedef  Neuron * NeuronPtr; */
+/* #else */
+/*   typedef  boost::shared_ptr<Neuron> * NeuronPtr; */
+/* #endif */
+  
   
 }
 
