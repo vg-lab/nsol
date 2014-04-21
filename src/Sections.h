@@ -12,7 +12,18 @@
 
 namespace nsdl {
 
-  class Sections {
+
+  class Section;
+  //! Definition of pointer to Dendrite
+#if !BOOST
+  typedef  Section * SectionPtr;
+#else
+  typedef  boost::shared_ptr<Section> * SectionPtr;
+#endif
+
+
+  class Sections : public Vector<SectionPtr> {
+    
 
   protected:
 

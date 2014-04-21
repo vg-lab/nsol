@@ -12,9 +12,11 @@
 namespace nsdl {
   
   class Segment {
-
-  protected:
     
+  protected:
+
+    Vec3f _point;
+    float _radius;
     
   };
 
