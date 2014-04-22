@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_TYPES__
-#define __NS_DATA_LIB_TYPES__
+#ifndef __NOL_TYPES__
+#define __NOL_TYPES__
 
 
 #include <list>
@@ -20,7 +20,7 @@
 /* #include <boost/geometry/geometries/point.hpp> */
 
 
-namespace nsdl {
+namespace nol {
 
 #if __GNUC__ == 4
 #if  __GNUC_MINOR__ > 6
@@ -44,22 +44,25 @@ namespace nsdl {
   typedef vmml::vector< 3, float > Vec3f;
   
   
-  class Neuron;
-  class Neurite;
   class Dendrite;
+  class Neurite;
+  class Neuron;
+  class Node;
   class Section;
   class Segment;
   //! Definition of pointers to objects
 #if !BOOST
-  typedef  Neuron * NeuronPtr;
-  typedef  Neurite * NeuritePtr;
   typedef  Dendrite * DendritePtr;
+  typedef  Neurite * NeuritePtr;
+  typedef  Neuron * NeuronPtr;
+  typedef  Node * NodePtr;
   typedef  Section * SectionPtr;
   typedef  Segment * SegmentPtr;
 #else
-  typedef  boost::shared_ptr<Neuron> * NeuronPtr;
-  typedef  boost::shared_ptr<Neurite> * NeuritePtr;
   typedef  boost::shared_ptr<Dendrite> * DendritePtr;
+  typedef  boost::shared_ptr<Neurite> * NeuritePtr;
+  typedef  boost::shared_ptr<Neuron> * NeuronPtr;
+  typedef  boost::shared_ptr<Node> * NodePtr;
   typedef  boost::shared_ptr<Section> * SectionPtr;
   typedef  boost::shared_ptr<Segment> * SegmentPtr;
 #endif

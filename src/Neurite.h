@@ -5,14 +5,13 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_NEURITE_
-#define __NS_DATA_LIB_NEURITE_
+#ifndef __NOL_NEURITE_
+#define __NOL_NEURITE_
 
 #include <Types.h>
-/* #include <Neuron.h> */
 #include <Section.h>
 
-namespace nsdl {
+namespace nol {
 
   class Dendrite;
   class Axon;

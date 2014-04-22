@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_SECTIONS__
-#define __NS_DATA_LIB_SECTIONS__
+#ifndef __NOL_SECTIONS__
+#define __NOL_SECTIONS__
 
 #include <Section.h>
 
-namespace nsdl {
+namespace nol {
 
 
 

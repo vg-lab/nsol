@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_SECTION__
-#define __NS_DATA_LIB_SECTION__
+#ifndef __NOL_SECTION__
+#define __NOL_SECTION__
 
 #include <Types.h>
 #include <Segment.h>
@@ -15,7 +15,7 @@
 
 
 
-namespace nsdl {
+namespace nol {
   
   class Section {
     

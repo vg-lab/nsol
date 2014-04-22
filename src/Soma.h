@@ -5,10 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_SOMA__
-#define __NS_DATA_LIB_SOMA__
+#ifndef __NOL_SOMA__
+#define __NOL_SOMA__
 
-namespace nsdl {
+#include <Container/Nodes.h>
+
+namespace nol {
 
   class Soma {
 
@@ -20,9 +22,18 @@ namespace nsdl {
       return _center;
     }
 
+    void addNode(NodePtr node) {
+      _nodes.push_back(node);
+    }
+
+    void addNode(Vec3f & xyz, float & radius) {
+      this->addNode(new Node(xyz,radius));
+    }
+
   protected:
 
     Vec3f _center;
+    Nodes _nodes;
 
     
   };

@@ -1,25 +1,30 @@
 /**
- * @file    Segments.h
+ * @file    Node.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SEGMENTS__
-#define __NOL_SEGMENTS__
+#ifndef __NOL_NODE__
+#define __NOL_NODE__
 
-#include <Segment.h>
 
 namespace nol {
+  
+  class Node {
 
+  public:
 
-
-
-  class Segments : public Vector<SegmentPtr> {
+    Node(Vec3f & point, float radius = 0.0f) {
+      _point = point;
+      _radius = radius;
+    }
     
-
   protected:
 
+    Vec3f _point; 
+    float _radius; 
+    
   };
 
 }

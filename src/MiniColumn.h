@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_MINICOLUMN_
-#define __NS_DATA_LIB_MINICOLUMN_
+#ifndef __NOL_MINICOLUMN_
+#define __NOL_MINICOLUMN_
 
 #include <Neuron.h>
 
-namespace nsdl {
+namespace nol {
   
   class MiniColumn {
  

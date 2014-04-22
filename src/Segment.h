@@ -5,18 +5,17 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_SEGMENT__
-#define __NS_DATA_SEGMENT__
+#ifndef __NOL_SEGMENT__
+#define __NOL_SEGMENT__
 
 
-namespace nsdl {
+namespace nol {
   
   class Segment {
     
   protected:
 
-    Vec3f _point;
-    float _radius;
+    NodePtr _begin, _end;
     
   };
 

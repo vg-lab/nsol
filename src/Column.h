@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_COLUMN_
-#define __NS_DATA_LIB_COLUMN_
+#ifndef __NOL_COLUMN_
+#define __NOL_COLUMN_
 
 #include <MiniColumn.h>
 
-namespace nsdl {
+namespace nol {
   
   class Column {
  

@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-using namespace nsdl;
+using namespace nol;
 using namespace std;
 
 int main () {

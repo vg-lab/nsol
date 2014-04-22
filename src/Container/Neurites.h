@@ -5,13 +5,13 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_NEURITES__
-#define __NS_DATA_LIB_NEURITES__
+#ifndef __NOL_NEURITES__
+#define __NOL_NEURITES__
 
 #include <Types.h>
 #include <Neurite.h>
 
-namespace nsdl {
+namespace nol {
 
   class Neurites : public Vector<NeuritePtr> {
   };
