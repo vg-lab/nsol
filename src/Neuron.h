@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_NEURON_
-#define __NS_DATA_LIB_NEURON_
+#ifndef __NOL_NEURON_
+#define __NOL_NEURON_
 
 #include <Types.h>
 #include <Soma.h>
@@ -14,7 +14,7 @@
 #include <Dendrite.h>
 #include <Container/Dendrites.h>
 
-namespace nsdl {
+namespace nol {
 
 
   /*! \class Neuron

@@ -5,10 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_SYNAPSE__
-#define __NS_DATA_LIB_SYNAPSE__
+#ifndef __NOL_SYNAPSE__
+#define __NOL_SYNAPSE__
 
-namespace nsdl {
+namespace nol {
 
   class Synapse {
     

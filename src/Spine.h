@@ -5,10 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NS_DATA_LIB_SPINE__
-#define __NS_DATA_LIB_SPINE__
+#ifndef __NOL_SPINE__
+#define __NOL_SPINE__
 
-namespace nsdl {
+namespace nol {
 
   class Spine {
     
