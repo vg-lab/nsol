@@ -32,6 +32,18 @@ namespace nol {
       return _neuriteType;
     };
 
+    NeuronPtr neuron() const {
+      return  _neuron;
+    }
+
+    NeuronPtr neuron(NeuronPtr neuron)  {
+      return  _neuron = neuron;
+    }
+
+    SectionPtr addSection() {
+      _sections.push_back(new Section);
+      return _sections.back();
+    };
 
     // Casting virtual functions
     
@@ -45,9 +57,10 @@ namespace nol {
     
     TNeuriteType _neuriteType;
 
-    Vector <Section> _sections;
+    //    Vector <Section> 
+    Sections _sections;
 
-    //    NeuronPtr _neuron;
+    NeuronPtr _neuron;
     
   };
 

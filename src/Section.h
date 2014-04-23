@@ -17,16 +17,27 @@
 
 namespace nol {
   
+  class Neurite;
+
   class Section {
-    
+
+  public:
     Section () {
-      _neuron = NULL;
+      _neurite = NULL;
       _parent = NULL;
     }
 
-    NeuronPtr * neuron(void) {
-      return _neuron;
+    /* NeuronPtr  neuron(void) { */
+    /*   // TODO: handle the error of no parent */
+    /*   assert(_neurite); */
+    /*   return (_neurite->neuron()); */
+    /* } */
+
+    NeuritePtr * neurite(void) {
+      // TODO: handle the error of no parent
+      return & _neurite;
     }
+
 
     Section & parent (void) {
       // TODO: handle the error of no parent
@@ -45,8 +56,11 @@ namespace nol {
 
   protected:
 
-    //! Parent neuron of the section
-    NeuronPtr *_neuron;
+    /* //! Parent neuron of the section */
+    /* NeuronPtr *_neuron; */
+
+    //! Parent dendrite of the section
+    NeuritePtr _neurite;
 
     //! Parent section of this section
     SectionPtr _parent;
