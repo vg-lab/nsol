@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_MINICOLUMN_
-#define __NOL_MINICOLUMN_
+#ifndef __NOL_MINICOLUMN__
+#define __NOL_MINICOLUMN__
 
 #include <Neuron.h>
 

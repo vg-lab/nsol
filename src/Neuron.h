@@ -13,6 +13,7 @@
 #include <Neurite.h>
 #include <Dendrite.h>
 #include <Container/Dendrites.h>
+#include <Container/Neurites.h>
 
 namespace nol {
 
@@ -113,6 +114,10 @@ namespace nol {
       return NULL;
     }
     
+    Neurites & neurites(void) {
+      return _neurites;
+    }
+
     
     Soma & soma(void) {
       return _soma;
@@ -122,7 +127,8 @@ namespace nol {
   protected:
     
     Soma _soma; 
-    Vector<Neurite *> _neurites;
+    //    Vector<Neurite *> _neurites;
+    Neurites _neurites;
     
 
   };

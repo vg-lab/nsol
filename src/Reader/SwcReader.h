@@ -224,29 +224,62 @@ namespace nol {
   private:
     void _ReadDendrite(DendritePtr d, std::map<unsigned int, 
 		       TSwcLine> & lines,
-		       unsigned int initId) {
+		       unsigned int initId) 
+    {
 
       std::stack<unsigned int> ids;
       ids.push(initId);
 
-      while (!ids.empty()) {
-
+      while (!ids.empty()) 
+      {
+	
 	unsigned int id = ids.top();
-
+	ids.pop();
+	
+	std::cout << "New section at id " << id << " ( ";
 	SectionPtr s = d->addSection();
 	(* s->neurite()) = d;
 
+       	for (unsigned int i = 0; i < lines[id].childs.size(); i++)  
+	  std::cout << lines[id].childs[i] << " "; 
+	
+	std::cout << ") " << std::endl;
+	
+	// While same section create the segments
 	while (lines[id].childs.size() == 1) {
-	  std::cout << "Nuevo segmento" << std::endl;
+
+	  std::cout << "New segment at id " << id <<  std::endl;
+	  SegmentPtr sg = s->addSegment();
+	  sg->parentSection(s);
+
 	  id  = lines[id].childs[0];
+	  std::cout << "Move to id " << id << " whith" 
+		    << lines[id].childs.size() << " childs ";
+	    for (unsigned int i = 0; i < lines[id].childs.size(); i++)  
+	      std::cout << lines[id].childs[i] << " "; 
+	  std::cout << std::endl;
+	  
 	}
 
-	ids.pop();
+	// New branching point
+	if (lines[id].childs.size() > 1) {
 
+	  for (std::vector<unsigned int>::iterator it = lines[id].childs.begin();
+	       it != lines[id].childs.end(); it++)
+	    {
 
+	    ids.push((*it));
+
+	  }
+	}
+
+	// New branching point
+	
+
+		
       }
-       
-
+      
+      
 
     }
 
