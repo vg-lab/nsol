@@ -23,7 +23,21 @@ int main (int argc, char *argv[]) {
   for (Neurites::iterator it = neurites.begin();
        it != neurites.end(); it++) 
   {
-    cout << "Neurite of type " << (*it)->neuriteType() << endl;
+    cout << "Neurite of type : " << (((*it)->neuriteType() == Neurite::AXON) ? "axon" : "");
+    
+    if ((*it)->neuriteType() == Neurite::DENDRITE) {
+      
+      cout << "dendrite " 
+	   << (((*it)->asDendrite()->dendriteType() == Dendrite::APICAL) ? "apical" : "basal");
+
+     
+
+    }
+    cout << endl;
+
+    //    (*it)
+
+
   }
 
 

@@ -40,10 +40,22 @@ namespace nol {
       return  _neuron = neuron;
     }
 
-    SectionPtr addSection() {
-      _sections.push_back(new Section);
-      return _sections.back();
-    };
+    /* SectionPtr addSection() { */
+    /*   _sections.push_back(new Section); */
+    /*   return _sections.back(); */
+    /* }; */
+
+    SectionPtr firstSection() {
+      return _firstSection;
+    }
+
+    void firstSection(SectionPtr section) {
+      _firstSection = section;
+    }
+
+    /* Sections sections() { */
+    /*   return _sections; */
+    /* } */
 
     // Casting virtual functions
     
@@ -58,7 +70,9 @@ namespace nol {
     TNeuriteType _neuriteType;
 
     //    Vector <Section> 
-    Sections _sections;
+    /* Sections _sections; */
+
+    SectionPtr _firstSection;
 
     NeuronPtr _neuron;
     
