@@ -25,6 +25,7 @@ namespace nol {
     Section () {
       _neurite = NULL;
       _parent = NULL;
+      _firstSegment = _lastSegment = NULL;
     }
 
     /* NeuronPtr  neuron(void) { */
@@ -50,8 +51,26 @@ namespace nol {
       return const_cast< Section& >( *this ).parent();
     }     
 
-    Section * parent_ptr (void) {
+    Section * parentPtr (void) {
       return _parent;
+    }
+
+
+    SegmentPtr addSegment(void) {
+
+      SegmentPtr s = new Segment;
+
+      if (!_firstSegment)
+	_firstSegment = _lastSegment = s;
+      else {
+	_lastSegment->next(s);
+	s->next(NULL);
+	s->prev(_lastSegment);
+	_lastSegment = s;
+      }
+
+      return s;
+
     }
 
   protected:
@@ -69,7 +88,14 @@ namespace nol {
     Sections _childs;
 
     //! Container of the segments of this section
-    Segments _segments;
+    /* Segments _segments; */
+
+    //! First segment
+    SegmentPtr _firstSegment;
+
+    //! First segment
+    SegmentPtr _lastSegment;
+
     
   };
   

@@ -16,6 +16,16 @@ int main (int argc, char *argv[]) {
 
   NeuronPtr n = r.readFile(argv[1]);
 
+  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
+
+  Neurites neurites = n->neurites();
+
+  for (Neurites::iterator it = neurites.begin();
+       it != neurites.end(); it++) 
+  {
+    cout << "Neurite of type " << (*it)->neuriteType() << endl;
+  }
+
 
 
 }

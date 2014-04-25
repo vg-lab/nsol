@@ -50,6 +50,7 @@ namespace nol {
   class Node;
   class Section;
   class Segment;
+
   //! Definition of pointers to objects
 #if !BOOST
   typedef  Dendrite * DendritePtr;

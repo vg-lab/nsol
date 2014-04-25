@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_COLUMN_
-#define __NOL_COLUMN_
+#ifndef __NOL_COLUMN__
+#define __NOL_COLUMN__
 
 #include <MiniColumn.h>
 
@@ -16,7 +16,7 @@ namespace nol {
  
   protected:
 
-    Vector<Column> _columns;
+    Vector<MiniColumn> _miniColumns;
     
 
   };
