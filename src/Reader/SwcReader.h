@@ -27,7 +27,10 @@ namespace nol {
 
   public:
     
-    typedef enum {SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL=4} TSwcNodeType;
+    typedef enum {SWC_SOMA = 1, 
+		  SWC_AXON = 2, 
+		  SWC_DENDRITE = 3, 
+		  SWC_APICAL=4} TSwcNodeType;
 
     typedef struct {
       unsigned int id;
@@ -230,15 +233,25 @@ namespace nol {
       std::stack<unsigned int> ids;
       ids.push(initId);
 
+      SectionPtr s, parentSection;
+
       while (!ids.empty()) 
       {
 	
 	unsigned int id = ids.top();
 	ids.pop();
 	
+	parentSection = s;
+	s = new Section; 
+
 	std::cout << "New section at id " << id << " ( ";
-	SectionPtr s = d->addSection();
-	(* s->neurite()) = d;
+	if (!d->firstSection())
+	  d->firstSection(s); //->addSection();
+	s->neurite(d);
+	s->parent(parentSection);
+	if (parentSection)
+	  parentSection->_childs.push_back(s);
+	  /* parentSection->addChild(s); */
 
        	for (unsigned int i = 0; i < lines[id].childs.size(); i++)  
 	  std::cout << lines[id].childs[i] << " "; 

@@ -34,25 +34,42 @@ namespace nol {
     /*   return (_neurite->neuron()); */
     /* } */
 
-    NeuritePtr * neurite(void) {
-      // TODO: handle the error of no parent
-      return & _neurite;
+    NeuritePtr  neurite(void) {
+      return  _neurite;
+    }
+
+    void neurite(NeuritePtr neurite) {
+      _neurite = neurite;
     }
 
 
-    Section & parent (void) {
-      // TODO: handle the error of no parent
-      assert(_parent);
-      return *_parent;
-    }
+    /* Section & parent (void) { */
+    /*   // TODO: handle the error of no parent */
+    /*   assert(_parent); */
+    /*   return *_parent; */
+    /* } */
     
-    const Section & parent() const                                 
-    {
-      return const_cast< Section& >( *this ).parent();
-    }     
+    /* const Section & parent() const                                  */
+    /* { */
+    /*   return const_cast< Section& >( *this ).parent(); */
+    /* }      */
 
-    Section * parentPtr (void) {
+    /* SectionPtr parentPtr (void) { */
+    /*   return _parent; */
+    /* } */
+
+
+    SectionPtr parent(void) {
       return _parent;
+    }
+
+    void parent(SectionPtr parent) {
+      _parent = parent;;
+    }
+
+    void addChild (SectionPtr section) {
+      assert(section);
+      _childs.push_back(section);
     }
 
 
@@ -74,6 +91,7 @@ namespace nol {
     }
 
   protected:
+  public:
 
     /* //! Parent neuron of the section */
     /* NeuronPtr *_neuron; */
