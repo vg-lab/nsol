@@ -18,6 +18,7 @@
 
 #include <map>
 #include <stack>
+#include <queue>
 
 
 namespace nol {
@@ -230,28 +231,35 @@ namespace nol {
 		       unsigned int initId) 
     {
 
-      std::stack<unsigned int> ids;
-      ids.push(initId);
+      typedef struct {
+	unsigned int id;
+	SectionPtr parent;
+      } TStackElem;
 
-      SectionPtr s, parentSection;
+      std::stack<TStackElem> ids;
+      ids.push(TStackElem{initId,NULL});
+
+      SectionPtr s = NULL, parentSection;
 
       while (!ids.empty()) 
       {
 	
-	unsigned int id = ids.top();
+	unsigned int id = ids.top().id;
+	parentSection = ids.top().parent;;
 	ids.pop();
 	
-	parentSection = s;
+	/* parentSection = s; */
 	s = new Section; 
 
 	std::cout << "New section at id " << id << " ( ";
+
 	if (!d->firstSection())
 	  d->firstSection(s); //->addSection();
 	s->neurite(d);
 	s->parent(parentSection);
 	if (parentSection)
-	  parentSection->_childs.push_back(s);
-	  /* parentSection->addChild(s); */
+	  //	  parentSection->_childs.push_back(s);
+	  parentSection->addChild(s);
 
        	for (unsigned int i = 0; i < lines[id].childs.size(); i++)  
 	  std::cout << lines[id].childs[i] << " "; 
@@ -266,7 +274,7 @@ namespace nol {
 	  sg->parentSection(s);
 
 	  id  = lines[id].childs[0];
-	  std::cout << "Move to id " << id << " whith" 
+	  std::cout << "Move to id " << id << " whith " 
 		    << lines[id].childs.size() << " childs ";
 	    for (unsigned int i = 0; i < lines[id].childs.size(); i++)  
 	      std::cout << lines[id].childs[i] << " "; 
@@ -277,11 +285,13 @@ namespace nol {
 	// New branching point
 	if (lines[id].childs.size() > 1) {
 
+	  /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
+	  /*      it != lines[id].childs.rend(); it++) */
 	  for (std::vector<unsigned int>::iterator it = lines[id].childs.begin();
 	       it != lines[id].childs.end(); it++)
 	    {
 
-	    ids.push((*it));
+	      ids.push(TStackElem{(*it),s});
 
 	  }
 	}

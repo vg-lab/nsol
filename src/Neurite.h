@@ -40,6 +40,10 @@ namespace nol {
       return  _neuron = neuron;
     }
 
+    bool hasNeuron() {
+      return _neuron;
+    }
+
     /* SectionPtr addSection() { */
     /*   _sections.push_back(new Section); */
     /*   return _sections.back(); */
