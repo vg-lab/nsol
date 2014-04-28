@@ -31,7 +31,7 @@ namespace nol {
     typedef enum {SWC_SOMA = 1, 
 		  SWC_AXON = 2, 
 		  SWC_DENDRITE = 3, 
-		  SWC_APICAL=4} TSwcNodeType;
+		  SWC_APICAL = 4} TSwcNodeType;
 
     typedef struct {
       unsigned int id;
@@ -289,17 +289,12 @@ namespace nol {
 	  /*      it != lines[id].childs.rend(); it++) */
 	  for (std::vector<unsigned int>::iterator it = lines[id].childs.begin();
 	       it != lines[id].childs.end(); it++)
-	    {
-
+	  {
 	      ids.push(TStackElem{(*it),s});
-
 	  }
 	}
 
-	// New branching point
 	
-
-		
       }
       
       
