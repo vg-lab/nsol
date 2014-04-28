@@ -72,6 +72,9 @@ namespace nol {
       _childs.push_back(section);
     }
 
+    Sections & childs() {
+      return _childs;
+    }
 
     SegmentPtr addSegment(void) {
 
@@ -89,6 +92,11 @@ namespace nol {
       return s;
 
     }
+
+    SegmentPtr & firstSegment() {
+      return _firstSegment;
+    }
+
 
   protected:
   public:
