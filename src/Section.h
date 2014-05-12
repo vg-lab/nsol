@@ -80,9 +80,11 @@ namespace nol {
 
       SegmentPtr s = new Segment;
 
-      if (!_firstSegment)
+      if (!_firstSegment) {
 	_firstSegment = _lastSegment = s;
-      else {
+	/* s->next(NULL); */
+	/* s->prev(NULL); */
+      } else {
 	_lastSegment->next(s);
 	s->next(NULL);
 	s->prev(_lastSegment);

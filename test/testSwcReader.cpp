@@ -48,8 +48,12 @@ int main (int argc, char *argv[]) {
   {
     NeuritePtr neurite = (*it);
 
+    cout << "######################################################" << endl;
+
     if (neurite->hasNeuron()) 
       cout << "Neurite has neuron" << endl;
+    else 
+      cout << "Neurite does not have neuron" << endl;
 
     //    SectionPtr section = neurite->firstSection();
 
@@ -57,14 +61,19 @@ int main (int argc, char *argv[]) {
       cout << "Neurite has no sections" << endl;
       continue;
     }
+    cout << "First section " << neurite->firstSection() << endl;
 
 
     stack<SectionPtr> stack;
     stack.push(neurite->firstSection());
 
+
     while (!stack.empty()) {
 
       SectionPtr section = stack.top();
+
+    cout << "Section " << section << endl;
+
       assert(section);
       stack.pop();
 
@@ -85,9 +94,6 @@ int main (int argc, char *argv[]) {
 	cout << "Segment" << endl;
 	segment = segment->next();
       }
-	
-
-
     }
 
     // while (section) {

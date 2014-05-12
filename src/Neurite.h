@@ -25,7 +25,10 @@ namespace nol {
 
     //! Default constructor
     Neurite(TNeuriteType neuriteType = DENDRITE) {
-      _neuriteType = neuriteType;};
+      _neuriteType = neuriteType;
+      _firstSection = NULL;
+      _neuron = NULL;
+    };
 
     //! Get the type of neurite
     TNeuriteType & neuriteType() {
