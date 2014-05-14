@@ -52,8 +52,14 @@ namespace nol {
       std::ifstream inFile;
       inFile.open(fileName, std::ios::in);
 
-      // TODO: file opening error checking
-      
+      //Opening file checking
+      if ( (inFile.rdstate() & std::ifstream::failbit ) != 0 )
+      {
+        std::cerr << "Error opening file " << fileName << "\n";
+
+        return nullptr;
+      }
+
       std::string line;
       std::getline(inFile, line);
 
@@ -122,9 +128,10 @@ namespace nol {
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
 	   it != lines.end(); it++) {
 
-	neuron->soma().addNode(new Node(it->second.xyz,it->second.radius));
 	
+
 	if (it->second.type == SWC_SOMA) {
+		neuron->soma().addNode(new Node(it->second.xyz,it->second.radius));
 	  for (unsigned int i = 0; i < it->second.childs.size(); i++) 
 	    if (lines[it->second.childs[i]].type != SWC_SOMA) 
 	      somaChilds.push_back(it->second.childs[i]);
@@ -250,6 +257,7 @@ namespace nol {
 	
 	/* parentSection = s; */
 	s = new Section; 
+	SegmentPtr sg = s->addSegment();
 
 	std::cout << "New section at id " << id << " ( ";
 
