@@ -37,6 +37,10 @@ namespace nol {
       _parent = parent;
     }
 
+    float volume() {
+      //TODO
+    	return 0.0f;
+    }
 
 
   protected:
