@@ -30,6 +30,12 @@ namespace nol {
       this->addNode(new Node(xyz,radius));
     }
 
+
+    float volume() {
+      //TODO
+    	return 0.0f;
+    }
+
   protected:
 
     Vec3f _center;
