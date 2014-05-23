@@ -64,6 +64,19 @@ namespace nol {
     /*   return _sections; */
     /* } */
 
+
+    unsigned int numBranches ()
+    {
+      // TODO
+    	return 0;
+    }
+
+    float volume()
+    {
+      //TODO
+    	return 0.0f;
+    }
+
     // Casting virtual functions
     
     //! Return pointer to Dendrite objetc

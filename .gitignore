@@ -3,3 +3,4 @@ src/*~
 doc/html
 doc/latex
 *Makefile*
+*.orig

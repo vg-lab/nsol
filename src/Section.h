@@ -99,6 +99,11 @@ namespace nol {
       return _firstSegment;
     }
 
+    float volume() {
+      //TODO
+    	return 0.0f;
+    }
+
 
   protected:
   public:
