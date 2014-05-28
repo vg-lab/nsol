@@ -10,40 +10,49 @@
 
 #include <Container/Nodes.h>
 
-namespace nol {
+namespace nol
+{
 
-  class Soma {
-
+  class Soma
+  {
 
   public:
-    Soma () {}
-    
-    Vec3f & center() { 
+    Soma()
+    {
+    }
+
+    Vec3f & center()
+    {
       return _center;
     }
 
-    void addNode(NodePtr node) {
+    void addNode(NodePtr node)
+    {
       _nodes.push_back(node);
     }
 
-    void addNode(Vec3f & xyz, float & radius) {
-      this->addNode(new Node(xyz,radius));
+    void addNode(Vec3f & xyz, float & radius)
+    {
+      this->addNode(new Node(xyz, radius));
     }
 
-
-    float volume() {
+    float volume()
+    {
       //TODO
-    	return 0.0f;
+      return 0.0f;
     }
+
+Nodes & nodes(void)
+{
+	return _nodes;
+}
 
   protected:
 
     Vec3f _center;
     Nodes _nodes;
 
-    
   };
-
 
 }
 

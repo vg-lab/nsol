@@ -8,26 +8,37 @@
 #ifndef __NOL_NODE__
 #define __NOL_NODE__
 
+namespace nol
+{
 
-namespace nol {
-  
-  class Node {
+  class Node
+  {
 
   public:
 
-    Node(Vec3f & point, float radius = 0.0f) {
+    Node(Vec3f & point, float radius = 0.0f)
+    {
       _point = point;
       _radius = radius;
     }
-    
+
+    Vec3f point()
+    {
+      return _point;
+    }
+
+    float radius()
+    {
+      return _radius;
+    }
+
   protected:
 
-    Vec3f _point; 
-    float _radius; 
-    
+    Vec3f _point;
+    float _radius;
+
   };
 
 }
-
 
 #endif
