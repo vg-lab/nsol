@@ -8,54 +8,76 @@
 #ifndef __NOL_SEGMENT__
 #define __NOL_SEGMENT__
 
+namespace nol
+{
 
-namespace nol {
-  
-  class Segment {
-    
-    
-    
+  class Segment
+  {
+
   public:
 
-    SegmentPtr next() const {
-      return  _next;
+    SegmentPtr next() const
+    {
+      return _next;
     }
 
-    SegmentPtr  prev() const {
-      return  _prev;
+    SegmentPtr prev() const
+    {
+      return _prev;
     }
 
-    void next(SegmentPtr next) {
+    void next(SegmentPtr next)
+    {
       _next = next;
     }
-    
-    void  prev(SegmentPtr prev) {
+
+    void prev(SegmentPtr prev)
+    {
       _prev = prev;
     }
 
-    void parentSection(SectionPtr parent) {
+    void parentSection(SectionPtr parent)
+    {
       _parent = parent;
     }
 
-    float volume() {
-      //TODO
-    	return 0.0f;
+    NodePtr begin() const
+    {
+      return _begin;
     }
 
+    NodePtr end() const
+    {
+      return _end;
+    }
+
+    void begin(NodePtr begin)
+    {
+      _begin = begin;
+    }
+
+    void end(NodePtr end)
+    {
+      _end = end;
+    }
+
+    float volume()
+    {
+      //TODO
+      return 0.0f;
+    }
 
   protected:
 
     NodePtr _begin, _end;
-    
+
     SegmentPtr _next;
     SegmentPtr _prev;
 
     SectionPtr _parent;
 
-
   };
 
 }
-
 
 #endif

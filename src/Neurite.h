@@ -28,6 +28,7 @@ namespace nol {
       _neuriteType = neuriteType;
       _firstSection = NULL;
       _neuron = NULL;
+      _numBranches = 0;
     };
 
     //! Get the type of neurite
@@ -67,8 +68,12 @@ namespace nol {
 
     unsigned int numBranches ()
     {
-      // TODO
-    	return 0;
+    	return _numBranches;
+    }
+
+    void numBranches (unsigned int numBranches)
+    {
+      _numBranches += numBranches;
     }
 
     float volume()
@@ -96,6 +101,8 @@ namespace nol {
 
     NeuronPtr _neuron;
     
+    unsigned int _numBranches;
+
   };
 
 

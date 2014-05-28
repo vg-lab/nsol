@@ -13,16 +13,17 @@
 #include <Container/Sections.h>
 #include <Container/Segments.h>
 
+namespace nol
+{
 
-
-namespace nol {
-  
   class Neurite;
 
-  class Section {
+  class Section
+  {
 
   public:
-    Section () {
+    Section()
+    {
       _neurite = NULL;
       _parent = NULL;
       _firstSegment = _lastSegment = NULL;
@@ -34,21 +35,22 @@ namespace nol {
     /*   return (_neurite->neuron()); */
     /* } */
 
-    NeuritePtr  neurite(void) {
-      return  _neurite;
+    NeuritePtr neurite(void)
+    {
+      return _neurite;
     }
 
-    void neurite(NeuritePtr neurite) {
+    void neurite(NeuritePtr neurite)
+    {
       _neurite = neurite;
     }
-
 
     /* Section & parent (void) { */
     /*   // TODO: handle the error of no parent */
     /*   assert(_parent); */
     /*   return *_parent; */
     /* } */
-    
+
     /* const Section & parent() const                                  */
     /* { */
     /*   return const_cast< Section& >( *this ).parent(); */
@@ -58,52 +60,61 @@ namespace nol {
     /*   return _parent; */
     /* } */
 
-
-    SectionPtr parent(void) {
+    SectionPtr parent(void)
+    {
       return _parent;
     }
 
-    void parent(SectionPtr parent) {
-      _parent = parent;;
+    void parent(SectionPtr parent)
+    {
+      _parent = parent;
+      ;
     }
 
-    void addChild (SectionPtr section) {
+    void addChild(SectionPtr section)
+    {
       assert(section);
       _childs.push_back(section);
     }
 
-    Sections & childs() {
+    Sections & childs()
+    {
       return _childs;
     }
 
-    SegmentPtr addSegment(void) {
+    SegmentPtr addSegment(void)
+    {
 
       SegmentPtr s = new Segment;
 
-      if (!_firstSegment) {
-	_firstSegment = _lastSegment = s;
-	/* s->next(NULL); */
-	/* s->prev(NULL); */
-      } else {
-	_lastSegment->next(s);
-	s->next(NULL);
-	s->prev(_lastSegment);
-	_lastSegment = s;
+      if (!_firstSegment)
+      {
+        _firstSegment = _lastSegment = s;
+        s->next(NULL);
+        s->prev(NULL);
+      }
+      else
+      {
+        _lastSegment->next(s);
+        s->next(NULL);
+        s->prev(_lastSegment);
+        _lastSegment = s;
       }
 
       return s;
 
     }
 
-    SegmentPtr & firstSegment() {
+    SegmentPtr & firstSegment()
+    {
       return _firstSegment;
     }
 
-    float volume() {
+    float volume()
+    {
       //TODO
-    	return 0.0f;
+      return 0.0f;
     }
-
 
   protected:
   public:
@@ -129,11 +140,8 @@ namespace nol {
     //! First segment
     SegmentPtr _lastSegment;
 
-    
   };
-  
-  
-}
 
+}
 
 #endif
