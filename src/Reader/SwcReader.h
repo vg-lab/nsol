@@ -56,7 +56,7 @@ namespace nol
       //Opening file checking
       if ((inFile.rdstate() & std::ifstream::failbit) != 0)
       {
-        std::cerr << "Error opening file " << fileName << "\n";
+        std::cerr << "Error opening file " << fileName << std::endl;
 
         return nullptr;
       }
@@ -94,7 +94,7 @@ namespace nol
 
           //      assert(swcLine.id == lines.back().id);
 
-          std::cout << "Id: " << swcLine.id << std::endl;
+          //std::cout << "Id: " << swcLine.id << std::endl;
 
         }
       }
@@ -148,8 +148,8 @@ namespace nol
       for (unsigned int i = 0; i < somaChilds.size(); i++)
       {
 
-        std::cout << "New neurite starting in " << somaChilds[i]
-                  << lines[somaChilds[i]].type << std::endl;
+//        std::cout << "New neurite starting in " << somaChilds[i]
+//                  << lines[somaChilds[i]].type << std::endl;
 
         switch (lines[somaChilds[i]].type)
         {
@@ -158,7 +158,7 @@ namespace nol
             assert(false);
 
           case SWC_DENDRITE:
-            std::cout << "New dendrite" << std::endl;
+            //std::cout << "New dendrite" << std::endl;
 
             d = neuron->addDendrite(Dendrite::BASAL);
             d->neuron(neuron);
@@ -167,7 +167,7 @@ namespace nol
             break;
 
           case SWC_APICAL:
-            std::cout << "New apical" << std::endl;
+            //std::cout << "New apical" << std::endl;
 
             d = neuron->addDendrite(Dendrite::APICAL);
             d->neuron(neuron);
@@ -179,7 +179,7 @@ namespace nol
 
             neuron->addNeurite(Neurite::AXON);
 
-            std::cout << "New axon" << std::endl;
+            //std::cout << "New axon" << std::endl;
             break;
 
           default:
@@ -279,21 +279,21 @@ namespace nol
         //Segment end node
         sgPre->end(new Node(lines[id].xyz, lines[id].radius));
 
-        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
-                  << std::endl;
-        std::cout << "Add segment end node radius: " << lines[id].radius
-                  << std::endl;
+//        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
+//                  << std::endl;
+//        std::cout << "Add segment end node radius: " << lines[id].radius
+//                  << std::endl;
 
-        std::cout << "New section at id " << id << " ( ";
+        //std::cout << "New section at id " << id << " ( ";
 
         if (parentSection)
           //      parentSection->_childs.push_back(s);
           parentSection->addChild(s);
 
-        for (unsigned int i = 0; i < lines[id].childs.size(); i++)
-          std::cout << lines[id].childs[i] << " ";
-
-        std::cout << ") " << std::endl;
+//        for (unsigned int i = 0; i < lines[id].childs.size(); i++)
+//          std::cout << lines[id].childs[i] << " ";
+//
+//        std::cout << ") " << std::endl;
 
         nP = sgPre->end();
 
@@ -301,7 +301,7 @@ namespace nol
         while (lines[id].childs.size() == 1)
         {
 
-          std::cout << "New segment at id " << id << std::endl;
+          //std::cout << "New segment at id " << id << std::endl;
           SegmentPtr sg = s->addSegment();
           sg->parentSection(s);
 
@@ -309,22 +309,22 @@ namespace nol
           sg->begin(nP);
 
           id = lines[id].childs[0];
-          std::cout << "Move to id " << id << " whith "
-                    << lines[id].childs.size() << " childs ";
+//          std::cout << "Move to id " << id << " whith "
+//                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
           sg->end(new Node(lines[id].xyz, lines[id].radius));
 
-          std::cout << "\nAdd segment begin node radius dentro: "
-                    << sg->begin()->radius() << std::endl;
+//          std::cout << "\nAdd segment begin node radius dentro: "
+//                    << sg->begin()->radius() << std::endl;
+//
+//          std::cout << "\nAdd segment end node radius dentro: "
+//                    << sg->end()->radius() << std::endl;
 
-          std::cout << "\nAdd segment end node radius dentro: "
-                    << sg->end()->radius() << std::endl;
-
-          for (unsigned int i = 0; i < lines[id].childs.size(); i++)
-            std::cout << lines[id].childs[i] << " ";
-
-          std::cout << std::endl;
+//          for (unsigned int i = 0; i < lines[id].childs.size(); i++)
+//            std::cout << lines[id].childs[i] << " ";
+//
+//          std::cout << std::endl;
 
           nP = sg->end();
 
