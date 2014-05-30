@@ -5,6 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
+
+#include <math.h>
+#include "Node.h"
+
 #ifndef __NOL_SEGMENT__
 #define __NOL_SEGMENT__
 
@@ -41,12 +45,12 @@ namespace nol
       _parent = parent;
     }
 
-    NodePtr begin() const
+    NodePtr begin(void) const
     {
       return _begin;
     }
 
-    NodePtr end() const
+    NodePtr end(void) const
     {
       return _end;
     }
@@ -61,10 +65,29 @@ namespace nol
       _end = end;
     }
 
-    float volume()
+    float volume(void)
     {
-      //TODO
-      return 0.0f;
+      float volume = 0.0f;
+
+      if (_begin && _end)
+      {
+        Vec3f tmpVec;
+
+        tmpVec[0] = _begin->point()[0] - _end->point()[0];
+        tmpVec[1] = _begin->point()[1] - _end->point()[1];
+        tmpVec[2] = _begin->point()[2] - _end->point()[2];
+
+        double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
+                          + tmpVec[2] * tmpVec[2]));
+
+        //TODO: use real volume formula
+        //Pi/3 = 1.047197551; Truncated cone formula
+        volume = (float) (1.047197551 * mod * (_begin->radius() * _begin->radius()
+               + _end->radius() * _end->radius() + _begin->radius()
+               * _end->radius()));
+      }
+
+      return volume;
     }
 
   protected:

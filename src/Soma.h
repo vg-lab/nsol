@@ -38,8 +38,13 @@ namespace nol
 
     float volume()
     {
-      //TODO
-      return 0.0f;
+      //TODO: use real volume soma formula, now use sphere formula
+      //4pi/3 = 4,188790205
+      if (!_nodes.empty())
+        return _nodes[0]->radius()*_nodes[0]->radius()*_nodes[0]->radius()
+               * 4.188790205f;
+      else
+        return 0.0f;
     }
 
 Nodes & nodes(void)

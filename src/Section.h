@@ -68,7 +68,6 @@ namespace nol
     void parent(SectionPtr parent)
     {
       _parent = parent;
-      ;
     }
 
     void addChild(SectionPtr section)
@@ -110,10 +109,22 @@ namespace nol
       return _firstSegment;
     }
 
-    float volume()
+    float volume(void)
     {
-      //TODO
-      return 0.0f;
+      float volume = 0.0f;
+
+      if (_firstSegment)
+      {
+        SegmentPtr sP = _firstSegment;
+
+        while (sP)
+        {
+          volume += sP->volume();
+          sP = sP->next();
+        }
+      }
+
+      return volume;
     }
 
   protected:

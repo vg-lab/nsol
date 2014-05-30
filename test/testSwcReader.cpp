@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
   SwcReader r;
 
-  cout << "Reading file" << argv[1] << endl;
+  cout << "Reading file " << argv[1] << endl;
 
   NeuronPtr n = r.readFile(argv[1]);
 
@@ -112,6 +112,11 @@ int main(int argc, char *argv[])
   }
 
   std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
+  std::cout << "Number neurite bifurcations:" << n->numNeuriteBifurcations() << std::endl;
   std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
   std::cout << "Number dentrite branchs:" << n->numDendriteBranches() << std::endl;
+  std::cout << "Volume:" << n->volume() << std::endl;
+  std::cout << "Volume neurites:" << n->neuritesVolume() << std::endl;
+  std::cout << "Volume dendrites:" << n->dendritesVolume() << std::endl;
+  std::cout << "Volume axon:" << n->axonVolume() << std::endl;
 }

@@ -67,7 +67,17 @@ namespace nol
       _neurites.push_back(new Dendrite(dendriteType));
       return _neurites.back()->asDendrite();
     }
-    ;
+
+    /**
+     * Method to add a new axon to the neuron.
+     * @return pointer to the added axon
+     */
+    Axon *addAxon()
+    {
+      _neurites.push_back(new Axon());
+      return _neurites.back()->asAxon();
+    }
+
 
     unsigned int numNeurites(void)
     {
@@ -120,28 +130,73 @@ namespace nol
       return nb;
     }
 
+    unsigned int numNeuriteBifurcations()
+    {
+      unsigned int nb = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        nb += (*it)->numBifurcations();
+
+      return nb;
+    }
+
+    unsigned int numDendriteBifurcations()
+    {
+      unsigned int nb = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asDendrite())
+          nb += (*it)->numBifurcations();
+
+      return nb;
+    }
+
+    unsigned int numAxonBifurcations()
+    {
+      unsigned int nb = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if  ((*it)->asAxon())
+          nb += (*it)->numBifurcations();
+
+      return nb;
+    }
+
     float volume()
     {
-      //TODO
       return this->neuritesVolume() + _soma.volume();
     }
 
     float neuritesVolume()
     {
-      //TODO
       return this->dendritesVolume() + this->axonVolume();
     }
 
     float dendritesVolume()
     {
-      //TODO
-      return 0.0f;
+      float volume = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asDendrite())
+          volume += (*it)->volume();
+
+      return volume;
     }
 
     float axonVolume()
     {
-      //TODO
-      return 0.0f;
+      float volume = 0.0f;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asAxon())
+          volume += (*it)->volume();
+
+      return volume;
     }
 
     /**

@@ -8,6 +8,7 @@
 #ifndef __NOL_NEURITE_
 #define __NOL_NEURITE_
 
+#include <stack>
 #include <Types.h>
 #include <Section.h>
 
@@ -29,6 +30,7 @@ namespace nol {
       _firstSection = NULL;
       _neuron = NULL;
       _numBranches = 0;
+      _numBifurcations = 0;
     };
 
     //! Get the type of neurite
@@ -53,11 +55,13 @@ namespace nol {
     /*   return _sections.back(); */
     /* }; */
 
-    SectionPtr firstSection() {
+    SectionPtr firstSection()
+    {
       return _firstSection;
     }
 
-    void firstSection(SectionPtr section) {
+    void firstSection(SectionPtr section)
+    {
       _firstSection = section;
     }
 
@@ -76,10 +80,39 @@ namespace nol {
       _numBranches += numBranches;
     }
 
+    unsigned int numBifurcations ()
+    {
+      return _numBifurcations;
+    }
+
+    void numBifurcations (unsigned int numBifurcations)
+    {
+      _numBifurcations += numBifurcations;
+    }
+
     float volume()
     {
-      //TODO
-    	return 0.0f;
+      float volume = 0.0f;
+
+      if (_firstSection)
+      {
+        std::stack<SectionPtr> sPS;
+        sPS.push(_firstSection);
+
+        while (!sPS.empty())
+        {
+          SectionPtr lS = sPS.top();
+          sPS.pop();
+
+          volume += lS->volume();
+
+          if (lS->childs().size() > 0)
+            for (unsigned int i = 0; i < lS->childs().size(); ++i)
+              sPS.push(lS->childs()[i]);
+        }
+      }
+
+      return volume;
     }
 
     // Casting virtual functions
@@ -102,6 +135,8 @@ namespace nol {
     NeuronPtr _neuron;
     
     unsigned int _numBranches;
+
+    unsigned int _numBifurcations;
 
   };
 
