@@ -22,12 +22,12 @@ namespace nol
       _radius = radius;
     }
 
-    Vec3f point()
+    Vec3f point(void)
     {
       return _point;
     }
 
-    float radius()
+    float radius(void)
     {
       return _radius;
     }

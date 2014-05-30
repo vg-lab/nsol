@@ -9,6 +9,8 @@
 #define __NOL_SWC_READER__
 
 #include <Types.h>
+#include "Dendrite.h"
+#include "Neuron.h"
 
 #include <iostream>
 #include <fstream>
@@ -158,7 +160,7 @@ namespace nol
             assert(false);
 
           case SWC_DENDRITE:
-            std::cout << "New dendrite" << std::endl;
+            std::cout << "New basal dendrite" << std::endl;
 
             d = neuron->addDendrite(Dendrite::BASAL);
             d->neuron(neuron);
@@ -167,7 +169,7 @@ namespace nol
             break;
 
           case SWC_APICAL:
-            std::cout << "New apical" << std::endl;
+            std::cout << "New apical dendrite" << std::endl;
 
             d = neuron->addDendrite(Dendrite::APICAL);
             d->neuron(neuron);
@@ -176,11 +178,23 @@ namespace nol
             break;
 
           case SWC_AXON:
-
-            neuron->addNeurite(Neurite::AXON);
-
+          {
             std::cout << "New axon" << std::endl;
-            break;
+
+//            neuron->addNeurite(Neurite::AXON);
+
+            NeuritePtr nP = neuron->addNeurite(Neurite::AXON);
+            nP->neuron(neuron);
+            DendritePtr dP = nP->asDendrite();
+
+//            Axon *aP = neuron->addAxon();
+//            aP->neuron(neuron);
+//            DendritePtr dendriteP = neuriteP->asDendrite();
+
+            _ReadDendrite(dP, lines, somaChilds[i]);
+
+          }
+          break;
 
           default:
             break;
@@ -334,7 +348,9 @@ namespace nol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->numBranches(1);
+          d->numBranches(lines[id].childs.size());
+          //Plus new bifurcation
+          d->numBifurcations(1);
 
           /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
           /*      it != lines[id].childs.rend(); it++) */
