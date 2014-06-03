@@ -47,6 +47,12 @@ namespace nol
         return 0.0f;
     }
 
+    float surface()
+    {
+      //TODO: calculate soma surface
+      return 0.0f;
+    }
+
 Nodes & nodes(void)
 {
 	return _nodes;

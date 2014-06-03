@@ -19,6 +19,8 @@ namespace nol {
 
   class Neurite {
 
+    friend class SwcReader;
+
   public:
 
     //! Pssible types of neurite
@@ -72,22 +74,13 @@ namespace nol {
 
     unsigned int numBranches ()
     {
-    	return _numBranches;
-    }
-
-    void numBranches (unsigned int numBranches)
-    {
-      _numBranches += numBranches;
+      //Plus 1 branch for the first soma branch
+    	return _numBranches + 1;
     }
 
     unsigned int numBifurcations ()
     {
       return _numBifurcations;
-    }
-
-    void numBifurcations (unsigned int numBifurcations)
-    {
-      _numBifurcations += numBifurcations;
     }
 
     float volume()
@@ -115,6 +108,56 @@ namespace nol {
       return volume;
     }
 
+    float surface()
+    {
+      float surface = 0.0f;
+
+      if (_firstSection)
+      {
+        std::stack<SectionPtr> sPS;
+        sPS.push(_firstSection);
+
+        while (!sPS.empty())
+        {
+          SectionPtr lS = sPS.top();
+          sPS.pop();
+
+          surface += lS->surface();
+
+          if (lS->childs().size() > 0)
+            for (unsigned int i = 0; i < lS->childs().size(); ++i)
+              sPS.push(lS->childs()[i]);
+        }
+      }
+
+      return surface;
+    }
+
+    float length()
+    {
+      float length = 0.0f;
+
+      if (_firstSection)
+      {
+        std::stack<SectionPtr> sPS;
+        sPS.push(_firstSection);
+
+        while (!sPS.empty())
+        {
+          SectionPtr lS = sPS.top();
+          sPS.pop();
+
+          length += lS->length();
+
+          if (lS->childs().size() > 0)
+            for (unsigned int i = 0; i < lS->childs().size(); ++i)
+              sPS.push(lS->childs()[i]);
+        }
+      }
+
+      return length;
+    }
+
     // Casting virtual functions
     
     //! Return pointer to Dendrite objetc
@@ -125,6 +168,16 @@ namespace nol {
 
   protected:
     
+    void addBifurcationCount (unsigned int numBifurcations)
+    {
+      _numBifurcations += numBifurcations;
+    }
+
+    void addBranchCount (unsigned int numBranches)
+    {
+      _numBranches += numBranches;
+    }
+
     TNeuriteType _neuriteType;
 
     //    Vector <Section> 

@@ -127,6 +127,42 @@ namespace nol
       return volume;
     }
 
+    float surface(void)
+    {
+      float surface = 0.0f;
+
+      if (_firstSegment)
+      {
+        SegmentPtr sP = _firstSegment;
+
+        while (sP)
+        {
+          surface += sP->surface();
+          sP = sP->next();
+        }
+      }
+
+      return surface;
+    }
+
+    float length(void)
+    {
+      float length = 0.0f;
+
+      if (_firstSegment)
+      {
+        SegmentPtr sP = _firstSegment;
+
+        while (sP)
+        {
+          length += sP->length();
+          sP = sP->next();
+        }
+      }
+
+      return length;
+    }
+
   protected:
   public:
 

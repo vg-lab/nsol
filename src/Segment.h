@@ -80,7 +80,7 @@ namespace nol
         double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
                           + tmpVec[2] * tmpVec[2]));
 
-        //TODO: use real volume formula
+        //TODO: use accurate volume formula
         //Pi/3 = 1.047197551; Truncated cone formula
         volume = (float) (1.047197551 * mod * (_begin->radius() * _begin->radius()
                + _end->radius() * _end->radius() + _begin->radius()
@@ -88,6 +88,56 @@ namespace nol
       }
 
       return volume;
+    }
+
+    float surface(void)
+    {
+      float surface = 0.0f;
+
+      if (_begin && _end)
+      {
+        Vec3f tmpVec;
+
+        tmpVec[0] = _begin->point()[0] - _end->point()[0];
+        tmpVec[1] = _begin->point()[1] - _end->point()[1];
+        tmpVec[2] = _begin->point()[2] - _end->point()[2];
+
+        double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
+                          + tmpVec[2] * tmpVec[2]));
+
+        float rT = _begin->radius() - _end->radius();
+
+        double g = sqrt(mod * mod + rT * rT);
+
+        //TODO: use accurate surface formula
+        //Volume cone formula
+        surface = (float) (3.14159265359 * (g * (_begin->radius() + _end->radius())
+                           + _begin->radius() * _begin->radius()
+                           + _end->radius() * _end->radius()));
+      }
+
+      return surface;
+    }
+
+    float length(void)
+    {
+      float length = 0.0f;
+
+      if (_begin && _end)
+      {
+        Vec3f tmpVec;
+
+        tmpVec[0] = _begin->point()[0] - _end->point()[0];
+        tmpVec[1] = _begin->point()[1] - _end->point()[1];
+        tmpVec[2] = _begin->point()[2] - _end->point()[2];
+
+        double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
+                          + tmpVec[2] * tmpVec[2]));
+
+        length = (float) mod;
+      }
+
+      return length;
     }
 
   protected:

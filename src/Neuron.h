@@ -199,6 +199,74 @@ namespace nol
       return volume;
     }
 
+    float surface()
+    {
+      return this->neuritesSurface() + _soma.surface();
+    }
+
+    float neuritesSurface()
+    {
+      return this->dendritesSurface() + this->axonSurface();
+    }
+
+    float dendritesSurface()
+    {
+      float surface = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asDendrite())
+          surface += (*it)->surface();
+
+      return surface;
+    }
+
+    float axonSurface()
+    {
+      float surface = 0.0f;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asAxon())
+          surface += (*it)->surface();
+
+      return surface;
+    }
+
+    float length()
+    {
+      return this->neuritesLength();
+    }
+
+    float neuritesLength()
+    {
+      return this->dendritesLength() + this->axonLength();
+    }
+
+    float dendritesLength()
+    {
+      float length = 0;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asDendrite())
+          length += (*it)->length();
+
+      return length;
+    }
+
+    float axonLength()
+    {
+      float length = 0.0f;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        if ((*it)->asAxon())
+          length += (*it)->length();
+
+      return length;
+    }
+
     /**
      * Method to get all the dendrites in a container.
      * Memory for the container is allocated.
