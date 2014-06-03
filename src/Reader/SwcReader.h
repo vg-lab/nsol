@@ -181,17 +181,17 @@ namespace nol
           {
             //std::cout << "New axon" << std::endl;
 
-//            neuron->addNeurite(Neurite::AXON);
+            neuron->addNeurite(Neurite::AXON);
 
-            NeuritePtr nP = neuron->addNeurite(Neurite::AXON);
-            nP->neuron(neuron);
-            DendritePtr dP = nP->asDendrite();
-
+//            NeuritePtr nP = neuron->addNeurite(Neurite::AXON);
+//            nP->neuron(neuron);
+//            DendritePtr dP = nP->asDendrite();
+//
 //            Axon *aP = neuron->addAxon();
 //            aP->neuron(neuron);
 //            DendritePtr dendriteP = neuriteP->asDendrite();
-
-            _ReadDendrite(dP, lines, somaChilds[i]);
+//
+//            _ReadDendrite(dP, lines, somaChilds[i]);
 
           }
           break;
@@ -348,9 +348,9 @@ namespace nol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->numBranches(lines[id].childs.size());
+          d->addBranchCount(lines[id].childs.size());
           //Plus new bifurcation
-          d->numBifurcations(1);
+          d->addBifurcationCount(1);
 
           /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
           /*      it != lines[id].childs.rend(); it++) */

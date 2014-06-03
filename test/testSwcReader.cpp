@@ -119,4 +119,6 @@ int main(int argc, char *argv[])
   std::cout << "Volume neurites:" << n->neuritesVolume() << std::endl;
   std::cout << "Volume dendrites:" << n->dendritesVolume() << std::endl;
   std::cout << "Volume axon:" << n->axonVolume() << std::endl;
+  std::cout << "Surface:" << n->surface() << std::endl;
+  std::cout << "Lenght:" << n->length() << std::endl;
 }
