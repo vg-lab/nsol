@@ -21,7 +21,7 @@ namespace nol
     {
     }
 
-    Vec3f & center()
+    Vec3f & center(void)
     {
       return _center;
     }
@@ -29,39 +29,71 @@ namespace nol
     void addNode(NodePtr node)
     {
       _nodes.push_back(node);
+
+      recalculateCenter();
     }
 
     void addNode(Vec3f & xyz, float & radius)
     {
       this->addNode(new Node(xyz, radius));
+
+      recalculateCenter();
     }
 
-    float volume()
+    float volume(void)
     {
-      //TODO: use real volume soma formula, now use sphere formula
+      float radius = maxRadius();
+
+      //TODO: use real volume soma formula, now use sphere volume formula
       //4pi/3 = 4,188790205
-      if (!_nodes.empty())
-        return _nodes[0]->radius()*_nodes[0]->radius()*_nodes[0]->radius()
-               * 4.188790205f;
-      else
-        return 0.0f;
+      return 4.188790205 * radius * radius * radius;
     }
 
-    float surface()
+    float surface(void)
     {
-      //TODO: calculate soma surface
-      return 0.0f;
-    }
+      float radius = maxRadius();
 
-Nodes & nodes(void)
-{
-	return _nodes;
-}
+      //TODO: use real soma surface, now use sphere surface formula
+      //4pi = 12.5663706144
+      return 12.5663706144 * radius * radius;
+    }
 
   protected:
 
     Vec3f _center;
     Nodes _nodes;
+
+  private:
+
+    void recalculateCenter(void)
+    {
+      Vec3f tmp = {0,0,0};
+
+      //Recalculated soma center node
+      for (unsigned int it = 0; it < _nodes.size(); ++it)
+        tmp += _nodes[it]->point();
+
+     _center = tmp /_nodes.size();
+    }
+
+    float maxRadius(void)
+    {
+      float radius = 0.0f, mod = 0.0f;
+      Vec3f tmp = {0,0,0};
+
+      for (unsigned int it = 0; it < _nodes.size(); ++it)
+      {
+        tmp = _center - _nodes[it]->point();
+
+        mod = (float)sqrt((double) (tmp[0] * tmp[0] + tmp[1] * tmp[1]
+                          + tmp[2] * tmp[2]));
+
+        if (mod > radius)
+          radius = mod;
+      }
+
+      return radius;
+    }
 
   };
 
