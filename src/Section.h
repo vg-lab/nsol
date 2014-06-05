@@ -86,6 +86,9 @@ namespace nol
 
       SegmentPtr s = new Segment;
 
+      s->begin(NULL);
+      s->end(NULL);
+
       if (!_firstSegment)
       {
         _firstSegment = _lastSegment = s;

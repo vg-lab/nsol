@@ -74,7 +74,7 @@ namespace nol {
 
     unsigned int numBranches ()
     {
-      //Plus 1 branch for the first soma branch
+      //Plus 1 branch for the first soma branch of each neurite
     	return _numBranches + 1;
     }
 
@@ -190,7 +190,6 @@ namespace nol {
     unsigned int _numBranches;
 
     unsigned int _numBifurcations;
-
   };
 
 

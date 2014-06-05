@@ -18,25 +18,25 @@ int main(int argc, char *argv[])
 
   NeuronPtr n = r.readFile(argv[1]);
 
-  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
+//  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
 
   Neurites neurites = n->neurites();
 
   for (Neurites::iterator it = neurites.begin(); it != neurites.end(); it++)
   {
-    cout << "Neurite of type : "
-         << (((*it)->neuriteType() == Neurite::AXON) ? "axon" : "");
+//    cout << "Neurite of type : "
+//         << (((*it)->neuriteType() == Neurite::AXON) ? "axon" : "");
 
     if ((*it)->neuriteType() == Neurite::DENDRITE)
     {
 
-      cout
-          << "dendrite "
-          << (((*it)->asDendrite()->dendriteType() == Dendrite::APICAL) ?
-              "apical" : "basal");
+//      cout
+//          << "dendrite "
+//          << (((*it)->asDendrite()->dendriteType() == Dendrite::APICAL) ?
+//              "apical" : "basal");
 
     }
-    cout << endl;
+//    cout << endl;
 
     //    (*it)
 
@@ -46,21 +46,21 @@ int main(int argc, char *argv[])
   {
     NeuritePtr neurite = (*it);
 
-    cout << "######################################################" << endl;
+//    cout << "######################################################" << endl;
 
-    if (neurite->hasNeuron())
-      cout << "Neurite has neuron" << endl;
-    else
-      cout << "Neurite does not have neuron" << endl;
+//    if (neurite->hasNeuron())
+//      cout << "Neurite has neuron" << endl;
+//    else
+//      cout << "Neurite does not have neuron" << endl;
 
     //    SectionPtr section = neurite->firstSection();
 
     if (!neurite->firstSection())
     {
-      cout << "Neurite has no sections" << endl;
+//      cout << "Neurite has no sections" << endl;
       continue;
     }
-    cout << "First section " << neurite->firstSection() << endl;
+//    cout << "First section " << neurite->firstSection() << endl;
 
     stack<SectionPtr> stack;
     stack.push(neurite->firstSection());
@@ -70,28 +70,28 @@ int main(int argc, char *argv[])
 
       SectionPtr section = stack.top();
 
-      cout << "Section " << section << endl;
+//      cout << "Section " << section << endl;
 
       assert(section);
       stack.pop();
 
-      cout << "Section " << section << " parent " << section->parent()
-           << " childs: ";
+//      cout << "Section " << section << " parent " << section->parent()
+//           << " childs: ";
 
       for (Sections::iterator itSect = section->childs().begin();
           itSect != section->childs().end(); itSect++)
       {
         SectionPtr child = (*itSect);
-        cout << child << " ";
+//        cout << child << " ";
         stack.push(child);
       };
 
-      cout << endl;
+//      cout << endl;
 
       SegmentPtr segment = section->firstSegment();
       while (segment)
       {
-        cout << "Segment" << endl;
+//        cout << "Segment" << endl;
         segment = segment->next();
       }
     }
@@ -111,14 +111,32 @@ int main(int argc, char *argv[])
 
   }
 
-  std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
   std::cout << "Number neurite bifurcations:" << n->numNeuriteBifurcations() << std::endl;
-  std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
+  std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
   std::cout << "Number dentrite branchs:" << n->numDendriteBranches() << std::endl;
-  std::cout << "Volume:" << n->volume() << std::endl;
-  std::cout << "Volume neurites:" << n->neuritesVolume() << std::endl;
-  std::cout << "Volume dendrites:" << n->dendritesVolume() << std::endl;
-  std::cout << "Volume axon:" << n->axonVolume() << std::endl;
-  std::cout << "Surface:" << n->surface() << std::endl;
-  std::cout << "Lenght:" << n->length() << std::endl;
+  std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
+  std::cout << "Number stems:" << n->numNeurites() << std::endl;
+
+  std::cout << "##############################################"<< std::endl;
+
+  std::cout << "Total volume:" << n->volume() << std::endl;
+  std::cout << "Neurites volume:" << n->neuritesVolume() << std::endl;
+  std::cout << "Dendrites volume :" << n->dendritesVolume() << std::endl;
+  std::cout << "Axon volume:" << n->axonVolume() << std::endl;
+  std::cout << "Soma volume:" << n->soma().volume() << std::endl;
+
+  std::cout << "##############################################"<< std::endl;
+
+  std::cout << "Total surface:" << n->surface() << std::endl;
+  std::cout << "Neurites surface:" << n->neuritesSurface() << std::endl;
+  std::cout << "Dendrites surface:" << n->neuritesSurface() << std::endl;
+  std::cout << "Axon surface:" << n->axonSurface() << std::endl;
+  std::cout << "Soma surface:" << n->soma().surface() << std::endl;
+
+  std::cout << "##############################################"<< std::endl;
+
+  std::cout << "Total lenght:" << n->length() << std::endl;
+  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
+  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
+  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
 }

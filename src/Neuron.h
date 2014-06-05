@@ -177,7 +177,7 @@ namespace nol
 
     float dendritesVolume()
     {
-      float volume = 0;
+      float volume = 0.0f;
 
       for (Vector<Neurite *>::iterator it = _neurites.begin();
       it != _neurites.end(); ++it)
@@ -211,7 +211,7 @@ namespace nol
 
     float dendritesSurface()
     {
-      float surface = 0;
+      float surface = 0.0f;
 
       for (Vector<Neurite *>::iterator it = _neurites.begin();
       it != _neurites.end(); ++it)
