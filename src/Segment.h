@@ -14,11 +14,18 @@
 
 namespace nol
 {
-
   class Segment
   {
 
+    friend class Section;
+
   public:
+
+    ~Segment()
+    {
+      //TODO:review shared nodes between segments
+      delete _end;
+    }
 
     SegmentPtr next() const
     {
@@ -78,6 +85,7 @@ namespace nol
         double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
                           + tmpVec[2] * tmpVec[2]));
 
+        //Cylinder volume
         volume = (float) (3.14159265359 * mod * _end->radius() * _end->radius());
       }
 
@@ -98,6 +106,7 @@ namespace nol
                           + tmpVec[2] * tmpVec[2]));
 
         //Cylinder surface
+        //2PI = 6.283185307
         surface = 6.283185307 * _end->radius() * mod;
       }
 
@@ -123,6 +132,11 @@ namespace nol
     }
 
   protected:
+
+    void removeNodes (void)
+    {
+      //TODO:erase memory allocation. Control share nodes between segments
+    }
 
     NodePtr _begin, _end;
 

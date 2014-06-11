@@ -29,6 +29,21 @@ namespace nol
       _firstSegment = _lastSegment = NULL;
     }
 
+    ~Section()
+    {
+      if (_firstSegment)
+      {
+        SegmentPtr sP = _firstSegment;
+
+        while (sP)
+        {
+          SegmentPtr next = sP->_next;
+          delete sP;
+          sP = next;
+        }
+      }
+    }
+
     /* NeuronPtr  neuron(void) { */
     /*   // TODO: handle the error of no parent */
     /*   assert(_neurite); */

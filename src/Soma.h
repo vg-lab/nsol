@@ -21,6 +21,15 @@ namespace nol
     {
     }
 
+    ~Soma()
+    {
+      for (Vector<Node *>::iterator it = _nodes.begin();
+      it != _nodes.end(); ++it)
+        delete *it;
+
+      _nodes.clear();
+    }
+
     Vec3f & center(void)
     {
       return _center;
