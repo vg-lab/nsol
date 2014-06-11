@@ -166,7 +166,75 @@ namespace nol
       return length;
     }
 
+    unsigned int fuseSection(void)
+    {
+      SegmentPtr sP = _firstSegment;
+
+      while (sP != _lastSegment)
+      {
+        SegmentPtr nP = sP->next();
+        removeSegment(sP);
+        sP = nP;
+      }
+
+      _firstSegment->end(_lastSegment->end());
+
+      _lastSegment = _firstSegment;
+
+      return 0;
+    }
+
+    float meanRadius(void)
+    {
+      float radius = 0.0f;
+      unsigned int nN = 0;
+
+      if (_firstSegment)
+      {
+        SegmentPtr sP = _firstSegment;
+
+        while (sP)
+        {
+          radius += sP->begin()->radius();
+          nN++;
+
+          sP = sP->next();
+        }
+
+        radius += _lastSegment->end()->radius();
+      }
+
+      return radius/(nN + 1);
+    }
+
   protected:
+
+  private:
+    unsigned int removeSegment (SegmentPtr sP)
+    {
+      if (sP)
+      {
+        if (sP == _firstSegment)
+        {
+          sP->end(sP->next()->end());
+          sP->next()->removeNodes();
+          delete sP->next();
+        }
+        else
+        {
+          sP->removeNodes();
+          sP->prev()->end(sP->next()->end());
+
+          delete sP->next();
+          delete sP;
+       }
+
+        return 1;
+      }
+
+      return 0;
+    }
+
   public:
 
     /* //! Parent neuron of the section */
