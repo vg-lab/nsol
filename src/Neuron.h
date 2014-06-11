@@ -36,6 +36,15 @@ namespace nol
     {
     }
 
+    ~Neuron()
+    {
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+        delete *it;
+
+      _neurites.clear();
+    }
+
     /**
      * Method to add a new neurite to the neuron.
      * @param neuriteType type of Neurite.
@@ -292,7 +301,39 @@ namespace nol
     Dendrites *basalDendrites(void)
     {
       // TODO: create a list of all basal dendrites
-      return new Dendrites;
+//      return new Dendrites;
+
+      Dendrites *dendrites = new Dendrites;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+      {
+        if ((*it)->asDendrite() &&
+        ((*it)->asDendrite()->dendriteType() == Dendrite::BASAL))
+          dendrites->push_back((*it)->asDendrite());
+      }
+
+      return dendrites;
+    }
+
+    /**
+     * Method to get all the apical dendrites in a container.
+     * Memory for the container is allocated.
+     * @return pointer to the container of Dendrites
+     */
+    Dendrites *apicalDendrites(void)
+    {
+      Dendrites *dendrites = new Dendrites;
+
+      for (Vector<Neurite *>::iterator it = _neurites.begin();
+      it != _neurites.end(); ++it)
+      {
+        if ((*it)->asDendrite() &&
+        ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
+          dendrites->push_back((*it)->asDendrite());
+      }
+
+      return dendrites;
     }
 
     /**

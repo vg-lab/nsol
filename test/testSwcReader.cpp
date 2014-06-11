@@ -114,6 +114,8 @@ int main(int argc, char *argv[])
   std::cout << "Number neurite bifurcations:" << n->numNeuriteBifurcations() << std::endl;
   std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
   std::cout << "Number dentrite branchs:" << n->numDendriteBranches() << std::endl;
+  std::cout << "Number basal dentrites:" << n->basalDendrites()->size() << std::endl;
+  std::cout << "Number apical dentrites:" << n->apicalDendrites()->size() << std::endl;
   std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
   std::cout << "Number stems:" << n->numNeurites() << std::endl;
 
@@ -129,7 +131,7 @@ int main(int argc, char *argv[])
 
   std::cout << "Total surface:" << n->surface() << std::endl;
   std::cout << "Neurites surface:" << n->neuritesSurface() << std::endl;
-  std::cout << "Dendrites surface:" << n->neuritesSurface() << std::endl;
+  std::cout << "Dendrites surface:" << n->dendritesSurface() << std::endl;
   std::cout << "Axon surface:" << n->axonSurface() << std::endl;
   std::cout << "Soma surface:" << n->soma().surface() << std::endl;
 
@@ -139,4 +141,29 @@ int main(int argc, char *argv[])
   std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
   std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
   std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+  std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()->meanRadius() << std::endl;
+
+//  std::cout << "###############BORRAMOS UN SEGMENTO#############"<< std::endl;
+//
+//  Dendrites *dendrites = n->dendrites();
+//
+//  DendritePtr dendrite = dendrites->begin()[0];
+//
+//  dendrite->firstSection()->removeSegment(dendrite->firstSection()->_firstSegment->next());
+//
+//  std::cout << "Total lenght:" << n->length() << std::endl;
+//  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
+//  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
+//  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+//
+//  std::cout << "###############COLLAPSE SECTION#############"<< std::endl;
+//
+//  dendrite->firstSection()->fuseSection();
+//
+//  std::cout << "Total lenght:" << n->length() << std::endl;
+//  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
+//  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
+//  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+
+  delete n;
 }

@@ -35,6 +35,29 @@ namespace nol {
       _numBifurcations = 0;
     };
 
+    virtual ~Neurite()
+    {
+      if (_firstSection)
+      {
+        std::stack<SectionPtr> sPS;
+        sPS.push(_firstSection);
+
+        while (!sPS.empty())
+        {
+          SectionPtr lS = sPS.top();
+          sPS.pop();
+
+          if (lS->childs().size() > 0)
+          {
+            for (unsigned int i = 0; i < lS->childs().size(); ++i)
+              sPS.push(lS->childs()[i]);
+          }
+
+          delete lS;
+        }
+      }
+    }
+
     //! Get the type of neurite
     TNeuriteType & neuriteType() {
       return _neuriteType;
