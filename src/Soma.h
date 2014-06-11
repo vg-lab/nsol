@@ -78,10 +78,10 @@ namespace nol
 
     float maxRadius(void)
     {
-      float radius = 0.0f, mod = 0.0f;
+      float radius = _nodes[0]->radius(), mod = 0.0f;
       Vec3f tmp = {0,0,0};
 
-      for (unsigned int it = 0; it < _nodes.size(); ++it)
+      for (unsigned int it = 1; it < _nodes.size(); ++it)
       {
         tmp = _center - _nodes[it]->point();
 
