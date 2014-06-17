@@ -22,12 +22,12 @@ int main(int argc, char *argv[])
   if (!n)
     return -1;
 
-//  string filename;
-//
-//  cout << "Filename to export: ";
-//  cin >> filename;
-//
-//  w.writeFile(filename, n);
+  string filename;
+
+  cout << "Filename to export: ";
+  cin >> filename;
+
+  w.writeFile(filename, n);
 
 //  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
 
