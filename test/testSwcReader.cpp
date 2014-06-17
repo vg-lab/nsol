@@ -13,10 +13,21 @@ int main(int argc, char *argv[])
 {
 
   SwcReader r;
+  SwcWriter w;
 
   cout << "Reading file " << argv[1] << endl;
 
   NeuronPtr n = r.readFile(argv[1]);
+
+  if (!n)
+    return -1;
+
+//  string filename;
+//
+//  cout << "Filename to export: ";
+//  cin >> filename;
+//
+//  w.writeFile(filename, n);
 
 //  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
 
