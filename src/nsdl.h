@@ -30,6 +30,8 @@
 
 // Reader
 #include <Reader/SwcReader.h>
+// Writer
+#include <Writer/SwcWriter.h>
 
 
 #endif
