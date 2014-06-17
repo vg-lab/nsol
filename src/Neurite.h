@@ -27,7 +27,8 @@ namespace nol {
     typedef enum {DENDRITE = 0, AXON} TNeuriteType;
 
     //! Default constructor
-    Neurite(TNeuriteType neuriteType = DENDRITE) {
+    Neurite(TNeuriteType neuriteType = DENDRITE)
+    {
       _neuriteType = neuriteType;
       _firstSection = NULL;
       _neuron = NULL;

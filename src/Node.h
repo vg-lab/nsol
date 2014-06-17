@@ -16,10 +16,11 @@ namespace nol
 
   public:
 
-    Node(Vec3f & point, float radius = 0.0f)
+    Node(Vec3f & point, int id, float radius = 0.0f)
     {
       _point = point;
       _radius = radius;
+      _id = id;
     }
 
     Vec3f point(void)
@@ -32,10 +33,16 @@ namespace nol
       return _radius;
     }
 
+    int id(void)
+    {
+      return _id;
+    }
+
   protected:
 
     Vec3f _point;
     float _radius;
+    int _id;
 
   };
 

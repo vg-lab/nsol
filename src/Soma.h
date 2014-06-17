@@ -35,6 +35,11 @@ namespace nol
       return _center;
     }
 
+    Nodes & nodes(void)
+    {
+      return _nodes;
+    }
+
     void addNode(NodePtr node)
     {
       _nodes.push_back(node);
