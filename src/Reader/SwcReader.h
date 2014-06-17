@@ -138,7 +138,7 @@ namespace nol
       {
         if (it->second.type == SWC_SOMA)
         {
-          NodePtr node = new Node(it->second.xyz, it->second.radius);
+          NodePtr node = new Node(it->second.xyz, it->second.id, it->second.radius);
           neuron->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
@@ -243,6 +243,8 @@ namespace nol
 
       /* } */
 
+      inFile.close();
+
       return neuron;
 
     }
@@ -261,7 +263,7 @@ namespace nol
       std::stack<TStackElem> ids;
       ids.push(TStackElem { initId, NULL });
 
-      SectionPtr s = NULL, parentSection;
+      SectionPtr s = nullptr, parentSection;
       NodePtr nP = nullptr;
       bool first = true;
 
@@ -293,7 +295,7 @@ namespace nol
           sgPre->begin(s->parent()->_lastSegment->end());
 
         //Segment end node
-        sgPre->end(new Node(lines[id].xyz, lines[id].radius));
+        sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -329,7 +331,7 @@ namespace nol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(new Node(lines[id].xyz, lines[id].radius));
+          sg->end(new Node(lines[id].xyz, id, lines[id].radius));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
@@ -414,7 +416,7 @@ namespace nol
           sgPre->begin(s->parent()->_lastSegment->end());
 
         //Segment end node
-        sgPre->end(new Node(lines[id].xyz, lines[id].radius));
+        sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -450,7 +452,7 @@ namespace nol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(new Node(lines[id].xyz, lines[id].radius));
+          sg->end(new Node(lines[id].xyz, id, lines[id].radius));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
