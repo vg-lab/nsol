@@ -38,6 +38,14 @@ namespace nol
 #endif
 #endif
 
+#ifdef _WINDOWS
+	
+#define Vector std::vector  
+//#define List std::list
+
+#endif  
+
+
   typedef vmml::vector<3, float> Vec3f;
 
   class Dendrite;

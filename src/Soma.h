@@ -81,7 +81,7 @@ namespace nol
 
     void recalculateCenter(void)
     {
-      Vec3f tmp = {0,0,0};
+      Vec3f tmp = Vec3f(0,0,0);
 
       //Recalculated soma center node
       for (unsigned int it = 0; it < _nodes.size(); ++it)
@@ -93,7 +93,7 @@ namespace nol
     float maxRadius(void)
     {
       float radius = _nodes[0]->radius(), mod = 0.0f;
-      Vec3f tmp = {0,0,0};
+      Vec3f tmp = Vec3f(0,0,0);
 
       for (unsigned int it = 1; it < _nodes.size(); ++it)
       {
