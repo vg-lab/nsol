@@ -261,7 +261,10 @@ namespace nol
       } TStackElem;
 
       std::stack<TStackElem> ids;
-      ids.push(TStackElem { initId, NULL });
+      //ids.push(TStackElem { initId, NULL });	  
+	  TStackElem tmp = {initId, NULL};
+      ids.push(tmp);
+
 
       SectionPtr s = nullptr, parentSection;
       NodePtr nP = nullptr;
@@ -361,7 +364,9 @@ namespace nol
           for (std::vector<unsigned int>::iterator it =
               lines[id].childs.begin(); it != lines[id].childs.end(); it++)
           {
-            ids.push(TStackElem { (*it), s });
+			  TStackElem tmp = { (*it), s };
+			   ids.push(tmp);
+           // ids.push(TStackElem { (*it), s });
           }
         }
 
@@ -380,7 +385,8 @@ namespace nol
       } TStackElem;
 
       std::stack<TStackElem> ids;
-      ids.push(TStackElem { initId, NULL });
+	  TStackElem tmp = { initId, NULL };
+	  ids.push(tmp);
 
       SectionPtr s = NULL, parentSection;
       NodePtr nP = nullptr;
@@ -482,7 +488,8 @@ namespace nol
           for (std::vector<unsigned int>::iterator it =
               lines[id].childs.begin(); it != lines[id].childs.end(); it++)
           {
-            ids.push(TStackElem { (*it), s });
+			TStackElem tmp = { (*it), s };
+            ids.push(tmp);
           }
         }
 
