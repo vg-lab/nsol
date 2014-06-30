@@ -5,10 +5,11 @@
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NEURON_
-#define __NOL_NEURON_
+#ifndef __NOL_NEURON_MORPHOLOGY__
+#define __NOL_NEURON_MORPHOLOGY__
 
 #include <Types.h>
+#include <NeuronMorphology.h>
 #include <Soma.h>
 #include <Neurite.h>
 #include <Dendrite.h>
@@ -32,18 +33,39 @@ namespace nol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-    Neuron()
+    Neuron(bool createMorphology = true)
     {
+      _morphology = NULL;
+
+      if (createMorphology)
+	_morphology = new NeuronMorphology;
     }
 
     ~Neuron()
     {
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        delete *it;
-
-      _neurites.clear();
     }
+
+    bool hasMorphology() const
+    {
+      return (_morphology != NULL);
+    }
+
+    NeuronMorphologyPtr createMorphology()
+    {
+      _morphology = new NeuronMorphology;
+      return _morphology;
+    }
+
+    NeuronMorphologyPtr morphology() const
+    {
+      return _morphology;
+    }
+
+    void morphology(NeuronMorphologyPtr morphology)
+    {
+      _morphology = morphology;
+    }
+
 
     /**
      * Method to add a new neurite to the neuron.
@@ -53,16 +75,9 @@ namespace nol
      */
     NeuritePtr addNeurite(Neurite::TNeuriteType neuriteType = Neurite::DENDRITE)
     {
-      if (neuriteType == Neurite::DENDRITE)
-        _neurites.push_back(new Dendrite());
-      else if (neuriteType == Neurite::AXON)
-        _neurites.push_back(new Axon());
-      else
-        return NULL;
-
-      return _neurites.back();
+      return _morphology->addNeurite(neuriteType);
     }
-    ;
+    
 
     /**
      * Method to add a new dendrite to the neuron.
@@ -73,8 +88,7 @@ namespace nol
     Dendrite *addDendrite(
         Dendrite::TDendriteType dendriteType = Dendrite::BASAL)
     {
-      _neurites.push_back(new Dendrite(dendriteType));
-      return _neurites.back()->asDendrite();
+      return _morphology->addDendrite(dendriteType);
     }
 
     /**
@@ -83,197 +97,128 @@ namespace nol
      */
     Axon *addAxon()
     {
-      _neurites.push_back(new Axon());
-      return _neurites.back()->asAxon();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->addAxon();
     }
-
 
     unsigned int numNeurites(void)
     {
-      return _neurites.size();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->numNeurites();
     }
 
     unsigned int numDendrites(void)
     {
-      unsigned int nd = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite()) nd++;
-
-      return nd;
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->numDendrites();
     }
 
     unsigned int numNeuriteBranches()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        nb += (*it)->numBranches();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numNeuriteBranches();
     }
 
     unsigned int numDendriteBranches()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          nb += (*it)->numBranches();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numDendriteBranches();
     }
 
     unsigned int numAxonBranches()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if  ((*it)->asAxon())
-          nb += (*it)->numBranches();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numAxonBranches();
     }
 
     unsigned int numNeuriteBifurcations()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        nb += (*it)->numBifurcations();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numNeuriteBifurcations();
     }
 
     unsigned int numDendriteBifurcations()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          nb += (*it)->numBifurcations();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numDendriteBifurcations();
     }
 
     unsigned int numAxonBifurcations()
     {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if  ((*it)->asAxon())
-          nb += (*it)->numBifurcations();
-
-      return nb;
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->numAxonBifurcations();
     }
 
     float volume()
     {
-      return this->neuritesVolume() + _soma.volume();
+      if (!this->hasMorphology()) return 0; 
+return  _morphology->volume();
     }
 
     float neuritesVolume()
     {
-      return this->dendritesVolume() + this->axonVolume();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->neuritesVolume();
     }
 
     float dendritesVolume()
     {
-      float volume = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          volume += (*it)->volume();
-
-      return volume;
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->dendritesVolume();
     }
 
     float axonVolume()
     {
-      float volume = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          volume += (*it)->volume();
-
-      return volume;
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->axonVolume();
     }
 
     float surface()
     {
-      return this->neuritesSurface() + _soma.surface();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->surface();
     }
 
     float neuritesSurface()
     {
-      return this->dendritesSurface() + this->axonSurface();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->neuritesSurface();
     }
 
     float dendritesSurface()
-    {
-      float surface = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          surface += (*it)->surface();
-
-      return surface;
+    { 
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->dendritesSurface();
     }
 
     float axonSurface()
     {
-      float surface = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          surface += (*it)->surface();
-
-      return surface;
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->axonSurface();
     }
 
     float length()
     {
-      return this->neuritesLength();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->length();
     }
 
     float neuritesLength()
     {
-      return this->dendritesLength() + this->axonLength();
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->neuritesLength();
     }
 
     float dendritesLength()
     {
-      float length = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          length += (*it)->length();
-
-      return length;
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->dendritesLength();
     }
 
     float axonLength()
-    {
-      float length = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          length += (*it)->length();
-
-      return length;
+    {    
+      if (!this->hasMorphology()) return 0; 
+      return  _morphology->axonLength();
     }
 
     /**
@@ -283,14 +228,8 @@ namespace nol
      */
     Dendrites *dendrites(void)
     {
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      if ((*it)->asDendrite())
-      dendrites->push_back((*it)->asDendrite());
-
-      return dendrites;
+      if (!this->hasMorphology()) return 0; 
+      return _morphology->dendrites();
     }
 
     /**
@@ -300,20 +239,8 @@ namespace nol
      */
     Dendrites *basalDendrites(void)
     {
-      // TODO: create a list of all basal dendrites
-//      return new Dendrites;
-
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::BASAL))
-          dendrites->push_back((*it)->asDendrite());
-      }
-
-      return dendrites;
+      if (!this->hasMorphology()) return 0; 
+      return _morphology->basalDendrites();
     }
 
     /**
@@ -323,17 +250,8 @@ namespace nol
      */
     Dendrites *apicalDendrites(void)
     {
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
-          dendrites->push_back((*it)->asDendrite());
-      }
-
-      return dendrites;
+      if (!this->hasMorphology()) return 0;
+      return _morphology->apicalDendrites();
     }
 
     /**
@@ -344,32 +262,29 @@ namespace nol
      */
     Dendrite *apicalDendrite(void)
     {
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
-        return (*it)->asDendrite();
-      }
-
-      return NULL;
+      if (!this->hasMorphology()) return 0; 
+      return _morphology->apicalDendrite();
     }
 
-    Neurites &neurites(void)
+    Neurites & neurites(void)
     {
-      return _neurites;
+      //TODO: handle error if (!this->hasMorphology()) return Neurites();
+      return _morphology->neurites();
     }
 
-    Soma &soma(void)
+    Soma & soma(void)
     {
-      return _soma;
+      //TODO: handle error if (!this->hasMorphology()) return 0;
+      return _morphology->soma();
     }
 
   protected:
 
-    Soma _soma;
-    //    Vector<Neurite *> _neurites;
-    Neurites _neurites;
+    /* Soma _soma; */
+    /* //    Vector<Neurite *> _neurites; */
+    /* Neurites _neurites; */
+
+    NeuronMorphologyPtr _morphology;
 
   };
 
