@@ -51,6 +51,7 @@ namespace nol
   class Dendrite;
   class Neurite;
   class Neuron;
+  class NeuronMorphology;
   class Node;
   class Section;
   class Segment;
@@ -60,6 +61,7 @@ namespace nol
   typedef Dendrite * DendritePtr;
   typedef Neurite * NeuritePtr;
   typedef Neuron * NeuronPtr;
+  typedef NeuronMorphology * NeuronMorphologyPtr;
   typedef Node * NodePtr;
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
@@ -67,6 +69,7 @@ namespace nol
 typedef boost::shared_ptr<Dendrite> * DendritePtr;
 typedef boost::shared_ptr<Neurite> * NeuritePtr;
 typedef boost::shared_ptr<Neuron> * NeuronPtr;
+typedef boost::shared_ptr<NeuronMorphology> * NeuronMorphologyPtr;
 typedef boost::shared_ptr<Node> * NodePtr;
 typedef boost::shared_ptr<Section> * SectionPtr;
 typedef boost::shared_ptr<Segment> * SegmentPtr;
