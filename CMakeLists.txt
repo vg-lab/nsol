@@ -1,4 +1,4 @@
-project(nsdl)
+project(nsol)
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -9,7 +9,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src ${VMMLIB_INSTALL_DIR}/includ
 
 
 FILE(GLOB INSTALL_FILES src/*.h)
-#install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src DESTINATION include/nol)
+#install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src DESTINATION include/nsol)
 
 
 file(GLOB DEPLOY_FILES_AND_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
@@ -23,7 +23,7 @@ foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
      ENDIF()
    ENDIF()
 endforeach()
-INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION include/nol )
-INSTALL( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nol )
+INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION include/nsol )
+INSTALL( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
 
 add_subdirectory(test)

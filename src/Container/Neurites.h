@@ -5,13 +5,13 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NEURITES__
-#define __NOL_NEURITES__
+#ifndef __NSOL_NEURITES__
+#define __NSOL_NEURITES__
 
 #include <Types.h>
 #include <Neurite.h>
 
-namespace nol {
+namespace nsol {
 
   class Neurites : public Vector<NeuritePtr> {
   };

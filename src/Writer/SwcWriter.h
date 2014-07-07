@@ -5,8 +5,8 @@
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SWC_WRITER__
-#define __NOL_SWC_WRITER__
+#ifndef __NSOL_SWC_WRITER__
+#define __NSOL_SWC_WRITER__
 
 #include <Types.h>
 #include "Dendrite.h"
@@ -21,7 +21,7 @@
 #include <stack>
 #include <queue>
 
-namespace nol
+namespace nsol
 {
 
   class SwcWriter

@@ -5,10 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SPINE__
-#define __NOL_SPINE__
+#ifndef __NSOL_SPINE__
+#define __NSOL_SPINE__
 
-namespace nol {
+namespace nsol {
 
   class Spine {
     

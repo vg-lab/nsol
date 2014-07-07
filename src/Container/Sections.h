@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SECTIONS__
-#define __NOL_SECTIONS__
+#ifndef __NSOL_SECTIONS__
+#define __NSOL_SECTIONS__
 
 #include <Section.h>
 
-namespace nol {
+namespace nsol {
 
 
 

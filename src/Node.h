@@ -5,10 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NODE__
-#define __NOL_NODE__
+#ifndef __NSOL_NODE__
+#define __NSOL_NODE__
 
-namespace nol
+namespace nsol
 {
 
   class Node

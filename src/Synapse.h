@@ -5,10 +5,10 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SYNAPSE__
-#define __NOL_SYNAPSE__
+#ifndef __NSOL_SYNAPSE__
+#define __NSOL_SYNAPSE__
 
-namespace nol {
+namespace nsol {
 
   class Synapse {
     

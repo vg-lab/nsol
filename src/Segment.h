@@ -9,10 +9,10 @@
 #include <math.h>
 #include "Node.h"
 
-#ifndef __NOL_SEGMENT__
-#define __NOL_SEGMENT__
+#ifndef __NSOL_SEGMENT__
+#define __NSOL_SEGMENT__
 
-namespace nol
+namespace nsol
 {
   class Segment
   {

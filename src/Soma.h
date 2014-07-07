@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SOMA__
-#define __NOL_SOMA__
+#ifndef __NSOL_SOMA__
+#define __NSOL_SOMA__
 
 #include <Container/Nodes.h>
 
-namespace nol
+namespace nsol
 {
 
   class Soma

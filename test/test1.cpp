@@ -1,11 +1,11 @@
-#include <nsdl.h>
+#include <nsol.h>
 
 #include <assert.h>
 
 #include <iostream>
 
 
-using namespace nol;
+using namespace nsol;
 using namespace std;
 
 int main () {
