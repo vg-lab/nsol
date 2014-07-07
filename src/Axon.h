@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_AXON__
-#define __NOL_AXON__
+#ifndef __NSOL_AXON__
+#define __NSOL_AXON__
 
 #include <Neurite.h>
 
-namespace nol {
+namespace nsol {
 
   class Axon : public Neurite {
     

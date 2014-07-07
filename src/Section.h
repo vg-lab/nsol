@@ -5,15 +5,15 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SECTION__
-#define __NOL_SECTION__
+#ifndef __NSOL_SECTION__
+#define __NSOL_SECTION__
 
 #include <Types.h>
 #include <Segment.h>
 #include <Container/Sections.h>
 #include <Container/Segments.h>
 
-namespace nol
+namespace nsol
 {
 
   class Neurite;

@@ -1,4 +1,4 @@
-#include <nsdl.h>
+#include <nsol.h>
 
 #include <assert.h>
 
@@ -6,7 +6,7 @@
 
 #include <stack>
 
-using namespace nol;
+using namespace nsol;
 using namespace std;
 
 int main(int argc, char *argv[])

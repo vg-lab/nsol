@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_SEGMENTS__
-#define __NOL_SEGMENTS__
+#ifndef __NSOL_SEGMENTS__
+#define __NSOL_SEGMENTS__
 
 #include <Segment.h>
 
-namespace nol {
+namespace nsol {
 
 
 

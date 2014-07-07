@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_TYPES__
-#define __NOL_TYPES__
+#ifndef __NSOL_TYPES__
+#define __NSOL_TYPES__
 
 #include <list>
 #include <vector>
@@ -17,7 +17,7 @@
 
 /* #include <boost/geometry/geometries/point.hpp> */
 
-namespace nol
+namespace nsol
 {
 
 #if __GNUC__ == 4

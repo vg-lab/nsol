@@ -5,13 +5,13 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NODES__
-#define __NOL_NODES__
+#ifndef __NSOL_NODES__
+#define __NSOL_NODES__
 
 #include <Types.h>
 #include <Node.h>
 
-namespace nol {
+namespace nsol {
 
 
 

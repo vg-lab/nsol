@@ -5,14 +5,14 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NEURITE_
-#define __NOL_NEURITE_
+#ifndef __NSOL_NEURITE_
+#define __NSOL_NEURITE_
 
 #include <stack>
 #include <Types.h>
 #include <Section.h>
 
-namespace nol {
+namespace nsol {
 
   class Dendrite;
   class Axon;

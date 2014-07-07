@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_MINICOLUMN__
-#define __NOL_MINICOLUMN__
+#ifndef __NSOL_MINICOLUMN__
+#define __NSOL_MINICOLUMN__
 
 #include <Neuron.h>
 
-namespace nol {
+namespace nsol {
   
   class MiniColumn {
  

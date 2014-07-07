@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_DENDRITE__
-#define __NOL_DENDRITE__
+#ifndef __NSOL_DENDRITE__
+#define __NSOL_DENDRITE__
 
 #include <Neurite.h>
 
-namespace nol {
+namespace nsol {
 
   class Dendrite : public Neurite {
 

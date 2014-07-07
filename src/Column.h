@@ -5,12 +5,12 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_COLUMN__
-#define __NOL_COLUMN__
+#ifndef __NSOL_COLUMN__
+#define __NSOL_COLUMN__
 
 #include <MiniColumn.h>
 
-namespace nol {
+namespace nsol {
   
   class Column {
  

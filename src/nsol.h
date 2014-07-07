@@ -1,12 +1,12 @@
 /**
- * @file    nsdl.h
+ * @file    nsol.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NSDL__
-#define __NOL_NSDL__
+#ifndef __NSOL_NSOL__
+#define __NSOL_NSOL__
 
 
 // Ontology elements

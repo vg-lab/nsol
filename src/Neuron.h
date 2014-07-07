@@ -5,8 +5,8 @@
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_NEURON_MORPHOLOGY__
-#define __NOL_NEURON_MORPHOLOGY__
+#ifndef __NSOL_NEURON_MORPHOLOGY__
+#define __NSOL_NEURON_MORPHOLOGY__
 
 #include <Types.h>
 #include <NeuronMorphology.h>
@@ -16,7 +16,7 @@
 #include <Container/Dendrites.h>
 #include <Container/Neurites.h>
 
-namespace nol
+namespace nsol
 {
 
   /*! \class Neuron

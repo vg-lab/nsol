@@ -5,13 +5,13 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NOL_DENDRITES__
-#define __NOL_DENDRITES__
+#ifndef __NSOL_DENDRITES__
+#define __NSOL_DENDRITES__
 
 #include <Types.h>
 #include <Dendrite.h>
 
-namespace nol {
+namespace nsol {
 
   class Dendrites : public Vector<DendritePtr> {
   };
