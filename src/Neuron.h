@@ -41,6 +41,12 @@ namespace nsol
 	_morphology = new NeuronMorphology;
     }
 
+    Neuron(NeuronMorphology *neuronMorphology)
+    {
+      _morphology = neuronMorphology;
+    }
+
+
     ~Neuron()
     {
     }
@@ -75,6 +81,7 @@ namespace nsol
      */
     NeuritePtr addNeurite(Neurite::TNeuriteType neuriteType = Neurite::DENDRITE)
     {
+      if (!this->hasMorphology()) return 0; 
       return _morphology->addNeurite(neuriteType);
     }
     
@@ -88,6 +95,7 @@ namespace nsol
     Dendrite *addDendrite(
         Dendrite::TDendriteType dendriteType = Dendrite::BASAL)
     {
+      if (!this->hasMorphology()) return 0; 
       return _morphology->addDendrite(dendriteType);
     }
 
@@ -116,31 +124,31 @@ namespace nsol
     unsigned int numNeuriteBranches()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numNeuriteBranches();
+      return  _morphology->numNeuriteBranches();
     }
 
     unsigned int numDendriteBranches()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numDendriteBranches();
+      return  _morphology->numDendriteBranches();
     }
 
     unsigned int numAxonBranches()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numAxonBranches();
+      return  _morphology->numAxonBranches();
     }
 
     unsigned int numNeuriteBifurcations()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numNeuriteBifurcations();
+      return  _morphology->numNeuriteBifurcations();
     }
 
     unsigned int numDendriteBifurcations()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numDendriteBifurcations();
+      return  _morphology->numDendriteBifurcations();
     }
 
     unsigned int numAxonBifurcations()
@@ -269,12 +277,14 @@ return  _morphology->volume();
     Neurites & neurites(void)
     {
       //TODO: handle error if (!this->hasMorphology()) return Neurites();
+      assert(this->hasMorphology());
       return _morphology->neurites();
     }
 
     Soma & soma(void)
     {
       //TODO: handle error if (!this->hasMorphology()) return 0;
+      assert(this->hasMorphology());
       return _morphology->soma();
     }
 
