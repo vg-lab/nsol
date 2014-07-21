@@ -49,6 +49,8 @@ namespace nsol
   typedef vmml::vector<3, float> Vec3f;
 
   class Dendrite;
+  class Column;
+  class MiniColumn;
   class Neurite;
   class Neuron;
   class NeuronMorphology;
@@ -59,6 +61,8 @@ namespace nsol
   //! Definition of pointers to objects
 #if !BOOST
   typedef Dendrite * DendritePtr;
+  typedef Column * ColumnPtr;
+  typedef MiniColumn * MiniColumnPtr;
   typedef Neurite * NeuritePtr;
   typedef Neuron * NeuronPtr;
   typedef NeuronMorphology * NeuronMorphologyPtr;
@@ -67,6 +71,8 @@ namespace nsol
   typedef Segment * SegmentPtr;
 #else
 typedef boost::shared_ptr<Dendrite> * DendritePtr;
+typedef boost::shared_ptr<Column> * ColumnPtr;
+typedef boost::shared_ptr<MiniColumn> * MiniColumnPtr;
 typedef boost::shared_ptr<Neurite> * NeuritePtr;
 typedef boost::shared_ptr<Neuron> * NeuronPtr;
 typedef boost::shared_ptr<NeuronMorphology> * NeuronMorphologyPtr;
