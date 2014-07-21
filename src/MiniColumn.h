@@ -16,7 +16,7 @@ namespace nsol {
  
   protected:
 
-    Vector<Neuron> _neurons;
+    //    Neurons _neurons;
     
 
   };

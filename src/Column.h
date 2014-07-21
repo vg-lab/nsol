@@ -16,7 +16,7 @@ namespace nsol {
  
   protected:
 
-    Vector<MiniColumn> _miniColumns;
+    MiniColumns _miniColumns;
     
 
   };
