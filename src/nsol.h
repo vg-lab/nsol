@@ -20,7 +20,7 @@
 #include <Synapse.h>
 #include <Soma.h>
 #include <Spine.h>
-#include <Types.h>
+#include <NsolTypes.h>
 
 // Containers
 #include <Container/Sections.h>
