@@ -8,7 +8,7 @@
 #ifndef __NSOL_SWC_WRITER__
 #define __NSOL_SWC_WRITER__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include "Dendrite.h"
 #include "Neuron.h"
 

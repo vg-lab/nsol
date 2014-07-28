@@ -8,7 +8,7 @@
 #ifndef __NSOL_DENDRITES__
 #define __NSOL_DENDRITES__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <Dendrite.h>
 
 namespace nsol {

@@ -9,7 +9,7 @@
 #define __NSOL_NEURITE_
 
 #include <stack>
-#include <Types.h>
+#include <NsolTypes.h>
 #include <Section.h>
 
 namespace nsol {

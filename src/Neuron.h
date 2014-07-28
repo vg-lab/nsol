@@ -8,7 +8,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY__
 #define __NSOL_NEURON_MORPHOLOGY__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <NeuronMorphology.h>
 #include <Soma.h>
 #include <Neurite.h>
