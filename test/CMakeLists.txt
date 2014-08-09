@@ -20,3 +20,14 @@ if (BBPSDK_FOUND)
   TARGET_LINK_LIBRARIES(testBBPSDKLoader ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
 
 endif()
+
+enable_testing()
+
+#find_package(GTest REQUIRED)
+#include_directories(${GTEST_INCLUDE_DIR})
+
+find_package (Threads)
+
+
+add_executable(segmentTest segmentTest.cpp )
+target_link_libraries(segmentTest gtest ${CMAKE_THREAD_LIBS_INIT})
