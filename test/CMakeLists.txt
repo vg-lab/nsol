@@ -29,5 +29,5 @@ enable_testing()
 find_package (Threads)
 
 
-add_executable(segmentTest segmentTest.cpp )
-target_link_libraries(segmentTest gtest ${CMAKE_THREAD_LIBS_INIT})
+add_executable(runTests runTests.cpp )
+target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT})

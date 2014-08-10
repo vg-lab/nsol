@@ -9,6 +9,7 @@
 #define __NSOL_COLUMN__
 
 #include <MiniColumn.h>
+#include <NsolTypes.h>
 
 namespace nsol {
   
@@ -16,7 +17,7 @@ namespace nsol {
  
   protected:
 
-    MiniColumns _miniColumns;
+    //    MiniColumns _miniColumns;
     
 
   };

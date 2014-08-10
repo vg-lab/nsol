@@ -10,6 +10,7 @@
 
 #include <NsolTypes.h>
 #include <Soma.h>
+#include <Axon.h>
 #include <Neurite.h>
 #include <Dendrite.h>
 #include <Container/Dendrites.h>
