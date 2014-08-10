@@ -23,11 +23,24 @@ endif()
 
 enable_testing()
 
-#find_package(GTest REQUIRED)
+#find_package(gtest REQUIRED)
 #include_directories(${GTEST_INCLUDE_DIR})
 
-find_package (Threads)
 
+find_library(GTEST_LIBRARY_DIR 
+ NAMES libgtest.a
+ PATHS 
+ /opt/local/lib
+ /usr/local/lib
+ /usr/lib
+)
 
-add_executable(runTests runTests.cpp )
-target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT})
+#message(${GTEST_LIBRARY_DIR})
+if (GTEST_LIBRARY_DIR)
+
+  find_package (Threads)
+
+  add_executable(runTests runTests.cpp )
+  target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT})
+
+endif()
