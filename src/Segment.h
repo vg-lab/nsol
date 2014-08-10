@@ -52,6 +52,11 @@ namespace nsol
       _parent = parent;
     }
 
+    SectionPtr parentSection(void)
+    {
+      return _parent;
+    }
+
     NodePtr begin(void) const
     {
       return _begin;
