@@ -18,24 +18,24 @@ namespace nsol
 
   public:
 
-    Node(Vec3f & point, int id, float radius = 0.0f)
+    Node(const Vec3f point, const int id, const float radius = 0.0f)
     {
       _point = point;
       _radius = radius;
       _id = id;
     }
 
-    Vec3f point(void)
+    Vec3f & point(void) 
     {
       return _point;
     }
 
-    float radius(void)
+    float & radius(void) 
     {
       return _radius;
     }
 
-    int id(void)
+    int & id(void)
     {
       return _id;
     }

@@ -31,7 +31,11 @@ namespace nsol
     ~Segment()
     {
       //TODO:review shared nodes between segments
-      delete _end;
+
+      // @pablo: this delete can cause segmentation fault if the 
+      // _end node is not in dynamic memory
+      // if (_end)
+      // delete _end;
     }
 
     SegmentPtr next() const
@@ -81,68 +85,34 @@ namespace nsol
 
     float volume(void)
     {
-      float volume = 0.0f;
-
-      if (_begin && _end)
-      {
-        Vec3f tmpVec;
-
-        tmpVec = _begin->point() - _end->point();
-
-        double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
-                          + tmpVec[2] * tmpVec[2]));
-
-        //Cylinder volume
-        volume = (float) (3.14159265359 * mod * _end->radius() * _end->radius());
-      }
-
-      return volume;
+      return (_begin && _end) ? 
+	M_PI * 
+	(_begin->point() - _end->point()).length() * 
+	_end->radius() *
+	_end->radius() : 0.0f;
     }
 
     float surface(void)
     {
-      float surface = 0.0f;
-
-      if (_begin && _end)
-      {
-        Vec3f tmpVec;
-
-        tmpVec = _begin->point() - _end->point();
-
-        double mod = sqrt((double) (tmpVec[0] * tmpVec[0] + tmpVec[1] * tmpVec[1]
-                          + tmpVec[2] * tmpVec[2]));
-
-        //Cylinder surface
-        //2PI = 6.283185307
-        surface = 6.283185307 * _end->radius() * mod;
-      }
-
-      return surface;
+      return (_begin && _end) ?
+	M_2_PI * _end->radius() * (_begin->point() - _end->point()).length() :
+	0.0f;
     }
 
     float length(void)
     {
-      float length = 0.0f;
-
-      if (_begin && _end)
-      {
-        Vec3f tmpVec;
-
-        tmpVec = _begin->point() - _end->point();
-
-        length = (float) sqrt((double) (tmpVec[0] * tmpVec[0]
-                                        + tmpVec[1] * tmpVec[1]
-                                        + tmpVec[2] * tmpVec[2]));;
-      }
-
-      return length;
+      return (_begin && _end) ?
+        (_begin->point() - _end->point()).length() : 0.0f;
     }
 
   protected:
 
     void removeNodes (void)
     {
-      //TODO:erase memory allocation. Control share nodes between segments
+      //TODO:erase memory allocation. Control shared nodes between segments
+      //@pablo: be careful, if memory to be deleted 
+      // is allocated outside of this class you might end deleting
+      // non dynamic memory
     }
 
     NodePtr _begin, _end;
