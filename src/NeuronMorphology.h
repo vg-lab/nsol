@@ -8,7 +8,7 @@
 #ifndef __NSOL_NEURON_
 #define __NSOL_NEURON_
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <Soma.h>
 #include <Neurite.h>
 #include <Dendrite.h>
@@ -62,7 +62,7 @@ namespace nsol
 
       return _neurites.back();
     }
-    ;
+
 
     /**
      * Method to add a new dendrite to the neuron.

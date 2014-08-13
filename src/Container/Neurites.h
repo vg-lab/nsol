@@ -8,7 +8,7 @@
 #ifndef __NSOL_NEURITES__
 #define __NSOL_NEURITES__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <Neurite.h>
 
 namespace nsol {

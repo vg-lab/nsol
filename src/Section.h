@@ -8,7 +8,7 @@
 #ifndef __NSOL_SECTION__
 #define __NSOL_SECTION__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <Segment.h>
 #include <Container/Sections.h>
 #include <Container/Segments.h>

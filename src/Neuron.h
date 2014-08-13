@@ -8,7 +8,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY__
 #define __NSOL_NEURON_MORPHOLOGY__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include <NeuronMorphology.h>
 #include <Soma.h>
 #include <Neurite.h>
@@ -29,21 +29,30 @@ namespace nsol
 
   public:
 
-    /**
+   /**
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
     Neuron(bool createMorphology = true)
     {
-      _morphology = NULL;
+      _morphology = nullptr;
+      _column = nullptr;
+      _miniColumn = nullptr;
+      _layer = 0;
+      _transforM.zero();
 
       if (createMorphology)
-	_morphology = new NeuronMorphology;
+    	  _morphology = new NeuronMorphology;
     }
 
-    Neuron(NeuronMorphology *neuronMorphology)
+    Neuron(const NeuronMorphologyPtr neuronMorphology, const unsigned short layer,
+    	   const Matrix4_4f transForm, const ColumnPtr column, const MiniColumnPtr miniColumn)
     {
       _morphology = neuronMorphology;
+      _layer = layer;
+      _transforM = transForm;
+      _column = column;
+      _miniColumn = miniColumn;
     }
 
 
@@ -58,7 +67,9 @@ namespace nsol
 
     NeuronMorphologyPtr createMorphology()
     {
-      _morphology = new NeuronMorphology;
+    	if (!_morphology)
+    		_morphology = new NeuronMorphology;
+
       return _morphology;
     }
 
@@ -154,13 +165,13 @@ namespace nsol
     unsigned int numAxonBifurcations()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->numAxonBifurcations();
+      return  _morphology->numAxonBifurcations();
     }
 
     float volume()
     {
       if (!this->hasMorphology()) return 0; 
-return  _morphology->volume();
+      return  _morphology->volume();
     }
 
     float neuritesVolume()
@@ -288,13 +299,72 @@ return  _morphology->volume();
       return _morphology->soma();
     }
 
+    /**
+     * Method to set the transformation matrix of the neuron.
+     */
+    void transforM(Matrix4_4f transforM)
+    {
+    	_transforM = transforM;
+    }
+
+    /**
+     * Method to get the transformation matrix of the neuron.
+     * @return transformation matrix
+     */
+    Matrix4_4f & transforM(void)
+    {
+    	return _transforM;
+    }
+
+    /**
+     * Method to get the layer of the neuron.
+     * @return layer
+     */
+    unsigned short & layer(void)
+    {
+    	return _layer;
+    }
+
+    /**
+     * Method to set the layer of the neuron.
+     */
+    void layer(const unsigned short layer)
+    {
+    	_layer = layer;
+    }
+
+    void column(ColumnPtr colummn)
+    {
+      _column = colummn;
+    }
+
+    ColumnPtr &column(void)
+    {
+      return _column;
+    }
+
+    void miniColumn(MiniColumnPtr miniColumn)
+    {
+    	_miniColumn = miniColumn;
+    }
+
+    MiniColumnPtr &miniColumn(void)
+    {
+    	return _miniColumn;
+    }
+
+
   protected:
 
     /* Soma _soma; */
     /* //    Vector<Neurite *> _neurites; */
     /* Neurites _neurites; */
 
-    NeuronMorphologyPtr _morphology;
+    NeuronMorphologyPtr _morphology;	//Morphology
+    ColumnPtr _column;					//Column
+    MiniColumnPtr _miniColumn;			//Minicolumn
+    Matrix4_4f _transforM;				//Matrix of global transformation
+    unsigned short _layer;				//Layer
 
   };
 
