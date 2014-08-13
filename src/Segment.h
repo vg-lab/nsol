@@ -21,6 +21,13 @@ namespace nsol
 
   public:
 
+    Segment() :
+      _begin(nullptr), _end(nullptr),
+      _next(nullptr), _prev(nullptr),
+      _parent(nullptr)
+    {
+    }
+
     ~Segment()
     {
       //TODO:review shared nodes between segments

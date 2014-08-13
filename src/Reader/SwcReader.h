@@ -1,5 +1,5 @@
 /**
- * @file    Sections.h
+ * @file    SwcReader.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
@@ -8,9 +8,9 @@
 #ifndef __NSOL_SWC_READER__
 #define __NSOL_SWC_READER__
 
-#include <Types.h>
+#include <NsolTypes.h>
 #include "Dendrite.h"
-#include "Neuron.h"
+#include "NeuronMorphology.h"
 
 #include <iostream>
 #include <fstream>
@@ -44,12 +44,12 @@ namespace nsol
       std::vector<unsigned int> childs;
     } TSwcLine;
 
-    NeuronPtr readFile(const char *fileName)
+    NeuronMorphologyPtr readFile(const char *fileName)
     {
       return this->readFile(std::string(fileName));
     }
 
-    NeuronPtr readFile(const std::string fileName)
+    NeuronMorphologyPtr readFile(const std::string fileName)
     {
 
       std::ifstream inFile;
@@ -66,7 +66,7 @@ namespace nsol
       std::string line;
       std::getline(inFile, line);
 
-      NeuronPtr neuron = new Neuron;
+      NeuronMorphologyPtr neuronMorphology = new NeuronMorphology;
 
       std::map<unsigned int, TSwcLine> lines;
 
@@ -139,7 +139,7 @@ namespace nsol
         if (it->second.type == SWC_SOMA)
         {
           NodePtr node = new Node(it->second.xyz, it->second.id, it->second.radius);
-          neuron->soma().addNode(node);
+          neuronMorphology->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
 
@@ -167,8 +167,8 @@ namespace nsol
           {
 //            std::cout << "New basal dendrite" << std::endl;
 
-            d = neuron->addDendrite(Dendrite::BASAL);
-            d->neuron(neuron);
+            d = neuronMorphology->addDendrite(Dendrite::BASAL);
+            d->morphology(neuronMorphology);
             _ReadDendrite(d, lines, somaChilds[i],
                           nodeSomaPtr[lines[somaChilds[i]].parent]);
 
@@ -178,8 +178,8 @@ namespace nsol
           case SWC_APICAL:
 //            std::cout << "New apical dendrite" << std::endl;
 
-            d = neuron->addDendrite(Dendrite::APICAL);
-            d->neuron(neuron);
+            d = neuronMorphology->addDendrite(Dendrite::APICAL);
+            d->morphology(neuronMorphology);
             _ReadDendrite(d, lines, somaChilds[i],
                           nodeSomaPtr[lines[somaChilds[i]].parent]);
 
@@ -191,8 +191,8 @@ namespace nsol
 
 //            neuron->addNeurite(Neurite::AXON);
 
-            NeuritePtr nP = neuron->addNeurite(Neurite::AXON);
-            nP->neuron(neuron);
+            NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
+            nP->morphology(neuronMorphology);
             _ReadAxon(nP, lines, somaChilds[i],
                       nodeSomaPtr[lines[somaChilds[i]].parent]);
 
@@ -245,7 +245,7 @@ namespace nsol
 
       inFile.close();
 
-      return neuron;
+      return neuronMorphology;
 
     }
 
