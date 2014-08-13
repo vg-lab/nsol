@@ -86,17 +86,18 @@ namespace nsol
     float volume(void)
     {
       return (_begin && _end) ? 
-	M_PI * 
-	(_begin->point() - _end->point()).length() * 
-	_end->radius() *
-	_end->radius() : 0.0f;
+          float(M_PI) *
+          (_begin->point() - _end->point()).length() *
+          _end->radius() *
+          _end->radius() : 0.0f;
     }
 
     float surface(void)
     {
       return (_begin && _end) ?
-	M_2_PI * _end->radius() * (_begin->point() - _end->point()).length() :
-	0.0f;
+          float(M_2PI) * _end->radius() *
+          (_begin->point() - _end->point()).length() :
+          0.0f;
     }
 
     float length(void)
