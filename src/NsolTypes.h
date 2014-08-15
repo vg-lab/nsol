@@ -88,4 +88,9 @@ typedef boost::shared_ptr<Segment> * SegmentPtr;
 #define M_2PI   6.283185307179586476925286766559  /* 2*pi */
 #endif
 
+#ifndef M_PI
+#define M_PI    3.141592653589793238462643383280
 #endif
+
+
+#endif __NSOL_TYPES__
