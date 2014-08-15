@@ -7,7 +7,9 @@
  */
 
 #include <math.h>
+
 #include "Node.h"
+#include "NsolTypes.h"
 
 #ifndef __NSOL_SEGMENT__
 #define __NSOL_SEGMENT__
