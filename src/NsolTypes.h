@@ -93,4 +93,4 @@ typedef boost::shared_ptr<Segment> * SegmentPtr;
 #endif
 
 
-#endif __NSOL_TYPES__
+#endif //__NSOL_TYPES__
