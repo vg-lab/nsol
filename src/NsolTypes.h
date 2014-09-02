@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include <vmmlib/vector.hpp>
+#include <vmmlib/matrix.hpp>
 
 /* #include <boost/geometry/geometries/point.hpp> */
 
@@ -47,6 +48,8 @@ namespace nsol
 
 
   typedef vmml::vector<3, float> Vec3f;
+  typedef vmml::matrix<4, 4, float> Matrix4_4f;
+  typedef vmml::vector<4, float> Vec4f;
 
   class Dendrite;
   class Column;

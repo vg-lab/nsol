@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
   cout << "Reading file " << argv[1] << endl;
 
-  NeuronPtr n = r.readFile(argv[1]);
+  NeuronMorphologyPtr n = r.readFile(argv[1]);
 
   if (!n)
     return -1;

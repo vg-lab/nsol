@@ -23,7 +23,7 @@ namespace nsol {
 
   public:
 
-    //! Pssible types of neurite
+    //! Possible types of neurite
     typedef enum {DENDRITE = 0, AXON} TNeuriteType;
 
     //! Default constructor
@@ -31,7 +31,7 @@ namespace nsol {
     {
       _neuriteType = neuriteType;
       _firstSection = NULL;
-      _neuron = NULL;
+      _morphology = NULL;
       _numBranches = 0;
       _numBifurcations = 0;
     };
@@ -64,16 +64,16 @@ namespace nsol {
       return _neuriteType;
     };
 
-    NeuronPtr neuron() const {
-      return  _neuron;
+    NeuronMorphologyPtr morphology() const {
+      return  _morphology;
     }
 
-    NeuronPtr neuron(NeuronPtr neuron)  {
-      return  _neuron = neuron;
+    NeuronMorphologyPtr morphology(NeuronMorphologyPtr morphology)  {
+      return  _morphology = morphology;
     }
 
-    bool hasNeuron() {
-      return _neuron;
+    bool hasMorphology() {
+      return _morphology;
     }
 
     /* SectionPtr addSection() { */
@@ -209,7 +209,7 @@ namespace nsol {
 
     SectionPtr _firstSection;
 
-    NeuronPtr _neuron;
+    NeuronMorphologyPtr _morphology;
     
     unsigned int _numBranches;
 

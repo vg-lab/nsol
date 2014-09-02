@@ -27,6 +27,8 @@
 #include <Container/Segments.h>
 #include <Container/Neurites.h> 
 #include <Container/Dendrites.h> 
+#include <Container/Columns.h>
+#include <Container/MiniColumns.h>
 
 // Reader
 #include <Reader/SwcReader.h>
