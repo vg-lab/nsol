@@ -10,7 +10,7 @@
 
 #include <NsolTypes.h>
 #include "Dendrite.h"
-#include "Neuron.h"
+#include "NeuronMorphology.h"
 
 #include <iostream>
 #include <fstream>
@@ -43,15 +43,15 @@ namespace nsol
       int parent;
     } TSwcLine;
 
-    void writeFile(const char *fileName, NeuronPtr neuron)
+    void writeFile(const char *fileName, NeuronMorphologyPtr morphology)
     {
-      return this->writeFile(std::string(fileName), neuron);
+      return this->writeFile(std::string(fileName), morphology);
     }
 
-    void writeFile(const std::string fileName, NeuronPtr neuron)
+    void writeFile(const std::string fileName, NeuronMorphologyPtr morphology)
     {
 
-      if (!neuron)
+      if (!morphology)
         std::cerr << "Error neuron " << std::endl;
 
       std::ofstream outFile;
@@ -67,8 +67,8 @@ namespace nsol
       outFile << "#File exporter" << std::endl;
 
       //Writing soma
-      for (Vector<Node *>::iterator it = neuron->soma().nodes().begin();
-      it != neuron->soma().nodes().end(); ++it)
+      for (Vector<NodePtr>::iterator it = morphology->soma().nodes().begin();
+      it != morphology->soma().nodes().end(); ++it)
       {
 
 
@@ -91,7 +91,7 @@ namespace nsol
         parent = (*it)->id();
       }
 
-      Neurites neurites = neuron->neurites();
+      Neurites neurites = morphology->neurites();
       unsigned int type;
 
       //Writing neurites
