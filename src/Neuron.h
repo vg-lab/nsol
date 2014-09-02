@@ -33,22 +33,24 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-    Neuron(bool createMorphology = true)
+    Neuron(bool createMorphology = true) :
+      _transforM(Matrix4_4f::IDENTITY)
     {
       _morphology = nullptr;
 //      _column = nullptr;
       _miniColumn = nullptr;
       _layer = 0;
       _gid = 0;
-      _transforM.zero();
-
 
       if (createMorphology)
     	  _morphology = new NeuronMorphology;
     }
 
-    Neuron(const NeuronMorphologyPtr neuronMorphology, const unsigned short layer, const unsigned int gid,
-    	   const Matrix4_4f transForm, /*const ColumnPtr column,*/ const MiniColumnPtr miniColumn)
+    Neuron(const NeuronMorphologyPtr neuronMorphology,
+           const unsigned short layer = 0,
+           const unsigned int gid = 0,
+           const Matrix4_4f transForm = Matrix4_4f::IDENTITY,
+           const MiniColumnPtr miniColumn = nullptr)
     {
       _morphology = neuronMorphology;
       _layer = layer;

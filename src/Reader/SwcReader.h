@@ -44,6 +44,16 @@ namespace nsol
       std::vector<unsigned int> childs;
     } TSwcLine;
 
+    NeuronPtr readNeuron(const char *fileName)
+    {
+      return this->readNeuron(std::string(fileName));
+    }
+
+    NeuronPtr readNeuron(const std::string fileName)
+    {
+      return new Neuron(this->readFile(std::string(fileName)));
+    }
+
     NeuronMorphologyPtr readFile(const char *fileName)
     {
       return this->readFile(std::string(fileName));
