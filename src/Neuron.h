@@ -36,22 +36,25 @@ namespace nsol
     Neuron(bool createMorphology = true)
     {
       _morphology = nullptr;
-      _column = nullptr;
+//      _column = nullptr;
       _miniColumn = nullptr;
       _layer = 0;
+      _gid = 0;
       _transforM.zero();
+
 
       if (createMorphology)
     	  _morphology = new NeuronMorphology;
     }
 
-    Neuron(const NeuronMorphologyPtr neuronMorphology, const unsigned short layer,
-    	   const Matrix4_4f transForm, const ColumnPtr column, const MiniColumnPtr miniColumn)
+    Neuron(const NeuronMorphologyPtr neuronMorphology, const unsigned short layer, const unsigned int gid,
+    	   const Matrix4_4f transForm, /*const ColumnPtr column,*/ const MiniColumnPtr miniColumn)
     {
       _morphology = neuronMorphology;
       _layer = layer;
       _transforM = transForm;
-      _column = column;
+//      _column = column;
+      _gid = gid;
       _miniColumn = miniColumn;
     }
 
@@ -317,7 +320,7 @@ namespace nsol
     }
 
     /**
-     * Method to get the layer of the neuron.
+     * Method to get-set the layer of the neuron.
      * @return layer
      */
     unsigned short & layer(void)
@@ -326,22 +329,23 @@ namespace nsol
     }
 
     /**
-     * Method to set the layer of the neuron.
+     * Method to get-set the layer of the neuron.
+     * @return layer
      */
-    void layer(const unsigned short layer)
+    unsigned int & gid(void)
     {
-    	_layer = layer;
+    	return _gid;
     }
 
-    void column(ColumnPtr colummn)
-    {
-      _column = colummn;
-    }
-
-    ColumnPtr &column(void)
-    {
-      return _column;
-    }
+//    void column(ColumnPtr colummn)
+//    {
+//      _column = colummn;
+//    }
+//
+//    ColumnPtr &column(void)
+//    {
+//      return _column;
+//    }
 
     void miniColumn(MiniColumnPtr miniColumn)
     {
@@ -361,10 +365,11 @@ namespace nsol
     /* Neurites _neurites; */
 
     NeuronMorphologyPtr _morphology;	//Morphology
-    ColumnPtr _column;					//Column
+//    ColumnPtr _column;					//Column
     MiniColumnPtr _miniColumn;			//Minicolumn
     Matrix4_4f _transforM;				//Matrix of global transformation
     unsigned short _layer;				//Layer
+    unsigned int _gid;					//Neuron id
 
   };
 

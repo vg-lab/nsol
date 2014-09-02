@@ -23,7 +23,7 @@ namespace nsol {
 
   public:
 
-    //! Pssible types of neurite
+    //! Possible types of neurite
     typedef enum {DENDRITE = 0, AXON} TNeuriteType;
 
     //! Default constructor
