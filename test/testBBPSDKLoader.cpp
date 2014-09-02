@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 				  if ((inFile.rdstate() & std::ifstream::failbit) != 0)
 				  {
 					std::cerr << "Error opening file " << entry->d_name << std::endl;
+					inFile.close();
 
 					continue;
 				  }
@@ -147,15 +148,6 @@ int main(int argc, char *argv[])
 					  NeuronPtr n = new Neuron(false);		//New neuron
 					  nVector.push_back(n);
 
-					  //Column control
-					  if (columnMap.find(csvLine.column) != columnMap.end())	//Column exist
-						  n->column(columnMap[csvLine.column]);
-					  else														//Column not exist
-					  {
-						  columnMap[csvLine.column] = new Column(csvLine.column);
-						  n->column(columnMap[csvLine.column]);
-					  }
-
 					  //MiniColumn control
 					  if (miniColumnMap.find(csvLine.miniColumn) != miniColumnMap.end())	//MiniColumn exist
 						  n->miniColumn(miniColumnMap[csvLine.miniColumn]);
@@ -163,6 +155,15 @@ int main(int argc, char *argv[])
 					  {
 						  miniColumnMap[csvLine.miniColumn] = new MiniColumn(csvLine.miniColumn);
 						  n->miniColumn(miniColumnMap[csvLine.miniColumn]);
+					  }
+
+					  //Column control
+					  if (columnMap.find(csvLine.column) != columnMap.end())	//Column exist
+						  n->miniColumn()->column(columnMap[csvLine.column]);
+					  else														//Column not exist
+					  {
+						  columnMap[csvLine.column] = new Column(csvLine.column);
+						  n->miniColumn()->column(columnMap[csvLine.column]);
 					  }
 
 					  miniColumnMap[csvLine.miniColumn]->addNeuron(n);									//Add neuron to minicolumn
@@ -174,8 +175,9 @@ int main(int argc, char *argv[])
 						  cout << "Morphology file previously loaded" << endl;
 
 						  n->morphology(nMorphoMap.find(csvLine.morphoLabel)->second);
-						  n->layer(csvLine.layer);
+						  n->layer() = csvLine.layer;
 						  n->transforM(csvLine.globalTrans);
+						  n->gid() = csvLine.id;
 					  }
 					  else
 					  {
@@ -185,17 +187,17 @@ int main(int argc, char *argv[])
 
 						  NeuronMorphologyPtr m = r.readFile(dir+csvLine.morphoLabel+".swc");
 
-						  nMorphoMap[csvLine.morphoLabel] = m;
-
-						  n->morphology(m);
-						  n->layer(csvLine.layer);
-						  n->transforM(csvLine.globalTrans);
-
 						  if (!m)
 						  {
 							  cout << "\nError opening morphology file " << entry->d_name << endl;
 							  continue;
 						  }
+
+						  nMorphoMap[csvLine.morphoLabel] = m;
+						  n->morphology(m);
+						  n->layer() = csvLine.layer;
+						  n->transforM(csvLine.globalTrans);
+						  n->gid() = csvLine.id;
 
 						  Neurites neurites = m->neurites();
 
@@ -246,7 +248,7 @@ int main(int argc, char *argv[])
 
 //	  for (std::vector<NeuronPtr>::iterator it =
 //    		  nVector.begin(); it != nVector.end(); it++)
-//    	  cout << (*it)->column()->id() << " " <<  (*it)->miniColumn()->id() << " " << (*it)->layer() << " " << (*it)->transforM()[0][0] <<  endl;
+//    	  cout << (*it)->miniColumn()->column()->id() << " " <<  (*it)->miniColumn()->id() << " " << (*it)->layer() << " " << (*it)->transforM()[0][0] << " "  << (*it)->miniColumn()->column()->numberOfMiniColumns() <<  endl;
 //
 //	  vector<NeuronPtr>::iterator it1 = nVector.end()-1;
 //

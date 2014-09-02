@@ -18,6 +18,13 @@ namespace nsol {
   public:
 	  MiniColumn(const unsigned short id = 0)
 	  {
+		  _column = nullptr;
+		  _id = id;
+	  }
+
+	  MiniColumn(const ColumnPtr column, const unsigned short id = 0)
+	  {
+		  _column = column;
 		  _id = id;
 	  }
 
@@ -57,25 +64,26 @@ namespace nsol {
 		  return _neurons;
 	  }
 
-	/**
-	 * Method to set the mini column id.
-	 */
-	  void id(const unsigned int id)
-	  {
-		  _id = id;
-	  }
+	void column(ColumnPtr colummn)
+	{
+	  _column = colummn;
+	}
 
+	ColumnPtr &column(void)
+	{
+	  return _column;
+	}
 
 	/**
-	 * Method to get mini column id.
-	 * @return the mini column id
+	 * Method to get-set mini column id.
+	 * @return refenrence to mini column id
 	 */
 	  unsigned short &id(void)
 	  {
 		  return _id;
 	  }
 
-	  unsigned int size(void)
+	  const unsigned int numberOfNeurons(void) const
 	  {
 		  return _neurons.size();
 	  }
@@ -83,6 +91,7 @@ namespace nsol {
   protected:
 
 	unsigned short _id;
+	ColumnPtr _column;					//Column
     Neurons _neurons;
     
 

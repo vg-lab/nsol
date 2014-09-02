@@ -44,21 +44,13 @@ namespace nsol {
 	 */
 	  MiniColumnPtr addMiniColumn(unsigned short id = 0)
 	  {
-		  _miniColumns.push_back(new MiniColumn(id));
+		  _miniColumns.push_back(new MiniColumn(this, id));
 		  return _miniColumns.back();
 	  }
 
 	/**
-	 * Method to set the column id.
-	 */
-	  void id(const unsigned short id)
-	  {
-		  _id = id;
-	  }
-
-	/**
-	 * Method to get the column id.
-	 * @return column id
+	 * Method to get-set the column id.
+	 * @return reference to column id
 	 */
 	  unsigned short &id(void)
 	  {
@@ -72,6 +64,15 @@ namespace nsol {
 	  MiniColumns &miniColumns()
 	  {
 		  return _miniColumns;
+	  }
+
+		/**
+		 * Method to get minicolumns.
+		 * @return minicolumns of the column
+		 */
+	  const unsigned int numberOfMiniColumns(void) const
+	  {
+		  return _miniColumns.size();
 	  }
  
   protected:
