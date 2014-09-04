@@ -1,8 +1,8 @@
 
 
-add_executable(test1 test1.cpp)
+#add_executable(test1 test1.cpp)
 
-add_executable(testSwcReader testSwcReader.cpp)
+#add_executable(testSwcReader testSwcReader.cpp)
 
 
 set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
