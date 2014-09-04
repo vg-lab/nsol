@@ -18,6 +18,7 @@ if (BBPSDK_FOUND)
   INCLUDE_DIRECTORIES(${BBPSDK_INCLUDE_DIRS})
   add_executable(testBBPSDKLoader testBBPSDKLoader.cpp)
   TARGET_LINK_LIBRARIES(testBBPSDKLoader ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
+  add_definitions(-DWITH_BBPSDK)
 
 endif()
 

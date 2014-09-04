@@ -5,6 +5,8 @@
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
+#ifdef WITH_BBPSDK
+
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
 
@@ -527,3 +529,4 @@ protected:
 }
 
 #endif
+#endif // WITH_BBPSDK
