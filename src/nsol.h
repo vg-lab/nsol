@@ -32,6 +32,7 @@
 
 // Reader
 #include <Reader/SwcReader.h>
+#include <Reader/BBPSDKReader.h>
 // Writer
 #include <Writer/SwcWriter.h>
 

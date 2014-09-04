@@ -59,8 +59,7 @@ namespace nsol
       float radius = maxRadius();
 
       //TODO: use real volume soma formula, now use sphere volume formula
-      //4pi/3 = 4,188790205
-      return 4.188790205 * radius * radius * radius;
+      return M_4PI_3 * radius * radius * radius;
     }
 
     float surface(void)
@@ -68,8 +67,7 @@ namespace nsol
       float radius = maxRadius();
 
       //TODO: use real soma surface, now use sphere surface formula
-      //4pi = 12.5663706144
-      return 12.5663706144 * radius * radius;
+      return M_4PI * radius * radius;
     }
 
   protected:

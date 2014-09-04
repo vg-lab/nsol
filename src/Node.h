@@ -18,7 +18,7 @@ namespace nsol
 
   public:
 
-    Node(const Vec3f point, const int id, const float radius = 0.0f)
+    Node(const Vec3f &point, const int &id, const float &radius = 0.0f)
     {
       _point = point;
       _radius = radius;

@@ -37,7 +37,6 @@ namespace nsol
       _transforM(Matrix4_4f::IDENTITY)
     {
       _morphology = nullptr;
-//      _column = nullptr;
       _miniColumn = nullptr;
       _layer = 0;
       _gid = 0;
@@ -55,7 +54,6 @@ namespace nsol
       _morphology = neuronMorphology;
       _layer = layer;
       _transforM = transForm;
-//      _column = column;
       _gid = gid;
       _miniColumn = miniColumn;
     }
@@ -307,7 +305,7 @@ namespace nsol
     /**
      * Method to set the transformation matrix of the neuron.
      */
-    void transforM(Matrix4_4f transforM)
+    void transforM(const Matrix4_4f &transforM)
     {
     	_transforM = transforM;
     }
@@ -316,7 +314,7 @@ namespace nsol
      * Method to get the transformation matrix of the neuron.
      * @return transformation matrix
      */
-    Matrix4_4f & transforM(void)
+    const Matrix4_4f & transforM(void) const
     {
     	return _transforM;
     }
@@ -339,16 +337,6 @@ namespace nsol
     	return _gid;
     }
 
-//    void column(ColumnPtr colummn)
-//    {
-//      _column = colummn;
-//    }
-//
-//    ColumnPtr &column(void)
-//    {
-//      return _column;
-//    }
-
     void miniColumn(MiniColumnPtr miniColumn)
     {
     	_miniColumn = miniColumn;
@@ -367,7 +355,6 @@ namespace nsol
     /* Neurites _neurites; */
 
     NeuronMorphologyPtr _morphology;	//Morphology
-//    ColumnPtr _column;					//Column
     MiniColumnPtr _miniColumn;			//Minicolumn
     Matrix4_4f _transforM;				//Matrix of global transformation
     unsigned short _layer;				//Layer
