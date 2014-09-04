@@ -171,73 +171,73 @@ namespace nsol
       return  _morphology->numAxonBifurcations();
     }
 
-    float volume()
+    float volume() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->volume();
     }
 
-    float neuritesVolume()
+    float neuritesVolume() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->neuritesVolume();
     }
 
-    float dendritesVolume()
+    float dendritesVolume() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->dendritesVolume();
     }
 
-    float axonVolume()
+    float axonVolume() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->axonVolume();
     }
 
-    float surface()
+    float surface() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->surface();
     }
 
-    float neuritesSurface()
+    float neuritesSurface() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->neuritesSurface();
     }
 
-    float dendritesSurface()
+    float dendritesSurface() const
     { 
       if (!this->hasMorphology()) return 0; 
       return  _morphology->dendritesSurface();
     }
 
-    float axonSurface()
+    float axonSurface() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->axonSurface();
     }
 
-    float length()
+    float length() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->length();
     }
 
-    float neuritesLength()
+    float neuritesLength() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->neuritesLength();
     }
 
-    float dendritesLength()
+    float dendritesLength() const
     {
       if (!this->hasMorphology()) return 0; 
       return  _morphology->dendritesLength();
     }
 
-    float axonLength()
+    float axonLength() const
     {    
       if (!this->hasMorphology()) return 0; 
       return  _morphology->axonLength();

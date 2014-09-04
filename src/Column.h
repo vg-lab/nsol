@@ -75,7 +75,44 @@ namespace nsol {
 	  {
 		  return _miniColumns.size();
 	  }
- 
+
+	  float meanSomaVolume() const
+	  {
+	    double meanSomaVolume = 0;
+	    for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+	        mcIt != _miniColumns.end(); mcIt++)
+	      meanSomaVolume += (*mcIt)->meanSomaVolume();
+	    return float(meanSomaVolume / _miniColumns.size());
+	  }
+
+    float meanSomaSurface() const
+    {
+      double meanSomaSurface = 0;
+      for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+          mcIt != _miniColumns.end(); mcIt++)
+        meanSomaSurface += (*mcIt)->meanSomaSurface();
+      return float(meanSomaSurface / _miniColumns.size());
+    }
+
+    float meanDendriteVolume() const
+    {
+      double meanDendVolume = 0;
+      for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+          mcIt != _miniColumns.end(); mcIt++)
+        meanDendVolume += (*mcIt)->meanDendriteVolume();
+      return float(meanDendVolume / _miniColumns.size());
+    }
+
+    float meanDendriteSurface() const
+    {
+      double meanDendSurface = 0;
+      for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+          mcIt != _miniColumns.end(); mcIt++)
+        meanDendSurface += (*mcIt)->meanDendriteSurface();
+      return float(meanDendSurface / _miniColumns.size());
+    }
+
+
   protected:
 
 	  unsigned short _id;
