@@ -30,11 +30,11 @@ namespace nsol {
 
 	  ~MiniColumn()
 	  {
-	      for (Vector<Neuron *>::iterator it = _neurons.begin();
-	      it != _neurons.end(); ++it)
-	        delete *it;
-
-	      _neurons.clear();
+//	      for (Vector<Neuron *>::iterator it = _neurons.begin();
+//	      it != _neurons.end(); ++it)
+//	        delete *it;
+//
+//	      _neurons.clear();
 	  }
 
 	/**
@@ -87,6 +87,44 @@ namespace nsol {
 	  {
 		  return _neurons.size();
 	  }
+
+
+    float meanSomaVolume() const
+    {
+      double meanSomaVolume = 0;
+      for (Neurons::const_iterator nIt = _neurons.begin();
+          nIt != _neurons.end(); nIt++)
+        meanSomaVolume += (*nIt)->soma().volume();
+      return float(meanSomaVolume / _neurons.size());
+    }
+
+    float meanSomaSurface() const
+    {
+      double meanSomaSurface = 0;
+      for (Neurons::const_iterator nIt = _neurons.begin();
+          nIt != _neurons.end(); nIt++)
+        meanSomaSurface += (*nIt)->soma().surface ();
+      return float(meanSomaSurface / _neurons.size());
+    }
+
+    float meanDendriteVolume() const
+    {
+      double meanDendVolume = 0;
+      for (Neurons::const_iterator nIt = _neurons.begin();
+          nIt != _neurons.end(); nIt++)
+        meanDendVolume += (*nIt)->dendritesVolume();
+      return float(meanDendVolume / _neurons.size());
+    }
+
+    float meanDendriteSurface() const
+    {
+      double meanDendSurface = 0;
+      for (Neurons::const_iterator nIt = _neurons.begin();
+          nIt != _neurons.end(); nIt++)
+        meanDendSurface += (*nIt)->dendritesSurface();
+      return float(meanDendSurface / _neurons.size());
+    }
+
 
   protected:
 
