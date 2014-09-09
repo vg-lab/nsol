@@ -10,104 +10,108 @@
 
 #include <Container/Nodes.h>
 
-namespace nsol
-{
+namespace nsol {
 
-  class Soma
-  {
+class Soma {
 
-  public:
-    Soma()
-    {
-    }
+public:
+	Soma() :
+		_maxRadius(0.0)
+	{
+	}
 
-    ~Soma()
-    {
-      for (Vector<Node *>::iterator it = _nodes.begin();
-      it != _nodes.end(); ++it)
-        delete *it;
+	~Soma()
+	{
+		for (Vector<Node *>::iterator it = _nodes.begin();
+		it != _nodes.end(); ++it)
+		delete *it;
 
-      _nodes.clear();
-    }
+		_nodes.clear();
+	}
 
-    Vec3f & center(void)
-    {
-      return _center;
-    }
+	Vec3f & center(void)
+	{
+		return _center;
+	}
 
-    Nodes & nodes(void)
-    {
-      return _nodes;
-    }
+	Nodes & nodes(void)
+	{
+		return _nodes;
+	}
 
-    void addNode(NodePtr node)
-    {
-      _nodes.push_back(node);
+    /**
+     * Method to get de max radius of the soma
+     * @return max radius of the soma
+     */
+	const float & maxRadius(void) const
+	{
+		return _maxRadius;
+	}
 
-      recalculateCenter();
-    }
+	void addNode(NodePtr node)
+	{
+		_nodes.push_back(node);
 
-    void addNode(Vec3f & xyz, float & radius)
-    {
-      this->addNode(new Node(xyz, radius));
+		recalculateCenter();
+		recalculateMaxRadius();
+	}
 
-      recalculateCenter();
-    }
+	void addNode(Vec3f & xyz, float & radius)
+	{
+		this->addNode(new Node(xyz, radius));
 
-    float volume(void)
-    {
-      float radius = maxRadius();
+		recalculateCenter();
+		recalculateMaxRadius();
+	}
 
-      //TODO: use real volume soma formula, now use sphere volume formula
-      return M_4PI_3 * radius * radius * radius;
-    }
+	float volume(void)
+	{
+		//TODO: use real volume soma formula, now use sphere volume formula
+		return M_4PI_3 * _maxRadius * _maxRadius * _maxRadius;
+	}
 
-    float surface(void)
-    {
-      float radius = maxRadius();
+	float surface(void)
+	{
+		//TODO: use real soma surface, now use sphere surface formula
+		return M_4PI * _maxRadius * _maxRadius;
+	}
 
-      //TODO: use real soma surface, now use sphere surface formula
-      return M_4PI * radius * radius;
-    }
+protected:
 
-  protected:
+	Vec3f _center;
+	Nodes _nodes;
+	float _maxRadius;
 
-    Vec3f _center;
-    Nodes _nodes;
+private:
 
-  private:
+	void recalculateCenter(void)
+	{
+		Vec3f tmp = Vec3f(0,0,0);
 
-    void recalculateCenter(void)
-    {
-      Vec3f tmp = Vec3f(0,0,0);
+		//Recalculated soma center node
+		for (unsigned int it = 0; it < _nodes.size(); ++it)
+		tmp += _nodes[it]->point();
 
-      //Recalculated soma center node
-      for (unsigned int it = 0; it < _nodes.size(); ++it)
-        tmp += _nodes[it]->point();
+		_center = tmp /_nodes.size();
+	}
 
-     _center = tmp /_nodes.size();
-    }
+	void recalculateMaxRadius(void)
+	{
+		float radius = _nodes[0]->radius(), mod = 0.0f;
+		Vec3f tmp = Vec3f(0,0,0);
 
-    float maxRadius(void)
-    {
-      float radius = _nodes[0]->radius(), mod = 0.0f;
-      Vec3f tmp = Vec3f(0,0,0);
+		for (unsigned int it = 1; it < _nodes.size(); ++it)
+		{
+			tmp = _center - _nodes[it]->point();
 
-      for (unsigned int it = 1; it < _nodes.size(); ++it)
-      {
-        tmp = _center - _nodes[it]->point();
+			mod = (float)sqrt((double) (tmp[0] * tmp[0] + tmp[1] * tmp[1]
+							+ tmp[2] * tmp[2]));
 
-        mod = (float)sqrt((double) (tmp[0] * tmp[0] + tmp[1] * tmp[1]
-                          + tmp[2] * tmp[2]));
-
-        if (mod > radius)
-          radius = mod;
-      }
-
-      return radius;
-    }
-
-  };
+			if (mod > radius)
+				_maxRadius = mod;
+		}
+	}
+};
 
 }
 

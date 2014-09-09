@@ -30,6 +30,14 @@ int main(int argc, char *argv[])
 			cout << *it << endl;
 
 
+		NeuritePtr n = neuron->morphology()->neurites()[0];
+		cout << "soma center: " << neuron->transforM() *
+				Vec4f(neuron->morphology()->soma().center(),1)   << std::endl;
+		cout << "soma first point: " << neuron->morphology()->soma().nodes()[0]->point() << std::endl;
+		cout << "first segment point: " << n->firstSection()->_firstSegment->begin()->point() << std::endl;
+		cout << "Soma radius: " << neuron->morphology()->soma().maxRadius() << std::endl;
+		cout << "NumBranchs: " << neuron->numNeuriteBranches() << std::endl;
+		cout << "NumBifurcation: " << neuron->numNeuriteBifurcations() << std::endl;
 
 		return 0;
 	}

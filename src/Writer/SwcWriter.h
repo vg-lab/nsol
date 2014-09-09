@@ -70,8 +70,6 @@ namespace nsol
       for (Vector<NodePtr>::iterator it = morphology->soma().nodes().begin();
       it != morphology->soma().nodes().end(); ++it)
       {
-
-
         outFile << " "
                 << (*it)->id()
                 << " "
@@ -113,31 +111,22 @@ namespace nsol
         std::stack<SectionPtr> sPS;
         sPS.push(fSection);
 
+        std::map<unsigned int, NodePtr> nodePtrMap;
+        std::map<unsigned int, int> nodeParentId;
+
         while (!sPS.empty())
         {
           SectionPtr lS = sPS.top();
           sPS.pop();
 
           SegmentPtr segment = lS->firstSegment();
+
           parent = segment->begin()->id();
           while(segment)
           {
 
-            outFile << " "
-                    << segment->end()->id()
-                    << " "
-                    << type
-                    << " "
-                    << segment->end()->point()[0]
-                    << " "
-                    << segment->end()->point()[1]
-                    << " "
-                    << segment->end()->point()[2]
-                    << " "
-                    << segment->end()->radius()
-                    << " "
-                    << parent
-                    << std::endl;
+        	  nodePtrMap[segment->end()->id()] = segment->end();
+        	  nodeParentId[segment->end()->id()] = parent;
 
             parent = segment->end()->id();
             segment = segment->next();
@@ -147,9 +136,32 @@ namespace nsol
             for (unsigned int i = 0; i < lS->childs().size(); ++i)
               sPS.push(lS->childs()[i]);
         }
+
+        for (std::map<unsigned int, NodePtr>::iterator it = nodePtrMap.begin(); it != nodePtrMap.end(); it++)
+        {
+
+          outFile << " "
+                  << it->second->id()
+                  << " "
+                  << type
+                  << " "
+                  << it->second->point()[0]
+                  << " "
+                  << it->second->point()[1]
+                  << " "
+                  << it->second->point()[2]
+                  << " "
+                  << it->second->radius()
+                  << " "
+                  << nodeParentId[it->second->id()]
+                  << std::endl;
+
+          parent = nodeParentId[it->second->id()];
+        }
+
       }
 
-      outFile.close();
+     outFile.close();
 
     }
   };
