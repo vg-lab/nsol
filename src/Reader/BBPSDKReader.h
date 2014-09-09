@@ -22,7 +22,6 @@
 #include <Dendrite.h>
 #include <NeuronMorphology.h>
 #include <BBP/bbp.h>
-#include <Writer/SwcWriter.h>
 
 using namespace std;
 
@@ -170,9 +169,9 @@ private:
 				//Writing soma
 				for (bbp::Soma::const_iterator it = soma.begin();
 						it != soma.end(); ++it) {
-					NodePtr node = new Node(Vec3f((*it)[0], (*it)[1], (*it)[2]),
-							id, soma.mean_radius());
-					m->soma().addNode(node);
+
+					m->soma().addNode(new Node(Vec3f((*it)[0], (*it)[1], (*it)[2]),
+							id, soma.mean_radius()));
 
 					id++;
 				}
@@ -195,18 +194,20 @@ private:
 						else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
 							d = m->addDendrite(Dendrite::APICAL);
 
+
 						const bbp::Section *section = &(*cit);
 						std::stack<const bbp::Section *> sPS;
 						sPS.push(section);
 						std::stack<SectionPtr> parents;
 						parents.push(nullptr);
 						bool first = true;
+						NodePtr nPre = nullptr;
+						std::map<unsigned int, NodePtr> nodePtrMap;
 
 						while (!sPS.empty())
 						{
 							const bbp::Section *lS = sPS.top();
 							sPS.pop();
-
 							SectionPtr parentSection = parents.top();
 							parents.pop();
 
@@ -228,21 +229,20 @@ private:
 
 							s->parent(parentSection);
 							SegmentPtr segment = s->addSegment();
+							segment->parentSection(s);
 
-							const bbp::Segments &segments = lS->segments();
-							bbp::Segments::const_iterator it = segments.begin();
-							//Add first segment
+							const bbp::Cross_Sections &cross_Sections = lS->cross_sections();
+							bbp::Cross_Sections::const_iterator it = cross_Sections.begin();
+
 							if (first)
 							{
+								//TODO: select correct initial soma point
 								segment->begin(
 										new Node(
-												Vec3f(it->begin().center()[0],
-														it->begin().center()[1],
-														it->begin().center()[2]),
-												id, it->begin().radius()));
-
-								++id;
-
+												Vec3f(0,
+														0,
+														0),
+												1, 0.0));
 								first = false;
 							}
 							else
@@ -250,52 +250,56 @@ private:
 
 							segment->end(
 									new Node(
-											Vec3f(it->end().center()[0],
-													it->end().center()[1],
-													it->end().center()[2]), id,
-											it->end().radius()));
+											Vec3f(it->center()[0],
+												it->center()[1],
+												it->center()[2]),
+										id, it->radius()));
 
-							++id;
+							nodePtrMap[id] = segment->end();
 
-					        if (parentSection)
-					          parentSection->addChild(s);
+							id++;
 
-							NodePtr nPre = segment->end();
+							if (parentSection)
+								parentSection->addChild(s);
+
+							nPre = segment->end();
+
 							it++;
-
-							//While same section add more segments
-							for (bbp::Segments::const_iterator itL = it;
-									itL != segments.end(); ++itL) {
-								segment = s->addSegment();
+							for (bbp::Cross_Sections::const_iterator itL =
+									it; itL != cross_Sections.end();
+									++itL)
+							{
+								SegmentPtr segment = s->addSegment();
 								segment->parentSection(s);
-
 								segment->begin(nPre);
+
 								segment->end(
 										new Node(
-												Vec3f(itL->end().center()[0],
-														itL->end().center()[1],
-														itL->end().center()[2]),
-												id, itL->end().radius()));
+												Vec3f(itL->center()[0],
+													itL->center()[1],
+													itL->center()[2]),
+											id, itL->radius()));
 
-								++id;
+								nodePtrMap[id] = segment->end();
+
+								id++;
 
 								nPre = segment->end();
-
 							}
 
-							//Childs?
 							for (bbp::Sections::const_iterator child =
 									lS->children().begin();
-									child != lS->children().end(); ++child) {
+									child != lS->children().end(); ++child)
+							{
 								if (d) {
-//									//Plus new branch
+									//Plus new branch
 //									d->addBranchCount(lS->children().size());
-									//Plus new bifurcation
+//									//Plus new bifurcation
 //									d->addBifurcationCount(1);
 								} else {
-//									//Plus new branch
+									//Plus new branch
 //									n->addBranchCount(lS->children().size());
-									//Plus new bifurcation
+//									//Plus new bifurcation
 //									n->addBifurcationCount(1);
 								}
 
@@ -305,11 +309,8 @@ private:
 						}
 					}
 				}
-
-				SwcWriter w;
-
-				w.writeFile(it->morphology().label(), m);
 			}
+return columnMap;
 		}
 
 		return columnMap;

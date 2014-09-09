@@ -14,208 +14,225 @@
 
 namespace nsol {
 
-  class Dendrite;
-  class Axon;
+class Dendrite;
+class Axon;
 
-  class Neurite {
+class Neurite {
 
-    friend class SwcReader;
+	friend class SwcReader;
+	friend class BBPSDKreader;
 
-  public:
+public:
 
-    //! Possible types of neurite
-    typedef enum {DENDRITE = 0, AXON} TNeuriteType;
+	//! Possible types of neurite
+	typedef enum {
+		DENDRITE = 0, AXON
+	} TNeuriteType;
 
-    //! Default constructor
-    Neurite(TNeuriteType neuriteType = DENDRITE)
-    {
-      _neuriteType = neuriteType;
-      _firstSection = NULL;
-      _morphology = NULL;
-      _numBranches = 0;
-      _numBifurcations = 0;
-    };
+	//! Default constructor
+	Neurite(TNeuriteType neuriteType = DENDRITE) :
+		_neuriteType(neuriteType),
+		_firstSection(nullptr),
+		_morphology(nullptr),
+		_numBranches(0),
+		_numBifurcations(0)
+	{
+	}
+	;
 
-    virtual ~Neurite()
-    {
-      if (_firstSection)
-      {
-        std::stack<SectionPtr> sPS;
-        sPS.push(_firstSection);
+	virtual ~Neurite() {
+		if (_firstSection) {
+			std::stack<SectionPtr> sPS;
+			sPS.push(_firstSection);
 
-        while (!sPS.empty())
-        {
-          SectionPtr lS = sPS.top();
-          sPS.pop();
+			while (!sPS.empty()) {
+				SectionPtr lS = sPS.top();
+				sPS.pop();
 
-          if (lS->childs().size() > 0)
-          {
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
-          }
+				if (lS->childs().size() > 0) {
+					for (unsigned int i = 0; i < lS->childs().size(); ++i)
+						sPS.push(lS->childs()[i]);
+				}
 
-          delete lS;
-        }
-      }
-    }
+				delete lS;
+			}
+		}
+	}
 
-    //! Get the type of neurite
-    TNeuriteType & neuriteType() {
-      return _neuriteType;
-    };
-
-    NeuronMorphologyPtr morphology() const {
-      return  _morphology;
-    }
-
-    NeuronMorphologyPtr morphology(NeuronMorphologyPtr morphology)  {
-      return  _morphology = morphology;
-    }
-
-    bool hasMorphology() {
-      return _morphology;
-    }
-
-    /* SectionPtr addSection() { */
-    /*   _sections.push_back(new Section); */
-    /*   return _sections.back(); */
-    /* }; */
-
-    SectionPtr firstSection()
-    {
-      return _firstSection;
-    }
-
-    void firstSection(SectionPtr section)
-    {
-      _firstSection = section;
-    }
-
-    /* Sections sections() { */
-    /*   return _sections; */
-    /* } */
+	//! Get the type of neurite
+	TNeuriteType & neuriteType() {
+		return _neuriteType;
+	}
 
 
-    unsigned int numBranches ()
-    {
-      //Plus 1 branch for the first soma branch of each neurite
-    	return _numBranches + 1;
-    }
+	NeuronMorphologyPtr morphology() const {
+		return _morphology;
+	}
 
-    unsigned int numBifurcations ()
-    {
-      return _numBifurcations;
-    }
+	NeuronMorphologyPtr morphology(NeuronMorphologyPtr morphology) {
+		return _morphology = morphology;
+	}
 
-    float volume()
-    {
-      float volume = 0.0f;
+	bool hasMorphology() {
+		return _morphology;
+	}
 
-      if (_firstSection)
-      {
-        std::stack<SectionPtr> sPS;
-        sPS.push(_firstSection);
+	/* SectionPtr addSection() { */
+	/*   _sections.push_back(new Section); */
+	/*   return _sections.back(); */
+	/* }; */
 
-        while (!sPS.empty())
-        {
-          SectionPtr lS = sPS.top();
-          sPS.pop();
+	SectionPtr firstSection() {
+		return _firstSection;
+	}
 
-          volume += lS->volume();
+	void firstSection(SectionPtr section) {
+		_firstSection = section;
+	}
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
-        }
-      }
+	/* Sections sections() { */
+	/*   return _sections; */
+	/* } */
 
-      return volume;
-    }
+	void calculaBranchBifur(void)
+	{
+		unsigned int numBranchs = 0;
+		unsigned int numBifur = 0;
+		std::stack<SectionPtr> sPS;
+		sPS.push(_firstSection);
 
-    float surface()
-    {
-      float surface = 0.0f;
+		while (!sPS.empty())
+		{
+			SectionPtr lS = sPS.top();
+			sPS.pop();
+			for (Sections::iterator child = lS->childs().begin();
+				 child != lS->childs().end(); child++)
+			{
+				numBranchs++;
+				numBifur += lS->childs().size();
 
-      if (_firstSection)
-      {
-        std::stack<SectionPtr> sPS;
-        sPS.push(_firstSection);
+				sPS.push(*child);
+			}
+		}
 
-        while (!sPS.empty())
-        {
-          SectionPtr lS = sPS.top();
-          sPS.pop();
+		_numBranches = numBranchs;
+		_numBifurcations = numBifur;
+	}
 
-          surface += lS->surface();
+	unsigned int numBranches()
+	{
+		calculaBranchBifur();
+//		//Plus 1 branch for the first soma branch of each neurite
+		return _numBranches;// + 1;
+	}
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
-        }
-      }
+	unsigned int numBifurcations()
+	{
+		calculaBranchBifur();
+		return _numBifurcations;
+	}
 
-      return surface;
-    }
+	float volume() {
+		float volume = 0.0f;
 
-    float length()
-    {
-      float length = 0.0f;
+		if (_firstSection) {
+			std::stack<SectionPtr> sPS;
+			sPS.push(_firstSection);
 
-      if (_firstSection)
-      {
-        std::stack<SectionPtr> sPS;
-        sPS.push(_firstSection);
+			while (!sPS.empty()) {
+				SectionPtr lS = sPS.top();
+				sPS.pop();
 
-        while (!sPS.empty())
-        {
-          SectionPtr lS = sPS.top();
-          sPS.pop();
+				volume += lS->volume();
 
-          length += lS->length();
+				if (lS->childs().size() > 0)
+					for (unsigned int i = 0; i < lS->childs().size(); ++i)
+						sPS.push(lS->childs()[i]);
+			}
+		}
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
-        }
-      }
+		return volume;
+	}
 
-      return length;
-    }
+	float surface() {
+		float surface = 0.0f;
 
-    // Casting virtual functions
-    
-    //! Return pointer to Dendrite objetc
-    virtual Dendrite * asDendrite() { return 0; }
+		if (_firstSection) {
+			std::stack<SectionPtr> sPS;
+			sPS.push(_firstSection);
 
-    //! Return pointer to Dendrite objetc
-    virtual Axon * asAxon() { return 0; }
+			while (!sPS.empty()) {
+				SectionPtr lS = sPS.top();
+				sPS.pop();
 
-  protected:
-    
-    void addBifurcationCount (unsigned int numBifurcations)
-    {
-      _numBifurcations += numBifurcations;
-    }
+				surface += lS->surface();
 
-    void addBranchCount (unsigned int numBranches)
-    {
-      _numBranches += numBranches;
-    }
+				if (lS->childs().size() > 0)
+					for (unsigned int i = 0; i < lS->childs().size(); ++i)
+						sPS.push(lS->childs()[i]);
+			}
+		}
 
-    TNeuriteType _neuriteType;
+		return surface;
+	}
 
-    //    Vector <Section> 
-    /* Sections _sections; */
+	float length() {
+		float length = 0.0f;
 
-    SectionPtr _firstSection;
+		if (_firstSection) {
+			std::stack<SectionPtr> sPS;
+			sPS.push(_firstSection);
 
-    NeuronMorphologyPtr _morphology;
-    
-    unsigned int _numBranches;
+			while (!sPS.empty()) {
+				SectionPtr lS = sPS.top();
+				sPS.pop();
 
-    unsigned int _numBifurcations;
-  };
+				length += lS->length();
 
+				if (lS->childs().size() > 0)
+					for (unsigned int i = 0; i < lS->childs().size(); ++i)
+						sPS.push(lS->childs()[i]);
+			}
+		}
+
+		return length;
+	}
+
+	// Casting virtual functions
+
+	//! Return pointer to Dendrite objetc
+	virtual Dendrite * asDendrite() {
+		return 0;
+	}
+
+	//! Return pointer to Dendrite objetc
+	virtual Axon * asAxon() {
+		return 0;
+	}
+
+protected:
+
+	void addBifurcationCount(unsigned int numBifurcations) {
+		_numBifurcations += numBifurcations;
+	}
+
+	void addBranchCount(unsigned int numBranches) {
+		_numBranches += numBranches;
+	}
+
+	TNeuriteType _neuriteType;
+
+	//    Vector <Section>
+	/* Sections _sections; */
+
+	SectionPtr _firstSection;
+
+	NeuronMorphologyPtr _morphology;
+
+	unsigned int _numBranches;
+
+	unsigned int _numBifurcations;
+};
 
 }
 

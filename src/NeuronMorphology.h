@@ -369,7 +369,6 @@ namespace nsol
   protected:
 
     Soma _soma;
-    //    Vector<Neurite *> _neurites;
     Neurites _neurites;
 
   };
