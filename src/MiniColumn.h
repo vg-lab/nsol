@@ -131,7 +131,7 @@ public:
 	 * @return the max soma volume
 	 */
 	float maxSomaVolume() const {
-		double maxSomaVolume = 0;
+		double maxSomaVolume = 0.0;
 		for (Neurons::const_iterator nIt = _neurons.begin();
 				nIt != _neurons.end(); nIt++)
 			if ((*nIt)->soma().volume() > maxSomaVolume)
@@ -144,7 +144,7 @@ public:
 	 * @return the max soma surface
 	 */
 	float maxSomaSurface() const {
-		double maxSomaSurface = 0;
+		double maxSomaSurface = 0.0;
 		for (Neurons::const_iterator nIt = _neurons.begin();
 				nIt != _neurons.end(); nIt++)
 			if ((*nIt)->soma().surface() > maxSomaSurface)

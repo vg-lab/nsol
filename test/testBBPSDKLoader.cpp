@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
 		cout << "Soma radius: " << neuron->morphology()->soma().maxRadius() << std::endl;
 		cout << "NumBranchs: " << neuron->numNeuriteBranches() << std::endl;
 		cout << "NumBifurcation: " << neuron->numNeuriteBifurcations() << std::endl;
+		cout << "Max soma volume mini column: " << neuron->miniColumn()->maxSomaVolume() << std::endl;
+		cout << "Max soma surface mini column: " << neuron->miniColumn()->maxSomaSurface() << std::endl;
+		cout << "Max soma volume column: " << neuron->miniColumn()->column()->maxSomaVolume() << std::endl;
+		cout << "Max soma surface column: " << neuron->miniColumn()->column()->maxSomaSurface() << std::endl;
 
 		return 0;
 	}
