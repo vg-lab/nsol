@@ -95,22 +95,24 @@ private:
 		_center = tmp /_nodes.size();
 	}
 
-	void recalculateMaxRadius(void)
-	{
-		float radius = _nodes[0]->radius(), mod = 0.0f;
-		Vec3f tmp = Vec3f(0,0,0);
+  void recalculateMaxRadius(void)
+  {
+    if (_nodes.size() == 0)
+    {
+      _maxRadius = 0.0f;
+      return;
+    }
 
-		for (unsigned int it = 1; it < _nodes.size(); ++it)
-		{
-			tmp = _center - _nodes[it]->point();
+    _maxRadius = _nodes[0]->radius();
 
-			mod = (float)sqrt((double) (tmp[0] * tmp[0] + tmp[1] * tmp[1]
-							+ tmp[2] * tmp[2]));
+    for (unsigned int it = 1; it < _nodes.size(); ++it)
+    {
+      float mod = (_center - _nodes[it]->point()).length();
 
-			if (mod > radius)
-				_maxRadius = mod;
-		}
-	}
+      if (mod > _maxRadius)
+        _maxRadius = mod;
+    }
+  }
 };
 
 }
