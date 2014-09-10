@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
 		MiniColumns miniColumns = columns[0]->miniColumns();
 
-		cout << "Number of neuron: " << miniColumns[9]->numberOfNeurons() << endl;
+		cout << "Number of neuron: " << miniColumns[9]->numberOfNeurons(false, Neuron::INTER) << endl;
 
 		NeuronPtr neuron = miniColumns[0]->neurons()[0];
 
@@ -31,17 +31,18 @@ int main(int argc, char *argv[])
 
 
 		NeuritePtr n = neuron->morphology()->neurites()[0];
-		cout << "soma center: " << neuron->transforM() *
+		std::cout << "soma center: " << neuron->transforM() *
 				Vec4f(neuron->morphology()->soma().center(),1)   << std::endl;
-		cout << "soma first point: " << neuron->morphology()->soma().nodes()[0]->point() << std::endl;
-		cout << "first segment point: " << n->firstSection()->_firstSegment->begin()->point() << std::endl;
-		cout << "Soma radius: " << neuron->morphology()->soma().maxRadius() << std::endl;
-		cout << "NumBranchs: " << neuron->numNeuriteBranches() << std::endl;
-		cout << "NumBifurcation: " << neuron->numNeuriteBifurcations() << std::endl;
-		cout << "Max soma volume mini column: " << neuron->miniColumn()->maxSomaVolume() << std::endl;
-		cout << "Max soma surface mini column: " << neuron->miniColumn()->maxSomaSurface() << std::endl;
-		cout << "Max soma volume column: " << neuron->miniColumn()->column()->maxSomaVolume() << std::endl;
-		cout << "Max soma surface column: " << neuron->miniColumn()->column()->maxSomaSurface() << std::endl;
+		std::cout << "soma first point: " << neuron->morphology()->soma().nodes()[0]->point() << std::endl;
+		std::cout << "first segment point: " << n->firstSection()->_firstSegment->begin()->point() << std::endl;
+		std::cout << "Soma radius: " << neuron->morphology()->soma().maxRadius() << std::endl;
+		std::cout << "NumBranchs: " << neuron->numNeuriteBranches() << std::endl;
+		std::cout << "NumBifurcation: " << neuron->numNeuriteBifurcations() << std::endl;
+		std::cout << "Max soma volume mini column: " << neuron->miniColumn()->maxSomaVolume() << std::endl;
+		std::cout << "Max soma surface mini column: " << neuron->miniColumn()->maxSomaSurface() << std::endl;
+		std::cout << "Max soma volume column: " << neuron->miniColumn()->column()->maxSomaVolume() << std::endl;
+		std::cout << "Max soma surface column: " << neuron->miniColumn()->column()->maxSomaSurface() << std::endl;
+		std::cout << "Neuron type: " << neuron->neuronType() << std::endl;
 
 		return 0;
 	}

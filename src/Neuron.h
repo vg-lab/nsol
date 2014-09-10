@@ -29,6 +29,9 @@ namespace nsol
 
   public:
 
+	    //! Type of dendrite
+	    typedef enum TNeuronType {PYRAMIDAL = 0, INTER} TNeuronType;
+
    /**
      * Default Neuron class constructor.
      * TODO: construct protected objects
@@ -347,6 +350,18 @@ namespace nsol
     	return _miniColumn;
     }
 
+    /**
+     * Method to get the neuron type.
+     * @return neuron type
+     */
+    TNeuronType neuronType()
+    {
+    	if (this->apicalDendrites()->size() == 0)
+    		return PYRAMIDAL;
+    	else
+    		return INTER;
+    };
+
 
   protected:
 
@@ -359,7 +374,6 @@ namespace nsol
     Matrix4_4f _transforM;				//Matrix of global transformation
     unsigned short _layer;				//Layer
     unsigned int _gid;					//Neuron id
-
   };
 
 /*   //! Definition of pointer to Dendrite */
