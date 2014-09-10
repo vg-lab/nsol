@@ -291,18 +291,6 @@ private:
 									lS->children().begin();
 									child != lS->children().end(); ++child)
 							{
-								if (d) {
-									//Plus new branch
-//									d->addBranchCount(lS->children().size());
-//									//Plus new bifurcation
-//									d->addBifurcationCount(1);
-								} else {
-									//Plus new branch
-//									n->addBranchCount(lS->children().size());
-//									//Plus new bifurcation
-//									n->addBifurcationCount(1);
-								}
-
 								sPS.push(&(*child));
 								parents.push(s);
 							}

@@ -132,10 +132,10 @@ public:
 	 */
 	float maxSomaVolume() const
 	{
-		double maxSomaVolume = 0;
+		double maxSomaVolume = 0.0;
 		for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 				mcIt != _miniColumns.end(); mcIt++)
-			if ((*mcIt)->meanSomaVolume() > maxSomaVolume)
+			if ((*mcIt)->maxSomaVolume() > maxSomaVolume)
 				maxSomaVolume = (*mcIt)->maxSomaVolume();
 		return (float)maxSomaVolume;
 	}
@@ -146,11 +146,12 @@ public:
 	 */
 	float maxSomaSurface() const
 	{
-		double meanSomaSurface = 0;
+		double maxSomaSurface = 0.0;
 		for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 				mcIt != _miniColumns.end(); mcIt++)
-		meanSomaSurface += (*mcIt)->maxSomaSurface();
-		return float(meanSomaSurface / _miniColumns.size());
+			if ((*mcIt)->maxSomaSurface() > maxSomaSurface)
+		maxSomaSurface = (*mcIt)->maxSomaSurface();
+		return (float)maxSomaSurface;
 	}
 
 	/**
