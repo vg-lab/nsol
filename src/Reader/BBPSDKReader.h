@@ -310,7 +310,6 @@ private:
 					}
 				}
 			}
-return columnMap;
 		}
 
 		return columnMap;
