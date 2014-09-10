@@ -74,8 +74,26 @@ public:
 		return _id;
 	}
 
-	const unsigned int numberOfNeurons(void) const {
-		return _neurons.size();
+    /**
+     * Method to get the number of neuron in te mini column.
+     * @param all all neuron o filtered group of neurons
+     * @oaram neuronType type of neuron
+     * @return neuron that macth the type
+     */
+	const unsigned int numberOfNeurons(bool all = true, Neuron::TNeuronType neuronType =
+			Neuron::PYRAMIDAL) const {
+		if (all)
+			return _neurons.size();
+		else {
+			unsigned int nNeurons = 0;
+			for (Neurons::const_iterator nIt = _neurons.begin();
+					nIt != _neurons.end(); nIt++) {
+				if ((*nIt)->neuronType() == neuronType)
+					nNeurons++;
+			}
+
+			return nNeurons;
+		}
 	}
 
 	/**
