@@ -8,9 +8,9 @@
 #ifndef __NSOL_SWC_READER__
 #define __NSOL_SWC_READER__
 
-#include <NsolTypes.h>
-#include "Dendrite.h"
-#include "NeuronMorphology.h"
+#include <nsol/NsolTypes.h>
+#include <nsol/Dendrite.h>
+#include <nsol/NeuronMorphology.h>
 
 #include <iostream>
 #include <fstream>

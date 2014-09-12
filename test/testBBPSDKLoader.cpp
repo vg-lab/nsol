@@ -1,4 +1,4 @@
-#include <nsol.h>
+#include <nsol/nsol.h>
 #include <assert.h>
 #include <iostream>
 #include <map>
