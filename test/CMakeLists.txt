@@ -17,7 +17,7 @@ if (BBPSDK_FOUND)
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
   INCLUDE_DIRECTORIES(${BBPSDK_INCLUDE_DIRS})
   add_executable(testBBPSDKLoader testBBPSDKLoader.cpp)
-  TARGET_LINK_LIBRARIES(testBBPSDKLoader ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
+  TARGET_LINK_LIBRARIES(testBBPSDKLoader nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
   add_definitions(-DWITH_BBPSDK)
 
 endif()

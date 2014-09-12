@@ -18,9 +18,11 @@
 #include <stack>
 #include <map>
 #include <dirent.h>
-#include <NsolTypes.h>
-#include <Dendrite.h>
-#include <NeuronMorphology.h>
+
+#include <nsol/NsolTypes.h>
+#include <nsol/Dendrite.h>
+#include <nsol/NeuronMorphology.h>
+
 #include <BBP/bbp.h>
 
 using namespace std;

@@ -10,31 +10,31 @@
 
 
 // Ontology elements
-#include <Axon.h>
-#include <Dendrite.h>
-#include <Neurite.h>
-#include <Neuron.h>
-#include <Node.h>
-#include <Section.h>
-#include <Segment.h>
-#include <Synapse.h>
-#include <Soma.h>
-#include <Spine.h>
-#include <NsolTypes.h>
+#include <nsol/Axon.h>
+#include <nsol/Dendrite.h>
+#include <nsol/Neurite.h>
+#include <nsol/Neuron.h>
+#include <nsol/Node.h>
+#include <nsol/Section.h>
+#include <nsol/Segment.h>
+#include <nsol/Synapse.h>
+#include <nsol/Soma.h>
+#include <nsol/Spine.h>
+#include <nsol/NsolTypes.h>
 
 // Containers
-#include <Container/Sections.h>
-#include <Container/Segments.h>
-#include <Container/Neurites.h> 
-#include <Container/Dendrites.h> 
-#include <Container/Columns.h>
-#include <Container/MiniColumns.h>
+#include <nsol/Container/Sections.h>
+#include <nsol/Container/Segments.h>
+#include <nsol/Container/Neurites.h> 
+#include <nsol/Container/Dendrites.h> 
+#include <nsol/Container/Columns.h>
+#include <nsol/Container/MiniColumns.h>
 
 // Reader
-#include <Reader/SwcReader.h>
-#include <Reader/BBPSDKReader.h>
+#include <nsol/Reader/SwcReader.h>
+#include <nsol/Reader/BBPSDKReader.h>
 // Writer
-#include <Writer/SwcWriter.h>
+#include <nsol/Writer/SwcWriter.h>
 
 
 #endif
