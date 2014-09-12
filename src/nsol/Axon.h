@@ -8,7 +8,7 @@
 #ifndef __NSOL_AXON__
 #define __NSOL_AXON__
 
-#include <Neurite.h>
+#include <nsol/Neurite.h>
 
 namespace nsol {
 

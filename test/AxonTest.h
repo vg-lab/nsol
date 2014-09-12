@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Dendrite.h>
+#include <nsol/Dendrite.h>
 
 class DendriteTest : public ::testing::Test {
  

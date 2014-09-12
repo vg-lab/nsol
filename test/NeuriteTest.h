@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Neurite.h>
+#include <nsol/Neurite.h>
 
 class NeuriteTest : public ::testing::Test {
  

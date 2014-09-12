@@ -23,7 +23,17 @@ foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
      ENDIF()
    ENDIF()
 endforeach()
-INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION include/nsol )
-INSTALL( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
+INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION include/ )
+INSTALL( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/ )
 
 add_subdirectory(test)
+
+add_library (nsol 
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Column.cpp
+)
+if (MSVC)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nson.lib DESTINATION lib)
+else()
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
+endif()
+

@@ -1,19 +1,19 @@
 /**
- * @file    Dendrites.h
+ * @file    Neurites.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NSOL_DENDRITES__
-#define __NSOL_DENDRITES__
+#ifndef __NSOL_NEURITES__
+#define __NSOL_NEURITES__
 
-#include <NsolTypes.h>
-#include <Dendrite.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Neurite.h>
 
 namespace nsol {
 
-  class Dendrites : public Vector<DendritePtr> {
+  class Neurites : public Vector<NeuritePtr> {
   };
 
 }

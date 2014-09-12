@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Soma.h>
+#include <nsol/Soma.h>
 
 class SomaTest : public ::testing::Test {
  

@@ -4,8 +4,8 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Section.h>
-#include <Section.h>
+#include <nsol/Section.h>
+
 
 class SectionTest : public ::testing::Test {
  

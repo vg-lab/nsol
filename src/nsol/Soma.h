@@ -8,7 +8,7 @@
 #ifndef __NSOL_SOMA__
 #define __NSOL_SOMA__
 
-#include <Container/Nodes.h>
+#include <nsol/Container/Nodes.h>
 
 namespace nsol {
 

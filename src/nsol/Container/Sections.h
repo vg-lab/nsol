@@ -8,7 +8,7 @@
 #ifndef __NSOL_SECTIONS__
 #define __NSOL_SECTIONS__
 
-#include <Section.h>
+#include <nsol/Section.h>
 
 namespace nsol {
 
