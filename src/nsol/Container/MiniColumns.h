@@ -8,8 +8,8 @@
 #ifndef _NSOL_MINICOLUMNS_H_
 #define _NSOL_MINICOLUMNS_H_
 
-#include <NsolTypes.h>
-#include <Container/Neurons.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Container/Neurons.h>
 
 namespace nsol {
 

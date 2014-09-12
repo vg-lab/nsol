@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Neuron.h>
+#include <nsol/Neuron.h>
 
 class NeuronTest : public ::testing::Test {
  

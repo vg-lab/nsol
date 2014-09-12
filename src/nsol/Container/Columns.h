@@ -4,16 +4,17 @@
  *  Created on: 31/07/2014
  *      Author: richard
  */
-
 #ifndef _NSOL_COLUMNS_H_
 #define _NSOL_COLUMNS_H_
 
-#include <NsolTypes.h>
-#include <Column.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Column.h>
 
-namespace nsol {
+namespace nsol 
+{
 
-  class Columns : public Vector<ColumnPtr> {
+  class Columns : public Vector<ColumnPtr> 
+  {
 
   protected:
 

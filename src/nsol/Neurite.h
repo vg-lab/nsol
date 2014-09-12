@@ -8,9 +8,12 @@
 #ifndef __NSOL_NEURITE_
 #define __NSOL_NEURITE_
 
+#include <nsol/NsolTypes.h>
+#include <nsol/Section.h>
+
+
 #include <stack>
-#include <NsolTypes.h>
-#include <Section.h>
+
 
 namespace nsol {
 

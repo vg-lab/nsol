@@ -8,13 +8,13 @@
 #ifndef __NSOL_NEURON_
 #define __NSOL_NEURON_
 
-#include <NsolTypes.h>
-#include <Soma.h>
-#include <Axon.h>
-#include <Neurite.h>
-#include <Dendrite.h>
-#include <Container/Dendrites.h>
-#include <Container/Neurites.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Soma.h>
+#include <nsol/Axon.h>
+#include <nsol/Neurite.h>
+#include <nsol/Dendrite.h>
+#include <nsol/Container/Dendrites.h>
+#include <nsol/Container/Neurites.h>
 
 namespace nsol
 {

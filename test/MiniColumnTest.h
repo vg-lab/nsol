@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <MiniColumn.h>
+#include <nsol/MiniColumn.h>
 
 class MiniColumnTest : public ::testing::Test {
  

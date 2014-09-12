@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <gtest/gtest.h>
 
-#include <Column.h>
+#include <nsol/Column.h>
 
 class ColumnTest : public ::testing::Test {
  

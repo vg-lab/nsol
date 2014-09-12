@@ -8,7 +8,7 @@
 #ifndef __NSOL_DENDRITE__
 #define __NSOL_DENDRITE__
 
-#include <Neurite.h>
+#include <nsol/Neurite.h>
 
 namespace nsol {
 

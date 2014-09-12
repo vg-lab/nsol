@@ -8,8 +8,8 @@
 #ifndef __NSOL_NODES__
 #define __NSOL_NODES__
 
-#include <NsolTypes.h>
-#include <Node.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Node.h>
 
 namespace nsol {
 

@@ -8,8 +8,8 @@
 #ifndef _NSOL_NEURONS_H_
 #define _NSOL_NEURONS_H_
 
-#include <NsolTypes.h>
-#include <Neuron.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Neuron.h>
 
 namespace nsol {
 

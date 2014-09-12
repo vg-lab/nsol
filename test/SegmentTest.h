@@ -4,9 +4,9 @@
 //#include "sample1.h"
 #include <gtest/gtest.h>
 
-#include <Segment.h>
-#include <Section.h>
-#include <NsolTypes.h>
+#include <nsol/Segment.h>
+#include <nsol/Section.h>
+#include <nsol/NsolTypes.h>
 
 #define EPSILON_VALUE 1e-10
 
