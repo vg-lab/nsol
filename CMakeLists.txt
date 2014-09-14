@@ -32,7 +32,7 @@ add_library (nsol
 ${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Column.cpp
 )
 if (MSVC)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nson.lib DESTINATION lib)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nsol.lib DESTINATION lib)
 else()
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
 endif()
