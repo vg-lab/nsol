@@ -86,7 +86,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 # Installation rules for both MSVC and UNIX
 if (MSVC)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nson.lib DESTINATION lib)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nsol.lib DESTINATION lib)
 else()
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
 endif()
