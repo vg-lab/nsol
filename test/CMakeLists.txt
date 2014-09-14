@@ -11,7 +11,6 @@ set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
 
 FIND_PACKAGE(BBPSDK)
 
-
 if (BBPSDK_FOUND)
   message(STATUS "BBPSDK found")
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)

@@ -1,0 +1,7 @@
+#define nsol_VERSION_MAJOR @nsol_VERSION_MAJOR@
+#define nsol_VERSION_MINOR @nsol_VERSION_MINOR@
+#define nsol_VERSION_PATCH @nsol_VERSION_PATCH@
+#define nsol_VERSION @nsol_VERSION@
+
+#cmakedefine WITH_BBPSDK
+
