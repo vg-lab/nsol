@@ -32,31 +32,31 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${VMMLIB_INSTALL_DIR}/includ
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Find files to install 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-file(GLOB DEPLOY_FILES_AND_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
+file(GLOB DEPLOY_FILES_AND_DIRS 
+"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Reader*"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Writer/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Container/*"
+)
+
 foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
-   IF( IS_DIRECTORY "${ITEM}" )
-      LIST( APPEND DIRS_TO_DEPLOY "${ITEM}" )
-   ELSE()
-     GET_FILENAME_COMPONENT(FILE_EXT "${ITEM}" "EXT")
-     IF( FILE_EXT STREQUAL ".h" )
-       LIST( APPEND FILES_TO_DEPLOY "${ITEM}" )
-     ENDIF()
-   ENDIF()
+   if( IS_DIRECTORY "${ITEM}" )
+      list( APPEND DIRS_TO_DEPLOY "${ITEM}" )
+   else()
+     get_filename_component(FILE_EXT "${ITEM}" "EXT")
+     if( FILE_EXT STREQUAL ".h" )
+       list( APPEND FILES_TO_DEPLOY "${ITEM}" )
+     endif()
+   endif()
 endforeach()
-INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION include/ )
-INSTALL( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/ )
+install( FILES ${FILES_TO_DEPLOY} DESTINATION include/nsol )
+install( FILES ${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h DESTINATION include/nsol )
+install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Test subdirectory 
 add_subdirectory(test)
 
-#configure_file(
-#${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/NsolConfig.h.in
-#${CMAKE_CURRENT_BINARY_DIR}/src/nsol/NsolConfig.h
-#)
-
-
- 
 # Build library
 add_library (nsol 
 ${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Column.cpp
@@ -68,20 +68,20 @@ set(Lunchbox_DIR "${BBPSDK_INSTALL_DIR}/share/Lunchbox/CMake")
 set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
 
 find_package(BBPSDK)
-
 if (BBPSDK_FOUND)
   message(STATUS "BBPSDK found")
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
-  INCLUDE_DIRECTORIES(${BBPSDK_INCLUDE_DIRS})
-  TARGET_LINK_LIBRARIES(nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
+  include_directories(${BBPSDK_INCLUDE_DIRS})
+  target_link_libraries(nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
   add_definitions(-DWITH_BBPSDK)
 endif()
 
+# Configure file 
 configure_file (
   "${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/NsolConfig.h.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/NsolConfig.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h"
   )
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 
 # Installation rules for both MSVC and UNIX
@@ -91,3 +91,25 @@ else()
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
 endif()
 
+# Doxygen documentation generation
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E make_directory "doc"
+    RESULT_VARIABLE nok ERROR_VARIABLE error
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
+  if(nok)
+    message(FATAL_ERROR "Error making building dir in " ${CMAKE_CURRENT_BINARY_DIR}": ${nok}\n")
+  endif()
+
+  configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile
+    ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)
+
+
+  add_custom_target(doc
+    COMMAND ${DOXYGEN_EXECUTABLE} 
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/doc"
+    )
+
+endif()
