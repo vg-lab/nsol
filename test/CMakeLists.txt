@@ -1,7 +1,6 @@
 
 
 #add_executable(test1 test1.cpp)
-
 #add_executable(testSwcReader testSwcReader.cpp)
 
 
@@ -11,14 +10,15 @@ set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
 
 FIND_PACKAGE(BBPSDK)
 
+include_directories(${CMAKE_BINARY_DIR})
+
 if (BBPSDK_FOUND)
   message(STATUS "BBPSDK found")
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
-  INCLUDE_DIRECTORIES(${BBPSDK_INCLUDE_DIRS})
+  include_directories(${BBPSDK_INCLUDE_DIRS} )
   add_executable(testBBPSDKLoader testBBPSDKLoader.cpp)
-  TARGET_LINK_LIBRARIES(testBBPSDKLoader nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
+  target_link_libraries(testBBPSDKLoader nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
   add_definitions(-DWITH_BBPSDK)
-
 endif()
 
 enable_testing()
@@ -39,7 +39,6 @@ find_library(GTEST_LIBRARY_DIR
 if (GTEST_LIBRARY_DIR)
 
   find_package (Threads)
-
   add_executable(runTests runTests.cpp )
   target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT})
 

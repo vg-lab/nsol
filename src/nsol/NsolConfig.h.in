@@ -3,5 +3,5 @@
 #define nsol_VERSION_PATCH @nsol_VERSION_PATCH@
 #define nsol_VERSION @nsol_VERSION@
 
-#cmakedefine WITH_BBPSDK
+//#cmakedefine WITH_BBPSDK
 
