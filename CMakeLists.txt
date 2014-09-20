@@ -54,8 +54,7 @@ install( FILES ${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h DESTINATION include
 install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# Test subdirectory 
-add_subdirectory(test)
+
 
 # Build library
 add_library (nsol 
@@ -90,6 +89,10 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nsol.lib DESTINATI
 else()
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
 endif()
+
+# Test subdirectory 
+add_subdirectory(test)
+
 
 # Doxygen documentation generation
 find_package(Doxygen)
