@@ -8,11 +8,12 @@ set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
 set(Lunchbox_DIR "${BBPSDK_INSTALL_DIR}/share/Lunchbox/CMake")
 set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
 
-FIND_PACKAGE(BBPSDK)
+find_package(BBPSDK)
 
 include_directories(${CMAKE_BINARY_DIR})
 
 if (BBPSDK_FOUND)
+
   message(STATUS "BBPSDK found")
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
   include_directories(${BBPSDK_INCLUDE_DIRS} )
@@ -27,19 +28,29 @@ enable_testing()
 #include_directories(${GTEST_INCLUDE_DIR})
 
 
-find_library(GTEST_LIBRARY_DIR 
+
+find_library(GTEST_LIBRARY 
  NAMES libgtest.a
  PATHS 
+ ${GTEST_LIBRARY_DIR}
  /opt/local/lib
  /usr/local/lib
  /usr/lib
 )
 
-#message(${GTEST_LIBRARY_DIR})
-if (GTEST_LIBRARY_DIR)
+if (GTEST_LIBRARY)
 
+  get_filename_component(
+    GTEST_LIBRARY_DIR 
+    ${GTEST_LIBRARY}
+    PATH )
+
+  message(STATUS "Found Gtest in ${GTEST_LIBRARY}")
+  link_directories( ${GTEST_LIBRARY_DIR} )
+  include_directories(${GTEST_INCLUDE_DIR})
   find_package (Threads)
   add_executable(runTests runTests.cpp )
   target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT})
-
+else()
+  message(STATUS "Missing Gtest. No test will be built")
 endif()
