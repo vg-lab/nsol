@@ -98,6 +98,15 @@ class Column {
    */
   float maxDendriteSurface() const;
 
+
+  const unsigned int numberOfNeurons(bool all = true, 
+				     Neuron::TNeuronType neuronType =
+				     Neuron::PYRAMIDAL,
+				     unsigned int layer = 0) const;
+    
+  unsigned int numDendriteBranches( void ) const;
+
+
  protected:
 
   unsigned short _id;
