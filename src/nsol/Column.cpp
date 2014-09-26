@@ -170,4 +170,33 @@ namespace nsol {
     return (float)maxDendSurface;
   }
 
-}
+
+
+  const unsigned int Column::numberOfNeurons(bool all, 
+					     Neuron::TNeuronType neuronType,
+					     unsigned int layer) 
+    const 
+  {
+    unsigned int nNeurons = 0;
+    
+    for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+	 mcIt != _miniColumns.end(); mcIt++)
+      nNeurons += (*mcIt)->numberOfNeurons(all, neuronType, layer);
+
+    return nNeurons;
+  
+  }
+
+  unsigned int Column::numDendriteBranches( void ) const 
+  {
+
+    unsigned int numBranches = 0;
+    for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+	 mcIt != _miniColumns.end(); mcIt++)
+      numBranches += (*mcIt)->numDendriteBranches();
+
+    return numBranches;
+
+  }
+
+} // namespace nsol
