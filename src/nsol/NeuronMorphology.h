@@ -3,10 +3,11 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ *          Do not distribute without further notice.
  */
-#ifndef __NSOL_NEURON_
-#define __NSOL_NEURON_
+#ifndef __NSOL_NEURON_MORPHOLOGY__
+#define __NSOL_NEURON_MORPHOLOGY__
 
 #include <nsol/NsolTypes.h>
 #include <nsol/Soma.h>
@@ -33,18 +34,9 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-    NeuronMorphology()
-    {
-    }
+    NeuronMorphology( void );
 
-    ~NeuronMorphology()
-    {
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        delete *it;
-
-      _neurites.clear();
-    }
+    ~NeuronMorphology( void );
 
     /**
      * Method to add a new neurite to the neuron.
@@ -52,18 +44,8 @@ namespace nsol
      * @see Neurite::TNeuriteType
      * @return pointer to the added neurite
      */
-    NeuritePtr addNeurite(Neurite::TNeuriteType neuriteType = Neurite::DENDRITE)
-    {
-      if (neuriteType == Neurite::DENDRITE)
-        _neurites.push_back(new Dendrite());
-      else if (neuriteType == Neurite::AXON)
-        _neurites.push_back(new Axon());
-      else
-        return NULL;
-
-      return _neurites.back();
-    }
-
+    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType = 
+			   Neurite::DENDRITE );
 
     /**
      * Method to add a new dendrite to the neuron.
@@ -71,271 +53,75 @@ namespace nsol
      * @see ndsl::Dendrite::TDendriteType
      * @return pointer to the added dendrite
      */
-    Dendrite *addDendrite(
-        Dendrite::TDendriteType dendriteType = Dendrite::BASAL)
-    {
-      _neurites.push_back(new Dendrite(dendriteType));
-      return _neurites.back()->asDendrite();
-    }
+    Dendrite * addDendrite( Dendrite::TDendriteType dendriteType = 
+			    Dendrite::BASAL );
 
     /**
      * Method to add a new axon to the neuron.
      * @return pointer to the added axon
      */
-    Axon *addAxon()
-    {
-      _neurites.push_back(new Axon());
-      return _neurites.back()->asAxon();
-    }
+    Axon * addAxon( void );
 
+    unsigned int numNeurites( void ) const;
 
-    unsigned int numNeurites(void)
-    {
-      return _neurites.size();
-    }
+    unsigned int numDendrites( void ) const;
 
-    unsigned int numDendrites(void)
-    {
-      unsigned int nd = 0;
+    unsigned int numNeuriteBranches( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite()) nd++;
+    unsigned int numDendriteBranches( void ) const ;
 
-      return nd;
-    }
+    unsigned int numAxonBranches( void ) const;
 
-    unsigned int numNeuriteBranches()
-    {
-      unsigned int nb = 0;
+    unsigned int numNeuriteBifurcations( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        nb += (*it)->numBranches();
+    unsigned int numDendriteBifurcations( void ) const;
 
-      return nb;
-    }
+    unsigned int numAxonBifurcations( void ) const;
 
-    unsigned int numDendriteBranches()
-    {
-      unsigned int nb = 0;
+    float volume( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          nb += (*it)->numBranches();
+    float neuritesVolume( void ) const;
 
-      return nb;
-    }
+    float dendritesVolume( void ) const;
 
-    unsigned int numAxonBranches()
-    {
-      unsigned int nb = 0;
+    float axonVolume( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if  ((*it)->asAxon())
-          nb += (*it)->numBranches();
+    float surface( void ) const;
 
-      return nb;
-    }
+    float neuritesSurface( void ) const;
 
-    unsigned int numNeuriteBifurcations()
-    {
-      unsigned int nb = 0;
+    float dendritesSurface( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        nb += (*it)->numBifurcations();
+    float axonSurface( void ) const;
 
-      return nb;
-    }
+    float length( void ) const;
 
-    unsigned int numDendriteBifurcations()
-    {
-      unsigned int nb = 0;
+    float neuritesLength( void ) const;
 
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          nb += (*it)->numBifurcations();
-
-      return nb;
-    }
-
-    unsigned int numAxonBifurcations()
-    {
-      unsigned int nb = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if  ((*it)->asAxon())
-          nb += (*it)->numBifurcations();
-
-      return nb;
-    }
-
-    float volume()
-    {
-      return this->neuritesVolume() + _soma.volume();
-    }
-
-    float neuritesVolume()
-    {
-      return this->dendritesVolume() + this->axonVolume();
-    }
-
-    float dendritesVolume()
-    {
-      float volume = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          volume += (*it)->volume();
-
-      return volume;
-    }
-
-    float axonVolume()
-    {
-      float volume = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          volume += (*it)->volume();
-
-      return volume;
-    }
-
-    float surface()
-    {
-      return this->neuritesSurface() + _soma.surface();
-    }
-
-    float neuritesSurface()
-    {
-      return this->dendritesSurface() + this->axonSurface();
-    }
-
-    float dendritesSurface()
-    {
-      float surface = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          surface += (*it)->surface();
-
-      return surface;
-    }
-
-    float axonSurface()
-    {
-      float surface = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          surface += (*it)->surface();
-
-      return surface;
-    }
-
-    float length()
-    {
-      return this->neuritesLength();
-    }
-
-    float neuritesLength()
-    {
-      return this->dendritesLength() + this->axonLength();
-    }
-
-    float dendritesLength()
-    {
-      float length = 0;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asDendrite())
-          length += (*it)->length();
-
-      return length;
-    }
-
-    float axonLength()
-    {
-      float length = 0.0f;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-        if ((*it)->asAxon())
-          length += (*it)->length();
-
-      return length;
-    }
+    float dendritesLength( void ) const;
+    
+    float axonLength( void ) const;
 
     /**
      * Method to get all the dendrites in a container.
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    Dendrites *dendrites(void)
-    {
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      if ((*it)->asDendrite())
-      dendrites->push_back((*it)->asDendrite());
-
-      return dendrites;
-    }
+    Dendrites * dendrites( void ) const;
 
     /**
      * Method to get all the basal dendrites in a container.
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    Dendrites *basalDendrites(void)
-    {
-      // TODO: create a list of all basal dendrites
-//      return new Dendrites;
-
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::BASAL))
-          dendrites->push_back((*it)->asDendrite());
-      }
-
-      return dendrites;
-    }
+    Dendrites * basalDendrites( void ) const;
 
     /**
      * Method to get all the apical dendrites in a container.
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    Dendrites *apicalDendrites(void)
-    {
-      Dendrites *dendrites = new Dendrites;
-
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
-          dendrites->push_back((*it)->asDendrite());
-      }
-
-      return dendrites;
-    }
+    Dendrites * apicalDendrites( void ) const;
 
     /**
      * Method to add a new dendrite to the neuron.
@@ -343,28 +129,11 @@ namespace nsol
      * @see Neurite::TNeuriteType
      * @return pointer to the added dendrite
      */
-    Dendrite *apicalDendrite(void)
-    {
-      for (Vector<Neurite *>::iterator it = _neurites.begin();
-      it != _neurites.end(); ++it)
-      {
-        if ((*it)->asDendrite() &&
-        ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL))
-        return (*it)->asDendrite();
-      }
+    Dendrite * apicalDendrite( void ) const;
 
-      return NULL;
-    }
+    Neurites & neurites( void );
 
-    Neurites &neurites(void)
-    {
-      return _neurites;
-    }
-
-    Soma &soma(void)
-    {
-      return _soma;
-    }
+    Soma & soma( void );
 
   protected:
 
@@ -373,13 +142,9 @@ namespace nsol
 
   };
 
-/*   //! Definition of pointer to Dendrite */
-/* #if !BOOST */
-/*   typedef  Neuron * NeuronPtr; */
-/* #else */
-/*   typedef  boost::shared_ptr<Neuron> * NeuronPtr; */
-/* #endif */
 
-}
+} // namespace nsol
 
 #endif
+
+// EOF

@@ -12,34 +12,38 @@
 
 namespace nsol {
 
-  class Dendrite : public Neurite {
+  class Dendrite : public Neurite 
+  {
 
 
   public:
 
     //! Type of dendrite
-    typedef enum TDendriteType {BASAL = 0, APICAL} TDendriteType;
+    typedef enum TDendriteType 
+    {
+      BASAL = 0, 
+      APICAL
+    } TDendriteType;
     
-    Dendrite (TDendriteType dendriteType = BASAL) : Neurite(Neurite::DENDRITE) {
-      _dendriteType = dendriteType;
-    }
+    Dendrite ( TDendriteType dendriteType = BASAL );
     
     //! Get the type of neurite
-    TDendriteType & dendriteType() {
-      return _dendriteType;
-    };
+    TDendriteType & dendriteType( void );
     
-    //! Return pointer to Dendrite objetc
-    virtual Dendrite * asDendrite() { return this; }
-    
+    //! Return pointer to Dendrite object
+    virtual Dendrite * asDendrite( void );    
     
   protected:
+
+    //! Type of dendrite
     TDendriteType _dendriteType;
 
-  };
+  }; // class Dendrite
 
 
-}
+} // namespace nsol
 
 
 #endif
+
+// EOF

@@ -3,16 +3,14 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * Do not distribute without further notice.
  */
-
-#include <math.h>
+#ifndef __NSOL_SEGMENT__
+#define __NSOL_SEGMENT__
 
 #include "Node.h"
 #include "NsolTypes.h"
-
-#ifndef __NSOL_SEGMENT__
-#define __NSOL_SEGMENT__
 
 namespace nsol
 {
@@ -23,105 +21,39 @@ namespace nsol
 
   public:
 
-    Segment() :
-      _begin(nullptr), _end(nullptr),
-      _next(nullptr), _prev(nullptr),
-      _parent(nullptr)
-    {
-    }
+    Segment( void );
 
-    ~Segment()
-    {
-      //TODO:review shared nodes between segments
+    ~Segment( void );
 
-      // @pablo: this delete can cause segmentation fault if the 
-      // _end node is not in dynamic memory
-      // if (_end)
-      // delete _end;
-    }
+    SegmentPtr next( void ) const;
 
-    SegmentPtr next() const
-    {
-      return _next;
-    }
+    SegmentPtr prev( void ) const;
 
-    SegmentPtr prev() const
-    {
-      return _prev;
-    }
+    void next( SegmentPtr next);
 
-    void next(SegmentPtr next)
-    {
-      _next = next;
-    }
+    void prev( SegmentPtr prev);
 
-    void prev(SegmentPtr prev)
-    {
-      _prev = prev;
-    }
+    void parentSection( SectionPtr parent);
 
-    void parentSection(SectionPtr parent)
-    {
-      _parent = parent;
-    }
+    SectionPtr parentSection( void);
 
-    SectionPtr parentSection(void)
-    {
-      return _parent;
-    }
+    NodePtr begin( void) const;
 
-    NodePtr begin(void) const
-    {
-      return _begin;
-    }
+    NodePtr end( void) const;
 
-    NodePtr end(void) const
-    {
-      return _end;
-    }
+    void begin( NodePtr begin );
 
-    void begin(NodePtr begin)
-    {
-      _begin = begin;
-    }
+    void end( NodePtr end );
 
-    void end(NodePtr end)
-    {
-      _end = end;
-    }
+    float volume( void );
 
-    float volume(void)
-    {
-      return (_begin && _end) ? 
-          float(M_PI) *
-          (_begin->point() - _end->point()).length() *
-          _end->radius() *
-          _end->radius() : 0.0f;
-    }
+    float surface( void );
 
-    float surface(void)
-    {
-      return (_begin && _end) ?
-          float(M_2PI) * _end->radius() *
-          (_begin->point() - _end->point()).length() :
-          0.0f;
-    }
-
-    float length(void)
-    {
-      return (_begin && _end) ?
-        (_begin->point() - _end->point()).length() : 0.0f;
-    }
+    float length( void );
 
   protected:
 
-    void removeNodes (void)
-    {
-      //TODO:erase memory allocation. Control shared nodes between segments
-      //@pablo: be careful, if memory to be deleted 
-      // is allocated outside of this class you might end deleting
-      // non dynamic memory
-    }
+    void _removeNodes (void);
 
     NodePtr _begin, _end;
 
@@ -132,6 +64,8 @@ namespace nsol
 
   };
 
-}
+} // namespace nsol
 
 #endif
+
+// EOF

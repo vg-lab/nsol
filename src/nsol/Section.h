@@ -3,7 +3,8 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ *          Do not distribute without further notice.
  */
 #ifndef __NSOL_SECTION__
 #define __NSOL_SECTION__
@@ -22,235 +23,39 @@ namespace nsol
   {
 
   public:
-    Section()
-    {
-      _neurite = NULL;
-      _parent = NULL;
-      _firstSegment = _lastSegment = NULL;
-    }
+    Section();
 
-    ~Section()
-    {
-      if (_firstSegment)
-      {
-        SegmentPtr sP = _firstSegment;
+    ~Section();
 
-        while (sP)
-        {
-          SegmentPtr next = sP->_next;
-          delete sP;
-          sP = next;
-        }
-      }
-    }
+    NeuritePtr neurite(void);
 
-    /* NeuronPtr  neuron(void) { */
-    /*   // TODO: handle the error of no parent */
-    /*   assert(_neurite); */
-    /*   return (_neurite->neuron()); */
-    /* } */
+    void neurite(NeuritePtr neurite);
 
-    NeuritePtr neurite(void)
-    {
-      return _neurite;
-    }
+    SectionPtr parent(void);
 
-    void neurite(NeuritePtr neurite)
-    {
-      _neurite = neurite;
-    }
+    void parent(SectionPtr parent);
 
-    /* Section & parent (void) { */
-    /*   // TODO: handle the error of no parent */
-    /*   assert(_parent); */
-    /*   return *_parent; */
-    /* } */
+    void addChild(SectionPtr section);
 
-    /* const Section & parent() const                                  */
-    /* { */
-    /*   return const_cast< Section& >( *this ).parent(); */
-    /* }      */
+    Sections & childs();
 
-    /* SectionPtr parentPtr (void) { */
-    /*   return _parent; */
-    /* } */
+    SegmentPtr addSegment(void);
 
-    SectionPtr parent(void)
-    {
-      return _parent;
-    }
+    SegmentPtr & firstSegment();
 
-    void parent(SectionPtr parent)
-    {
-      _parent = parent;
-    }
+    SegmentPtr & lastSegment();
 
-    void addChild(SectionPtr section)
-    {
-      assert(section);
-      _childs.push_back(section);
-    }
+    float volume(void);
 
-    Sections & childs()
-    {
-      return _childs;
-    }
+    float surface(void);
 
-    SegmentPtr addSegment(void)
-    {
+    float length(void);
 
-      SegmentPtr s = new Segment;
+    unsigned int fuseSection(void);
 
-      s->begin(NULL);
-      s->end(NULL);
-
-      if (!_firstSegment)
-      {
-        _firstSegment = _lastSegment = s;
-        s->next(NULL);
-        s->prev(NULL);
-      }
-      else
-      {
-        _lastSegment->next(s);
-        s->next(NULL);
-        s->prev(_lastSegment);
-        _lastSegment = s;
-      }
-
-      return s;
-
-    }
-
-    SegmentPtr & firstSegment()
-    {
-      return _firstSegment;
-    }
-
-    float volume(void)
-    {
-      float volume = 0.0f;
-
-      if (_firstSegment)
-      {
-        SegmentPtr sP = _firstSegment;
-
-        while (sP)
-        {
-          volume += sP->volume();
-          sP = sP->next();
-        }
-      }
-
-      return volume;
-    }
-
-    float surface(void)
-    {
-      float surface = 0.0f;
-
-      if (_firstSegment)
-      {
-        SegmentPtr sP = _firstSegment;
-
-        while (sP)
-        {
-          surface += sP->surface();
-          sP = sP->next();
-        }
-      }
-
-      return surface;
-    }
-
-    float length(void)
-    {
-      float length = 0.0f;
-
-      if (_firstSegment)
-      {
-        SegmentPtr sP = _firstSegment;
-
-        while (sP)
-        {
-          length += sP->length();
-          sP = sP->next();
-        }
-      }
-
-      return length;
-    }
-
-    unsigned int fuseSection(void)
-    {
-      SegmentPtr sP = _firstSegment;
-
-      while (sP != _lastSegment)
-      {
-        SegmentPtr nP = sP->next();
-        removeSegment(sP);
-        sP = nP;
-      }
-
-      _firstSegment->end(_lastSegment->end());
-
-      _lastSegment = _firstSegment;
-
-      return 0;
-    }
-
-    float meanRadius(void)
-    {
-      float radius = 0.0f;
-      unsigned int nN = 0;
-
-      if (_firstSegment)
-      {
-        SegmentPtr sP = _firstSegment;
-
-        while (sP)
-        {
-          radius += sP->begin()->radius();
-          nN++;
-
-          sP = sP->next();
-        }
-
-        radius += _lastSegment->end()->radius();
-      }
-
-      return radius/(nN + 1);
-    }
+    float meanRadius(void);
 
   protected:
-
-  private:
-    unsigned int removeSegment (SegmentPtr sP)
-    {
-      if (sP)
-      {
-        if (sP == _firstSegment)
-        {
-          sP->end(sP->next()->end());
-          sP->next()->removeNodes();
-          delete sP->next();
-        }
-        else
-        {
-          sP->removeNodes();
-          sP->prev()->end(sP->next()->end());
-
-          delete sP->next();
-          delete sP;
-       }
-
-        return 1;
-      }
-
-      return 0;
-    }
-
-  public:
 
     /* //! Parent neuron of the section */
     /* NeuronPtr *_neuron; */
@@ -273,8 +78,12 @@ namespace nsol
     //! First segment
     SegmentPtr _lastSegment;
 
-  };
+  private:
+    unsigned int _removeSegment (SegmentPtr sP);
 
-}
+
+      }; // class Section
+
+} // namespace nsol
 
 #endif

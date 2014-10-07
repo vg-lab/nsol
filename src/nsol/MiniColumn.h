@@ -11,68 +11,48 @@
 #include <nsol/Neuron.h>
 #include <nsol/Container/Neurons.h>
 
-namespace nsol {
+namespace nsol 
+{
 
-  class MiniColumn {
+  class MiniColumn 
+  {
 
   public:
-    MiniColumn(const unsigned short id = 0) {
-      _column = nullptr;
-      _id = id;
-    }
+    MiniColumn( const ColumnPtr column = nullptr, 
+		const unsigned short id = 0 ); 
 
-    MiniColumn(const ColumnPtr column, const unsigned short id = 0) {
-      _column = column;
-      _id = id;
-    }
-
-    ~MiniColumn() {
-//	      for (Vector<Neuron *>::iterator it = _neurons.begin();
-//	      it != _neurons.end(); ++it)
-//	        delete *it;
-//
-//	      _neurons.clear();
-    }
+    ~MiniColumn();
 
     /**
-     * Method to add a neuron.
-     */
-    void addNeuron(NeuronPtr neuron) {
-      _neurons.push_back(neuron);
-    }
-
-    /**
-     * Method to add a new neuron.
+     * Method to add a neuron. If null value passed a new neuron is created
+     * @param neuron pointer to neuron to add. If null new neuron is created
      * @return pointer to the added neuron
      */
-    NeuronPtr addNeuron(void) {
-      _neurons.push_back(new Neuron());
-      return _neurons.back();
-    }
+    NeuronPtr addNeuron( NeuronPtr neuron = nullptr );
 
     /**
      * Method to get neurons.
      * @return neurons of the mimi column
      */
-    Neurons &neurons() {
-      return _neurons;
-    }
+    Neurons & neurons( void );
 
-    void column(ColumnPtr colummn) {
-      _column = colummn;
-    }
+    /**
+     * Method to set the column of this minicolumn
+     * @param column pointer to the column
+     */
+    void column( ColumnPtr colummn );
 
-    ColumnPtr &column(void) {
-      return _column;
-    }
+    /**
+     * Method to get the column of this minicolumn
+     * @return pointer to the column
+     */
+    ColumnPtr column(void) const;
 
     /**
      * Method to get-set mini column id.
      * @return refenrence to mini column id
      */
-    unsigned short &id(void) {
-      return _id;
-    }
+    unsigned short & id( void );
 
     /**
      * Method to get the number of neuron in te mini column.
@@ -81,144 +61,75 @@ namespace nsol {
      * @param layer count neurons in that layer. If 0 all layers counter.
      * @return neuron that macth the type
      */
-    const unsigned int numberOfNeurons(bool all = true, 
-				       Neuron::TNeuronType neuronType =
-				       Neuron::PYRAMIDAL,
-				       unsigned int layer = 0 ) const {
-      if (all)
-	return _neurons.size();
-      else 
-      {
-	unsigned int nNeurons = 0;
-	for (Neurons::const_iterator nIt = _neurons.begin();
-	     nIt != _neurons.end(); nIt++) 
-	{
-	  if ((*nIt)->neuronType() == neuronType && 
-	      (layer == 0 || layer == (*nIt)->layer()))
-	    nNeurons++;
-
-	}
-	
-	return nNeurons;
-      }
-    }
+    unsigned int numberOfNeurons(bool all = true, 
+				 Neuron::TNeuronType neuronType =
+				 Neuron::PYRAMIDAL,
+				 unsigned int layer = 0 ) const;
+  
 
     /**
      * Method to get the mean soma volume.
      * @return the mean soma volume
      */
-    float meanSomaVolume() const {
-      double meanSomaVolume = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	meanSomaVolume += (*nIt)->soma().volume();
-      return float(meanSomaVolume / _neurons.size());
-    }
+    float meanSomaVolume( void ) const;
 
     /**
      * Method to get the mean soma surface.
      * @return the mean soma surface
      */
-    float meanSomaSurface() const {
-      double meanSomaSurface = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	meanSomaSurface += (*nIt)->soma().surface();
-      return float(meanSomaSurface / _neurons.size());
-    }
+    float meanSomaSurface( void ) const;
 
     /**
      * Method to get the mean dendrite volume.
      * @return the mean dendrite volume
      */
-    float meanDendriteVolume() const {
-      double meanDendVolume = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	meanDendVolume += (*nIt)->dendritesVolume();
-      return float(meanDendVolume / _neurons.size());
-    }
+    float meanDendriteVolume( void ) const;
 
     /**
      * Method to get the mean dendrite.
      * @return the mean dendrite surface
      */
-    float meanDendriteSurface() const {
-      double meanDendSurface = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	meanDendSurface += (*nIt)->dendritesSurface();
-      return float(meanDendSurface / _neurons.size());
-    }
+    float meanDendriteSurface( void ) const;
 
     /**
      * Method to get the max soma volume.
      * @return the max soma volume
      */
-    float maxSomaVolume() const {
-      double maxSomaVolume = 0.0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	if ((*nIt)->soma().volume() > maxSomaVolume)
-	  maxSomaVolume = (*nIt)->soma().volume();
-      return (float) maxSomaVolume;
-    }
+    float maxSomaVolume( void ) const;
 
     /**
      * Method to get the max soma surface.
      * @return the max soma surface
      */
-    float maxSomaSurface() const {
-      double maxSomaSurface = 0.0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	if ((*nIt)->soma().surface() > maxSomaSurface)
-	  maxSomaSurface = (*nIt)->soma().surface();
-      return (float) maxSomaSurface;
-    }
+    float maxSomaSurface( void ) const;
 
     /**
      * Method to get the max dendrite volume.
      * @return the max dendrite volume
      */
-    float maxDendriteVolume() const {
-      double maxDendVolume = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	if ((*nIt)->dendritesVolume() > maxDendVolume)
-	  maxDendVolume = (*nIt)->dendritesVolume();
-      return (float) maxDendVolume;
-    }
+    float maxDendriteVolume( void ) const;
 
     /**
      * Method to get the max dendrite surface.
      * @return the max dendrite surface
      */
-    float maxDendriteSurface() const {
-      double maxDendSurface = 0;
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	if ((*nIt)->dendritesSurface() > maxDendSurface)
-	  maxDendSurface = (*nIt)->dendritesSurface();
-      return (float) maxDendSurface;
-    }
+    float maxDendriteSurface( void ) const;
 
-    unsigned int numDendriteBranches( void ) 
-    {   
-      unsigned int numBranches = 0;
-
-      for (Neurons::const_iterator nIt = _neurons.begin();
-	   nIt != _neurons.end(); nIt++)
-	numBranches += (*nIt)->numDendriteBranches();
-
-      return numBranches;
-    }
-
+    /**
+     * Method to compute the number of branches in dendrites
+     * @return number of branches
+     */
+    unsigned int numDendriteBranches( void );
 
   protected:
 
+    //! id of this minicolumn
     unsigned short _id;
-    ColumnPtr _column;					//Column
+
+    //! Pointer to the column this minicolumn belogns to
+    ColumnPtr _column;					
+
+    //!! Container of the neurons of this minicolumn
     Neurons _neurons;
 
   };
