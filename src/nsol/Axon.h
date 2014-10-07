@@ -10,19 +10,20 @@
 
 #include <nsol/Neurite.h>
 
-namespace nsol {
+namespace nsol 
+{
 
-  class Axon : public Neurite {
+  class Axon 
+    : public Neurite 
+  {
     
   public:
 
-    Axon () : Neurite(Neurite::AXON) {};
-    
+    Axon ( void );
 
     //! Return pointer as an Axon object
-    virtual Axon * asAxon() { return this; }
-
-    
+    virtual Axon * asAxon( void );
+   
   };
 
 }

@@ -3,118 +3,102 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ *          Do not distribute without further notice.
  */
 #ifndef __NSOL_SOMA__
 #define __NSOL_SOMA__
 
 #include <nsol/Container/Nodes.h>
 
-namespace nsol {
+namespace nsol 
+{
 
-class Soma {
+  //!  Class to represent the soma of neurons
+  /*!
+    This class represents the soma and holds a container of the nodes
+    that have been traced of its contour
+  */
+  class Soma 
+  {
 
-public:
-	Soma() :
-		_maxRadius(0.0)
-	{
-	}
+  public:
 
-	~Soma()
-	{
-		for (Vector<Node *>::iterator it = _nodes.begin();
-		it != _nodes.end(); ++it)
-		delete *it;
+    /**
+     * Default constructor
+     */
+    Soma( );
 
-		_nodes.clear();
-	}
+    /**
+     * Destructor
+     */
+    ~Soma( );
 
-	Vec3f & center(void)
-	{
-		return _center;
-	}
+    /**
+     * Method to get the center of the soma
+     * @return center of the soma
+     */
+    Vec3f center( void ) const;
 
-	Nodes & nodes(void)
-	{
-		return _nodes;
-	}
+    /**
+     * Method to get the container of nodes
+     * @return container with all the nodes of the soma
+     */
+    Nodes & nodes( void );
 
     /**
      * Method to get de max radius of the soma
      * @return max radius of the soma
      */
-	const float & maxRadius(void) const
-	{
-		return _maxRadius;
-	}
+    const float & maxRadius( void ) const;
 
-	void addNode(NodePtr node)
-	{
-		_nodes.push_back(node);
+    /**
+     * Method to add a node to the soma
+     * @param NodePtr pointer to the node to add
+     */
+    void addNode( NodePtr node );
+  
+    /**
+     * Method to create a node and add it to the soma
+     * @param xyz position of the node
+     * @param radius radius of the node
+     */
+    void addNode( Vec3f & xyz, float & radius );
+  
+    /**
+     * Method to compute and get the volume of the soma
+     * @return volume of the soma
+     */
+    float volume( void ) const;
+  
+    /**
+     * Method to compute and get the surface of the soma
+     * @return surface of the soma
+     */
+    float surface( void ) const;
 
-		recalculateCenter();
-		recalculateMaxRadius();
-	}
+  protected:
 
-	void addNode(Vec3f & xyz, float & radius)
-	{
-		this->addNode(new Node(xyz, radius));
+    //! Center of the soma
+    Vec3f _center;
 
-		recalculateCenter();
-		recalculateMaxRadius();
-	}
+    //! Container of nodes of the soma
+    Nodes _nodes;
 
-	float volume(void)
-	{
-		//TODO: use real volume soma formula, now use sphere volume formula
-		return M_4PI_3 * _maxRadius * _maxRadius * _maxRadius;
-	}
+    //! Maximum radius of the soma
+    float _maxRadius;
 
-	float surface(void)
-	{
-		//TODO: use real soma surface, now use sphere surface formula
-		return M_4PI * _maxRadius * _maxRadius;
-	}
+  private:
 
-protected:
+    
+    void _recalculateCenter( void );
+    void _recalculateMaxRadius( void );
 
-	Vec3f _center;
-	Nodes _nodes;
-	float _maxRadius;
 
-private:
+  }; // class Soma
 
-	void recalculateCenter(void)
-	{
-		Vec3f tmp = Vec3f(0,0,0);
+} // namespace nsol
 
-		//Recalculated soma center node
-		for (unsigned int it = 0; it < _nodes.size(); ++it)
-		tmp += _nodes[it]->point();
+#endif // __NSOL_SOMA__
 
-		_center = tmp /_nodes.size();
-	}
-
-  void recalculateMaxRadius(void)
-  {
-    if (_nodes.size() == 0)
-    {
-      _maxRadius = 0.0f;
-      return;
-    }
-
-    _maxRadius = _nodes[0]->radius();
-
-    for (unsigned int it = 1; it < _nodes.size(); ++it)
-    {
-      float mod = (_center - _nodes[it]->point()).length();
-
-      if (mod > _maxRadius)
-        _maxRadius = mod;
-    }
-  }
-};
-
-}
-
-#endif
+// EOF

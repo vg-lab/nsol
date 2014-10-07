@@ -305,7 +305,7 @@ namespace nsol
           first = false;
         }
         else
-          sgPre->begin(s->parent()->_lastSegment->end());
+          sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
         sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
@@ -365,9 +365,9 @@ namespace nsol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->addBranchCount(lines[id].childs.size());
+          d->_addBranchCount(lines[id].childs.size());
           //Plus new bifurcation
-          d->addBifurcationCount(1);
+          d->_addBifurcationCount(1);
 
           /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
           /*      it != lines[id].childs.rend(); it++) */
@@ -429,7 +429,7 @@ namespace nsol
           first = false;
         }
         else
-          sgPre->begin(s->parent()->_lastSegment->end());
+          sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
         sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
@@ -489,9 +489,9 @@ namespace nsol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->addBranchCount(lines[id].childs.size());
+          d->_addBranchCount(lines[id].childs.size());
           //Plus new bifurcation
-          d->addBifurcationCount(1);
+          d->_addBifurcationCount(1);
 
           /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
           /*      it != lines[id].childs.rend(); it++) */

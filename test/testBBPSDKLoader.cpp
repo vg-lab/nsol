@@ -25,16 +25,16 @@ int main(int argc, char *argv[])
 
 		cout << "soma surface: " << neuron->soma().surface() << endl;
 
-		for (vmml::matrix<4,4,float>::const_iterator it = neuron->transforM().begin();
-				it != neuron->transforM().end(); it++)
+		for (vmml::matrix<4,4,float>::const_iterator it = neuron->transform().begin();
+				it != neuron->transform().end(); it++)
 			cout << *it << endl;
 
 
 		NeuritePtr n = neuron->morphology()->neurites()[0];
-		std::cout << "soma center: " << neuron->transforM() *
+		std::cout << "soma center: " << neuron->transform() *
 				Vec4f(neuron->morphology()->soma().center(),1)   << std::endl;
 		std::cout << "soma first point: " << neuron->morphology()->soma().nodes()[0]->point() << std::endl;
-		std::cout << "first segment point: " << n->firstSection()->_firstSegment->begin()->point() << std::endl;
+		std::cout << "first segment point: " << n->firstSection()->firstSegment()->begin()->point() << std::endl;
 		std::cout << "Soma radius: " << neuron->morphology()->soma().maxRadius() << std::endl;
 		std::cout << "NumBranchs: " << neuron->numNeuriteBranches() << std::endl;
 		std::cout << "NumBifurcation: " << neuron->numNeuriteBifurcations() << std::endl;

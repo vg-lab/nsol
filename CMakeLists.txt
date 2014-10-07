@@ -1,10 +1,12 @@
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
 #   NSOL - NeuroScience Ontology Library
-#   2014 (c) Universidad Rey Juan Carlos
+#   2014 (c) GMRV / Universidad Rey Juan Carlos
+#   gmrv@gmrv.es
+#   www.gmrv.es
 #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 project(nsol)
 cmake_minimum_required(VERSION 2.8)
@@ -23,15 +25,19 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 
 # Custom flags for Release and Debug
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+set(CMAKE_CXX_FLAGS 
+  "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wno-unknown-pragmas")
+set(CMAKE_CXX_FLAGS_DEBUG 
+  "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 # Include directories
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${VMMLIB_INSTALL_DIR}/include) 
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src 
+  ${VMMLIB_INSTALL_DIR}/include ) 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # # # #
 # Find files to install 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # ## # # # # # # # # # # # # # # # # 
 file(GLOB DEPLOY_FILES_AND_DIRS 
 "${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/*"
 "${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Reader*"
@@ -50,15 +56,26 @@ foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
    endif()
 endforeach()
 install( FILES ${FILES_TO_DEPLOY} DESTINATION include/nsol )
-install( FILES ${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h DESTINATION include/nsol )
+install( FILES ${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h 
+  DESTINATION include/nsol )
 install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # #
 
 
 
 # Build library
-add_library (nsol 
+add_library (nsol SHARED
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Axon.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Column.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Dendrite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/MiniColumn.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Neurite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Neuron.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/NeuronMorphology.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Node.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Section.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Segment.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Soma.cpp
 )
 
 # BBPSDK setup
@@ -82,12 +99,17 @@ configure_file (
   )
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+set_target_properties(nsol
+  PROPERTIES VERSION ${nsol_VERSION} SOVERSION ${nsol_VERSION}
+)
+
 
 # Installation rules for both MSVC and UNIX
 if (MSVC)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nsol.lib DESTINATION lib)
 else()
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
+#  install(TARGETS ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
+  install(TARGETS nsol DESTINATION lib)
 endif()
 
 # Test subdirectory 
