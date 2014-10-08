@@ -83,6 +83,12 @@ set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
 set(Lunchbox_DIR "${BBPSDK_INSTALL_DIR}/share/Lunchbox/CMake")
 set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
 
+
+find_package(vmmlib REQUIRED)
+include_directories(${VMMLIB_INCLUDE_DIRS})
+
+
+ 
 find_package(BBPSDK)
 if (BBPSDK_FOUND)
   message(STATUS "BBPSDK found")
