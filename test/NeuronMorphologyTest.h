@@ -10,10 +10,14 @@ class NeuronMorphologyTest : public ::testing::Test {
  
 protected:
 
-  NeuronMorphologyTest()
+  nsol::NeuronMorphologyPtr nm;
+
+  NeuronMorphologyTest( void ) 
+    : nm( new nsol::NeuronMorphology )
   {
-    // You can do set-up work for each test here. 
   }
+  
+
 
   virtual ~NeuronMorphologyTest() 
   {
@@ -40,6 +44,15 @@ protected:
 TEST_F(NeuronMorphologyTest, firstTest) 
 {
   ASSERT_EQ(0,0); 
+
+  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
+
+  nsol::DendritePtr d = nm->addDendrite( );
+
+  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
+
+//  d->
+
 }
 
 

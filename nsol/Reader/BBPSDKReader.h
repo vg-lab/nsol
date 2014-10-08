@@ -107,7 +107,7 @@ namespace nsol {
 	cout << "Neuron " << it->label() << " with morphology "
 	     << it->morphology().label() << std::endl;
 
-	nsol::NeuronPtr n = new nsol::Neuron(false);		//New neuron
+	nsol::NeuronPtr n (new nsol::Neuron(false));		//New neuron
 	nVector.push_back(n);
 
 	bool miniColumnExist;
@@ -121,8 +121,9 @@ namespace nsol {
 	} else						//MiniColumn not exist
 	{
 	  miniColumnExist = false;
-	  miniColumnMap[it->minicolumn()] = new MiniColumn( nullptr,
-							    it->minicolumn());
+	  miniColumnMap[it->minicolumn()] = 
+	    MiniColumnPtr( new MiniColumn( nullptr,
+					   it->minicolumn()) );
 	  n->miniColumn(miniColumnMap[it->minicolumn()]);
 	}
 
@@ -131,7 +132,7 @@ namespace nsol {
 	  n->miniColumn()->column(columnMap[it->column()]);
 	else							//Column not exist
 	{
-	  columnMap[it->column()] = new Column(it->column());
+	  columnMap[it->column()] = ColumnPtr(new Column(it->column()));
 	  n->miniColumn()->column(columnMap[it->column()]);
 	}
 
@@ -154,7 +155,7 @@ namespace nsol {
 	  cout << "Loading morphology " << it->morphology().label()
 	       << endl;
 
-	  nsol::NeuronMorphologyPtr m = new nsol::NeuronMorphology;
+	  nsol::NeuronMorphologyPtr m ( new nsol::NeuronMorphology );
 
 	  nMorphoMap[it->morphology().label()] = m;
 	  n->morphology(m);
@@ -172,8 +173,8 @@ namespace nsol {
 	  for (bbp::Soma::const_iterator it = soma.begin();
 	       it != soma.end(); ++it) {
 
-	    m->soma().addNode(new Node(Vec3f((*it)[0], (*it)[1], (*it)[2]),
-				       id, soma.mean_radius()));
+	    m->soma().addNode(NodePtr( new Node(Vec3f((*it)[0], (*it)[1], (*it)[2]),
+						id, soma.mean_radius())));
 
 	    id++;
 	  }
@@ -213,7 +214,7 @@ namespace nsol {
 		SectionPtr parentSection = parents.top();
 		parents.pop();
 
-		SectionPtr s = new Section;
+		SectionPtr s ( new Section );
 		if (d)
 		{
 		  if (!d->firstSection())
@@ -240,22 +241,18 @@ namespace nsol {
 		{
 		  //TODO: select correct initial soma point
 		  segment->begin(
-		    new Node(
-		      Vec3f(0,
-			    0,
-			    0),
-		      1, 0.0));
+		    NodePtr( new Node( Vec3f(0, 0, 0),
+				       1, 0.0 )));
 		  first = false;
 		}
 		else
 		  segment->begin(s->parent()->lastSegment()->end());
 
 		segment->end(
-		  new Node(
-		    Vec3f(it->center()[0],
-			  it->center()[1],
-			  it->center()[2]),
-		    id, it->radius()));
+		  NodePtr( new Node( Vec3f(it->center()[0],
+					   it->center()[1],
+					   it->center()[2]),
+				     id, it->radius( ))));
 
 		nodePtrMap[id] = segment->end();
 
@@ -276,11 +273,11 @@ namespace nsol {
 		  segment->begin(nPre);
 
 		  segment->end(
-		    new Node(
-		      Vec3f(itL->center()[0],
-			    itL->center()[1],
-			    itL->center()[2]),
-		      id, itL->radius()));
+		    NodePtr( new Node(
+			       Vec3f(itL->center()[0],
+				     itL->center()[1],
+				     itL->center()[2]),
+			       id, itL->radius())));
 
 		  nodePtrMap[id] = segment->end();
 
@@ -426,7 +423,7 @@ namespace nsol {
 		     << " with morphology "
 		     << csvLine.morphoLabel << std::endl;
 
-		NeuronPtr n = new Neuron(false);		//New neuron
+		NeuronPtr n ( new Neuron( false ));		//New neuron
 		nVector.push_back(n);
 
 		bool miniColumnExist;
@@ -443,7 +440,7 @@ namespace nsol {
 		{
 		  miniColumnExist = false;
 		  miniColumnMap[csvLine.miniColumn] =
-		    new MiniColumn(nullptr, csvLine.miniColumn);
+		    MiniColumnPtr( new MiniColumn(nullptr, csvLine.miniColumn));
 		  n->miniColumn(
 		    miniColumnMap[csvLine.miniColumn]);
 		}
@@ -455,8 +452,8 @@ namespace nsol {
 		    columnMap[csvLine.column]);
 		else							//Column not exist
 		{
-		  columnMap[csvLine.column] = new Column(
-		    csvLine.column);
+		  columnMap[csvLine.column] = ColumnPtr ( new Column(
+							    csvLine.column));
 		  n->miniColumn()->column(
 		    columnMap[csvLine.column]);
 		}
@@ -518,5 +515,5 @@ namespace nsol {
   };
 }
 
-#endif
 #endif // WITH_BBPSDK
+#endif // __NSOL_BBPSDK_READER__

@@ -9,10 +9,10 @@
 #ifndef __NSOL_SECTION__
 #define __NSOL_SECTION__
 
-#include <nsol/NsolTypes.h>
-#include <nsol/Segment.h>
-#include <nsol/Container/Sections.h>
-#include <nsol/Container/Segments.h>
+#include "NsolTypes.h"
+#include "Segment.h"
+#include "Container/Sections.h"
+#include "Container/Segments.h"
 
 namespace nsol
 {

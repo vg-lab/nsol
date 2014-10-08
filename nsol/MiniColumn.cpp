@@ -36,7 +36,7 @@ namespace nsol
     if ( neuron )
       _neurons.push_back(neuron);
     else 
-      _neurons.push_back(new Neuron());
+      _neurons.push_back(NeuronPtr(new Neuron()));
 
     return _neurons.back();
   }

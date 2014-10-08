@@ -31,7 +31,7 @@ namespace nsol {
     TDendriteType & dendriteType( void );
     
     //! Return pointer to Dendrite object
-    virtual Dendrite * asDendrite( void );    
+    virtual DendritePtr asDendrite( void );    
     
   protected:
 

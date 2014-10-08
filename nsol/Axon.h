@@ -8,7 +8,7 @@
 #ifndef __NSOL_AXON__
 #define __NSOL_AXON__
 
-#include <nsol/Neurite.h>
+#include "Neurite.h"
 
 namespace nsol 
 {
@@ -22,7 +22,7 @@ namespace nsol
     Axon ( void );
 
     //! Return pointer as an Axon object
-    virtual Axon * asAxon( void );
+    virtual AxonPtr asAxon( void );
    
   };
 

@@ -28,24 +28,24 @@ namespace nsol
 
   Neurite::~Neurite( ) 
   {
-    if (_firstSection) 
-    {
-      std::stack<SectionPtr> sPS;
-      sPS.push(_firstSection);
+    // if (_firstSection) 
+    // {
+    //   std::stack<SectionPtr> sPS;
+    //   sPS.push(_firstSection);
       
-      while (!sPS.empty( )) 
-      {
-	SectionPtr lS = sPS.top( );
-	sPS.pop( );
+    //   while (!sPS.empty( )) 
+    //   {
+    // 	SectionPtr lS = sPS.top( );
+    // 	sPS.pop( );
 	  
-	if (lS->childs( ).size( ) > 0) {
-	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
-	    sPS.push(lS->childs( )[i]);
-	}
+    // 	if (lS->childs( ).size( ) > 0) {
+    // 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
+    // 	    sPS.push(lS->childs( )[i]);
+    // 	}
 	  
-	delete lS;
-      }
-    }
+    // 	delete lS;
+    //   }
+    // }
   }
   
   //! Get the type of neurite
@@ -67,7 +67,7 @@ namespace nsol
 
   bool Neurite::hasMorphology( ) 
   {
-    return _morphology;
+    return ( _morphology != nullptr );
   }
 
   SectionPtr Neurite::firstSection( ) {
@@ -191,13 +191,13 @@ namespace nsol
   // Casting virtual functions
 
   //! Return pointer to Dendrite objetc
-  Dendrite * Neurite::asDendrite( void ) 
+  DendritePtr Neurite::asDendrite( void ) 
   {
     return 0;
   }
 
   //! Return pointer to Dendrite objetc
-  Axon * Neurite::asAxon( void ) 
+  AxonPtr Neurite::asAxon( void ) 
   {
     return 0;
   }

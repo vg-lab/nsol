@@ -51,7 +51,7 @@ namespace nsol
 
     NeuronPtr readNeuron(const std::string fileName)
     {
-      return new Neuron(this->readFile(std::string(fileName)));
+      return NeuronPtr( new Neuron(this->readFile(std::string(fileName))));
     }
 
     NeuronMorphologyPtr readFile(const char *fileName)
@@ -76,7 +76,7 @@ namespace nsol
       std::string line;
       std::getline(inFile, line);
 
-      NeuronMorphologyPtr neuronMorphology = new NeuronMorphology;
+      NeuronMorphologyPtr neuronMorphology( new NeuronMorphology );
 
       std::map<unsigned int, TSwcLine> lines;
 
@@ -148,7 +148,7 @@ namespace nsol
       {
         if (it->second.type == SWC_SOMA)
         {
-          NodePtr node = new Node(it->second.xyz, it->second.id, it->second.radius);
+          NodePtr node( new Node(it->second.xyz, it->second.id, it->second.radius) );
           neuronMorphology->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
@@ -288,7 +288,7 @@ namespace nsol
         ids.pop();
 
         /* parentSection = s; */
-        s = new Section;
+        s = SectionPtr( new Section );
 
         if (!d->firstSection())
           d->firstSection(s);  //->addSection();
@@ -308,7 +308,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
+        sgPre->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius )));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -344,7 +344,7 @@ namespace nsol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(new Node(lines[id].xyz, id, lines[id].radius));
+          sg->end(NodePtr(new Node(lines[id].xyz, id, lines[id].radius)));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
@@ -410,7 +410,7 @@ namespace nsol
         ids.pop();
 
         /* parentSection = s; */
-        s = new Section;
+        s = SectionPtr( new Section );
 
         if (!d->firstSection())
           d->firstSection(s);  //->addSection();
@@ -432,7 +432,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(new Node(lines[id].xyz, id, lines[id].radius));
+        sgPre->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius)));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -468,7 +468,7 @@ namespace nsol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(new Node(lines[id].xyz, id, lines[id].radius));
+          sg->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius)));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;

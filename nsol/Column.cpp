@@ -10,10 +10,10 @@ namespace nsol {
 
   Column::~Column() 
   {
-    for (Vector<MiniColumn *>::iterator it = _miniColumns.begin();
+/*    for (Vector<MiniColumnPtr>::iterator it = _miniColumns.begin();
 	 it != _miniColumns.end(); ++it)
       delete *it;
-
+*/
     _miniColumns.clear();
   }
 
@@ -24,7 +24,8 @@ namespace nsol {
 
   MiniColumnPtr Column::addMiniColumn(unsigned short id)
   {
-    _miniColumns.push_back(new MiniColumn(this, id));
+    ColumnPtr col( this );
+    _miniColumns.push_back( MiniColumnPtr( new MiniColumn(col , id )));
     return _miniColumns.back();
   }
 
