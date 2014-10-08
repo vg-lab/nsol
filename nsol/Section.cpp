@@ -207,7 +207,7 @@ namespace nsol
       {
 	sP->end(sP->next()->end());
 	sP->next()->_removeNodes();
-#ifndef WITH_SHARED_PTR
+#ifndef NSOL_WITH_SHARED_PTR
 	delete sP->next();
 #endif
       }
@@ -215,7 +215,7 @@ namespace nsol
       {
 	sP->_removeNodes();
 	sP->prev()->end(sP->next()->end());
-#ifndef WITH_SHARED_PTR
+#ifndef NSOL_WITH_SHARED_PTR
 	delete sP->next();
 	delete sP;
 #endif

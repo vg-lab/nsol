@@ -5,3 +5,4 @@
 
 //#cmakedefine WITH_BBPSDK
 
+#define NSOL_WITH_SHARED_PTR @NSOL_WITH_SHARED_PTR@

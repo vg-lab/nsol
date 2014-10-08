@@ -33,7 +33,9 @@ set(CMAKE_CXX_FLAGS_DEBUG
 # Include directories
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/ 
-  ${VMMLIB_INSTALL_DIR}/include ) 
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${VMMLIB_INSTALL_DIR}/include
+) 
 
 # # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # # # #
 # Find files to install 
@@ -78,9 +80,11 @@ ${CMAKE_CURRENT_SOURCE_DIR}/nsol/Segment.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/nsol/Soma.cpp
 )
 
+option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 
 if (WITH_SHARED_PTR)
-  add_definitions(-DWITH_SHARED_PTR)
+#  add_definitions(-DWITH_SHARED_PTR)
+set(NSOL_WITH_SHARED_PTR 1)
 endif()
 
 # BBPSDK setup
@@ -108,7 +112,6 @@ configure_file (
   "${CMAKE_CURRENT_SOURCE_DIR}/nsol/NsolConfig.h.in"
   "${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h"
   )
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set_target_properties(nsol
   PROPERTIES VERSION ${nsol_VERSION} SOVERSION ${nsol_VERSION}
