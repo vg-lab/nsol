@@ -18,9 +18,9 @@ namespace nsol
 
   NeuronMorphology::~NeuronMorphology( void )
   {
-    for (Neurites::iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      delete *it;
+    // for (Neurites::iterator it = _neurites.begin( );
+    // 	 it != _neurites.end( ); ++it)
+    //   delete *it;
     
     _neurites.clear( );
   }
@@ -29,9 +29,9 @@ namespace nsol
   NeuronMorphology::addNeurite( Neurite::TNeuriteType neuriteType )
   {
     if ( neuriteType == Neurite::DENDRITE )
-      _neurites.push_back( new Dendrite( ));
+      _neurites.push_back( DendritePtr( new Dendrite( )));
     else if ( neuriteType == Neurite::AXON )
-      _neurites.push_back( new Axon( ));
+      _neurites.push_back( AxonPtr( new Axon( )));
     else
       return nullptr;
     
@@ -39,16 +39,16 @@ namespace nsol
   }
 
 
-  Dendrite * 
+  DendritePtr 
   NeuronMorphology::addDendrite( Dendrite::TDendriteType dendriteType )
   {
-    _neurites.push_back( new Dendrite( dendriteType ));
+    _neurites.push_back( DendritePtr( new Dendrite( dendriteType )));
     return _neurites.back( )->asDendrite( );
   }
 
-  Axon * NeuronMorphology::addAxon( void )
+  AxonPtr NeuronMorphology::addAxon( void )
   {
-    _neurites.push_back(new Axon( ));
+    _neurites.push_back( AxonPtr( new Axon( )));
     return _neurites.back( )->asAxon( );
   }
 
@@ -284,7 +284,7 @@ namespace nsol
     return dendrites;
   }
 
-  Dendrite * NeuronMorphology::apicalDendrite( void ) const
+  DendritePtr NeuronMorphology::apicalDendrite( void ) const
   {
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)

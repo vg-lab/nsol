@@ -1,21 +1,21 @@
 /**
- * @file    Segments.h
+ * @file    Sections.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NSOL_SEGMENTS__
-#define __NSOL_SEGMENTS__
+#ifndef __NSOL_SECTIONS__
+#define __NSOL_SECTIONS__
 
-#include <nsol/Segment.h>
+#include "../Section.h"
 
 namespace nsol {
 
 
 
 
-  class Segments : public Vector<SegmentPtr> {
+  class Sections : public Vector<SectionPtr> {
     
 
   protected:

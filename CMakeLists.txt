@@ -26,23 +26,23 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 # Custom flags for Release and Debug
 set(CMAKE_CXX_FLAGS 
-  "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wno-unknown-pragmas")
+  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-unknown-pragmas")
 set(CMAKE_CXX_FLAGS_DEBUG 
   "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 # Include directories
 include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/src 
+  ${CMAKE_CURRENT_SOURCE_DIR}/ 
   ${VMMLIB_INSTALL_DIR}/include ) 
 
 # # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # # # #
 # Find files to install 
 # # # # # # # # # # # # # # # # # # # # ## # # # # # # # # # # # # # # # # 
 file(GLOB DEPLOY_FILES_AND_DIRS 
-"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/*"
-"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Reader*"
-"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Writer/*"
-"${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Container/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/nsol/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Reader*"
+"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Writer/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Container/*"
 )
 
 foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
@@ -65,18 +65,23 @@ install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
 
 # Build library
 add_library (nsol SHARED
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Axon.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Column.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Dendrite.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/MiniColumn.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Neurite.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Neuron.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/NeuronMorphology.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Node.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Section.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Segment.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/Soma.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Axon.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Column.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Dendrite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/MiniColumn.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Neurite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Neuron.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/NeuronMorphology.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Node.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Section.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Segment.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/nsol/Soma.cpp
 )
+
+
+if (WITH_SHARED_PTR)
+  add_definitions(-DWITH_SHARED_PTR)
+endif()
 
 # BBPSDK setup
 set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
@@ -94,7 +99,7 @@ endif()
 
 # Configure file 
 configure_file (
-  "${CMAKE_CURRENT_SOURCE_DIR}/src/nsol/NsolConfig.h.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/nsol/NsolConfig.h.in"
   "${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h"
   )
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

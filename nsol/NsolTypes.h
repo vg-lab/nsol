@@ -8,6 +8,9 @@
 #ifndef __NSOL_TYPES__
 #define __NSOL_TYPES__
 
+#include <memory>
+
+
 #include <list>
 #include <vector>
 
@@ -51,8 +54,9 @@ namespace nsol
   typedef vmml::matrix<4, 4, float> Matrix4_4f;
   typedef vmml::vector<4, float> Vec4f;
 
-  class Dendrite;
+  class Axon;
   class Column;
+  class Dendrite;
   class MiniColumn;
   class Neurite;
   class Neuron;
@@ -61,10 +65,26 @@ namespace nsol
   class Section;
   class Segment;
 
+
   //! Definition of pointers to objects
-#if !BOOST
-  typedef Dendrite * DendritePtr;
+#ifdef WITH_SHARED_PTR
+
+  typedef std::shared_ptr<Axon> AxonPtr;
+  typedef std::shared_ptr<Column> ColumnPtr;
+  typedef std::shared_ptr<Dendrite> DendritePtr;
+  typedef std::shared_ptr<MiniColumn> MiniColumnPtr;
+  typedef std::shared_ptr<Neurite> NeuritePtr;
+  typedef std::shared_ptr<Neuron> NeuronPtr;
+  typedef std::shared_ptr<NeuronMorphology> NeuronMorphologyPtr;
+  typedef std::shared_ptr<Node> NodePtr;
+  typedef std::shared_ptr<Section> SectionPtr;
+  typedef std::shared_ptr<Segment> SegmentPtr;
+  
+#else
+  
+  typedef Axon * AxonPtr;
   typedef Column * ColumnPtr;
+  typedef Dendrite * DendritePtr;
   typedef MiniColumn * MiniColumnPtr;
   typedef Neurite * NeuritePtr;
   typedef Neuron * NeuronPtr;
@@ -72,16 +92,7 @@ namespace nsol
   typedef Node * NodePtr;
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
-#else
-typedef boost::shared_ptr<Dendrite> * DendritePtr;
-typedef boost::shared_ptr<Column> * ColumnPtr;
-typedef boost::shared_ptr<MiniColumn> * MiniColumnPtr;
-typedef boost::shared_ptr<Neurite> * NeuritePtr;
-typedef boost::shared_ptr<Neuron> * NeuronPtr;
-typedef boost::shared_ptr<NeuronMorphology> * NeuronMorphologyPtr;
-typedef boost::shared_ptr<Node> * NodePtr;
-typedef boost::shared_ptr<Section> * SectionPtr;
-typedef boost::shared_ptr<Segment> * SegmentPtr;
+
 #endif
 
 }

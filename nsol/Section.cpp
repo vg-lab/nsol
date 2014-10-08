@@ -22,17 +22,17 @@ namespace nsol
 
   Section::~Section()
   {
-    if (_firstSegment)
-    {
-      SegmentPtr sP = _firstSegment;
+    // if (_firstSegment)
+    // {
+    //   SegmentPtr sP = _firstSegment;
     
-      while (sP)
-      {
-	SegmentPtr next = sP->_next;
-	delete sP;
-	sP = next;
-      }
-    }
+    //   while (sP)
+    //   {
+    // 	SegmentPtr next = sP->_next;
+    // 	delete sP;
+    // 	sP = next;
+    //   }
+    // }
   }
 
   NeuritePtr Section::neurite(void)
@@ -69,7 +69,7 @@ namespace nsol
   SegmentPtr Section::addSegment(void)
   {
 
-    SegmentPtr s = new Segment;
+    SegmentPtr s = SegmentPtr( new Segment );
 
     s->begin(NULL);
     s->end(NULL);
@@ -207,15 +207,18 @@ namespace nsol
       {
 	sP->end(sP->next()->end());
 	sP->next()->_removeNodes();
+#ifndef WITH_SHARED_PTR
 	delete sP->next();
+#endif
       }
       else
       {
 	sP->_removeNodes();
 	sP->prev()->end(sP->next()->end());
-
+#ifndef WITH_SHARED_PTR
 	delete sP->next();
 	delete sP;
+#endif
       }
 
       return 1;

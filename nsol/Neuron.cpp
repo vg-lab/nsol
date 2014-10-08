@@ -21,7 +21,7 @@ namespace nsol
 
   {
     if (createMorphology)
-      _morphology = new NeuronMorphology;
+      _morphology = NeuronMorphologyPtr( new NeuronMorphology );
   }
 
     Neuron::Neuron( const NeuronMorphologyPtr neuronMorphology,
@@ -54,7 +54,7 @@ namespace nsol
 		<< "warning, morphology already exist" 
 		<< std::endl;
     
-    _morphology = new NeuronMorphology;
+    _morphology = NeuronMorphologyPtr( new NeuronMorphology );
     
     return _morphology;
   }
@@ -77,7 +77,7 @@ namespace nsol
     return _morphology->addNeurite(neuriteType);
   }
 
-  Dendrite * Neuron::addDendrite( Dendrite::TDendriteType dendriteType )
+  DendritePtr Neuron::addDendrite( Dendrite::TDendriteType dendriteType )
   {
     if ( !this->hasMorphology( ) )
       throw std::runtime_error("No morphology in neuron object");
@@ -85,7 +85,7 @@ namespace nsol
     return _morphology->addDendrite(dendriteType);
   }
 
-  Axon *Neuron::addAxon()
+  AxonPtr Neuron::addAxon()
   {
     if ( !this->hasMorphology( ) )
       throw std::runtime_error("No morphology in neuron object");
@@ -288,7 +288,7 @@ namespace nsol
     return _morphology->apicalDendrites();
   }
 
-  Dendrite * Neuron::apicalDendrite( void )
+  DendritePtr Neuron::apicalDendrite( void )
   {
     if ( !this->hasMorphology( ) )
       throw std::runtime_error("No morphology in neuron object");

@@ -93,8 +93,8 @@ namespace nsol
       unsigned int type;
 
       //Writing neurites
-      for (Vector<Neurite *>::iterator it = neurites.begin();
-      it != neurites.end(); ++it)
+      for (Neurites::iterator it = neurites.begin();
+	   it != neurites.end(); ++it)
       {
         if ((*it)->asDendrite())
         {

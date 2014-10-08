@@ -9,8 +9,8 @@
 #ifndef __NSOL_NEURITE__
 #define __NSOL_NEURITE__
 
-#include <nsol/NsolTypes.h>
-#include <nsol/Section.h>
+#include "NsolTypes.h"
+#include "Section.h"
 
 namespace nsol {
 
@@ -66,10 +66,10 @@ namespace nsol {
     // Casting virtual functions
 
     //! Return pointer to Dendrite object
-      virtual Dendrite * asDendrite( void ); 
+    virtual DendritePtr asDendrite( void ); 
 
     //! Return pointer to Axon object
-    virtual Axon * asAxon( void ); 
+    virtual AxonPtr asAxon( void ); 
 
   protected:
 

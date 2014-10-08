@@ -20,7 +20,7 @@ namespace nsol
   {
 
   public:
-    Column(unsigned short id = 0) ;
+    Column(unsigned short id = 0);
     ~Column() ;
 
     /**

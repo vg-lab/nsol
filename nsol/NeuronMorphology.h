@@ -53,14 +53,14 @@ namespace nsol
      * @see ndsl::Dendrite::TDendriteType
      * @return pointer to the added dendrite
      */
-    Dendrite * addDendrite( Dendrite::TDendriteType dendriteType = 
-			    Dendrite::BASAL );
+    DendritePtr addDendrite( Dendrite::TDendriteType dendriteType = 
+			     Dendrite::BASAL );
 
     /**
      * Method to add a new axon to the neuron.
      * @return pointer to the added axon
      */
-    Axon * addAxon( void );
+    AxonPtr addAxon( void );
 
     unsigned int numNeurites( void ) const;
 
@@ -129,7 +129,7 @@ namespace nsol
      * @see Neurite::TNeuriteType
      * @return pointer to the added dendrite
      */
-    Dendrite * apicalDendrite( void ) const;
+    DendritePtr apicalDendrite( void ) const;
 
     Neurites & neurites( void );
 

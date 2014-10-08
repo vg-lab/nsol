@@ -13,7 +13,8 @@
 
 namespace nsol {
 
-  class MiniColumns : public Vector<MiniColumnPtr> {
+  class MiniColumns : public Vector< MiniColumnPtr > 
+  {
 
 
   protected:

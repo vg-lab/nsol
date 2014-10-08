@@ -20,9 +20,9 @@ namespace nsol
 
   Soma::~Soma( )
   {
-    for (Vector<Node *>::iterator it = _nodes.begin();
-	 it != _nodes.end(); ++it)
-      delete *it;
+    // for (Nodes::iterator it = _nodes.begin();
+    // 	 it != _nodes.end(); ++it)
+    //   delete *it;
     
     _nodes.clear();
   }
@@ -52,7 +52,7 @@ namespace nsol
   
   void Soma::addNode( Vec3f & xyz, float & radius )
   {
-    this->addNode(new Node(xyz, radius));
+    this->addNode( NodePtr( new Node( xyz, radius )));
     
     _recalculateCenter();
     _recalculateMaxRadius();
