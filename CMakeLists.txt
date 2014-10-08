@@ -85,6 +85,8 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 if (WITH_SHARED_PTR)
 #  add_definitions(-DWITH_SHARED_PTR)
 set(NSOL_WITH_SHARED_PTR 1)
+else()
+set(NSOL_WITH_SHARED_PTR 0)
 endif()
 
 # BBPSDK setup
