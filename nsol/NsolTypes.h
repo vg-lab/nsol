@@ -69,7 +69,7 @@ namespace nsol
 
 
 
-#ifdef NSOL_WITH_SHARED_PTR
+#if (NSOL_WITH_SHARED_PTR == 1)
   typedef std::shared_ptr<Axon> AxonPtr;
   typedef std::shared_ptr<Column> ColumnPtr;
   typedef std::shared_ptr<Dendrite> DendritePtr;
@@ -82,7 +82,6 @@ namespace nsol
   typedef std::shared_ptr<Segment> SegmentPtr;
   
 #else
-  
   typedef Axon * AxonPtr;
   typedef Column * ColumnPtr;
   typedef Dendrite * DendritePtr;
