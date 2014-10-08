@@ -19,6 +19,8 @@
 #include <vmmlib/vector.hpp>
 #include <vmmlib/matrix.hpp>
 
+#include <nsol/NsolConfig.h>
+
 /* #include <boost/geometry/geometries/point.hpp> */
 
 namespace nsol
@@ -66,9 +68,8 @@ namespace nsol
   class Segment;
 
 
-  //! Definition of pointers to objects
-#ifdef WITH_SHARED_PTR
 
+#ifdef NSOL_WITH_SHARED_PTR
   typedef std::shared_ptr<Axon> AxonPtr;
   typedef std::shared_ptr<Column> ColumnPtr;
   typedef std::shared_ptr<Dendrite> DendritePtr;
