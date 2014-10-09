@@ -1,0 +1,20 @@
+# - Config file for the nsol package
+# It defines the following variables
+#  NSOL_INCLUDE_DIRS - include directories for FooBar
+#  NSOL_LIBRARIES    - libraries to link against
+ 
+# Compute paths
+get_filename_component(NSOL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(NSOL_INCLUDE_DIRS "@INSTALL_INCLUDE_DIR@")
+ 
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET nsol AND NOT NSOL_BINARY_DIR)
+  include("${NSOL_CMAKE_DIR}/nsolTargets.cmake")
+endif()
+ 
+# These are IMPORTED targets created by nsolTargets.cmake
+set(NSOL_LIBRARIES nsol)
+
+
+message(STATUS "Using nsol @nsol_VERSION@ ")
+
