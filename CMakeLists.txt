@@ -1,4 +1,3 @@
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
 #   NSOL - NeuroScience Ontology Library
@@ -7,16 +6,19 @@
 #   www.gmrv.es
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 project(nsol)
 cmake_minimum_required(VERSION 2.8)
 
+# Add CMake dir to the module path
+list(APPEND CMAKE_MODULE_PATH 
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+
 # Version numbers
-set(nsol_VERSION_MAJOR 0)
-set(nsol_VERSION_MINOR 1)
-set(nsol_VERSION_PATCH 0)
-set(nsol_VERSION
-    ${nsol_VERSION_MAJOR}.${nsol_VERSION_MINOR}.${nsol_VERSION_PATCH})
+set(${PROJECT_NAME}_VERSION_MAJOR 0)
+set(${PROJECT_NAME}_VERSION_MINOR 1)
+set(${PROJECT_NAME}_VERSION_PATCH 0)
+set(${PROJECT_NAME}_VERSION
+    ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
 
 # Default build type is Debug 
 if(NOT CMAKE_BUILD_TYPE)
@@ -30,20 +32,34 @@ set(CMAKE_CXX_FLAGS
 set(CMAKE_CXX_FLAGS_DEBUG 
   "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
+# Install dirs
+set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+set(INSTALL_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/CMake)
+
 # Include directories
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/ 
   ${CMAKE_CURRENT_BINARY_DIR}
 ) 
 
+
+option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
+
+if (WITH_SHARED_PTR)
+  set(NSOL_WITH_SHARED_PTR 1)
+else()
+  set(NSOL_WITH_SHARED_PTR 0)
+endif()
+
 # # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # # # #
 # Find files to install 
 # # # # # # # # # # # # # # # # # # # # ## # # # # # # # # # # # # # # # # 
 file(GLOB DEPLOY_FILES_AND_DIRS 
-"${CMAKE_CURRENT_SOURCE_DIR}/nsol/*"
-"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Reader*"
-"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Writer/*"
-"${CMAKE_CURRENT_SOURCE_DIR}/nsol/Container/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Reader*"
+"${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Writer/*"
+"${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Container/*"
 )
 
 foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
@@ -56,36 +72,37 @@ foreach(ITEM ${DEPLOY_FILES_AND_DIRS})
      endif()
    endif()
 endforeach()
-install( FILES ${FILES_TO_DEPLOY} DESTINATION include/nsol )
-install( FILES ${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h 
-  DESTINATION include/nsol )
-install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/nsol )
+install( FILES ${FILES_TO_DEPLOY} DESTINATION include/${CMAKE_PROJECT_NAME} )
+install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}/config.h 
+  DESTINATION include/${CMAKE_PROJECT_NAME} )
+install( DIRECTORY ${DIRS_TO_DEPLOY} DESTINATION include/${CMAKE_PROJECT_NAME} )
 # # # # # # # # # # # # # # # # # # # # # #  # # # # # # # # # # # # # # #
+
+# Configure file 
+configure_file (
+  "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/config.h.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/config.h"
+  )
 
 
 # Build library
-add_library (nsol SHARED
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Axon.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Column.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Dendrite.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/MiniColumn.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Neurite.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Neuron.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/NeuronMorphology.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Node.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Section.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Segment.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/nsol/Soma.cpp
+add_library (${PROJECT_NAME} SHARED
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Axon.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Column.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Dendrite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/MiniColumn.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Neurite.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Neuron.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/NeuronMorphology.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Node.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Section.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Segment.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Soma.cpp
+)
+set_target_properties(${CMAKE_PROJECT_NAME}
+  PROPERTIES VERSION ${${CMAKE_PROJECT_NAME}_VERSION} SOVERSION ${${CMAKE_PROJECT_NAME}_VERSION}
 )
 
-option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
-
-if (WITH_SHARED_PTR)
-#  add_definitions(-DWITH_SHARED_PTR)
-set(NSOL_WITH_SHARED_PTR 1)
-else()
-set(NSOL_WITH_SHARED_PTR 0)
-endif()
 
 # BBPSDK setup
 #set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
@@ -103,98 +120,23 @@ if (BBPSDK_FOUND)
   # message(STATUS "BBPSDK found")
   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
   include_directories(${BBPSDK_INCLUDE_DIRS})
-  target_link_libraries(nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
+  target_link_libraries(${PROJECT_NAME} ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
   add_definitions(-DWITH_BBPSDK)
 endif()
 
-# Configure file 
-configure_file (
-  "${CMAKE_CURRENT_SOURCE_DIR}/nsol/NsolConfig.h.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/nsol/NsolConfig.h"
-  )
+# Install rules
+include(InstallLibrary)
 
-set_target_properties(nsol
-  PROPERTIES VERSION ${nsol_VERSION} SOVERSION ${nsol_VERSION}
-)
-
-
-set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-set(INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
-set(INSTALL_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/share/nsol/CMake)
-
-install(TARGETS nsol
-  EXPORT nsolTargets
-  DESTINATION ${INSTALL_LIB_DIR}
-  COMPONENT dev)
-
-
-# Installation rules for both MSVC and UNIX
-# if (MSVC)
-# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nsol.lib DESTINATION lib)
-# else()
-# #  install(TARGETS ${CMAKE_CURRENT_BINARY_DIR}/libnsol.a DESTINATION lib)
-#   install(TARGETS nsol DESTINATION lib)
-# endif()
+# Doxygen documentation generation
+include(Doxygen)
 
 # Test subdirectory 
 add_subdirectory(test)
 
-
-# Doxygen documentation generation
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E make_directory "doc"
-    RESULT_VARIABLE nok ERROR_VARIABLE error
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
-  if(nok)
-    message(FATAL_ERROR "Error making building dir in " ${CMAKE_CURRENT_BINARY_DIR}": ${nok}\n")
-  endif()
-
-  configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile
-    ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)
-
-
-  add_custom_target(doc
-    COMMAND ${DOXYGEN_EXECUTABLE} 
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/doc"
-    )
-
-endif()
+# Export library
+include(ExportLibrary)
 
 
 
 
-# Add all targets to the build-tree export set
-export(TARGETS nsol
-  FILE "${PROJECT_BINARY_DIR}/nsolTargets.cmake")
- 
-# Export the package for use from the build-tree
-# (this registers the build-tree with a global CMake-registry)
-export(PACKAGE nsol)
- 
-# Create the nsolConfig.cmake and nsolConfigVersion files
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
-   "${INSTALL_INCLUDE_DIR}")
-# ... for the build tree
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-configure_file(CMake/nsolConfig.cmake.in
-  "${PROJECT_BINARY_DIR}/nsolConfig.cmake" @ONLY)
-# ... for the install tree
-set(CONF_INCLUDE_DIRS "\${FOOBAR_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(CMake/nsolConfig.cmake.in
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nsolConfig.cmake" @ONLY)
-# ... for both
-configure_file(CMake/nsolConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/nsolConfigVersion.cmake" @ONLY)
- 
-# Install the FooBarConfig.cmake and FooBarConfigVersion.cmake
-install(FILES
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nsolConfig.cmake"
-  "${PROJECT_BINARY_DIR}/nsolConfigVersion.cmake"
-  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
- 
-# Install the export set for use with the install-tree
-install(EXPORT nsolTargets DESTINATION
-  "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+

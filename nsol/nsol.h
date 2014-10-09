@@ -8,7 +8,7 @@
 #ifndef __NSOL_NSOL__
 #define __NSOL_NSOL__
 
-#include <nsol/NsolConfig.h>
+#include <nsol/config.h>
 
 // Ontology elements
 #include <nsol/Axon.h>

@@ -19,7 +19,7 @@
 #include <vmmlib/vector.hpp>
 #include <vmmlib/matrix.hpp>
 
-#include <nsol/NsolConfig.h>
+#include <nsol/config.h>
 
 /* #include <boost/geometry/geometries/point.hpp> */
 
