@@ -12,13 +12,18 @@
 namespace nsol
 {
 
-  Neuron::Neuron( bool createMorphology ) 
+  Neuron::Neuron( bool createMorphology,
+		  const unsigned short layer,
+		  const unsigned int gid, 
+		  const Matrix4_4f transform,
+		  const MiniColumnPtr miniColumn,
+    		  const Neuron::TNeuronType type )
     : _morphology( nullptr )
-    , _miniColumn( nullptr )
-    , _transform( Matrix4_4f::IDENTITY )
-    , _layer( 0 )
-    , _gid( 0 )
-
+    , _miniColumn( miniColumn )
+    , _transform( transform )
+    , _layer( layer )
+    , _gid( gid )
+    , _type( type )
   {
     if (createMorphology)
       _morphology = NeuronMorphologyPtr( new NeuronMorphology );
@@ -28,12 +33,15 @@ namespace nsol
 		    const unsigned short layer,
 		    const unsigned int gid,
 		    const Matrix4_4f transform,
-		    const MiniColumnPtr miniColumn )
+		    const MiniColumnPtr miniColumn,
+		    const Neuron::TNeuronType type )
+
       : _morphology( neuronMorphology )
       , _miniColumn( miniColumn )
       , _transform( transform )
       , _layer( layer )
       , _gid( gid )
+      , _type( type )
     {
     }
 
@@ -81,6 +89,9 @@ namespace nsol
   {
     if ( !this->hasMorphology( ) )
       throw std::runtime_error("No morphology in neuron object");
+
+    if ( dendriteType == Dendrite::APICAL )
+      _type = PYRAMIDAL;
 
     return _morphology->addDendrite(dendriteType);
   }
@@ -338,12 +349,15 @@ namespace nsol
     return _miniColumn;
   }
 
-  Neuron::TNeuronType Neuron::neuronType( void )
+  Neuron::TNeuronType & Neuron::neuronType( void )
   {
-    if (this->apicalDendrites()->size() == 0)
-      return PYRAMIDAL;
-    else
-      return INTER;
+    // if (this->apicalDendrites()->size() == 0)
+    //   assert( PYRAMIDAL == _type);
+    // else
+    //   assert( INTER == _type);
+
+    return _type;
+
   };
 
 

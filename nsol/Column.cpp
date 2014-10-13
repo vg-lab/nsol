@@ -2,7 +2,7 @@
 
 namespace nsol {
 
-
+  
   Column::Column(unsigned short id) 
   {
     _id = id;
@@ -22,12 +22,35 @@ namespace nsol {
     _miniColumns.push_back(miniColumn);
   }
 
-  MiniColumnPtr Column::addMiniColumn(unsigned short id)
+  bool Column::removeMiniColumn(MiniColumnPtr miniColumn)
   {
-    ColumnPtr col( this );
-    _miniColumns.push_back( MiniColumnPtr( new MiniColumn(col , id )));
-    return _miniColumns.back();
+    MiniColumns::iterator mcIt = 
+      find (_miniColumns.begin( ), _miniColumns.end( ), miniColumn);
+
+    if ( mcIt == _miniColumns.end( ))
+      return false;
+
+    _miniColumns.erase( mcIt );
+    return true;
   }
+
+  void Column::clearMiniColumns( void )
+  {
+    _miniColumns.clear( );
+  }
+
+
+
+  // MiniColumnPtr Column::addMiniColumn(unsigned short id)
+  // {
+  //   {
+  //     ColumnPtr col( this );
+  //   }
+  //   ColumnPtr col2( this );
+  //   std::cout << col2.get() << " " << col2.use_count() << std::endl;
+  //   _miniColumns.push_back( MiniColumnPtr( new MiniColumn( col2 , id )));
+  //   return _miniColumns.back();
+  // }
 
   unsigned short & Column::id(void)
   {
@@ -44,17 +67,40 @@ namespace nsol {
     return _miniColumns.size();
   }
 
-  float Column::meanSomaVolume () const
+  const unsigned int Column::numberOfNeurons(bool all, 
+					     Neuron::TNeuronType neuronType,
+					     unsigned int layer) 
+    const 
   {
-    double meanSomaVolume = 0;
+    unsigned int nNeurons = 0;
+    
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
-      meanSomaVolume += (*mcIt)->meanSomaVolume();
-    return float(meanSomaVolume / _miniColumns.size());
+      nNeurons += (*mcIt)->numberOfNeurons(all, neuronType, layer);
+
+    return nNeurons;
+  
+  }
+
+  float Column::meanSomaVolume () const
+  {
+    if ( _miniColumns.size() == 0 ) 
+      return 0.0f;
+
+    double meanSomaVolume = 0;
+
+    for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
+	 mcIt != _miniColumns.end(); mcIt++)
+      meanSomaVolume += (*mcIt)->meanSomaVolume( );
+
+    return float(meanSomaVolume / float(_miniColumns.size( )));
   }
 
   float Column::meanSomaSurface() const
   {
+    if ( _miniColumns.size() == 0 ) 
+      return 0.0f;
+
     double meanSomaSurface = 0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
@@ -64,6 +110,9 @@ namespace nsol {
 
   float Column::meanDendriteVolume() const
   {
+    if ( _miniColumns.size() == 0 ) 
+      return 0.0f;
+
     double meanDendVolume = 0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
@@ -73,6 +122,9 @@ namespace nsol {
 
   float Column::meanDendriteSurface() const
   {
+    if ( _miniColumns.size() == 0 ) 
+      return 0.0f;
+
     double meanDendSurface = 0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
@@ -118,23 +170,6 @@ namespace nsol {
       if ((*mcIt)->maxDendriteSurface())
 	maxDendSurface = (*mcIt)->maxDendriteSurface();
     return (float)maxDendSurface;
-  }
-
-
-
-  const unsigned int Column::numberOfNeurons(bool all, 
-					     Neuron::TNeuronType neuronType,
-					     unsigned int layer) 
-    const 
-  {
-    unsigned int nNeurons = 0;
-    
-    for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
-	 mcIt != _miniColumns.end(); mcIt++)
-      nNeurons += (*mcIt)->numberOfNeurons(all, neuronType, layer);
-
-    return nNeurons;
-  
   }
 
   unsigned int Column::numDendriteBranches( void ) const 

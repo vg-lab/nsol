@@ -21,6 +21,10 @@ if (BBPSDK_FOUND)
   add_definitions(-DWITH_BBPSDK)
 endif()
 
+add_executable(test2 test2.cpp)
+target_link_libraries(test2 nsol)
+
+
 enable_testing()
 
 #find_package(gtest REQUIRED)

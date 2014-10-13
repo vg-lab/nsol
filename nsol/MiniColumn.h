@@ -55,11 +55,14 @@ namespace nsol
     unsigned short & id( void );
 
     /**
-     * Method to get the number of neuron in te mini column.
-     * @param all all neuron o filtered group of neurons
-     * @param neuronType type of neuron
-     * @param layer count neurons in that layer. If 0 all layers counter.
-     * @return neuron that macth the type
+     * Method to get the number of neurons in the minicolumn.
+     * @param all if this is true all neurons are counted
+     * @param neuronType if "all" is false neurons of the 
+     *        passed type will be counted
+     * @param layer if "all" is false neurons of the 
+     *        layer will be counted. If later is 0 then all 
+     *        neurons of all layers will be counted.
+     * @return number of neurons that match the criteria
      */
     unsigned int numberOfNeurons(bool all = true, 
 				 Neuron::TNeuronType neuronType =

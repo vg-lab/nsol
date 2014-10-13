@@ -86,15 +86,23 @@ namespace nsol
 
   float MiniColumn::meanSomaVolume( void ) const 
   {
+    if ( _neurons.size() == 0 ) 
+      return 0.0f;
+
     double meanSomaVolume = 0;
+
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
       meanSomaVolume += (*nIt)->soma( ).volume( );
+
     return float(meanSomaVolume / _neurons.size( ));
   }
 
   float MiniColumn::meanSomaSurface( ) const 
   {
+    if ( _neurons.size() == 0 ) 
+      return 0.0f;
+
     double meanSomaSurface = 0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
@@ -104,6 +112,9 @@ namespace nsol
 
   float MiniColumn::meanDendriteVolume( void ) const 
   {
+    if ( _neurons.size() == 0 ) 
+      return 0.0f;
+
     double meanDendVolume = 0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
@@ -113,6 +124,9 @@ namespace nsol
 
   float MiniColumn::meanDendriteSurface( void ) const 
   {
+    if ( _neurons.size() == 0 ) 
+      return 0.0f;
+
     double meanDendSurface = 0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)

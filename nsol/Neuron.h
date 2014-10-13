@@ -30,19 +30,25 @@ namespace nsol
   public:
 
     //! Type of dendrite
-    typedef enum TNeuronType {PYRAMIDAL = 0, INTER} TNeuronType;
+    typedef enum {PYRAMIDAL = 0, INTER} TNeuronType;
 
     /**
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-    Neuron(bool createMorphology = true);
+    Neuron( bool createMorphology = true,
+	    const unsigned short layer = 0,
+	    const unsigned int gid = 0,
+	    const Matrix4_4f transform = Matrix4_4f::IDENTITY,
+	    const MiniColumnPtr miniColumn = nullptr,
+	    const TNeuronType type = PYRAMIDAL);
 
     Neuron(const NeuronMorphologyPtr neuronMorphology,
            const unsigned short layer = 0,
            const unsigned int gid = 0,
            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-           const MiniColumnPtr miniColumn = nullptr);
+           const MiniColumnPtr miniColumn = nullptr,
+	   const TNeuronType type = PYRAMIDAL);
 
 
     ~Neuron( void );
@@ -179,7 +185,7 @@ namespace nsol
      * Method to get the neuron type.
      * @return neuron type
      */
-    TNeuronType neuronType();
+    TNeuronType & neuronType();
 
 
   protected:
@@ -193,6 +199,9 @@ namespace nsol
     unsigned short _layer; //> Layer
 
     unsigned int _gid; //> Neuron id
+
+    TNeuronType _type;
+
   };
 
 
