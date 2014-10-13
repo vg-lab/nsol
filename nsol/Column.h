@@ -16,105 +16,164 @@
 namespace nsol 
 {
 
+  /*! \class Column
+    \brief A class to represent columns.
+
+    Columns provides pointers to minicolumns and methods 
+    for different morphological values computation.
+  */
   class Column 
   {
 
   public:
-    Column(unsigned short id = 0);
-    ~Column() ;
+    
+    /** @name Constructors and destructors  */
+    ///@{
 
     /**
-     * Method to add a mini column.
+     * Default constructor 
+     * @param id id of the column. 
      */
-    void addMiniColumn(MiniColumnPtr miniColumn);
+    Column( unsigned short id = 0 );
 
     /**
-     * Method to add a new mini column.
-     * @return pointer to the added mini column
+     * Default destructur
+     * @param id id of the column. 
      */
-    MiniColumnPtr addMiniColumn(unsigned short id = 0);
+    ~Column( void ) ;
+
+    ///@}
+
+    /** @name Id related methods */
+    ///@{
 
     /**
      * Method to get-set the column id.
      * @return reference to column id
      */
-    unsigned short & id(void);
+    unsigned short & id( void );
+
+    ///@}
+
+    /** @name MiniColumn related methods */
+    ///@{
+
+    /**
+     * Method to add a mini column.
+     * @param miniColumn minicolumn to add to this column
+     */
+    void addMiniColumn( MiniColumnPtr miniColumn );
+
+    /**
+     * Method to add a mini column.
+     */
+    bool removeMiniColumn( MiniColumnPtr miniColumn );
+
+    /**
+     * Method to clear mini columns.
+     */
+    void clearMiniColumns( void );
 
     /**
      * Method to get minicolumns.
      * @return minicolumns of the column
      */
-    MiniColumns &miniColumns();
+    MiniColumns & miniColumns( void );
 
     /**
      * Method to get the number of minicolumns.
      * @return numbers of minicolumns
      */
-    const unsigned int numberOfMiniColumns(void) const;
+    const unsigned int numberOfMiniColumns( void ) const;
+
+    ///@}
+
+    /** @name Morphological measures */
+    ///@{
+
+    /**
+     * Method to get the number of neurons in the column.
+     * @param all if this is true all neurons are counted
+     * @param neuronType if "all" is false neurons of the 
+     *        passed type will be counted
+     * @param layer if "all" is false neurons of the 
+     *        layer will be counted. If later is 0 then all 
+     *        neurons of all layers will be counted.
+     * @return number of neurons that match the criteria
+     */
+    const unsigned int 
+    numberOfNeurons( const bool all = true, 
+		     const Neuron::TNeuronType neuronType =
+		     Neuron::PYRAMIDAL,
+		     const unsigned int layer = 0 ) const;
+
 
     /**
      * Method to get the mean soma volume.
      * @return the mean soma volume
      */
-    float meanSomaVolume() const;
+    float meanSomaVolume( void ) const;
 
     /**
      * Method to get the mean soma surface.
      * @return the mean soma surface
      */
-    float meanSomaSurface() const;
+    float meanSomaSurface( void ) const;
 
     /**
      * Method to get the mean dendrite volume.
      * @return the mean dendrite volume
      */
-    float meanDendriteVolume() const;
+    float meanDendriteVolume( void ) const;
 
     /**
      * Method to get the mean dendrite surface.
      * @return the mean dendrite surface
      */
-    float meanDendriteSurface() const;
+    float meanDendriteSurface( void ) const;
 
     /**
      * Method to get the max soma volume.
      * @return the max soma volume
      */
-    float maxSomaVolume() const;
+    float maxSomaVolume( void ) const;
 
     /**
      * Method to get the max soma surface.
      * @return the max soma surface
      */
-    float maxSomaSurface() const;
+    float maxSomaSurface( void ) const;
 
     /**
      * Method to get the max dendrite volume.
      * @return the max dendrite volume
      */
-    float maxDendriteVolume() const;
+    float maxDendriteVolume( void ) const;
 
     /**
      * Method to get the max dendrite surface.
      * @return the max dendrite surface
      */
-    float maxDendriteSurface() const;
+    float maxDendriteSurface( void ) const;
 
-
-    const unsigned int numberOfNeurons(bool all = true, 
-				       Neuron::TNeuronType neuronType =
-				       Neuron::PYRAMIDAL,
-				       unsigned int layer = 0) const;
-    
+    /**
+     * Method to get the number of branches in dendrites.
+     * @return number of branches in dendrites
+     */    
     unsigned int numDendriteBranches( void ) const;
 
+    ///@}
 
   protected:
 
+    //! Identifier of the column
     unsigned short _id;
+
+    //! Container of minicolumns
     MiniColumns _miniColumns;
-  };
 
-}
+  }; // class Column
+} // namespace nsol
 
-#endif
+#endif // __NSOL_COLUMN__
+// EOF

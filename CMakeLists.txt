@@ -9,6 +9,10 @@
 project(nsol)
 cmake_minimum_required(VERSION 2.8)
 
+# Add CMake dir to the module path
+list(APPEND CMAKE_MODULE_PATH 
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+
 # Option to build with shared pointers or raw pointers
 option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 if (WITH_SHARED_PTR)
@@ -18,10 +22,7 @@ else()
 endif()
 
 
-# Add CMake dir to the module path
-list(APPEND CMAKE_MODULE_PATH 
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
-
+# Standard configs like version, debug as default
 include(StandardConfig)
 
 # Custom flags for Release and Debug
@@ -29,7 +30,6 @@ set(CMAKE_CXX_FLAGS
   "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-unknown-pragmas")
 set(CMAKE_CXX_FLAGS_DEBUG 
   "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-
 
 # Find package vmmlib which is required
 find_package(vmmlib REQUIRED)
