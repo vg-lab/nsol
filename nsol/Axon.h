@@ -22,7 +22,7 @@ namespace nsol
     Axon ( void );
 
     //! Return pointer as an Axon object
-    virtual AxonPtr asAxon( void );
+    // virtual Axon * asAxon( void );
    
   };
 

@@ -6,6 +6,8 @@
 
 #include <nsol/NeuronMorphology.h>
 
+using namespace nsol;
+
 class NeuronMorphologyTest : public ::testing::Test {
  
 protected:
@@ -45,11 +47,13 @@ TEST_F(NeuronMorphologyTest, firstTest)
 {
   ASSERT_EQ(0,0); 
 
-//  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
+  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
 
-//  nsol::DendritePtr d = nm->addDendrite( );
+  DendritePtr d = nm->addDendrite( );
 
-//  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
+  NeuritePtr n(d);
+
+  ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
 
 //  d->
 

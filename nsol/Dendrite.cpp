@@ -26,10 +26,10 @@ namespace nsol
   }
     
   //! Return pointer as a Dendrite object
-  DendritePtr Dendrite::asDendrite( void ) 
-  { 
-    return DendritePtr(this);
-  }      
+  // Dendrite * Dendrite::asDendrite( void ) 
+  // { 
+  //   return this; // DendritePtr(this);
+  // }      
 
 } // namespace nsol
 

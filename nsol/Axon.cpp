@@ -18,10 +18,10 @@ namespace nsol
   {
   }
      
-  AxonPtr Axon::asAxon( void )
-  {
-    return AxonPtr(this);
-  }
+  // Axon * Axon::asAxon( void )
+  // {
+  //   return this; // AxonPtr(this);
+  // }
 
 }
 

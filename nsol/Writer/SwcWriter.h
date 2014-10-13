@@ -96,14 +96,14 @@ namespace nsol
       for (Neurites::iterator it = neurites.begin();
 	   it != neurites.end(); ++it)
       {
-        if ((*it)->asDendrite())
+        if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
         {
-          if ((*it)->asDendrite()->dendriteType() == Dendrite::APICAL)
+          if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::APICAL)
             type = SWC_APICAL;
-          else if ((*it)->asDendrite()->dendriteType() == Dendrite::BASAL)
+          else if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::BASAL)
             type = SWC_DENDRITE;
         }
-        else if ((*it)->asAxon())
+        else if (NSOL_DYNAMIC_CAST( Axon, *it ))
           type = SWC_AXON;
 
         SectionPtr fSection = (*it)->firstSection();

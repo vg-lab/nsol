@@ -2,11 +2,21 @@
 
 namespace nsol {
 
+
+  //
+  // Constructors and destructors
+  //
   
   Column::Column(unsigned short id) 
   {
     _id = id;
   }
+
+
+  Column::Column( const Column & other ) 
+    : _id( other.id( ))
+    , _miniColumns( other.miniColumns( ))
+  {}
 
   Column::~Column() 
   {
@@ -41,23 +51,54 @@ namespace nsol {
 
 
 
-  // MiniColumnPtr Column::addMiniColumn(unsigned short id)
-  // {
-  //   {
-  //     ColumnPtr col( this );
-  //   }
-  //   ColumnPtr col2( this );
-  //   std::cout << col2.get() << " " << col2.use_count() << std::endl;
-  //   _miniColumns.push_back( MiniColumnPtr( new MiniColumn( col2 , id )));
-  //   return _miniColumns.back();
-  // }
+  //
+  // Operators
+  //
+
+  Column & Column::operator = (const Column & other)
+  {
+    if (this != &other) 
+    {
+      this->id( ) = other.id( );
+      this->miniColumns( ) = other.miniColumns( );
+    }
+    
+    return *this;
+  }
+  
+  bool Column::operator == (Column & other ) const
+  {
+    return ( ( this->id( ) == other.id( ) ) && 
+	     ( this->miniColumns( ) == other.miniColumns( )));
+  }
+  
+  bool Column::operator != (Column & other ) const
+  {
+    return !( ( this->id( ) == other.id( ) ) && 
+	      ( this->miniColumns( ) == other.miniColumns( )));
+  }
+  
+
+  //
+  // Morphological measures methods
+  //
 
   unsigned short & Column::id(void)
   {
     return _id;
   }
 
+  unsigned short Column::id(void) const
+  {
+    return _id;
+  }
+
   MiniColumns & Column::miniColumns()
+  {
+    return _miniColumns;
+  }
+
+  MiniColumns Column::miniColumns() const 
   {
     return _miniColumns;
   }

@@ -69,6 +69,8 @@ namespace nsol
 
 
 
+
+
 #if (NSOL_WITH_SHARED_PTR == 1)
   typedef std::shared_ptr<Axon> AxonPtr;
   typedef std::shared_ptr<Column> ColumnPtr;
@@ -80,6 +82,9 @@ namespace nsol
   typedef std::shared_ptr<Node> NodePtr;
   typedef std::shared_ptr<Section> SectionPtr;
   typedef std::shared_ptr<Segment> SegmentPtr;
+
+#define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
+  std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
   
 #else
   typedef Axon * AxonPtr;
@@ -92,6 +97,10 @@ namespace nsol
   typedef Node * NodePtr;
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
+
+#define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
+  dynamic_cast< __TYPE__ * >( __SOURCE__ )
+
 
 #endif
 

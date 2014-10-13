@@ -37,6 +37,12 @@ namespace nsol
     Column( unsigned short id = 0 );
 
     /**
+     * Copy constructor 
+     * @param other column to be copied
+     */   
+    Column( const Column & other );
+    
+    /**
      * Default destructur
      * @param id id of the column. 
      */
@@ -52,6 +58,13 @@ namespace nsol
      * @return reference to column id
      */
     unsigned short & id( void );
+
+    /**
+     * Method to get the column id.
+     * @return reference to column id
+     */
+    unsigned short id( void ) const;
+
 
     ///@}
 
@@ -81,12 +94,29 @@ namespace nsol
     MiniColumns & miniColumns( void );
 
     /**
+     * Method to get minicolumns as const.
+     * @return minicolumns of the column
+     */
+    MiniColumns miniColumns( void ) const;
+
+    /**
      * Method to get the number of minicolumns.
      * @return numbers of minicolumns
      */
     const unsigned int numberOfMiniColumns( void ) const;
 
     ///@}
+
+
+    /** @name Operators */
+    ///@{
+
+    Column & operator = (const Column & other);
+    bool operator == (Column & other ) const;
+    bool operator != (Column & other ) const;
+
+    ///@}
+ 
 
     /** @name Morphological measures */
     ///@{
