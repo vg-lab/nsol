@@ -191,16 +191,16 @@ namespace nsol
   // Casting virtual functions
 
   //! Return pointer to Dendrite objetc
-  DendritePtr Neurite::asDendrite( void ) 
-  {
-    return 0;
-  }
+  // Dendrite * Neurite::asDendrite( void ) 
+  // {
+  //   return 0;
+  // }
 
-  //! Return pointer to Dendrite objetc
-  AxonPtr Neurite::asAxon( void ) 
-  {
-    return 0;
-  }
+  // //! Return pointer to Dendrite objetc
+  // Axon * Neurite::asAxon( void ) 
+  // {
+  //   return 0;
+  // }
 
   void Neurite::_addBifurcationCount( unsigned int numBifurcations ) 
   {

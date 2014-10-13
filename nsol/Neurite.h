@@ -66,10 +66,10 @@ namespace nsol {
     // Casting virtual functions
 
     //! Return pointer to Dendrite object
-    virtual DendritePtr asDendrite( void ); 
+    // virtual Dendrite * asDendrite( void ); 
 
-    //! Return pointer to Axon object
-    virtual AxonPtr asAxon( void ); 
+    // //! Return pointer to Axon object
+    // virtual Axon * asAxon( void ); 
 
   protected:
 

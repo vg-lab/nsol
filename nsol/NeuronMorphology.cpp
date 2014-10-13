@@ -22,7 +22,7 @@ namespace nsol
     // 	 it != _neurites.end( ); ++it)
     //   delete *it;
     
-    _neurites.clear( );
+//    _neurites.clear( );
   }
 
   NeuritePtr 
@@ -42,14 +42,16 @@ namespace nsol
   DendritePtr 
   NeuronMorphology::addDendrite( Dendrite::TDendriteType dendriteType )
   {
-    _neurites.push_back( DendritePtr( new Dendrite( dendriteType )));
-    return _neurites.back( )->asDendrite( );
+    DendritePtr dend( new Dendrite( dendriteType ));
+    _neurites.push_back( dend );
+    return dend;
   }
 
   AxonPtr NeuronMorphology::addAxon( void )
   {
-    _neurites.push_back( AxonPtr( new Axon( )));
-    return _neurites.back( )->asAxon( );
+    AxonPtr axon( new Axon( ));
+    _neurites.push_back( axon );
+    return axon;
   }
 
   
@@ -64,7 +66,8 @@ namespace nsol
     
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( )) nd++;
+      if ( NSOL_DYNAMIC_CAST( Dendrite, *it )) 
+	nd++;
     
     return nd;
   }
@@ -86,7 +89,7 @@ namespace nsol
     
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
+      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
 	nb += (*it)->numBranches( );
     
     return nb;
@@ -98,7 +101,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if  ((*it)->asAxon( ))
+      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
 	nb += (*it)->numBranches( );
 
     return nb;
@@ -121,7 +124,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
+      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
 	nb += (*it)->numBifurcations( );
 
     return nb;
@@ -133,7 +136,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if  ((*it)->asAxon( ))
+      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
 	nb += (*it)->numBifurcations( );
 
     return nb;
@@ -155,9 +158,10 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
+    {
+      if ( NSOL_DYNAMIC_CAST( Dendrite, *it ) ) // std::dynamic_pointer_cast< Dendrite >( ( *it ))) // (*it)->asDendrite( ))
 	volume += (*it)->volume( );
-
+    }
     return volume;
   }
 
@@ -167,7 +171,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asAxon( ))
+      if (NSOL_DYNAMIC_CAST( Axon, *it ))
 	volume += (*it)->volume( );
 
     return volume;
@@ -189,7 +193,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
+      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
 	surface += (*it)->surface( );
 
     return surface;
@@ -201,7 +205,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asAxon( ))
+      if (NSOL_DYNAMIC_CAST( Axon, *it ))
 	surface += (*it)->surface( );
 
     return surface;
@@ -223,7 +227,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
+      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
 	length += (*it)->length( );
 
     return length;
@@ -235,7 +239,7 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asAxon( ))
+      if (NSOL_DYNAMIC_CAST( Axon, *it ))
 	length += (*it)->length( );
 
     return length;
@@ -247,9 +251,16 @@ namespace nsol
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
-      if ((*it)->asDendrite( ))
-	dendrites->push_back((*it)->asDendrite( ));
+    {
 
+      DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
+
+      if ( dend )
+      {
+//	dendrites->push_back((*it)->asDendrite( ));
+	dendrites->push_back( dend );
+      }
+    }
     return dendrites;
   }
 
@@ -261,9 +272,10 @@ namespace nsol
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
     {
-      if ((*it)->asDendrite( ) &&
-	  ((*it)->asDendrite( )->dendriteType( ) == Dendrite::BASAL))
-	dendrites->push_back((*it)->asDendrite( ));
+      DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
+      if ( dend && 
+	   ( dend->dendriteType( ) == Dendrite::BASAL ))
+	dendrites->push_back( dend );
     }
 
     return dendrites;
@@ -276,9 +288,10 @@ namespace nsol
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
     {
-      if ((*it)->asDendrite( ) &&
-	  ((*it)->asDendrite( )->dendriteType( ) == Dendrite::APICAL))
-	dendrites->push_back((*it)->asDendrite( ));
+      DendritePtr dend = NSOL_DYNAMIC_CAST ( Dendrite, *it );
+      if ( dend && 
+	   ( dend->dendriteType( ) == Dendrite::APICAL ))
+	dendrites->push_back( dend );
     }
 
     return dendrites;
@@ -289,9 +302,10 @@ namespace nsol
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
     {
-      if ((*it)->asDendrite( ) &&
-	  ((*it)->asDendrite( )->dendriteType( ) == Dendrite::APICAL))
-        return (*it)->asDendrite( );
+      DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
+      if ( dend && 
+	   ( dend->dendriteType( ) == Dendrite::APICAL ))
+        return dend;
     }
 
     return NULL;
