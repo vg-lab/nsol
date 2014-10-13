@@ -55,7 +55,7 @@ namespace nsol
 
     /**
      * Method to get-set the column id.
-     * @return reference to column id
+     * @return column id
      */
     unsigned short & id( void );
 
@@ -78,7 +78,9 @@ namespace nsol
     void addMiniColumn( MiniColumnPtr miniColumn );
 
     /**
-     * Method to add a mini column.
+     * Method to remove a mini column.
+     * @param miniColumn pointer to the minicolumn to be removed
+     * @return true if minicolumn removed false otherwise
      */
     bool removeMiniColumn( MiniColumnPtr miniColumn );
 

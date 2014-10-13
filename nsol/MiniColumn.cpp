@@ -12,6 +12,11 @@
 namespace nsol 
 {
 
+
+  //
+  // Constructors and destructors
+  //
+
   MiniColumn::MiniColumn( const ColumnPtr column, 
 			  const unsigned short id ) 
     : _id( id )
@@ -20,6 +25,12 @@ namespace nsol
     _column = column;
     _id = id;
   }
+
+  MiniColumn::MiniColumn( const MiniColumn & other ) 
+    : _id( other.id( ))
+    , _column( other.column( ))
+    , _neurons( other.neurons( ))
+  {}
 
   MiniColumn::~MiniColumn( void ) 
   {
@@ -41,7 +52,29 @@ namespace nsol
     return _neurons.back();
   }
 
+  bool MiniColumn::removeNeuron( NeuronPtr neuron )
+  {
+    Neurons::iterator nIt = 
+      find (_neurons.begin( ), _neurons.end( ), neuron);
+
+    if ( nIt == _neurons.end( ))
+      return false;
+
+    _neurons.erase( nIt );
+    return true;
+  }
+
+  void MiniColumn::clearNeurons( void )
+  {
+    _neurons.clear( );
+  }
+
   Neurons & MiniColumn::neurons( void ) 
+  {
+    return _neurons;
+  }
+
+  Neurons MiniColumn::neurons( void ) const
   {
     return _neurons;
   }
@@ -60,6 +93,12 @@ namespace nsol
   {
     return _id;
   }
+
+  unsigned short MiniColumn::id( void ) const
+  {
+    return _id;
+  }
+
 
   unsigned int 
   MiniColumn::numberOfNeurons( bool all, 
@@ -83,6 +122,39 @@ namespace nsol
       return nNeurons;
     }
   }
+
+  //
+  // Operators
+  //
+
+  MiniColumn & MiniColumn::operator = (const MiniColumn & other)
+  {   
+    if (this != &other) 
+    {
+      this->id( ) = other.id( );
+      this->column( other.column( ) );
+      this->neurons( ) = other.neurons( );
+    }
+    
+    return *this;
+  }
+
+  bool MiniColumn::operator == (MiniColumn & other ) const
+  {
+    return  ( ( this->id( ) == other.id( ) ) &&
+	      ( this->column( ) == other.column( )) &&
+	      ( this->neurons( ) == other.neurons( )));
+  }
+
+  bool MiniColumn::operator != (MiniColumn & other ) const
+  {
+    return ! ( *this == other );
+  }
+
+
+  //
+  // Morphological measures methods
+  //  
 
   float MiniColumn::meanSomaVolume( void ) const 
   {

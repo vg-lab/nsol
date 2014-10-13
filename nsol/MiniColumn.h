@@ -14,27 +14,61 @@
 namespace nsol 
 {
 
+  /*! \class MiniColumn
+    \brief A class to represent minicolumns.
+
+    Columns provides pointers to neurons and methods 
+    for different morphological values computation.
+  */
   class MiniColumn 
   {
 
   public:
+
+    /** @name Constructors and destructors  */
+    ///@{
+
+    /**
+     * Default constructor 
+     * @param column pointer to parent column. 
+     * @param id id of the minicolumn. 
+     */
     MiniColumn( const ColumnPtr column = nullptr, 
 		const unsigned short id = 0 ); 
 
+    /**
+     * Copy constructor 
+     * @param other column to be copied
+     */   
+    MiniColumn( const MiniColumn & other );
+    
+    /**
+     * Default destructur
+     * @param id id of the column. 
+     */
     ~MiniColumn();
 
-    /**
-     * Method to add a neuron. If null value passed a new neuron is created
-     * @param neuron pointer to neuron to add. If null new neuron is created
-     * @return pointer to the added neuron
-     */
-    NeuronPtr addNeuron( NeuronPtr neuron = nullptr );
+    ///@}
+
+    /** @name Id related methods */
+    ///@{
 
     /**
-     * Method to get neurons.
-     * @return neurons of the mimi column
+     * Method to get-set mini column id.
+     * @return refenrence to mini column id
      */
-    Neurons & neurons( void );
+    unsigned short & id( void );
+
+    /**
+     * Method to get the column id as const.
+     * @return id of the minicolumn
+     */
+    unsigned short id( void ) const;
+
+    ///@}
+
+    /** @name Column related methods */
+    ///@{
 
     /**
      * Method to set the column of this minicolumn
@@ -46,13 +80,45 @@ namespace nsol
      * Method to get the column of this minicolumn
      * @return pointer to the column
      */
-    ColumnPtr column(void) const;
+    ColumnPtr column( void ) const;
+
+    ///@}
+
+
+    /** @name Neuron related methods */
+    ///@{
 
     /**
-     * Method to get-set mini column id.
-     * @return refenrence to mini column id
+     * Method to add a neuron. If null value passed a new neuron is created
+     * @param neuron pointer to neuron to add. If null new neuron is created
+     * @return pointer to the added neuron
      */
-    unsigned short & id( void );
+    NeuronPtr addNeuron( NeuronPtr neuron = nullptr );
+
+    /**
+     * Method to remove a neuron.
+     * @param neuron pointer to the neuron to be removed
+     * @return true if neuron removed false otherwise
+     */
+    bool removeNeuron( NeuronPtr neuron );
+
+    /**
+     * Method to get neurons.
+     * @return neurons of the mimi column
+     */
+    Neurons & neurons( void );
+
+    /**
+     * Method to get neurons.
+     * @return neurons of the mimi column
+     */
+    Neurons neurons( void ) const;
+
+    /**
+     * Method to clear the neurons container.
+     */
+    void clearNeurons( void );
+
 
     /**
      * Method to get the number of neurons in the minicolumn.
@@ -69,6 +135,21 @@ namespace nsol
 				 Neuron::PYRAMIDAL,
 				 unsigned int layer = 0 ) const;
   
+
+    ///@}
+
+    /** @name Operators */
+    ///@{
+
+    MiniColumn & operator = (const MiniColumn & other);
+    bool operator == (MiniColumn & other ) const;
+    bool operator != (MiniColumn & other ) const;
+
+    ///@}
+ 
+
+    /** @name Morphological measures */
+    ///@{
 
     /**
      * Method to get the mean soma volume.
@@ -123,6 +204,8 @@ namespace nsol
      * @return number of branches
      */
     unsigned int numDendriteBranches( void );
+
+    ///@}
 
   protected:
 
