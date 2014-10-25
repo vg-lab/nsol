@@ -57,7 +57,7 @@ namespace nsol
   
   unsigned int NeuronMorphology::numNeurites( void ) const
   {
-    return _neurites.size( );
+    return ( unsigned int ) _neurites.size( );
   }
 
   unsigned int NeuronMorphology::numDendrites( void ) const

@@ -9,10 +9,11 @@
 #ifndef __NSOL_SECTION__
 #define __NSOL_SECTION__
 
-#include "NsolTypes.h"
-#include "Segment.h"
-#include "Container/Sections.h"
-#include "Container/Segments.h"
+#include <nsol/api.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Segment.h>
+#include <nsol/Container/Sections.h>
+#include <nsol/Container/Segments.h>
 
 namespace nsol
 {
@@ -23,36 +24,53 @@ namespace nsol
   {
 
   public:
+
+    NSOL_API
     Section();
 
+    NSOL_API
     ~Section();
 
+    NSOL_API
     NeuritePtr neurite(void);
 
+    NSOL_API
     void neurite(NeuritePtr neurite);
 
+    NSOL_API
     SectionPtr parent(void);
 
+    NSOL_API
     void parent(SectionPtr parent);
 
+    NSOL_API
     void addChild(SectionPtr section);
 
+    NSOL_API
     Sections & childs();
 
+    NSOL_API
     SegmentPtr addSegment(void);
 
+    NSOL_API
     SegmentPtr & firstSegment();
 
+    NSOL_API
     SegmentPtr & lastSegment();
 
+    NSOL_API
     float volume(void);
 
+    NSOL_API
     float surface(void);
 
+    NSOL_API
     float length(void);
 
+    NSOL_API
     unsigned int fuseSection(void);
 
+    NSOL_API
     float meanRadius(void);
 
   protected:

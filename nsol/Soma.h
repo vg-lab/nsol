@@ -9,6 +9,7 @@
 #ifndef __NSOL_SOMA__
 #define __NSOL_SOMA__
 
+#include <nsol/api.h>
 #include <nsol/Container/Nodes.h>
 
 namespace nsol 
@@ -27,35 +28,41 @@ namespace nsol
     /**
      * Default constructor
      */
+    NSOL_API
     Soma( );
 
     /**
      * Destructor
      */
+    NSOL_API
     ~Soma( );
 
     /**
      * Method to get the center of the soma
      * @return center of the soma
      */
+    NSOL_API
     Vec3f center( void ) const;
 
     /**
      * Method to get the container of nodes
      * @return container with all the nodes of the soma
      */
+    NSOL_API
     Nodes & nodes( void );
 
     /**
      * Method to get de max radius of the soma
      * @return max radius of the soma
      */
+    NSOL_API
     const float & maxRadius( void ) const;
 
     /**
      * Method to add a node to the soma
      * @param NodePtr pointer to the node to add
      */
+    NSOL_API
     void addNode( NodePtr node );
   
     /**
@@ -63,18 +70,21 @@ namespace nsol
      * @param xyz position of the node
      * @param radius radius of the node
      */
+    NSOL_API
     void addNode( Vec3f & xyz, float & radius );
   
     /**
      * Method to compute and get the volume of the soma
      * @return volume of the soma
      */
+    NSOL_API
     float volume( void ) const;
   
     /**
      * Method to compute and get the surface of the soma
      * @return surface of the soma
      */
+    NSOL_API
     float surface( void ) const;
 
   protected:

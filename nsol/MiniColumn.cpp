@@ -106,7 +106,7 @@ namespace nsol
 			       unsigned int layer) const 
   {
     if (all)
-      return _neurons.size( );
+      return (unsigned int) _neurons.size( );
     else 
     {
       unsigned int nNeurons = 0;
