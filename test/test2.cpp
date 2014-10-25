@@ -61,6 +61,9 @@ int main ( void )
   {
     MiniColumnPtr mc2 ( new MiniColumn );
     
+    // needed in release mode to avoid warning
+    mc2;
+
     assert( c->removeMiniColumn( mc2 ) == false );
     assert( c->miniColumns( ).size( ) == 1);
     assert( c->miniColumns( ).size( ) == c->numberOfMiniColumns( ));
@@ -75,7 +78,7 @@ int main ( void )
   #define NUM_NEURONS_PYR_PER_LAYER 10
   #define NUM_NEURONS_INT_PER_LAYER 8
   unsigned int gid = 0;
-  for ( int i = 0 ; i < NUM_MINICOLS ; i++ )
+  for ( unsigned short i = 0 ; i < NUM_MINICOLS ; i++ )
   {
     c->addMiniColumn( MiniColumnPtr( new MiniColumn ( c, i )));
   }
@@ -85,15 +88,15 @@ int main ( void )
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
 	mcIt != miniCols.end( ); mcIt++ )
   {
-    for ( int l = 1 ; l < 7 ; l++ )
+    for ( unsigned short l = 1 ; l < 7 ; l++ )
     {
-      for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
+      for ( unsigned short j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
       {
 	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
 						     Matrix4_4f::IDENTITY, 
 						     *mcIt, Neuron::PYRAMIDAL )));	
       }
-      for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
+      for ( unsigned short j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
 	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
 						     Matrix4_4f::IDENTITY, 

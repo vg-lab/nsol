@@ -93,7 +93,7 @@ namespace nsol
 	   child != lS->childs( ).end( ); child++)
       {
 	numBranchs++;
-	numBifur += lS->childs( ).size( );
+	numBifur += ( unsigned int ) lS->childs( ).size( );
 
 	sPS.push(*child);
       }

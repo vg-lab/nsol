@@ -26,8 +26,13 @@ endif()
 include(StandardConfig)
 
 # Custom flags for Release and Debug
-set(CMAKE_CXX_FLAGS 
-  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-unknown-pragmas")
+if (MSVC)
+	set(CMAKE_CXX_FLAGS 
+		"${CMAKE_CXX_FLAGS} -W4")
+else()
+	set(CMAKE_CXX_FLAGS 
+		"${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-unknown-pragmas")
+endif()
 set(CMAKE_CXX_FLAGS_DEBUG 
   "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
@@ -60,6 +65,14 @@ ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/Soma.cpp
 )
 set_target_properties(${CMAKE_PROJECT_NAME}
   PROPERTIES VERSION ${${CMAKE_PROJECT_NAME}_VERSION} SOVERSION ${${CMAKE_PROJECT_NAME}_VERSION}
+)
+
+include (GenerateExportHeader)
+GENERATE_EXPORT_HEADER( nsol
+    BASE_NAME nsol
+             EXPORT_MACRO_NAME NSOL_API
+             EXPORT_FILE_NAME nsol/api.h
+             STATIC_DEFINE nsol_BUILT_AS_STATIC
 )
 
 # Set libraries for target

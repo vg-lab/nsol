@@ -8,6 +8,7 @@
 #ifndef __NSOL_MINICOLUMN__
 #define __NSOL_MINICOLUMN__
 
+#include <nsol/api.h>
 #include <nsol/Neuron.h>
 #include <nsol/Container/Neurons.h>
 
@@ -33,6 +34,7 @@ namespace nsol
      * @param column pointer to parent column. 
      * @param id id of the minicolumn. 
      */
+    NSOL_API
     MiniColumn( const ColumnPtr column = nullptr, 
 		const unsigned short id = 0 ); 
 
@@ -40,12 +42,14 @@ namespace nsol
      * Copy constructor 
      * @param other column to be copied
      */   
+    NSOL_API
     MiniColumn( const MiniColumn & other );
     
     /**
      * Default destructur
      * @param id id of the column. 
      */
+	NSOL_API
     ~MiniColumn();
 
     ///@}
@@ -57,13 +61,15 @@ namespace nsol
      * Method to get-set mini column id.
      * @return refenrence to mini column id
      */
-    unsigned short & id( void );
+	NSOL_API
+	unsigned short & id( void );
 
     /**
      * Method to get the column id as const.
      * @return id of the minicolumn
      */
-    unsigned short id( void ) const;
+    NSOL_API 
+	unsigned short id( void ) const;
 
     ///@}
 
@@ -74,12 +80,14 @@ namespace nsol
      * Method to set the column of this minicolumn
      * @param column pointer to the column
      */
+    NSOL_API
     void column( ColumnPtr colummn );
 
     /**
      * Method to get the column of this minicolumn
      * @return pointer to the column
      */
+    NSOL_API
     ColumnPtr column( void ) const;
 
     ///@}
@@ -93,6 +101,7 @@ namespace nsol
      * @param neuron pointer to neuron to add. If null new neuron is created
      * @return pointer to the added neuron
      */
+    NSOL_API
     NeuronPtr addNeuron( NeuronPtr neuron = nullptr );
 
     /**
@@ -100,23 +109,27 @@ namespace nsol
      * @param neuron pointer to the neuron to be removed
      * @return true if neuron removed false otherwise
      */
+    NSOL_API
     bool removeNeuron( NeuronPtr neuron );
 
     /**
      * Method to get neurons.
      * @return neurons of the mimi column
      */
+    NSOL_API
     Neurons & neurons( void );
 
     /**
      * Method to get neurons.
      * @return neurons of the mimi column
      */
+    NSOL_API
     Neurons neurons( void ) const;
 
     /**
      * Method to clear the neurons container.
      */
+    NSOL_API
     void clearNeurons( void );
 
 
@@ -130,6 +143,7 @@ namespace nsol
      *        neurons of all layers will be counted.
      * @return number of neurons that match the criteria
      */
+    NSOL_API
     unsigned int numberOfNeurons(bool all = true, 
 				 Neuron::TNeuronType neuronType =
 				 Neuron::PYRAMIDAL,
@@ -141,8 +155,13 @@ namespace nsol
     /** @name Operators */
     ///@{
 
+    NSOL_API
     MiniColumn & operator = (const MiniColumn & other);
+
+    NSOL_API
     bool operator == (MiniColumn & other ) const;
+
+    NSOL_API
     bool operator != (MiniColumn & other ) const;
 
     ///@}
@@ -155,54 +174,63 @@ namespace nsol
      * Method to get the mean soma volume.
      * @return the mean soma volume
      */
+    NSOL_API
     float meanSomaVolume( void ) const;
 
     /**
      * Method to get the mean soma surface.
      * @return the mean soma surface
      */
+    NSOL_API
     float meanSomaSurface( void ) const;
 
     /**
      * Method to get the mean dendrite volume.
      * @return the mean dendrite volume
      */
+    NSOL_API
     float meanDendriteVolume( void ) const;
 
     /**
      * Method to get the mean dendrite.
      * @return the mean dendrite surface
      */
-    float meanDendriteSurface( void ) const;
+    NSOL_API
+	float meanDendriteSurface( void ) const;
 
     /**
      * Method to get the max soma volume.
      * @return the max soma volume
      */
+    NSOL_API
     float maxSomaVolume( void ) const;
 
     /**
      * Method to get the max soma surface.
      * @return the max soma surface
      */
+    NSOL_API
     float maxSomaSurface( void ) const;
 
     /**
      * Method to get the max dendrite volume.
      * @return the max dendrite volume
      */
+    NSOL_API
     float maxDendriteVolume( void ) const;
 
     /**
      * Method to get the max dendrite surface.
      * @return the max dendrite surface
      */
+    NSOL_API
     float maxDendriteSurface( void ) const;
 
     /**
      * Method to compute the number of branches in dendrites
      * @return number of branches
      */
+    NSOL_API
     unsigned int numDendriteBranches( void );
 
     ///@}

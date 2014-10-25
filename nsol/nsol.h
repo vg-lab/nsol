@@ -8,6 +8,8 @@
 #ifndef __NSOL_NSOL__
 #define __NSOL_NSOL__
 
+#include <nsol/api.h>
+
 #include <nsol/config.h>
 
 // Ontology elements

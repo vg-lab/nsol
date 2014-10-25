@@ -9,6 +9,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY__
 #define __NSOL_NEURON_MORPHOLOGY__
 
+#include <nsol/api.h>
 #include <nsol/NsolTypes.h>
 #include <nsol/Soma.h>
 #include <nsol/Axon.h>
@@ -34,8 +35,10 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
+    NSOL_API
     NeuronMorphology( void );
 
+    NSOL_API
     ~NeuronMorphology( void );
 
     /**
@@ -44,6 +47,7 @@ namespace nsol
      * @see Neurite::TNeuriteType
      * @return pointer to the added neurite
      */
+    NSOL_API
     NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType = 
 			   Neurite::DENDRITE );
 
@@ -53,6 +57,7 @@ namespace nsol
      * @see ndsl::Dendrite::TDendriteType
      * @return pointer to the added dendrite
      */
+    NSOL_API
     DendritePtr addDendrite( Dendrite::TDendriteType dendriteType = 
 			     Dendrite::BASAL );
 
@@ -60,46 +65,67 @@ namespace nsol
      * Method to add a new axon to the neuron.
      * @return pointer to the added axon
      */
+    NSOL_API
     AxonPtr addAxon( void );
 
+    NSOL_API
     unsigned int numNeurites( void ) const;
 
+    NSOL_API
     unsigned int numDendrites( void ) const;
 
+    NSOL_API
     unsigned int numNeuriteBranches( void ) const;
 
+    NSOL_API
     unsigned int numDendriteBranches( void ) const ;
 
+    NSOL_API
     unsigned int numAxonBranches( void ) const;
 
+    NSOL_API
     unsigned int numNeuriteBifurcations( void ) const;
 
+    NSOL_API
     unsigned int numDendriteBifurcations( void ) const;
 
+    NSOL_API
     unsigned int numAxonBifurcations( void ) const;
 
+    NSOL_API
     float volume( void ) const;
 
+    NSOL_API
     float neuritesVolume( void ) const;
 
+    NSOL_API
     float dendritesVolume( void ) const;
 
+    NSOL_API
     float axonVolume( void ) const;
 
+    NSOL_API
     float surface( void ) const;
 
+    NSOL_API
     float neuritesSurface( void ) const;
 
+    NSOL_API
     float dendritesSurface( void ) const;
 
+    NSOL_API
     float axonSurface( void ) const;
 
+    NSOL_API
     float length( void ) const;
 
+    NSOL_API
     float neuritesLength( void ) const;
 
+    NSOL_API
     float dendritesLength( void ) const;
     
+    NSOL_API
     float axonLength( void ) const;
 
     /**
@@ -107,6 +133,7 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
+    NSOL_API
     Dendrites * dendrites( void ) const;
 
     /**
@@ -114,6 +141,7 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
+    NSOL_API
     Dendrites * basalDendrites( void ) const;
 
     /**
@@ -121,6 +149,7 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
+    NSOL_API
     Dendrites * apicalDendrites( void ) const;
 
     /**
@@ -129,10 +158,13 @@ namespace nsol
      * @see Neurite::TNeuriteType
      * @return pointer to the added dendrite
      */
+    NSOL_API
     DendritePtr apicalDendrite( void ) const;
 
+    NSOL_API
     Neurites & neurites( void );
 
+    NSOL_API
     Soma & soma( void );
 
   protected:

@@ -365,7 +365,7 @@ namespace nsol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->_addBranchCount(lines[id].childs.size());
+          d->_addBranchCount( ( unsigned int ) lines[id].childs.size( ) );
           //Plus new bifurcation
           d->_addBifurcationCount(1);
 
@@ -489,7 +489,7 @@ namespace nsol
         if (lines[id].childs.size() > 1)
         {
           //Plus new branch
-          d->_addBranchCount(lines[id].childs.size());
+          d->_addBranchCount( ( unsigned int ) lines[id].childs.size( ));
           //Plus new bifurcation
           d->_addBifurcationCount(1);
 

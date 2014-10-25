@@ -9,8 +9,9 @@
 #ifndef __NSOL_NEURITE__
 #define __NSOL_NEURITE__
 
-#include "NsolTypes.h"
-#include "Section.h"
+#include <nsol/api.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Section.h>
 
 namespace nsol {
 
@@ -33,34 +34,47 @@ namespace nsol {
     } TNeuriteType;
 
     //! Default constructor
+    NSOL_API
     Neurite(TNeuriteType neuriteType = DENDRITE);
 
+    NSOL_API
     virtual ~Neurite();
 
     //! Get the type of neurite
+    NSOL_API
     TNeuriteType & neuriteType( void );
 
-
+    NSOL_API
     NeuronMorphologyPtr morphology( void ) const;
 
+    NSOL_API
     NeuronMorphologyPtr morphology( NeuronMorphologyPtr morphology );
 
+    NSOL_API
     bool hasMorphology( void );
 
+    NSOL_API
     SectionPtr firstSection();
 
+    NSOL_API
     void firstSection( SectionPtr section );
 
+    NSOL_API
     void computeBranchBifurcations( void );
 
+    NSOL_API
     unsigned int numBranches( void );
 
+    NSOL_API
     unsigned int numBifurcations( void );
 
+    NSOL_API
     float volume( void );
 
+    NSOL_API
     float surface( void ); 
 
+    NSOL_API
     float length( void );
 
     // Casting virtual functions
