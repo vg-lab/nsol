@@ -105,7 +105,7 @@ namespace nsol {
 
   const unsigned int Column::numberOfMiniColumns(void) const
   {
-    return unsigned int( _miniColumns.size() );
+    return ( unsigned int ) _miniColumns.size();
   }
 
   const unsigned int Column::numberOfNeurons(bool all, 

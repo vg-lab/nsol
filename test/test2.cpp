@@ -61,8 +61,10 @@ int main ( void )
   {
     MiniColumnPtr mc2 ( new MiniColumn );
     
-    // needed in release mode to avoid warning
+    // needed in release mode to avoid warning in MSVC
+#ifdef MSVC
     mc2;
+#endif
 
     assert( c->removeMiniColumn( mc2 ) == false );
     assert( c->miniColumns( ).size( ) == 1);
