@@ -8,7 +8,8 @@
 #ifndef __NSOL_AXON__
 #define __NSOL_AXON__
 
-#include "Neurite.h"
+#include <nsol/api.h>
+#include <nsol/Neurite.h>
 
 namespace nsol 
 {
@@ -19,6 +20,7 @@ namespace nsol
     
   public:
 
+    NSOL_API
     Axon ( void );
 
     //! Return pointer as an Axon object

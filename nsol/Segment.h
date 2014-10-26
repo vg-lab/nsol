@@ -9,8 +9,9 @@
 #ifndef __NSOL_SEGMENT__
 #define __NSOL_SEGMENT__
 
-#include "Node.h"
-#include "NsolTypes.h"
+#include <nsol/api.h>
+#include <nsol/NsolTypes.h>
+#include <nsol/Node.h>
 
 namespace nsol
 {
@@ -21,34 +22,49 @@ namespace nsol
 
   public:
 
+    NSOL_API
     Segment( void );
 
+    NSOL_API
     ~Segment( void );
 
+    NSOL_API
     SegmentPtr next( void ) const;
 
+    NSOL_API
     SegmentPtr prev( void ) const;
 
+    NSOL_API
     void next( SegmentPtr next);
 
+    NSOL_API
     void prev( SegmentPtr prev);
 
+    NSOL_API
     void parentSection( SectionPtr parent);
 
+    NSOL_API
     SectionPtr parentSection( void);
 
+    NSOL_API
     NodePtr begin( void) const;
 
+    NSOL_API
     NodePtr end( void) const;
 
+    NSOL_API
     void begin( NodePtr begin );
 
+    NSOL_API
     void end( NodePtr end );
 
+    NSOL_API
     float volume( void );
 
+    NSOL_API
     float surface( void );
 
+    NSOL_API
     float length( void );
 
   protected:

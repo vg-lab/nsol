@@ -8,7 +8,8 @@
 #ifndef __NSOL_NODE__
 #define __NSOL_NODE__
 
-#include "NsolTypes.h"
+#include <nsol/api.h>
+#include <nsol/NsolTypes.h>
 
 namespace nsol
 {
@@ -18,14 +19,18 @@ namespace nsol
 
   public:
 
+    NSOL_API
     Node( const Vec3f & point = Vec3f(0,0,0), 
 	  const int &id = 0, 
 	  const float &radius = 0.0f );
 
+    NSOL_API
     Vec3f & point( void );
 
+    NSOL_API
     float & radius( void );
 
+    NSOL_API
     int & id( void );
 
   protected:
