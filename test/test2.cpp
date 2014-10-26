@@ -62,7 +62,7 @@ int main ( void )
     MiniColumnPtr mc2 ( new MiniColumn );
     
     // needed in release mode to avoid warning in MSVC
-#ifdef MSVC
+#ifdef WIN32
     mc2;
 #endif
 
