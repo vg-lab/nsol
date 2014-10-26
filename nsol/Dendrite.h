@@ -8,6 +8,7 @@
 #ifndef __NSOL_DENDRITE__
 #define __NSOL_DENDRITE__
 
+#include <nsol/api.h>
 #include <nsol/Neurite.h>
 
 namespace nsol {
@@ -25,9 +26,11 @@ namespace nsol {
       APICAL
     } TDendriteType;
     
+    NSOL_API
     Dendrite ( TDendriteType dendriteType = BASAL );
     
     //! Get the type of neurite
+    NSOL_API
     TDendriteType & dendriteType( void );
     
     //! Return pointer to Dendrite object
