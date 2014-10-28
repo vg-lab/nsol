@@ -27,11 +27,24 @@ namespace nsol
     NSOL_API
     Vec3f & point( void );
 
+		NSOL_API
+    Vec3f point( void ) const;
+
     NSOL_API
     float & radius( void );
 
+		NSOL_API
+    float radius( void ) const;
+
     NSOL_API
     int & id( void );
+
+		NSOL_API
+    int id( void ) const;   
+
+		bool operator == ( Node & other ) const;
+
+		bool operator != ( Node & other ) const;
 
   protected:
 
