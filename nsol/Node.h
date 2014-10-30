@@ -33,18 +33,20 @@ namespace nsol
     NSOL_API
     float & radius( void );
 
-		NSOL_API
+    NSOL_API
     float radius( void ) const;
 
     NSOL_API
     int & id( void );
 
-		NSOL_API
+    NSOL_API
     int id( void ) const;   
 
-		bool operator == ( Node & other ) const;
-
-		bool operator != ( Node & other ) const;
+    NSOL_API
+    bool operator == ( Node & other ) const;
+    
+    NSOL_API
+    bool operator != ( Node & other ) const;
 
   protected:
 
