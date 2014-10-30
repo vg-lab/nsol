@@ -25,7 +25,7 @@ namespace nsol
     return _point;
   }
 
-	Vec3f Node::point(void) const
+  Vec3f Node::point(void) const
   {
     return _point;
   }
@@ -35,7 +35,7 @@ namespace nsol
     return _radius;
   }
   
-	float Node::radius(void) const
+  float Node::radius(void) const
   {
     return _radius;
   }
@@ -45,23 +45,23 @@ namespace nsol
     return _id;
   }
 
-	int Node::id(void) const
+  int Node::id(void) const
   {
     return _id;
   }
 
-	bool Node::operator == ( Node & other ) const
-	{
-		return ( ( this->id( ) == other.id( ) ) &&
-						 ( this->radius( ) == other.radius( ) ) &&
-						 ( this->point( ) == other.point( ) ) ); 
-	}
-
-	bool Node::operator != ( Node & other ) const
-	{
-		return ! ( *this == other );
-	}
-
+  bool Node::operator == ( Node & other ) const
+  {
+    return ( ( this->id( ) == other.id( ) ) &&
+	     ( this->radius( ) == other.radius( ) ) &&
+	     ( this->point( ) == other.point( ) ) ); 
+  }
+  
+  bool Node::operator != ( Node & other ) const
+  {
+    return ! ( *this == other );
+  }
+  
 } // namespace nsol
 
 // EOF
