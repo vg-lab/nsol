@@ -9,6 +9,7 @@
 #define __NSOL_SWC_READER__
 
 #include <nsol/NsolTypes.h>
+#include <nsol/Node.h>
 #include <nsol/Dendrite.h>
 #include <nsol/NeuronMorphology.h>
 
@@ -24,6 +25,19 @@
 namespace nsol
 {
 
+
+  typedef struct
+  {
+    unsigned int id;
+    unsigned int type;
+    Vec3f xyz;
+    float radius;
+    int parent;
+    std::vector<unsigned int> childs;
+  } TSwcLine;
+
+
+  template < class NODE = Node, class NODE_PTR = NodePtr>  
   class SwcReader
   {
 
@@ -34,15 +48,6 @@ namespace nsol
       SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL = 4
     } TSwcNodeType;
 
-    typedef struct
-    {
-      unsigned int id;
-      unsigned int type;
-      Vec3f xyz;
-      float radius;
-      int parent;
-      std::vector<unsigned int> childs;
-    } TSwcLine;
 
     NeuronPtr readNeuron(const char *fileName)
     {
@@ -141,14 +146,14 @@ namespace nsol
       /* } */
 
       std::vector<unsigned int> somaChilds;
-      std::map<unsigned int, NodePtr> nodeSomaPtr;
+      std::map<unsigned int, NODE_PTR > nodeSomaPtr;
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
           it != lines.end(); it++)
       {
         if (it->second.type == SWC_SOMA)
         {
-          NodePtr node( new Node(it->second.xyz, it->second.id, it->second.radius) );
+          NODE_PTR node( new NODE(it->second.xyz, it->second.id, it->second.radius) );
           neuronMorphology->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
@@ -261,7 +266,7 @@ namespace nsol
 
   private:
     void _ReadDendrite(DendritePtr d, std::map<unsigned int, TSwcLine> &lines,
-                       unsigned int initId, NodePtr nodeSomaPtr)
+                       unsigned int initId, NODE_PTR nodeSomaPtr)
     {
 
       typedef struct
@@ -277,7 +282,7 @@ namespace nsol
 
 
       SectionPtr s = nullptr, parentSection;
-      NodePtr nP = nullptr;
+      NODE_PTR nP = nullptr;
       bool first = true;
 
       while (!ids.empty())
@@ -308,7 +313,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius )));
+        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius )));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -344,7 +349,7 @@ namespace nsol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(NodePtr(new Node(lines[id].xyz, id, lines[id].radius)));
+          sg->end(NODE_PTR(new NODE(lines[id].xyz, id, lines[id].radius)));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
@@ -385,7 +390,7 @@ namespace nsol
     }
 
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> &lines,
-                   unsigned int initId, NodePtr nodeSomaPtr)
+                   unsigned int initId, NODE_PTR nodeSomaPtr)
     {
 
       typedef struct
@@ -399,7 +404,7 @@ namespace nsol
 	  ids.push(tmp);
 
       SectionPtr s = NULL, parentSection;
-      NodePtr nP = nullptr;
+      NODE_PTR nP = nullptr;
       bool first = true;
 
       while (!ids.empty())
@@ -432,7 +437,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius)));
+        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius)));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -468,7 +473,7 @@ namespace nsol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(NodePtr( new Node(lines[id].xyz, id, lines[id].radius)));
+          sg->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius)));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
@@ -508,6 +513,9 @@ namespace nsol
     }
 
   };
+
+
+  // typedef SwcReaderGeneric< Node, NodePtr > SwcReader;
 
 }
 

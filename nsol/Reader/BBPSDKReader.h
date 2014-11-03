@@ -310,7 +310,7 @@ namespace nsol {
      */
     std::map<unsigned int, ColumnPtr> &readFromDirectory(
       const std::string toRead) {
-      SwcReader r;
+      SwcReader<Node, NodePtr> r;
       bool findCsv = false;
 
       std::vector<NeuronPtr> nVector;
