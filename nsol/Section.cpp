@@ -66,25 +66,33 @@ namespace nsol
     return _childs;
   }
 
-  SegmentPtr Section::addSegment(void)
+  SegmentPtr Section::addSegment( SegmentPtr segment )
   {
 
-    SegmentPtr s = SegmentPtr( new Segment );
+    SegmentPtr s = segment;
 
-    s->begin(NULL);
-    s->end(NULL);
+    // If needed segment is created
+    if ( ! s ) 
+    {
+      s = SegmentPtr( new Segment );      
+      s->begin( nullptr );
+      s->end( nullptr );
+    }
 
+    // If this section doesn't have first segment the segment
+    // passed or created is added;
     if (!_firstSegment)
     {
       _firstSegment = _lastSegment = s;
-      s->next(NULL);
-      s->prev(NULL);
+      s->next( nullptr );
+      s->prev( nullptr );
     }
-    else
+    // In other case segment is concatenated to last segment
+    else      
     {
-      _lastSegment->next(s);
-      s->next(NULL);
-      s->prev(_lastSegment);
+      _lastSegment->next( s );
+      s->next( nullptr );
+      s->prev( _lastSegment );
       _lastSegment = s;
     }
 
@@ -92,18 +100,18 @@ namespace nsol
 
   }
 
-  SegmentPtr & Section::firstSegment()
+  SegmentPtr & Section::firstSegment( void )
   {
     return _firstSegment;
   }
 
-  SegmentPtr & Section::lastSegment()
+  SegmentPtr & Section::lastSegment( void )
   {
     return _lastSegment;
   }
 
 
-  float Section::volume(void)
+  float Section::volume( void )
   {
     float volume = 0.0f;
 

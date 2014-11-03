@@ -26,52 +26,58 @@ namespace nsol
   public:
 
     NSOL_API
-    Section();
+    Section( void );
 
     NSOL_API
-    ~Section();
+    ~Section( );
 
     NSOL_API
-    NeuritePtr neurite(void);
+    NeuritePtr neurite( void );
 
     NSOL_API
-    void neurite(NeuritePtr neurite);
+    void neurite( NeuritePtr neurite );
 
     NSOL_API
-    SectionPtr parent(void);
+    SectionPtr parent( void );
 
     NSOL_API
-    void parent(SectionPtr parent);
+    void parent( SectionPtr parent );
 
     NSOL_API
-    void addChild(SectionPtr section);
+    void addChild( SectionPtr section );
 
     NSOL_API
-    Sections & childs();
+    Sections & childs( void );
+
+    /**
+     * Adds a segment to the section
+     * @param segment pointer to the segment to add. If 
+     *        null value then a new segment is created
+     * @return pointer to the segment added (and created if needed)
+     */
+    NSOL_API
+    SegmentPtr addSegment( SegmentPtr segment = nullptr );
 
     NSOL_API
-    SegmentPtr addSegment(void);
+    SegmentPtr & firstSegment( void  );
 
     NSOL_API
-    SegmentPtr & firstSegment();
+    SegmentPtr & lastSegment( void );
 
     NSOL_API
-    SegmentPtr & lastSegment();
+    float volume( void );
 
     NSOL_API
-    float volume(void);
+    float surface( void );
 
     NSOL_API
-    float surface(void);
+    float length( void );
 
     NSOL_API
-    float length(void);
+    unsigned int fuseSection( void );
 
     NSOL_API
-    unsigned int fuseSection(void);
-
-    NSOL_API
-    float meanRadius(void);
+    float meanRadius( void );
 
   protected:
 
