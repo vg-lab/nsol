@@ -5,7 +5,7 @@
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifdef WITH_BBPSDK
+#ifdef NSOL_WITH_BBPSDK
 
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
@@ -27,9 +27,11 @@
 
 using namespace std;
 
-namespace nsol {
+namespace nsol 
+{
 
-  typedef struct {
+  typedef struct 
+  {
     unsigned int id;
     std::string label;
     unsigned int column;
@@ -41,20 +43,25 @@ namespace nsol {
     std::string morphoLabel;
   } TcsvFileLine;
 
-  class BBPSDKReader {
+  class BBPSDKReader 
+  {
 
   public:
 
-    const std::map<unsigned int, ColumnPtr> &readExperiment(const char *toRead,
-							    unsigned int directory = 0) {
+    const std::map<unsigned int, ColumnPtr> & 
+    readExperiment(const char *toRead,
+		   unsigned int directory = 0) 
+    {
       if (directory)
 	return this->readFromDirectory(std::string(toRead));
       else
 	return this->readFromBlueFile(std::string(toRead));
     }
 
-    const std::map<unsigned int, ColumnPtr> &readExperiment(
-      const std::string toRead, unsigned int directory = 0) {
+    const std::map<unsigned int, ColumnPtr> & 
+    readExperiment( const std::string toRead, 
+		    unsigned int directory = 0) 
+    {
       if (directory)
 	return this->readFromDirectory(toRead);
       else
@@ -68,12 +75,17 @@ namespace nsol {
      * @param toRead blue config file to read
      * @return map with columns
      */
-    std::map<unsigned int, ColumnPtr> &readFromBlueFile(
-      const std::string toRead) {
+    std::map<unsigned int, ColumnPtr> & 
+    readFromBlueFile( const std::string toRead ) 
+    {
 
       // Types of SWC nodes
-      typedef enum {
-	SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL = 4
+      typedef enum 
+      {
+	SWC_SOMA = 1, 
+	SWC_AXON = 2, 
+	SWC_DENDRITE = 3, 
+	SWC_APICAL = 4
       } TSwcNodeType;
 
       // A bbpsdk experiment is opened
@@ -87,69 +99,84 @@ namespace nsol {
 		  << std::endl;
       }
 
-      std::vector<NeuronPtr> nVector;
-      std::map<string, NeuronMorphologyPtr> nMorphoMap;
-      std::map<unsigned int, MiniColumnPtr> miniColumnMap;
+      std::vector< NeuronPtr > neuronVector;
+      std::map< string, NeuronMorphologyPtr > neuronMorphoMap;
+      std::map< unsigned int, MiniColumnPtr > miniColumnMap;
 
       // The microcircuit of the experiment loads the data
       bbp::Microcircuit & mcp = experiment.microcircuit();
       bbp::Cell_Target target;
-      mcp.load(target,
-	       bbp::MICROCIRCUIT | bbp::AFFERENT_SYNAPSES
-	       | bbp::EFFERENT_SYNAPSES);
 
-      const bbp::Neurons &neuronsExpe = experiment.microcircuit().neurons();
+      mcp.load(target,
+	       bbp::MICROCIRCUIT | 
+	       bbp::AFFERENT_SYNAPSES |
+	       bbp::EFFERENT_SYNAPSES);
+
+      const bbp::Neurons &neuronsExpe = 
+	experiment.microcircuit().neurons();
+
       std::cerr << toRead << ": Exporting " << neuronsExpe.size()
 		<< " neurons. " << std::endl;
 
       for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
-	   it != neuronsExpe.end(); ++it) {
+	   it != neuronsExpe.end(); ++it) 
+      {
 	cout << "Neuron " << it->label() << " with morphology "
 	     << it->morphology().label() << std::endl;
 
-	nsol::NeuronPtr n (new nsol::Neuron(false));		//New neuron
-	nVector.push_back(n);
+	nsol::NeuronPtr neuron (new nsol::Neuron(false)); //New neuron
+	neuronVector.push_back( neuron );
 
 	bool miniColumnExist;
 
 	//MiniColumn control
-	if (miniColumnMap.find(it->minicolumn()) != miniColumnMap.end())//MiniColumn exist
+	if (miniColumnMap.find(it->minicolumn()) != miniColumnMap.end())
 	{
-	  n->miniColumn(miniColumnMap[it->minicolumn()]);
-
+          //MiniColumn exist
+	  neuron->miniColumn(miniColumnMap[it->minicolumn()]);
 	  miniColumnExist = true;
-	} else						//MiniColumn not exist
+	} 
+	else						
 	{
+	  // MiniColumn does not exist
+
 	  miniColumnExist = false;
 	  miniColumnMap[it->minicolumn()] = 
 	    MiniColumnPtr( new MiniColumn( nullptr,
 					   it->minicolumn()) );
-	  n->miniColumn(miniColumnMap[it->minicolumn()]);
+	  neuron->miniColumn(miniColumnMap[it->minicolumn()]);
 	}
 
 	//Column control
-	if (columnMap.find(it->column()) != columnMap.end())//Column exist
-	  n->miniColumn()->column(columnMap[it->column()]);
-	else							//Column not exist
+	if (columnMap.find(it->column()) != columnMap.end())
+          //Column exist
+	  neuron->miniColumn()->column(columnMap[it->column()]);
+	else							
 	{
+          //Column does not exist
 	  columnMap[it->column()] = ColumnPtr(new Column(it->column()));
-	  n->miniColumn()->column(columnMap[it->column()]);
+	  neuron->miniColumn()->column(columnMap[it->column()]);
 	}
 
-	miniColumnMap[it->minicolumn()]->addNeuron(n);//Add neuron to minicolumn
+        //Add neuron to minicolumn
+	miniColumnMap[it->minicolumn()]->addNeuron( neuron );
+
+        //Add minicolumn to column
 	if (!miniColumnExist)
 	  columnMap[it->column()]->addMiniColumn(
-	    miniColumnMap[it->minicolumn()]);//Add minicolumn to column
+	    miniColumnMap[it->minicolumn()]);
 
 	//Morphology previously loaded
-	if (nMorphoMap.find(it->morphology().label()) != nMorphoMap.end()) {
+	if (neuronMorphoMap.find(it->morphology().label()) != 
+	    neuronMorphoMap.end()) 
+	{
 	  cout << "Morphology previously loaded" << endl;
 
-	  n->morphology(
-	    nMorphoMap.find(it->morphology().label())->second);
-	  n->layer() = it->layer();
-	  n->transform() = it->global_transform();
-	  n->gid() = it->gid();
+	  neuron->morphology(
+	    neuronMorphoMap.find(it->morphology().label())->second);
+	  neuron->layer() = it->layer();
+	  neuron->transform() = it->global_transform();
+	  neuron->gid() = it->gid();
 	} else
 	{
 	  cout << "Loading morphology " << it->morphology().label()
@@ -157,11 +184,11 @@ namespace nsol {
 
 	  nsol::NeuronMorphologyPtr m ( new nsol::NeuronMorphology );
 
-	  nMorphoMap[it->morphology().label()] = m;
-	  n->morphology(m);
-	  n->layer() = it->layer();
-	  n->transform() = it->global_transform();
-	  n->gid() = it->gid();
+	  neuronMorphoMap[it->morphology().label()] = m;
+	  neuron->morphology(m);
+	  neuron->layer() = it->layer();
+	  neuron->transform() = it->global_transform();
+	  neuron->gid() = it->gid();
 
 	  unsigned int id = 1;
 
@@ -170,37 +197,42 @@ namespace nsol {
 	  //Getting soma of the morphology
 	  const bbp::Soma &soma = morphology.soma();
 	  //Writing soma
-	  for (bbp::Soma::const_iterator it = soma.begin();
-	       it != soma.end(); ++it) {
+	  for (bbp::Soma::const_iterator nodeIt = soma.begin();
+	       nodeIt != soma.end(); ++nodeIt) {
 
-	    m->soma().addNode(NodePtr( new Node(Vec3f((*it)[0], (*it)[1], (*it)[2]),
-						id, soma.mean_radius())));
+	    m->soma().addNode(NodePtr( 
+				new Node( Vec3f( ( * nodeIt)[0], 
+						 ( * nodeIt)[1], 
+						 ( * nodeIt)[2] ),
+					  id, soma.mean_radius( ))));
 
 	    id++;
 	  }
 
 	  const bbp::Sections &somas = morphology.somas();
 	  //Writing neurites
-	  for (bbp::Sections::const_iterator it = somas.begin();
-	       it != somas.end(); it++) {
-	    bbp::Sections children = (*it).children();
-	    for (bbp::Sections::iterator cit = children.begin();
-		 cit != children.end(); cit++) {
-	      DendritePtr
-		d = nullptr;
-	      NeuritePtr
-		n = nullptr;
+	  for (bbp::Sections::const_iterator sectionIt = somas.begin();
+	       sectionIt != somas.end(); sectionIt++) 
+	  {
+
+	    bbp::Sections children = ( * sectionIt ).children();
+
+	    for ( bbp::Sections::iterator cit = children.begin( );
+		  cit != children.end( ); cit++) 
+	    {
+	      DendritePtr dendrite = nullptr;
+	      NeuritePtr neurite = nullptr;
+
 	      if ((*cit).type() == bbp::SECTION_AXON)
-		n = m->addNeurite(Neurite::AXON);
+		neurite = m->addNeurite(Neurite::AXON);
 	      else if ((*cit).type() == bbp::SECTION_DENDRITE)
-		d = m->addDendrite(Dendrite::BASAL);
+		dendrite = m->addDendrite(Dendrite::BASAL);
 	      else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
-		d = m->addDendrite(Dendrite::APICAL);
+		dendrite = m->addDendrite(Dendrite::APICAL);
 
-
-	      const bbp::Section *section = &(*cit);
+	      const bbp::Section * bbpSection = &(*cit);
 	      std::stack<const bbp::Section *> sPS;
-	      sPS.push(section);
+	      sPS.push(bbpSection);
 	      std::stack<SectionPtr> parents;
 	      parents.push(nullptr);
 	      bool first = true;
@@ -214,28 +246,31 @@ namespace nsol {
 		SectionPtr parentSection = parents.top();
 		parents.pop();
 
-		SectionPtr s ( new Section );
-		if (d)
+		SectionPtr section ( new Section );
+		if ( dendrite )
 		{
-		  if (!d->firstSection())
-		    d->firstSection(s);
+		  if ( ! dendrite->firstSection( ))
+		    dendrite->firstSection( section );
 
-		  s->neurite(d);
+		  section->neurite( dendrite);
 		}
 		else
 		{
-		  if (!n->firstSection())
-		    n->firstSection(s);
+		  if ( ! neurite->firstSection( ))
+		    neurite->firstSection( section );
 
-		  s->neurite(n);
+		  section->neurite( neurite );
 		}
 
-		s->parent(parentSection);
-		SegmentPtr segment = s->addSegment();
-		segment->parentSection(s);
+		section->parent( parentSection );
+		SegmentPtr segment = section->addSegment();
+		segment->parentSection( section );
 
-		const bbp::Cross_Sections &cross_Sections = lS->cross_sections();
-		bbp::Cross_Sections::const_iterator it = cross_Sections.begin();
+		const bbp::Cross_Sections & cross_Sections = 
+		  lS->cross_sections();
+
+		bbp::Cross_Sections::const_iterator crossSectionIt = 
+		  cross_Sections.begin();
 
 		if (first)
 		{
@@ -246,56 +281,59 @@ namespace nsol {
 		  first = false;
 		}
 		else
-		  segment->begin(s->parent()->lastSegment()->end());
+		  segment->begin(section->parent()->lastSegment()->end());
 
 		segment->end(
-		  NodePtr( new Node( Vec3f(it->center()[0],
-					   it->center()[1],
-					   it->center()[2]),
-				     id, it->radius( ))));
+		  NodePtr( 
+		    new Node( Vec3f( crossSectionIt->center()[0],
+				     crossSectionIt->center()[1],
+				     crossSectionIt->center()[2] ),
+			      id, crossSectionIt->radius( ))));
 
 		nodePtrMap[id] = segment->end();
 
 		id++;
 
 		if (parentSection)
-		  parentSection->addChild(s);
+		  parentSection->addChild( section );
 
 		nPre = segment->end();
 
-		it++;
-		for (bbp::Cross_Sections::const_iterator itL =
-		       it; itL != cross_Sections.end();
-		     ++itL)
-		{
-		  SegmentPtr segment = s->addSegment();
-		  segment->parentSection(s);
-		  segment->begin(nPre);
+		crossSectionIt++;
 
-		  segment->end(
+		for ( bbp::Cross_Sections::const_iterator itL =
+		       crossSectionIt; itL != cross_Sections.end();
+		     ++itL )
+		{
+		  SegmentPtr crossSectionSegment = section->addSegment( );
+		  crossSectionSegment->parentSection( section );
+		  crossSectionSegment->begin(nPre);
+
+		  crossSectionSegment->end(
 		    NodePtr( new Node(
 			       Vec3f(itL->center()[0],
 				     itL->center()[1],
 				     itL->center()[2]),
 			       id, itL->radius())));
 
-		  nodePtrMap[id] = segment->end();
+		  nodePtrMap[id] = crossSectionSegment->end();
 
 		  id++;
 
-		  nPre = segment->end();
+		  nPre = crossSectionSegment->end();
 		}
 
 		for (bbp::Sections::const_iterator child =
 		       lS->children().begin();
 		     child != lS->children().end(); ++child)
 		{
-		  sPS.push(&(*child));
-		  parents.push(s);
+		  sPS.push( & ( * child ) );
+		  parents.push( section );
 		}
-	      }
-	    }
-	  }
+
+	      } // while not stack empty
+	    } // for all soma section childs
+	  } // for all soma sections
 	}
       }
 
@@ -313,8 +351,8 @@ namespace nsol {
       SwcReader<Node, NodePtr> r;
       bool findCsv = false;
 
-      std::vector<NeuronPtr> nVector;
-      std::map<string, NeuronMorphologyPtr> nMorphoMap;
+      std::vector<NeuronPtr> neuronVector;
+      std::map<string, NeuronMorphologyPtr> neuronMorphoMap;
       std::map<unsigned int, MiniColumnPtr> miniColumnMap;
 
       DIR *pDIR;
@@ -423,8 +461,8 @@ namespace nsol {
 		     << " with morphology "
 		     << csvLine.morphoLabel << std::endl;
 
-		NeuronPtr n ( new Neuron( false ));		//New neuron
-		nVector.push_back(n);
+		NeuronPtr neuron ( new Neuron( false ));		//New neuron
+		neuronVector.push_back( neuron );
 
 		bool miniColumnExist;
 
@@ -432,48 +470,55 @@ namespace nsol {
 		if (miniColumnMap.find(csvLine.miniColumn)
 		    != miniColumnMap.end())	//MiniColumn exist
 		{
-		  n->miniColumn(
+		  neuron->miniColumn(
 		    miniColumnMap[csvLine.miniColumn]);
 
 		  miniColumnExist = true;
-		} else						//MiniColumn not exist
+		} else						
+                //MiniColumn not exist
 		{
 		  miniColumnExist = false;
 		  miniColumnMap[csvLine.miniColumn] =
-		    MiniColumnPtr( new MiniColumn(nullptr, csvLine.miniColumn));
-		  n->miniColumn(
+		    MiniColumnPtr( new MiniColumn( nullptr, 
+						   csvLine.miniColumn ));
+		  neuron->miniColumn(
 		    miniColumnMap[csvLine.miniColumn]);
 		}
 
 		//Column control
 		if (columnMap.find(csvLine.column)
-		    != columnMap.end())	//Column exist
-		  n->miniColumn()->column(
+		    != columnMap.end())	
+                  //Column exist
+		  neuron->miniColumn()->column(
 		    columnMap[csvLine.column]);
-		else							//Column not exist
+		else							
+                //Column not exist
 		{
-		  columnMap[csvLine.column] = ColumnPtr ( new Column(
-							    csvLine.column));
-		  n->miniColumn()->column(
+		  columnMap[csvLine.column] = 
+		    ColumnPtr ( new Column( csvLine.column ));
+		  neuron->miniColumn()->column(
 		    columnMap[csvLine.column]);
 		}
 
-		miniColumnMap[csvLine.miniColumn]->addNeuron(n);//Add neuron to minicolumn
-		if (!miniColumnExist)
-		  columnMap[csvLine.column]->addMiniColumn(
-		    miniColumnMap[csvLine.miniColumn]);	//Add minicolumn to column
+                //Add neuron to minicolumn
+		miniColumnMap[csvLine.miniColumn]->addNeuron(neuron);
 
-							//Morphology previously loaded
-		if (nMorphoMap.find(csvLine.morphoLabel)
-		    != nMorphoMap.end()) {
+		if (!miniColumnExist)
+                  //Add minicolumn to column
+		  columnMap[csvLine.column]->addMiniColumn(
+		    miniColumnMap[csvLine.miniColumn]);	
+		
+                //Morphology previously loaded
+		if (neuronMorphoMap.find(csvLine.morphoLabel)
+		    != neuronMorphoMap.end()) {
 		  cout << "Morphology file previously loaded"
 		       << endl;
 
-		  n->morphology(
-		    nMorphoMap.find(csvLine.morphoLabel)->second);
-		  n->layer() = csvLine.layer;
-		  n->transform() = csvLine.globalTrans;
-		  n->gid() = csvLine.id;
+		  neuron->morphology(
+		    neuronMorphoMap.find(csvLine.morphoLabel)->second);
+		  neuron->layer() = csvLine.layer;
+		  neuron->transform() = csvLine.globalTrans;
+		  neuron->gid() = csvLine.id;
 		} else {
 		  cout << "Loading morphology file "
 		       << csvLine.morphoLabel << ".swc"
@@ -488,11 +533,11 @@ namespace nsol {
 		    continue;
 		  }
 
-		  nMorphoMap[csvLine.morphoLabel] = m;
-		  n->morphology(m);
-		  n->layer() = csvLine.layer;
-		  n->transform() = csvLine.globalTrans;
-		  n->gid() = csvLine.id;
+		  neuronMorphoMap[csvLine.morphoLabel] = m;
+		  neuron->morphology(m);
+		  neuron->layer() = csvLine.layer;
+		  neuron->transform() = csvLine.globalTrans;
+		  neuron->gid() = csvLine.id;
 		}
 	      }
 	    }
@@ -515,5 +560,5 @@ namespace nsol {
   };
 }
 
-#endif // WITH_BBPSDK
+#endif // NSOL_WITH_BBPSDK
 #endif // __NSOL_BBPSDK_READER__

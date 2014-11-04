@@ -117,7 +117,7 @@ namespace nsol
       }
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
-          it != lines.end(); it++)
+	   it != lines.end(); it++)
       {
 
         if (it->second.parent != -1)
@@ -149,7 +149,7 @@ namespace nsol
       std::map<unsigned int, NODE_PTR > nodeSomaPtr;
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
-          it != lines.end(); it++)
+	   it != lines.end(); it++)
       {
         if (it->second.type == SWC_SOMA)
         {
@@ -174,48 +174,48 @@ namespace nsol
 
         switch (lines[somaChilds[i]].type)
         {
-          case SWC_SOMA:
-            // TODO: handle error
-            assert(false);
+	case SWC_SOMA:
+	  // TODO: handle error
+	  assert(false);
 
-          case SWC_DENDRITE:
-          {
+	case SWC_DENDRITE:
+	{
 //            std::cout << "New basal dendrite" << std::endl;
 
-            d = neuronMorphology->addDendrite(Dendrite::BASAL);
-            d->morphology(neuronMorphology);
-            _ReadDendrite(d, lines, somaChilds[i],
-                          nodeSomaPtr[lines[somaChilds[i]].parent]);
+	  d = neuronMorphology->addDendrite(Dendrite::BASAL);
+	  d->morphology(neuronMorphology);
+	  _ReadDendrite(d, lines, somaChilds[i],
+			nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-            break;
-          }
+	  break;
+	}
 
-          case SWC_APICAL:
+	case SWC_APICAL:
 //            std::cout << "New apical dendrite" << std::endl;
 
-            d = neuronMorphology->addDendrite(Dendrite::APICAL);
-            d->morphology(neuronMorphology);
-            _ReadDendrite(d, lines, somaChilds[i],
-                          nodeSomaPtr[lines[somaChilds[i]].parent]);
+	  d = neuronMorphology->addDendrite(Dendrite::APICAL);
+	  d->morphology(neuronMorphology);
+	  _ReadDendrite(d, lines, somaChilds[i],
+			nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-            break;
+	  break;
 
-          case SWC_AXON:
-          {
+	case SWC_AXON:
+	{
 //            std::cout << "New axon" << std::endl;
 
 //            neuron->addNeurite(Neurite::AXON);
 
-            NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
-            nP->morphology(neuronMorphology);
-            _ReadAxon(nP, lines, somaChilds[i],
-                      nodeSomaPtr[lines[somaChilds[i]].parent]);
+	  NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
+	  nP->morphology(neuronMorphology);
+	  _ReadAxon(nP, lines, somaChilds[i],
+		    nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-            break;
-          }
+	  break;
+	}
 
-          default:
-            break;
+	default:
+	  break;
         }
 
       }
@@ -265,19 +265,22 @@ namespace nsol
     }
 
   private:
-    void _ReadDendrite(DendritePtr d, std::map<unsigned int, TSwcLine> &lines,
-                       unsigned int initId, NODE_PTR nodeSomaPtr)
+
+    typedef struct
+    {
+      unsigned int id;
+      SectionPtr parent;
+    } TReadDendritesStackElem;
+    
+    void _ReadDendrite( DendritePtr d, 
+			std::map<unsigned int, TSwcLine> &lines,
+			unsigned int initId, 
+			NODE_PTR nodeSomaPtr )
     {
 
-      typedef struct
-      {
-        unsigned int id;
-        SectionPtr parent;
-      } TStackElem;
-
-      std::stack<TStackElem> ids;
-      //ids.push(TStackElem { initId, NULL });	  
-	  TStackElem tmp = {initId, NULL};
+      std::stack<TReadDendritesStackElem> ids;
+      //ids.push(TReadDendritesStackElem { initId, NULL });	  
+      TReadDendritesStackElem tmp = {initId, NULL};
       ids.push(tmp);
 
 
@@ -377,11 +380,11 @@ namespace nsol
           /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
           /*      it != lines[id].childs.rend(); it++) */
           for (std::vector<unsigned int>::iterator it =
-              lines[id].childs.begin(); it != lines[id].childs.end(); it++)
+		 lines[id].childs.begin(); it != lines[id].childs.end(); it++)
           {
-			  TStackElem tmp = { (*it), s };
-			   ids.push(tmp);
-           // ids.push(TStackElem { (*it), s });
+	    TReadDendritesStackElem tmpStackElem = { (*it), s };
+	    ids.push( tmpStackElem );
+	    // ids.push(TStackElem { (*it), s });
           }
         }
 
@@ -389,19 +392,20 @@ namespace nsol
 
     }
 
+
+    typedef struct
+    {
+      unsigned int id;
+      SectionPtr parent;
+    } TReadAxonStackElem;
+
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> &lines,
                    unsigned int initId, NODE_PTR nodeSomaPtr)
     {
 
-      typedef struct
-      {
-        unsigned int id;
-        SectionPtr parent;
-      } TStackElem;
-
-      std::stack<TStackElem> ids;
-	  TStackElem tmp = { initId, NULL };
-	  ids.push(tmp);
+      std::stack<TReadAxonStackElem> ids;
+      TReadAxonStackElem tmp = { initId, NULL };
+      ids.push(tmp);
 
       SectionPtr s = NULL, parentSection;
       NODE_PTR nP = nullptr;
@@ -437,23 +441,13 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius)));
+        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, 
+				      lines[id].radius)));
 
-//        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
-//                  << std::endl;
-//        std::cout << "Add segment end node radius: " << lines[id].radius
-//                  << std::endl;
-
-        //std::cout << "New section at id " << id << " ( ";
 
         if (parentSection)
           //      parentSection->_childs.push_back(s);
           parentSection->addChild(s);
-
-//        for (unsigned int i = 0; i < lines[id].childs.size(); i++)
-//          std::cout << lines[id].childs[i] << " ";
-//
-//        std::cout << ") " << std::endl;
 
         nP = sgPre->end();
 
@@ -469,22 +463,11 @@ namespace nsol
           sg->begin(nP);
 
           id = lines[id].childs[0];
-//          std::cout << "Move to id " << id << " whith "
-//                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius)));
+          sg->end(NODE_PTR( new NODE(lines[id].xyz, id, 
+				     lines[id].radius)));
 
-//          std::cout << "\nAdd segment begin node radius dentro: "
-//                    << sg->begin()->radius() << std::endl;
-//
-//          std::cout << "\nAdd segment end node radius dentro: "
-//                    << sg->end()->radius() << std::endl;
-
-//          for (unsigned int i = 0; i < lines[id].childs.size(); i++)
-//            std::cout << lines[id].childs[i] << " ";
-//
-//          std::cout << std::endl;
 
           nP = sg->end();
 
@@ -498,13 +481,12 @@ namespace nsol
           //Plus new bifurcation
           d->_addBifurcationCount(1);
 
-          /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin(); */
-          /*      it != lines[id].childs.rend(); it++) */
           for (std::vector<unsigned int>::iterator it =
-              lines[id].childs.begin(); it != lines[id].childs.end(); it++)
+		 lines[id].childs.begin(); 
+	       it != lines[id].childs.end(); it++)
           {
-			TStackElem tmp = { (*it), s };
-            ids.push(tmp);
+	    TReadAxonStackElem tmpStackElem = { (*it), s };
+            ids.push( tmpStackElem );
           }
         }
 

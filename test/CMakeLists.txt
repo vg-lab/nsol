@@ -1,36 +1,8 @@
 
 
-#add_executable(test1 test1.cpp)
-#add_executable(testSwcReader testSwcReader.cpp)
-
-
-# set(BBPSDK_DIR "${BBPSDK_INSTALL_DIR}/share/BBPSDK/CMake")
-# set(Lunchbox_DIR "${BBPSDK_INSTALL_DIR}/share/Lunchbox/CMake")
-# set(Brion_DIR "${BBPSDK_INSTALL_DIR}/share/Brion/CMake")
-
-# find_package(BBPSDK)
-
 include_directories(${CMAKE_BINARY_DIR})
 
-if (BBPSDK_FOUND)
-
-  # find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
-  # include_directories(${BBPSDK_INCLUDE_DIRS} )
-  add_executable(testBBPSDKLoader testBBPSDKLoader.cpp)
-  target_link_libraries(testBBPSDKLoader nsol ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
-  add_definitions(-DWITH_BBPSDK)
-endif()
-
-add_executable(test2 test2.cpp)
-target_link_libraries(test2 nsol)
-
-
 enable_testing()
-
-#find_package(gtest REQUIRED)
-#include_directories(${GTEST_INCLUDE_DIR})
-
-
 
 find_library(GTEST_LIBRARY 
  NAMES libgtest.a
@@ -53,7 +25,9 @@ if (GTEST_LIBRARY)
   include_directories(${GTEST_INCLUDE_DIR})
   find_package (Threads)
   add_executable(runTests runTests.cpp )
-  target_link_libraries(runTests gtest ${CMAKE_THREAD_LIBS_INIT} nsol)
+  target_link_libraries(runTests gtest 
+    ${CMAKE_THREAD_LIBS_INIT} 
+    ${NSOL_LIBRARIES})
 else()
   message(STATUS "Missing Gtest. No test will be built")
 endif()

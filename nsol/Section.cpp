@@ -35,24 +35,24 @@ namespace nsol
     // }
   }
 
-  NeuritePtr Section::neurite(void)
+  NeuritePtr Section::neurite( void )
   {
     return _neurite;
   }
 
-  void Section::neurite(NeuritePtr neurite)
+  void Section::neurite( NeuritePtr newNeurite )
   {
-    _neurite = neurite;
+    _neurite = newNeurite;
   }
 
-  SectionPtr Section::parent(void)
+  SectionPtr Section::parent( void )
   {
     return _parent;
   }
 
-  void Section::parent(SectionPtr parent)
+  void Section::parent(SectionPtr newParent)
   {
-    _parent = parent;
+    _parent = newParent;
   }
 
   void Section::addChild(SectionPtr section)
@@ -113,7 +113,7 @@ namespace nsol
 
   float Section::volume( void )
   {
-    float volume = 0.0f;
+    float tmpVolume = 0.0f;
 
     if ( _firstSegment )
     {
@@ -121,17 +121,17 @@ namespace nsol
 
       while (sP)
       {
-	volume += sP->volume();
+	tmpVolume += sP->volume();
 	sP = sP->next();
       }
     }
 
-    return volume;
+    return tmpVolume;
   }
 
-  float Section::surface(void)
+  float Section::surface( void )
   {
-    float surface = 0.0f;
+    float tmpSurface = 0.0f;
 
     if (_firstSegment)
     {
@@ -139,17 +139,17 @@ namespace nsol
 
       while (sP)
       {
-	surface += sP->surface();
+	tmpSurface += sP->surface();
 	sP = sP->next();
       }
     }
 
-    return surface;
+    return tmpSurface;
   }
 
-  float Section::length(void)
+  float Section::length( void )
   {
-    float length = 0.0f;
+    float tmpLength = 0.0f;
 
     if (_firstSegment)
     {
@@ -157,15 +157,15 @@ namespace nsol
 
       while (sP)
       {
-	length += sP->length();
+	tmpLength += sP->length();
 	sP = sP->next();
       }
     }
 
-    return length;
+    return tmpLength;
   }
 
-  unsigned int Section::fuseSection(void)
+  unsigned int Section::fuseSection( void )
   {
     SegmentPtr sP = _firstSegment;
 
@@ -183,7 +183,7 @@ namespace nsol
     return 0;
   }
 
-  float Section::meanRadius(void)
+  float Section::meanRadius( void )
   {
     float radius = 0.0f;
     unsigned int nN = 0;

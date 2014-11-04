@@ -11,12 +11,12 @@
 namespace nsol
 {
 
-  Node::Node( const Vec3f &point, 
-	      const int &id, 
-	      const float &radius )
-    : _point( point )
-    , _radius( radius )
-    , _id( id )
+  Node::Node( const Vec3f & initPoint, 
+	      const int & initId, 
+	      const float & initRadius )
+    : _point( initPoint )
+    , _radius( initRadius )
+    , _id( initId )
   {
   }
 

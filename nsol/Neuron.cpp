@@ -12,36 +12,35 @@
 namespace nsol
 {
 
-  Neuron::Neuron( bool createMorphology,
-		  const unsigned short layer,
-		  const unsigned int gid, 
-		  const Matrix4_4f transform,
-		  const MiniColumnPtr miniColumn,
-    		  const Neuron::TNeuronType type )
+  Neuron::Neuron( bool initCreateMorphology,
+		  const unsigned short initLayer,
+		  const unsigned int initGid, 
+		  const Matrix4_4f initTransform,
+		  const MiniColumnPtr initMiniColumn,
+    		  const Neuron::TNeuronType initType )
     : _morphology( nullptr )
-    , _miniColumn( miniColumn )
-    , _transform( transform )
-    , _layer( layer )
-    , _gid( gid )
-    , _type( type )
+    , _miniColumn( initMiniColumn )
+    , _transform( initTransform )
+    , _layer( initLayer )
+    , _gid( initGid )
+    , _type( initType )
   {
-    if (createMorphology)
+    if ( initCreateMorphology )
       _morphology = NeuronMorphologyPtr( new NeuronMorphology );
   }
 
-    Neuron::Neuron( const NeuronMorphologyPtr neuronMorphology,
-		    const unsigned short layer,
-		    const unsigned int gid,
-		    const Matrix4_4f transform,
-		    const MiniColumnPtr miniColumn,
-		    const Neuron::TNeuronType type )
-
-      : _morphology( neuronMorphology )
-      , _miniColumn( miniColumn )
-      , _transform( transform )
-      , _layer( layer )
-      , _gid( gid )
-      , _type( type )
+  Neuron::Neuron( const NeuronMorphologyPtr initNeuronMorphology,
+		  const unsigned short initLayer,
+		  const unsigned int initGid, 
+		  const Matrix4_4f initTransform,
+		  const MiniColumnPtr initMiniColumn,
+    		  const Neuron::TNeuronType initType )
+      : _morphology( initNeuronMorphology )
+      , _miniColumn( initMiniColumn )
+      , _transform( initTransform )
+      , _layer( initLayer )
+      , _gid( initGid )
+      , _type( initType )
     {
     }
 
@@ -72,9 +71,9 @@ namespace nsol
     return _morphology;
   }
 
-  void Neuron::morphology( NeuronMorphologyPtr morphology )
+  void Neuron::morphology( NeuronMorphologyPtr newMorphology )
   {
-    _morphology = morphology;
+    _morphology = newMorphology;
   }
 
   NeuritePtr Neuron::addNeurite( Neurite::TNeuriteType neuriteType )
@@ -339,9 +338,9 @@ namespace nsol
     return _gid;
   }
 
-  void Neuron::miniColumn(MiniColumnPtr miniColumn)
+  void Neuron::miniColumn(MiniColumnPtr newMiniColumn)
   {
-    _miniColumn = miniColumn;
+    _miniColumn = newMiniColumn;
   }
 
   MiniColumnPtr & Neuron::miniColumn( void )

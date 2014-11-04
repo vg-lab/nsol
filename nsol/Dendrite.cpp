@@ -12,9 +12,9 @@
 namespace nsol 
 {
 
-  Dendrite::Dendrite( TDendriteType dendriteType ) 
+  Dendrite::Dendrite( TDendriteType inDendriteType ) 
     : Neurite( Neurite::DENDRITE )
-    , _dendriteType( dendriteType )
+    , _dendriteType( inDendriteType )
   {
     
   }

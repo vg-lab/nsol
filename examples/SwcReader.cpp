@@ -1,4 +1,4 @@
-#include <nsol.h>
+#include <nsol/nsol.h>
 
 #include <assert.h>
 
@@ -12,8 +12,12 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-  SwcReader r;
+  SwcReader<> r;
   SwcWriter w;
+
+  
+  if ( argc < 2 ) 
+    std::cerr << "Error: blueconfig file parameter needed." << std::endl;
 
   cout << "Reading file " << argv[1] << endl;
 

@@ -73,7 +73,7 @@ namespace nsol
         outFile << " "
                 << (*it)->id()
                 << " "
-                << SWC_SOMA
+                << int( SWC_SOMA )
                 << " "
                 << (*it)->point()[0]
                 << " "
@@ -137,26 +137,27 @@ namespace nsol
               sPS.push(lS->childs()[i]);
         }
 
-        for (std::map<unsigned int, NodePtr>::iterator it = nodePtrMap.begin(); it != nodePtrMap.end(); it++)
+        for (std::map<unsigned int, NodePtr>::iterator nodeIt = 
+	       nodePtrMap.begin(); nodeIt != nodePtrMap.end(); nodeIt++)
         {
 
           outFile << " "
-                  << it->second->id()
+                  << nodeIt->second->id()
                   << " "
                   << type
                   << " "
-                  << it->second->point()[0]
+                  << nodeIt->second->point()[0]
                   << " "
-                  << it->second->point()[1]
+                  << nodeIt->second->point()[1]
                   << " "
-                  << it->second->point()[2]
+                  << nodeIt->second->point()[2]
                   << " "
-                  << it->second->radius()
+                  << nodeIt->second->radius()
                   << " "
-                  << nodeParentId[it->second->id()]
+                  << nodeParentId[nodeIt->second->id()]
                   << std::endl;
 
-          parent = nodeParentId[it->second->id()];
+          parent = nodeParentId[nodeIt->second->id()];
         }
 
       }

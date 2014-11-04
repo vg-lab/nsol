@@ -154,27 +154,27 @@ namespace nsol
 
   float NeuronMorphology::dendritesVolume( void ) const
   {
-    float volume = 0.0f;
+    float tmpVolume = 0.0f;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
     {
       if ( NSOL_DYNAMIC_CAST( Dendrite, *it ) ) // std::dynamic_pointer_cast< Dendrite >( ( *it ))) // (*it)->asDendrite( ))
-	volume += (*it)->volume( );
+	tmpVolume += (*it)->volume( );
     }
-    return volume;
+    return tmpVolume;
   }
 
   float NeuronMorphology::axonVolume( void ) const
   {
-    float volume = 0.0f;
+    float tmpVolume = 0.0f;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
       if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	volume += (*it)->volume( );
+	tmpVolume += (*it)->volume( );
 
-    return volume;
+    return tmpVolume;
   }
 
   float NeuronMorphology::surface( void ) const
@@ -189,26 +189,26 @@ namespace nsol
 
   float NeuronMorphology::dendritesSurface( void ) const
   {
-    float surface = 0.0f;
+    float tmpSurface = 0.0f;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
       if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	surface += (*it)->surface( );
+	tmpSurface += (*it)->surface( );
 
-    return surface;
+    return tmpSurface;
   }
 
   float NeuronMorphology::axonSurface( void ) const
   {
-    float surface = 0.0f;
+    float tmpSurface = 0.0f;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
       if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	surface += (*it)->surface( );
+	tmpSurface += (*it)->surface( );
 
-    return surface;
+    return tmpSurface;
   }
 
   float NeuronMorphology::length( void ) const
@@ -223,31 +223,31 @@ namespace nsol
 
   float NeuronMorphology::dendritesLength( void ) const
   {
-    float length = 0;
+    float tmpLength = 0;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
       if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	length += (*it)->length( );
+	tmpLength += (*it)->length( );
 
-    return length;
+    return tmpLength;
   }
 
   float NeuronMorphology::axonLength( void ) const
   {
-    float length = 0.0f;
+    float tmpLength = 0.0f;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
       if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	length += (*it)->length( );
+	tmpLength += (*it)->length( );
 
-    return length;
+    return tmpLength;
   }
 
   Dendrites * NeuronMorphology::dendrites( void ) const
   {
-    Dendrites *dendrites = new Dendrites;
+    Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
@@ -256,18 +256,15 @@ namespace nsol
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
 
       if ( dend )
-      {
-//	dendrites->push_back((*it)->asDendrite( ));
-	dendrites->push_back( dend );
-      }
+	tmpDendrites->push_back( dend );
     }
-    return dendrites;
+    return tmpDendrites;
   }
 
   Dendrites * NeuronMorphology::basalDendrites(void) const
   {
 
-    Dendrites *dendrites = new Dendrites;
+    Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
@@ -275,15 +272,15 @@ namespace nsol
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
       if ( dend && 
 	   ( dend->dendriteType( ) == Dendrite::BASAL ))
-	dendrites->push_back( dend );
+	tmpDendrites->push_back( dend );
     }
 
-    return dendrites;
+    return tmpDendrites;
   }
 
   Dendrites * NeuronMorphology::apicalDendrites( void ) const
   {
-    Dendrites * dendrites = new Dendrites;
+    Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
 	 it != _neurites.end( ); ++it)
@@ -291,10 +288,10 @@ namespace nsol
       DendritePtr dend = NSOL_DYNAMIC_CAST ( Dendrite, *it );
       if ( dend && 
 	   ( dend->dendriteType( ) == Dendrite::APICAL ))
-	dendrites->push_back( dend );
+	tmpDendrites->push_back( dend );
     }
 
-    return dendrites;
+    return tmpDendrites;
   }
 
   DendritePtr NeuronMorphology::apicalDendrite( void ) const
