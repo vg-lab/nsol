@@ -19,7 +19,6 @@ Container/Nodes.h
 Section.h
 NeuronMorphology.h
 Segment.h
-nsol.h
 Reader/SwcReader.h
 Reader/BBPSDKReader.h
 NsolTypes.h
@@ -49,13 +48,16 @@ Section.cpp
 
 # Find package BBPSDK which is optional
 # find_package(BBPSDK)
-# if (BBPSDK_FOUND)
 #   find_package(Boost 1.45.0 COMPONENTS system REQUIRED)
 #   include_directories(${BBPSDK_INCLUDE_DIRS})
 #   add_definitions(-DWITH_BBPSDK)
 #   list(APPEND NSOL_LIBRARIES ${BBPSDK_LIBRARIES} )
 # endif()
 
+if (BBPSDK_FOUND)
+  set(NSOL_LINK_LIBRARIES ${BBPSDK_LIBRARIES})
+endif()
+
 common_library(nsol)
-list(APPEND NSOL_LIBRARIES nsol)
-set(NSOL_LIBRARIES "${NSOL_LIBRARIES}" PARENT_SCOPE)
+# list(APPEND NSOL_LIBRARIES nsol)
+# set(NSOL_LIBRARIES "${NSOL_LIBRARIES}" PARENT_SCOPE)

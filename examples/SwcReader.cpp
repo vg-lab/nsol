@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
 
   SwcReader<> r;
   SwcWriter w;
-
   
   if ( argc < 2 ) 
     std::cerr << "Error: blueconfig file parameter needed." << std::endl;

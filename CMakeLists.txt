@@ -13,6 +13,10 @@ project(nsol)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake
   ${CMAKE_SOURCE_DIR}/CMake/common)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif(NOT CMAKE_BUILD_TYPE)
+
 include(GitExternal)
 GIT_EXTERNAL(CMake/common https://github.com/Eyescale/CMake master)
 
@@ -31,12 +35,16 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 include(Common)
 include(FindPackages) 
 
+# message("${CMAKE_INSTALL_PREFIX}")
+# message("---- ${nsol_PREFIX_DIR}")
+
 add_subdirectory(nsol)
-add_subdirectory(test)
-add_subdirectory(examples)
+#add_subdirectory(test)
+#add_subdirectory(examples)
 
 include(CPackConfig)
 include(DoxygenRule)
+
 
 
 
