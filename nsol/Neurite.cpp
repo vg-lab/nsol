@@ -16,8 +16,8 @@ namespace nsol
 {
 
   //! Default constructor
-  Neurite::Neurite( TNeuriteType neuriteType ) 
-    : _neuriteType( neuriteType )
+  Neurite::Neurite( TNeuriteType initNeuriteType ) 
+    : _neuriteType( initNeuriteType )
     , _firstSection( nullptr)
     , _morphology( nullptr )
     , _numBranches( 0 )
@@ -60,9 +60,9 @@ namespace nsol
     return _morphology;
   }
   
-  NeuronMorphologyPtr Neurite::morphology( NeuronMorphologyPtr morphology ) 
+  NeuronMorphologyPtr Neurite::morphology( NeuronMorphologyPtr newMorphology ) 
   {
-    return _morphology = morphology;
+    return _morphology = newMorphology;
   }
 
   bool Neurite::hasMorphology( ) 
@@ -117,7 +117,7 @@ namespace nsol
 
   float Neurite::volume( void ) 
   {
-    float volume = 0.0f;
+    float tmpVolume = 0.0f;
 
     if (_firstSection) 
     {
@@ -129,19 +129,19 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	volume += lS->volume( );
+	tmpVolume += lS->volume( );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
 	    sPS.push(lS->childs( )[i]);
       }
     }
-    return volume;
+    return tmpVolume;
   }
 
   float Neurite::surface( void ) 
   {
-    float surface = 0.0f;
+    float tmpSurface = 0.0f;
 
     if (_firstSection) 
     {
@@ -153,7 +153,7 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	surface += lS->surface( );
+	tmpSurface += lS->surface( );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
@@ -161,12 +161,12 @@ namespace nsol
       }
     }
 
-    return surface;
+    return tmpSurface;
   }
 
   float Neurite::length( void ) 
   {
-    float length = 0.0f;
+    float tmpLength = 0.0f;
 
     if (_firstSection) 
     {
@@ -178,14 +178,14 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	length += lS->length( );
+	tmpLength += lS->length( );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
 	    sPS.push(lS->childs( )[i]);
       }
     }
-    return length;
+    return tmpLength;
   }
 
   // Casting virtual functions
@@ -202,14 +202,14 @@ namespace nsol
   //   return 0;
   // }
 
-  void Neurite::_addBifurcationCount( unsigned int numBifurcations ) 
+  void Neurite::_addBifurcationCount( unsigned int newNumBifurcations ) 
   {
-    _numBifurcations += numBifurcations;
+    _numBifurcations += newNumBifurcations;
   }
 
-  void Neurite::_addBranchCount( unsigned int numBranches ) 
+  void Neurite::_addBranchCount( unsigned int newNumBranches ) 
   {
-    _numBranches += numBranches;
+    _numBranches += newNumBranches;
   }
 
 } // namespace nsol

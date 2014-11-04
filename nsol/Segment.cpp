@@ -43,19 +43,19 @@ namespace nsol
     return _prev;
   }
 
-  void Segment::next( SegmentPtr next )
+  void Segment::next( SegmentPtr newNext )
   {
-    _next = next;
+    _next = newNext;
   }
 
-  void Segment::prev( SegmentPtr prev )
+  void Segment::prev( SegmentPtr newPrev )
   {
-    _prev = prev;
+    _prev = newPrev;
   }
 
-  void Segment::parentSection( SectionPtr parent )
+  void Segment::parentSection( SectionPtr newParent )
   {
-    _parent = parent;
+    _parent = newParent;
   }
 
   SectionPtr Segment::parentSection( void )
@@ -73,14 +73,14 @@ namespace nsol
     return _end;
   }
 
-  void Segment::begin( NodePtr begin )
+  void Segment::begin( NodePtr newBegin )
   {
-    _begin = begin;
+    _begin = newBegin;
   }
 
-  void Segment::end( NodePtr end )
+  void Segment::end( NodePtr newEnd )
   {
-    _end = end;
+    _end = newEnd;
   }
 
   float Segment::volume( void )

@@ -117,7 +117,7 @@ namespace nsol
      * @return numbers of minicolumns
      */
     NSOL_API 
-    const unsigned int numberOfMiniColumns( void ) const;
+    unsigned int numberOfMiniColumns( void ) const;
 
     ///@}
 
@@ -151,7 +151,7 @@ namespace nsol
      * @return number of neurons that match the criteria
      */
     NSOL_API 
-    const unsigned int 
+    unsigned int 
     numberOfNeurons( const bool all = true, 
 		     const Neuron::TNeuronType neuronType =
 		     Neuron::PYRAMIDAL,

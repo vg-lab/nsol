@@ -49,9 +49,9 @@ TEST_F(NeuronMorphologyTest, firstTest)
 
   ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
 
-  DendritePtr d = nm->addDendrite( );
+//  DendritePtr d = nm->addDendrite( );
 
-  NeuritePtr n(d);
+//  NeuritePtr n(d);
 
   ASSERT_EQ( nm->dendritesVolume( ), 0.0f );
 

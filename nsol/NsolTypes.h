@@ -19,7 +19,7 @@
 #include <vmmlib/vector.hpp>
 #include <vmmlib/matrix.hpp>
 
-#include <nsol/config.h>
+#include <nsol/defines.h>
 
 /* #include <boost/geometry/geometries/point.hpp> */
 
@@ -66,9 +66,6 @@ namespace nsol
   class Node;
   class Section;
   class Segment;
-
-
-
 
 
 #if (NSOL_WITH_SHARED_PTR == 1)

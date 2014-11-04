@@ -17,13 +17,11 @@ namespace nsol
   // Constructors and destructors
   //
 
-  MiniColumn::MiniColumn( const ColumnPtr column, 
-			  const unsigned short id ) 
-    : _id( id )
-    , _column( column )
+  MiniColumn::MiniColumn( const ColumnPtr initColumn, 
+			  const unsigned short initId ) 
+    : _id( initId )
+    , _column( initColumn )
   {
-    _column = column;
-    _id = id;
   }
 
   MiniColumn::MiniColumn( const MiniColumn & other ) 
@@ -161,13 +159,13 @@ namespace nsol
     if ( _neurons.size() == 0 ) 
       return 0.0f;
 
-    double meanSomaVolume = 0;
+    float totalSomaVolume = 0;
 
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
-      meanSomaVolume += (*nIt)->soma( ).volume( );
+      totalSomaVolume += (*nIt)->soma( ).volume( );
 
-    return float(meanSomaVolume / _neurons.size( ));
+    return totalSomaVolume / float(_neurons.size( ));
   }
 
   float MiniColumn::meanSomaSurface( ) const 
@@ -175,11 +173,11 @@ namespace nsol
     if ( _neurons.size() == 0 ) 
       return 0.0f;
 
-    double meanSomaSurface = 0;
+    float totalSomaSurface = 0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
-      meanSomaSurface += (*nIt)->soma( ).surface( );
-    return float(meanSomaSurface / _neurons.size( ));
+      totalSomaSurface += (*nIt)->soma( ).surface( );
+    return totalSomaSurface / float( _neurons.size( ));
   }
 
   float MiniColumn::meanDendriteVolume( void ) const 
@@ -187,11 +185,11 @@ namespace nsol
     if ( _neurons.size() == 0 ) 
       return 0.0f;
 
-    double meanDendVolume = 0;
+    float totalDendVolume = 0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
-      meanDendVolume += (*nIt)->dendritesVolume( );
-    return float(meanDendVolume / _neurons.size( ));
+      totalDendVolume += (*nIt)->dendritesVolume( );
+    return totalDendVolume / float( _neurons.size( ));
   }
 
   float MiniColumn::meanDendriteSurface( void ) const 
@@ -208,32 +206,32 @@ namespace nsol
 
   float MiniColumn::maxSomaVolume( void ) const 
   {
-    double maxSomaVolume = 0.0;
+    double tmpMaxSomaVolume = 0.0;
     for (Neurons::const_iterator nIt = _neurons.begin( );
 	 nIt != _neurons.end( ); nIt++)
-      if ((*nIt)->soma().volume() > maxSomaVolume)
-	maxSomaVolume = (*nIt)->soma().volume( );
-    return (float) maxSomaVolume;
+      if ((*nIt)->soma().volume() > tmpMaxSomaVolume)
+	tmpMaxSomaVolume = (*nIt)->soma().volume( );
+    return (float) tmpMaxSomaVolume;
   }
 
   float MiniColumn::maxSomaSurface( void) const 
   {
-    double maxSomaSurface = 0.0;
+    float tmpMaxSomaSurface = 0.0;
     for (Neurons::const_iterator nIt = _neurons.begin();
 	 nIt != _neurons.end( ); nIt++)
-      if ((*nIt)->soma().surface( ) > maxSomaSurface)
-	maxSomaSurface = (*nIt)->soma( ).surface();
-    return (float) maxSomaSurface;
+      if ((*nIt)->soma().surface( ) > tmpMaxSomaSurface)
+	tmpMaxSomaSurface = (*nIt)->soma( ).surface();
+    return tmpMaxSomaSurface;
   }
 
   float MiniColumn::maxDendriteVolume( void ) const 
   {
-    double maxDendVolume = 0;
+    float tmpMaxDendVolume = 0;
     for (Neurons::const_iterator nIt = _neurons.begin();
 	 nIt != _neurons.end(); nIt++)
-      if ((*nIt)->dendritesVolume() > maxDendVolume)
-	maxDendVolume = (*nIt)->dendritesVolume();
-    return (float) maxDendVolume;
+      if ((*nIt)->dendritesVolume() > tmpMaxDendVolume)
+	tmpMaxDendVolume = (*nIt)->dendritesVolume();
+    return tmpMaxDendVolume;
   }
 
   float MiniColumn::maxDendriteSurface( void ) const 

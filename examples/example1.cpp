@@ -37,8 +37,6 @@ int main () {
     Neurite * neurite = neuron.addNeurite();
     assert(neurite != NULL);
     assert(neurite->neuriteType() == Neurite::DENDRITE);
-    assert(neurite->asDendrite() != NULL);
-    assert(neurite->asDendrite()->dendriteType() == Dendrite::BASAL);
     assert(neuron.apicalDendrite() == NULL);
 
     assert(neuron.numNeurites() ==  1);
@@ -74,7 +72,7 @@ int main () {
     assert(neuron.soma().center()[1] == 4.6f);
     assert(neuron.soma().center()[2] == 5.7f);
     
-    Vec3f & centerRef = neuron.soma().center();
+    const Vec3f & centerRef = neuron.soma().center();
     assert(centerRef[0] == 3.5f);
     assert(centerRef[1] == 4.6f);
     assert(centerRef[2] == 5.7f);
@@ -87,17 +85,17 @@ int main () {
     assert(centerRef[1] == 2.3f);
     assert(centerRef[2] == 3.4f);
 
-    Vec3f newCenter(2.5,3.6,4.7);
-    neuron.soma().center() = newCenter;
-    assert(neuron.soma().center() == newCenter);
-    assert(centerRef == newCenter);
+    Vec3f newCenter2(2.5,3.6,4.7);
+    neuron.soma().center() = newCenter2;
+    assert(neuron.soma().center() == newCenter2);
+    assert(centerRef == newCenter2);
     assert(neuron.soma().center()[0] == 2.5f);
     assert(neuron.soma().center()[1] == 3.6f);
     assert(neuron.soma().center()[2] == 4.7f);
     
     {
-      Vec3f newCenter(5.6,6.7,7.8);
-      neuron.soma().center() = newCenter;
+      Vec3f newCenter3(5.6,6.7,7.8);
+      neuron.soma().center() = newCenter3;
     }
     assert(neuron.soma().center() == Vec3f(5.6,6.7,7.8));
     

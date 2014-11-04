@@ -1,15 +1,16 @@
 #include "Column.h"
 
-namespace nsol {
+namespace nsol 
+{
 
 
   //
   // Constructors and destructors
   //
   
-  Column::Column(unsigned short id) 
+  Column::Column( const unsigned short identifier ) 
   {
-    _id = id;
+    _id = identifier;
   }
 
 
@@ -103,15 +104,14 @@ namespace nsol {
     return _miniColumns;
   }
 
-  const unsigned int Column::numberOfMiniColumns(void) const
+  unsigned int Column::numberOfMiniColumns(void) const
   {
     return ( unsigned int ) _miniColumns.size();
   }
 
-  const unsigned int Column::numberOfNeurons(bool all, 
-					     Neuron::TNeuronType neuronType,
-					     unsigned int layer) 
-    const 
+  unsigned int Column::numberOfNeurons(bool all, 
+				       Neuron::TNeuronType neuronType,
+				       unsigned int layer) const 
   {
     unsigned int nNeurons = 0;
     
@@ -123,18 +123,19 @@ namespace nsol {
   
   }
 
-  float Column::meanSomaVolume () const
+  float Column::meanSomaVolume ( void ) const
   {
     if ( _miniColumns.size() == 0 ) 
       return 0.0f;
 
-    double meanSomaVolume = 0;
+    double totalSomaVolume = 0;
 
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
-      meanSomaVolume += (*mcIt)->meanSomaVolume( );
+      totalSomaVolume += (*mcIt)->meanSomaVolume( );
 
-    return float(meanSomaVolume / float(_miniColumns.size( )));
+    return float( totalSomaVolume / 
+		  float( _miniColumns.size( )));
   }
 
   float Column::meanSomaSurface() const
@@ -142,11 +143,12 @@ namespace nsol {
     if ( _miniColumns.size() == 0 ) 
       return 0.0f;
 
-    double meanSomaSurface = 0;
+    double totalMeanSomaSurface = 0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
-      meanSomaSurface += (*mcIt)->meanSomaSurface();
-    return float(meanSomaSurface / _miniColumns.size());
+      totalMeanSomaSurface += (*mcIt)->meanSomaSurface();
+    return float( totalMeanSomaSurface / 
+		  _miniColumns.size( ));
   }
 
   float Column::meanDendriteVolume() const
@@ -175,22 +177,23 @@ namespace nsol {
 
   float Column::maxSomaVolume() const
   {
-    double maxSomaVolume = 0.0;
+    float tmpMaxSomaVolume = 0.0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
-      if ((*mcIt)->maxSomaVolume() > maxSomaVolume)
-	maxSomaVolume = (*mcIt)->maxSomaVolume();
-    return (float)maxSomaVolume;
+      if ((*mcIt)->maxSomaVolume() > tmpMaxSomaVolume)
+	tmpMaxSomaVolume = (*mcIt)->maxSomaVolume();
+
+    return tmpMaxSomaVolume;
   }
 
   float Column::maxSomaSurface() const
   {
-    double maxSomaSurface = 0.0;
+    float tmpMaxSomaSurface = 0.0;
     for (MiniColumns::const_iterator mcIt = _miniColumns.begin();
 	 mcIt != _miniColumns.end(); mcIt++)
-      if ((*mcIt)->maxSomaSurface() > maxSomaSurface)
-	maxSomaSurface = (*mcIt)->maxSomaSurface();
-    return (float)maxSomaSurface;
+      if ( ( *mcIt )->maxSomaSurface( ) > tmpMaxSomaSurface )
+	tmpMaxSomaSurface = ( *mcIt )->maxSomaSurface( );
+    return tmpMaxSomaSurface;
   }
 
   float Column::maxDendriteVolume() const
