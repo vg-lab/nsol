@@ -20,6 +20,7 @@ endif(NOT CMAKE_BUILD_TYPE)
 include(GitExternal)
 GIT_EXTERNAL(CMake/common https://github.com/Eyescale/CMake master)
 
+
 set(LAST_RELEASE 0.0.0)
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "1")
@@ -35,17 +36,12 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 include(Common)
 include(FindPackages) 
 
-# message("${CMAKE_INSTALL_PREFIX}")
-# message("---- ${nsol_PREFIX_DIR}")
-
 add_subdirectory(nsol)
-#add_subdirectory(test)
-#add_subdirectory(examples)
+add_subdirectory(test)
+add_subdirectory(examples)
 
 include(CPackConfig)
 include(DoxygenRule)
-
-
 
 
 

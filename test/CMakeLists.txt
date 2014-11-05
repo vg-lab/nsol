@@ -27,7 +27,8 @@ if (GTEST_LIBRARY)
   add_executable(runTests runTests.cpp )
   target_link_libraries(runTests gtest 
     ${CMAKE_THREAD_LIBS_INIT} 
-    ${NSOL_LIBRARIES})
+    ${NSOL_LINK_LIBRARIES}
+    nsol)
 else()
   message(STATUS "Missing Gtest. No test will be built")
 endif()
