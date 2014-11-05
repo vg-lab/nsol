@@ -6,7 +6,6 @@
 #   www.gmrv.es
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 cmake_minimum_required(VERSION 2.8)
 project(nsol)
 
@@ -20,13 +19,14 @@ endif(NOT CMAKE_BUILD_TYPE)
 include(GitExternal)
 GIT_EXTERNAL(CMake/common https://github.com/Eyescale/CMake master)
 
-
+# nsol version
 set(LAST_RELEASE 0.0.0)
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "1")
 set(VERSION_PATCH "0")
 set(VERSION_ABI 1)
 
+# description
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
 set(COMMON_PROJECT_DOMAIN gmrv.es)
 
@@ -36,8 +36,13 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 include(Common)
 include(FindPackages) 
 
+# library subdirectory 
 add_subdirectory(nsol)
-add_subdirectory(test)
+
+# tests subdirectory 
+add_subdirectory(tests)
+
+# examples subdirectory
 add_subdirectory(examples)
 
 include(CPackConfig)
