@@ -12,16 +12,19 @@
 
 namespace nsol {
 
-
-
-
   class Sections : public Vector<SectionPtr> {
+
+  public:
+
+    NSOL_API
+    Sections () 
+    {
+    }
     
 
   protected:
-
+    Vector<SectionPtr> _sections;
   };
-
 }
 
 

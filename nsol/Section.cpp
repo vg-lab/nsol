@@ -20,6 +20,38 @@ namespace nsol
   {
   }
 
+  Section::Section( NeuritePtr initNeurite = nullptr
+             , SectionPtr initParent = nullptr
+             , Sections initChilds = Sections()
+             , List<NodePtr> list = List<NodePtr>() )
+    : _neurite ( initNeurite )
+    , _parent ( initParent )
+    , _childs ( initChilds )
+  {
+    if (! list.empty( ) )
+    {
+      List<NodePtr>::iterator it = list.begin( );
+      SegmentPtr s = this->addSegment( );
+
+      s->begin( *it );
+      s->parentSection ( initParent );
+      it++;
+      while (! *it ) 
+      {
+        s->end( *it );
+      
+        if ( it != list.end( ) ) 
+        {
+          s = this->addSegment( );
+          s->begin( *it );
+          s->parentSection( initParent );     
+        }
+        
+        it++;
+      } // while
+    } // if
+  }
+
   Section::~Section()
   {
     // if (_firstSegment)
@@ -28,9 +60,9 @@ namespace nsol
     
     //   while (sP)
     //   {
-    // 	SegmentPtr next = sP->_next;
-    // 	delete sP;
-    // 	sP = next;
+    //  SegmentPtr next = sP->_next;
+    //  delete sP;
+    //  sP = next;
     //   }
     // }
   }
@@ -97,7 +129,7 @@ namespace nsol
     }
 
     return s;
-
+  
   }
 
   SegmentPtr & Section::firstSegment( void )
@@ -121,8 +153,8 @@ namespace nsol
 
       while (sP)
       {
-	tmpVolume += sP->volume();
-	sP = sP->next();
+  tmpVolume += sP->volume();
+  sP = sP->next();
       }
     }
 
@@ -139,8 +171,8 @@ namespace nsol
 
       while (sP)
       {
-	tmpSurface += sP->surface();
-	sP = sP->next();
+  tmpSurface += sP->surface();
+  sP = sP->next();
       }
     }
 
@@ -157,8 +189,8 @@ namespace nsol
 
       while (sP)
       {
-	tmpLength += sP->length();
-	sP = sP->next();
+  tmpLength += sP->length();
+  sP = sP->next();
       }
     }
 
@@ -194,10 +226,10 @@ namespace nsol
 
       while (sP)
       {
-	radius += sP->begin()->radius();
-	nN++;
+  radius += sP->begin()->radius();
+  nN++;
 
-	sP = sP->next();
+  sP = sP->next();
       }
 
       radius += _lastSegment->end()->radius();
@@ -213,19 +245,19 @@ namespace nsol
     {
       if (sP == _firstSegment)
       {
-	sP->end(sP->next()->end());
-	sP->next()->_removeNodes();
+  sP->end(sP->next()->end());
+  sP->next()->_removeNodes();
 #ifndef NSOL_WITH_SHARED_PTR
-	delete sP->next();
+  delete sP->next();
 #endif
       }
       else
       {
-	sP->_removeNodes();
-	sP->prev()->end(sP->next()->end());
+  sP->_removeNodes();
+  sP->prev()->end(sP->next()->end());
 #ifndef NSOL_WITH_SHARED_PTR
-	delete sP->next();
-	delete sP;
+  delete sP->next();
+  delete sP;
 #endif
       }
 

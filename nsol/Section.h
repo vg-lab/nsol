@@ -26,7 +26,13 @@ namespace nsol
   public:
 
     NSOL_API
-    Section( void );
+    Section ( );
+
+    NSOL_API
+    Section( NeuritePtr initNeurite
+      , SectionPtr initSection
+      , Sections initChilds
+      , List<NodePtr> list );
 
     NSOL_API
     ~Section( );
