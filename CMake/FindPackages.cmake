@@ -24,7 +24,8 @@ if(vmmlib_name)
 endif()
 
 # Find package BBPSDK which is optional
-if(WITH_BBPSK)
+if(WITH_BBPSDK)
+
   find_package(BBPSDK)
 
   if(BBPSDK_FOUND)
