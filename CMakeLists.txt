@@ -37,6 +37,7 @@ set(COMMON_PROJECT_DOMAIN gmrv.es)
 
 # Option to build with shared pointers or raw pointers
 option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
+option(WITH_BBPSDK "WITH_BBPSDK" ON)
 
 include(Common)
 include(FindPackages) 
