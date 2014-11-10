@@ -9,6 +9,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(nsol)
 
+# Disable in source building 
+if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+  message(FATAL "no in source building allowed.")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake
   ${CMAKE_SOURCE_DIR}/CMake/common)
 
