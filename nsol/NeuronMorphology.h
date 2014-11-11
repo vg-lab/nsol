@@ -31,12 +31,17 @@ namespace nsol
 
   public:
 
+  //! Type of dendrite
+	 typedef enum {PYRAMIDAL = 0, INTER} TNeuronType;
+
     /**
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
     NSOL_API
-    NeuronMorphology( void );
+    //NeuronMorphology( void );
+    NeuronMorphology(
+    		const TNeuronType type = PYRAMIDAL );
 
     NSOL_API
     ~NeuronMorphology( void );
@@ -167,10 +172,19 @@ namespace nsol
     NSOL_API
     Soma & soma( void );
 
+    /**
+         * Method to get the neuron type.
+         * @return neuron type
+	 */
+    NSOL_API
+	TNeuronType & neuronType();
+
   protected:
 
     Soma _soma;
     Neurites _neurites;
+
+    TNeuronType _type;
 
   };
 

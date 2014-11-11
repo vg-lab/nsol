@@ -12,7 +12,12 @@
 namespace nsol
 {
 
-  NeuronMorphology::NeuronMorphology( void )
+  /*NeuronMorphology::NeuronMorphology( void )
+  {
+  }*/
+
+   NeuronMorphology::NeuronMorphology(
+		   const NeuronMorphology::TNeuronType initType ):_type( initType )
   {
   }
 
@@ -42,6 +47,9 @@ namespace nsol
   DendritePtr 
   NeuronMorphology::addDendrite( Dendrite::TDendriteType dendriteType )
   {
+	if ( dendriteType == Dendrite::APICAL )
+	        _type = PYRAMIDAL;
+
     DendritePtr dend( new Dendrite( dendriteType ));
     _neurites.push_back( dend );
     return dend;
@@ -317,6 +325,17 @@ namespace nsol
   {
     return _soma;
   }
+
+  NeuronMorphology::TNeuronType & NeuronMorphology::neuronType( void )
+    {
+      // if (this->apicalDendrites()->size() == 0)
+      //   assert( PYRAMIDAL == _type);
+      // else
+      //   assert( INTER == _type);
+
+      return _type;
+
+    };
 
 
 } // namespace nsol
