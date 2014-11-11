@@ -37,7 +37,7 @@ namespace nsol
   } TSwcLine;
 
 
-  template < class NODE = Node, class NODE_PTR = NodePtr>  
+  template < class NODE = Node >  
   class SwcReader
   {
 
@@ -146,14 +146,14 @@ namespace nsol
       /* } */
 
       std::vector<unsigned int> somaChilds;
-      std::map<unsigned int, NODE_PTR > nodeSomaPtr;
+      std::map<unsigned int, NodePtr > nodeSomaPtr;
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
 	   it != lines.end(); it++)
       {
         if (it->second.type == SWC_SOMA)
         {
-          NODE_PTR node( new NODE(it->second.xyz, it->second.id, it->second.radius) );
+          NodePtr node( new NODE(it->second.xyz, it->second.id, it->second.radius) );
           neuronMorphology->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
@@ -275,7 +275,7 @@ namespace nsol
     void _ReadDendrite( DendritePtr d, 
 			std::map<unsigned int, TSwcLine> &lines,
 			unsigned int initId, 
-			NODE_PTR nodeSomaPtr )
+			NodePtr nodeSomaPtr )
     {
 
       std::stack<TReadDendritesStackElem> ids;
@@ -285,7 +285,7 @@ namespace nsol
 
 
       SectionPtr s = nullptr, parentSection;
-      NODE_PTR nP = nullptr;
+      NodePtr nP = nullptr;
       bool first = true;
 
       while (!ids.empty())
@@ -316,7 +316,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, lines[id].radius )));
+        sgPre->end(NodePtr( new NODE(lines[id].xyz, id, lines[id].radius )));
 
 //        std::cout << "Add segment begin node radius: " << sgPre->begin()->radius()
 //                  << std::endl;
@@ -352,7 +352,7 @@ namespace nsol
 //                    << lines[id].childs.size() << " childs ";
 
           //Segment end node
-          sg->end(NODE_PTR(new NODE(lines[id].xyz, id, lines[id].radius)));
+          sg->end(NodePtr(new NODE(lines[id].xyz, id, lines[id].radius)));
 
 //          std::cout << "\nAdd segment begin node radius dentro: "
 //                    << sg->begin()->radius() << std::endl;
@@ -400,7 +400,7 @@ namespace nsol
     } TReadAxonStackElem;
 
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> &lines,
-                   unsigned int initId, NODE_PTR nodeSomaPtr)
+                   unsigned int initId, NodePtr nodeSomaPtr)
     {
 
       std::stack<TReadAxonStackElem> ids;
@@ -408,7 +408,7 @@ namespace nsol
       ids.push(tmp);
 
       SectionPtr s = NULL, parentSection;
-      NODE_PTR nP = nullptr;
+      NodePtr nP = nullptr;
       bool first = true;
 
       while (!ids.empty())
@@ -441,7 +441,7 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NODE_PTR( new NODE(lines[id].xyz, id, 
+        sgPre->end(NodePtr( new NODE(lines[id].xyz, id, 
 				      lines[id].radius)));
 
 
@@ -465,7 +465,7 @@ namespace nsol
           id = lines[id].childs[0];
 
           //Segment end node
-          sg->end(NODE_PTR( new NODE(lines[id].xyz, id, 
+          sg->end(NodePtr( new NODE(lines[id].xyz, id, 
 				     lines[id].radius)));
 
 

@@ -82,6 +82,11 @@ namespace nsol
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
+
+#define NSOL_DELETE_PTR( __PTR_TO_NSOL_OBJ__ ) \
+  ( void ) __PTR_TO_NSOL_OBJ__
+
+
   
 #else
   typedef Axon * AxonPtr;
@@ -97,6 +102,12 @@ namespace nsol
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )
+
+#define NSOL_DELETE_PTR( __PTR_TO_NSOL_OBJ__ ) \
+  {                                            \
+  delete __PTR_TO_NSOL_OBJ__;		       \
+  __PTR_TO_NSOL_OBJ__ = nullptr;               \
+  }
 
 
 #endif

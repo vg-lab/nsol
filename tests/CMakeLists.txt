@@ -1,34 +1,38 @@
 
+set(TEST_LIBRARIES ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} nsol)
 
-include_directories(${CMAKE_BINARY_DIR})
+include(CommonCTest)
 
-enable_testing()
 
-find_library(GTEST_LIBRARY 
- NAMES libgtest.a
- PATHS 
- ${GTEST_LIBRARY_DIR}
- /opt/local/lib
- /usr/local/lib
- /usr/lib
-)
+# include_directories(${CMAKE_BINARY_DIR})
 
-if (GTEST_LIBRARY)
+# enable_testing()
 
-  get_filename_component(
-    GTEST_LIBRARY_DIR 
-    ${GTEST_LIBRARY}
-    PATH )
+# find_library(GTEST_LIBRARY 
+#  NAMES libgtest.a
+#  PATHS 
+#  ${GTEST_LIBRARY_DIR}
+#  /opt/local/lib
+#  /usr/local/lib
+#  /usr/lib
+# )
 
-  message(STATUS "Found Gtest in ${GTEST_LIBRARY}")
-  link_directories( ${GTEST_LIBRARY_DIR} )
-  include_directories(${GTEST_INCLUDE_DIR})
-  find_package (Threads)
-  add_executable(runTests runTests.cpp )
-  target_link_libraries(runTests gtest 
-    ${CMAKE_THREAD_LIBS_INIT} 
-    ${NSOL_LINK_LIBRARIES}
-    nsol)
-else()
-  message(STATUS "Missing Gtest. No test will be built")
-endif()
+# if (GTEST_LIBRARY)
+
+#   get_filename_component(
+#     GTEST_LIBRARY_DIR 
+#     ${GTEST_LIBRARY}
+#     PATH )
+
+#   message(STATUS "Found Gtest in ${GTEST_LIBRARY}")
+#   link_directories( ${GTEST_LIBRARY_DIR} )
+#   include_directories(${GTEST_INCLUDE_DIR})
+#   find_package (Threads)
+#   add_executable(runTests runTests.cpp )
+#   target_link_libraries(runTests gtest 
+#     ${CMAKE_THREAD_LIBS_INIT} 
+#     ${NSOL_LINK_LIBRARIES}
+#     nsol)
+# else()
+#   message(STATUS "Missing Gtest. No test will be built")
+# endif()
