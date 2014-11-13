@@ -42,18 +42,18 @@ namespace nsol
 	    const unsigned short layer = 0,
 	    const unsigned int gid = 0,
 	    const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-	    const MiniColumnPtr miniColumn = nullptr,
+	    const MiniColumnPtr miniColumn = nullptr);
 	    //const TNeuronType type = PYRAMIDAL);
-	    );
+
 
     NSOL_API
     Neuron(const NeuronMorphologyPtr neuronMorphology,
            const unsigned short layer = 0,
            const unsigned int gid = 0,
            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-           const MiniColumnPtr miniColumn = nullptr,
+           const MiniColumnPtr miniColumn = nullptr);
 	   //const TNeuronType type = PYRAMIDAL);
-           );
+
 
     NSOL_API
     ~Neuron( void );
@@ -228,8 +228,8 @@ namespace nsol
      * Method to get the neuron type.
      * @return neuron type
      */
-    /*NSOL_API
-    TNeuronType & neuronType();*/
+    NSOL_API
+    NeuronMorphology::TNeuronType & neuronType();
 
 
   protected:

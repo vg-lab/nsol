@@ -24,10 +24,10 @@ int main ( void )
   assert( c->maxDendriteSurface( ) == 0.0f );
   assert( c->numberOfNeurons() == 0 );
   assert( c->numberOfNeurons( false ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::INTER ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::PYRAMIDAL ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::INTER ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTER ) == 0 );
 
 
   std::cout << "Add mini column" << std::endl;
@@ -53,10 +53,10 @@ int main ( void )
   assert( c->maxDendriteSurface( ) == 0.0f );
   assert( c->numberOfNeurons() == 0 );
   assert( c->numberOfNeurons( false ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::INTER ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::PYRAMIDAL ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::INTER ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTER ) == 0 );
 
   {
     MiniColumnPtr mc2 ( new MiniColumn );
@@ -96,13 +96,13 @@ int main ( void )
       {
 	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
 						     Matrix4_4f::IDENTITY, 
-						     *mcIt, Neuron::PYRAMIDAL )));	
+						     *mcIt)));//, NeuronMorphology::PYRAMIDAL )));
       }
       for ( unsigned short j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
 	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
 						     Matrix4_4f::IDENTITY, 
-						     *mcIt, Neuron::INTER )));	
+						     *mcIt)));//, NeuronMorphology::INTER )));
       }
     }
   }
@@ -111,13 +111,13 @@ int main ( void )
   assert( c->numberOfNeurons( ) == 
 	  NUM_MINICOLS * 6 * ( NUM_NEURONS_PYR_PER_LAYER + 
 			       NUM_NEURONS_INT_PER_LAYER ) );
-  assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) == 
+  assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) ==
 	  NUM_MINICOLS * 6 * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) == 
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTER ) ==
 	  NUM_MINICOLS * 6 * NUM_NEURONS_INT_PER_LAYER );
-  assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL, 2 ) == 
+  assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL, 2 ) ==
 	  NUM_MINICOLS * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, Neuron::INTER , 2 ) == 
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTER , 2 ) ==
 	  NUM_MINICOLS * NUM_NEURONS_INT_PER_LAYER );
 
 

@@ -146,8 +146,8 @@ namespace nsol
      */
     NSOL_API
     unsigned int numberOfNeurons(bool all = true, 
-				 Neuron::TNeuronType neuronType =
-				 Neuron::PYRAMIDAL,
+    		NeuronMorphology::TNeuronType neuronType =
+				 NeuronMorphology::PYRAMIDAL,
 				 unsigned int layer = 0 ) const;
   
 
