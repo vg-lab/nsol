@@ -5,8 +5,8 @@
  * @date    
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
-#ifndef __NSOL_NODERELEVANCE__
-#define __NSOL_NODERELEVANCE__
+#ifndef __NSOL_SCALARLABELEDNODE__
+#define __NSOL_SCALARLABELEDNODE__
 
 #include <nsol/api.h>
 #include <nsol/NsolTypes.h>
@@ -15,16 +15,16 @@
 namespace nsol
 {
 
-  class NodeRelevance : public Node
+  class ScalarLabeledNode : public Node
   {
 
   public:
 
     NSOL_API
-    NodeRelevance( const Vec3f & point = Vec3f(0,0,0), 
-	  			const int &id = 0, 
-	  			const float &radius = 0.0f,
-					const float &importancia = 0.0f );
+    ScalarLabeledNode( const Vec3f & initPoint = Vec3f(0,0,0) 
+	  			, const int &initId = 0 
+	  			, const float &initRadius = 0.0f
+					, const float &initRelevance = 0.0f );
 
     NSOL_API
     float & relevance( void );
@@ -33,10 +33,10 @@ namespace nsol
     float relevance( void ) const;
 
     NSOL_API
-    bool operator == ( NodeRelevance & other ) const;
+    bool operator == ( ScalarLabeledNode & other ) const;
     
     NSOL_API
-    bool operator != ( NodeRelevance & other ) const;
+    bool operator != ( ScalarLabeledNode & other ) const;
 
   private:
 
