@@ -4,6 +4,8 @@ source_group(\\ FILES CMakeLists.txt)
 
 set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
 Node.h
+Utils/Simplification/ScalarLabeledNode.h
+Utils/Simplification/SimplifySection.h
 Column.h
 Soma.h
 Writer/SwcWriter.h
@@ -44,6 +46,8 @@ Neurite.cpp
 Column.cpp
 Segment.cpp
 Section.cpp
+Utils/Simplification/ScalarLabeledNode.cpp
+Utils/Simplification/SimplifySection.cpp
 )
 
 if (BBPSDK_FOUND)
