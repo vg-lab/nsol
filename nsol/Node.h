@@ -25,9 +25,12 @@ namespace nsol
 	  const float &radius = 0.0f );
 
     NSOL_API
+    virtual ~Node( void );
+
+    NSOL_API
     Vec3f & point( void );
 
-		NSOL_API
+	NSOL_API
     Vec3f point( void ) const;
 
     NSOL_API
@@ -43,10 +46,10 @@ namespace nsol
     int id( void ) const;   
 
     NSOL_API
-    bool operator == ( Node & other ) const;
+    virtual bool operator == ( Node & other ) const;
     
     NSOL_API
-    bool operator != ( Node & other ) const;
+    virtual bool operator != ( Node & other ) const;
 
   protected:
 

@@ -26,6 +26,9 @@ namespace nsol
 	  			, const float &initRadius = 0.0f
 					, const float &initRelevance = 0.0f );
 
+    NSOL_API  
+    virtual ~ScalarLabeledNode( void );
+
     NSOL_API
     float & relevance( void );
 

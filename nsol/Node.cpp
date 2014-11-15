@@ -20,6 +20,10 @@ namespace nsol
   {
   }
 
+  Node::~Node( void )
+  {    
+  }
+
   Vec3f & Node::point(void)
   {
     return _point;

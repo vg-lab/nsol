@@ -19,6 +19,10 @@ namespace nsol
     , _relevance( initRelevance )
   {
   }
+
+  ScalarLabeledNode::~ScalarLabeledNode( void )
+  {    
+  }
   
   float & ScalarLabeledNode::relevance( void )
   {
