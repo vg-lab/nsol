@@ -9,6 +9,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(nsol)
 
+# Disable in source building 
+if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+  message(FATAL "no in source building allowed.")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake
   ${CMAKE_SOURCE_DIR}/CMake/common)
 
@@ -17,7 +22,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 include(GitExternal)
-GIT_EXTERNAL(CMake/common https://github.com/Eyescale/CMake master)
 
 # nsol version
 set(LAST_RELEASE 0.0.0)
@@ -32,6 +36,7 @@ set(COMMON_PROJECT_DOMAIN gmrv.es)
 
 # Option to build with shared pointers or raw pointers
 option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
+option(WITH_BBPSDK "WITH_BBPSDK" ON)
 
 include(Common)
 include(FindPackages) 
