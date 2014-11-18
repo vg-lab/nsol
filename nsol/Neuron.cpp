@@ -16,17 +16,16 @@ namespace nsol
 		  const unsigned short initLayer,
 		  const unsigned int initGid, 
 		  const Matrix4_4f initTransform,
-		  const MiniColumnPtr initMiniColumn)
-    		 // const Neuron::TNeuronType initType )
+		  const MiniColumnPtr initMiniColumn,
+          const NeuronMorphology::TNeuronType initType )
     : _morphology( nullptr )
     , _miniColumn( initMiniColumn )
     , _transform( initTransform )
     , _layer( initLayer )
     , _gid( initGid )
-    //, _type( initType )
   {
     if ( initCreateMorphology )
-      _morphology = NeuronMorphologyPtr( new NeuronMorphology );
+      _morphology = NeuronMorphologyPtr( new NeuronMorphology( initType) );
   }
 
   Neuron::Neuron( const NeuronMorphologyPtr initNeuronMorphology,

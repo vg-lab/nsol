@@ -33,8 +33,8 @@ void CheckNoNeurons( ColumnPtr c )
   BOOST_CHECK_EQUAL( c->numberOfNeurons( false ), 0 );
   BOOST_CHECK_EQUAL( c->numberOfNeurons( true, NeuronMorphology::PYRAMIDAL ), 0 );
   BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ), 0 );
-  BOOST_CHECK_EQUAL( c->numberOfNeurons( true, NeuronMorphology::INTER ), 0 );
-  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER ), 0 );
+  BOOST_CHECK_EQUAL( c->numberOfNeurons( true, NeuronMorphology::INTER_NEURON), 0 );
+  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ), 0 );
 }
 
 
@@ -273,14 +273,14 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
 	( *mcIt )->addNeuron( 
 	  NeuronPtr( new Neuron( true, l, gid++, 
 				 Matrix4_4f::IDENTITY, 
-				 *mcIt)));//, Neuron::PYRAMIDAL)));
+				 *mcIt, NeuronMorphology::PYRAMIDAL)));
       }
       for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
 	( *mcIt )->addNeuron( 
 	  NeuronPtr( new Neuron( true, l, gid++, 
 				 Matrix4_4f::IDENTITY, 
-				 *mcIt)));//, Neuron::INTER )));
+				 *mcIt, NeuronMorphology::INTER_NEURON )));
       }
     }
   }
@@ -291,11 +291,12 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
 				  NUM_NEURONS_INT_PER_LAYER ) );
   BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ),
 	     NUM_MINICOLS * 6 * NUM_NEURONS_PYR_PER_LAYER );
-  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER ),
+  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ),
 	     NUM_MINICOLS * 6 * NUM_NEURONS_INT_PER_LAYER );
+ printf("c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ): %d ", c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ) );
   BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL, 2 ),
 	     NUM_MINICOLS * NUM_NEURONS_PYR_PER_LAYER );
-  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER , 2 ),
+  BOOST_CHECK_EQUAL( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON , 2 ),
 	     NUM_MINICOLS * NUM_NEURONS_INT_PER_LAYER );
   
   // Check morphological values are still computed 

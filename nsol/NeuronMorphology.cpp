@@ -16,8 +16,9 @@ namespace nsol
   {
   }*/
 
-   NeuronMorphology::NeuronMorphology(
-		   const NeuronMorphology::TNeuronType initType ):_type( initType )
+  NeuronMorphology::NeuronMorphology(
+		   const NeuronMorphology::TNeuronType initType )
+    :_type( initType )
   {
   }
 

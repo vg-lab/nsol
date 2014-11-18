@@ -42,8 +42,8 @@ namespace nsol
 	    const unsigned short layer = 0,
 	    const unsigned int gid = 0,
 	    const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-	    const MiniColumnPtr miniColumn = nullptr);
-	    //const TNeuronType type = PYRAMIDAL);
+	    const MiniColumnPtr miniColumn = nullptr,
+	    const NeuronMorphology::TNeuronType type = NeuronMorphology::PYRAMIDAL);
 
 
     NSOL_API

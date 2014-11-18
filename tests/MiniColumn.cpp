@@ -18,18 +18,7 @@
 
 void CheckNullMorphologicalValues( nsol::MiniColumnPtr mc )
 {
-  //<<<<<
-  std::cout << " " << std::endl;
-	  std::cout << "Volume of Soma: "<<  c->meanSomaVolume( ) << " == 0"<< std::endl;
-	  std::cout << "Surface of Soma: "<<  c->meanSomaSurface( ) << " == 0.0f"<<std::endl;
-	  std::cout << "Volume of Dendrita: "<<  c->meanDendriteVolume( ) << " == 0.0f"<< std::endl;
-	  std::cout << "Surface of Dendrita: "<<  c->meanDendriteSurface( ) << " == 0.0f"<< std::endl;
-	  std::cout << "Max. Volume of Soma: "<<  c->maxSomaVolume( ) << " == 0.0f"<< std::endl;
-	  std::cout << "Max. surface of Soma: "<<  c->maxSomaSurface( ) << " == 0.0f"<< std::endl;
-	  std::cout << "Max. Volume of Dendrita: "<<  c->maxDendriteVolume( ) << " == 0.0f"<< std::endl;
-	  std::cout << "Max. Surface of Dendrita: "<<  c->maxDendriteSurface( ) << " == 0.0f"<< std::endl;
-  std::cout << " " << std::endl;
-  ///>>>>>
+
 
   BOOST_CHECK_EQUAL( mc->meanSomaVolume( ), 0 );
   BOOST_CHECK_EQUAL( mc->meanSomaSurface( ), 0.0f );
@@ -45,20 +34,6 @@ void CheckNullMorphologicalValues( nsol::MiniColumnPtr mc )
 
 void CheckNoNeurons( nsol::MiniColumnPtr mc )
 {
-	//<<<<<<
-	std::cout << " " << std::endl;
-	  std::cout << "mc->numberOfNeurons(): "<<  mc->numberOfNeurons() << " == 0"<< std::endl;//
-	  std::cout << "mc->numberOfNeurons( false ): "<<  mc->numberOfNeurons( false ) << " == 0"<<std::endl;//
-	  std::cout << "mc->numberOfNeurons( true, nsol::NeuronMorphology::PYRAMIDAL ): "<<
-			  mc->numberOfNeurons( true, nsol::NeuronMorphology::PYRAMIDAL ): << " == 0"<< std::endl;//
-	  std::cout << "mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ): "<<
-			  mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ): << " == 0"<< std::endl;//
-	  std::cout << "mc->numberOfNeurons( true, nsol::NeuronMorphology::INTER ): "<<
-			  mc->numberOfNeurons( true, nsol::NeuronMorphology::INTER ): << " == 0"<< std::endl;//
-	  std::cout << "mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER ): "<<
-			  mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER ): << " == 0"<< std::endl;//
-    std::cout << " " << std::endl;
-    //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->numberOfNeurons(), 0 );
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( false ), 0 );
@@ -66,9 +41,9 @@ void CheckNoNeurons( nsol::MiniColumnPtr mc )
 		     0 );
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ),
 		     0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true, nsol::NeuronMorphology::INTER ),
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true, nsol::NeuronMorphology::INTER_NEURON ),
 		     0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER ),
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON ),
 		     0 );
 }
 
@@ -84,20 +59,10 @@ BOOST_AUTO_TEST_CASE( emptyMiniColumn )
   // Check id equal to 0 
   #define MINICOL_ID 115
 
-  //<<<<<<
-  std::cout << " " << std::endl;
-  	  std::cout << "mc->id( ) "<<  mc->id( ) << " == 0"<< std::endl;
-  std::cout << " " << std::endl;
-  //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->id( ), 0 );
   mc->id( ) = MINICOL_ID;
 
-  //<<<<<<
-   std::cout << " " << std::endl;
-   	  std::cout << "mc->id( ) "<<  mc->id( ) << " == "<< MINICOL_ID << std::endl;
-   std::cout << " " << std::endl;//***********************************************************************
-   //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->id( ), MINICOL_ID );
 
@@ -125,14 +90,6 @@ BOOST_AUTO_TEST_CASE( addNeuron)
 
   // Check if added ok
 
-  //<<<<<<
-     std::cout << " " << std::endl;
-     	  std::cout << "mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-     			  " == 1" <<std::endl;
-     	 std::cout << "mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-     	      			  " == " <<mc->numberOfNeurons( )<< std::endl;
-     std::cout << " " << std::endl;//***********************************************************************
-  //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 1);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
@@ -162,16 +119,6 @@ BOOST_AUTO_TEST_CASE( removeNeuron)
 
   // Try to remove the one not added 
 
-  //<<<<<<
-       std::cout << " " << std::endl;
-       	  std::cout << "mc->removeNeuron( n2 ) "<<  mc->removeNeuron( n2 ) <<
-       			  " == false" <<std::endl;
-       	 std::cout << "mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-       	      			  " ==1" << std::endl;
-       	std::cout << "mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-       	       	      			  " ==" << mc->numberOfNeurons( ) << std::endl;
-       std::cout << " " << std::endl;
-    //>>>>>>
 
        	 //BOOST_CHECK_EQUAL( mc->removeNeuron( n2 ), false );
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 1);
@@ -180,14 +127,6 @@ BOOST_AUTO_TEST_CASE( removeNeuron)
   // Remove the one added
   BOOST_CHECK_EQUAL( mc->removeNeuron( n1 ), true );
 
-  //<<<<<<
-        std::cout << " " << std::endl;
-        	  std::cout << "mc->neurons( ).size( ) "<<  mc->removeNeuron( n2 ) <<
-        			  " == 0"<< std:endl;
-        	 std::cout << " mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-        	      			  " ==" <<  mc->numberOfNeurons( )<< std:endl;
-        std::cout << " " << std::endl;
- //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 0);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
@@ -220,14 +159,6 @@ BOOST_AUTO_TEST_CASE( clearNeurons )
   // Clear neurons
   mc->clearNeurons( );
 
-  //<<<<<<
-        std::cout << " " << std::endl;
-        	  std::cout << "mc->neurons( ).size( ) "<<  mc->removeNeuron( n2 ) <<
-        			  " == 0"<< std:endl;
-        	 std::cout << " mc->neurons( ).size( ) "<<  mc->neurons( ).size( ) <<
-        	      			  " ==" <<  mc->numberOfNeurons( )<< std:endl;
-        std::cout << " " << std::endl;
- //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 0);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
@@ -257,12 +188,6 @@ BOOST_AUTO_TEST_CASE( operators )
   // Compare empty columns
   nsol::MiniColumnPtr mc2( new nsol::MiniColumn( ));
 
-  //<<<<<<
-         std::cout << " " << std::endl;
-         	  std::cout << "*mc == *mc2: "<< *mc == *mc2 << "== true"<< std:endl;
-         	 std::cout << "*mc != *mc2: "<< *mc != *mc2 << "== false" << std::endl;
-         std::cout << " " << std::endl;
-  //>>>>>>
 
   BOOST_CHECK_EQUAL( *mc == *mc2, true );
   BOOST_CHECK_EQUAL( *mc != *mc2, false );
@@ -270,12 +195,6 @@ BOOST_AUTO_TEST_CASE( operators )
   // Change id and compare
   mc2->id( ) = 10;
 
-  //<<<<<<
-          std::cout << " " << std::endl;
-          	  std::cout << "*mc == *mc2: "<< *mc == *mc2 << "== false" << std:endl;
-          	 std::cout << "*mc != *mc2: "<< *mc != *mc2 << "== true" << std::endl;
-          std::cout << " " << std::endl;
-   //>>>>>>
 
   BOOST_CHECK_EQUAL( *mc == *mc2, false );
   BOOST_CHECK_EQUAL( *mc != *mc2, true );
@@ -283,12 +202,6 @@ BOOST_AUTO_TEST_CASE( operators )
   // Assignment operator
   nsol::MiniColumn mc3 = *mc2 ;
 
-  //<<<<<<
-          std::cout << " " << std::endl;
-          	  std::cout << "mc3 == *mc2: "<< mc3 == *mc2 << "== true" << std::endl;
-          	 std::cout << "mc3 != *mc2: "<< mc3 != *mc2 << "== false" << std::endl;
-          std::cout << " " << std::endl;
-   //>>>>>>
 
   BOOST_CHECK_EQUAL( mc3 == *mc2, true );
   BOOST_CHECK_EQUAL( mc3 != *mc2, false );
@@ -296,12 +209,6 @@ BOOST_AUTO_TEST_CASE( operators )
   // Add neurons and test if equal
   *mc2 = *mc;
 
-  //<<<<<<
-           std::cout << " " << std::endl;
-           	  std::cout << "*mc == *mc2: "<< *mc == *mc2 << "== true" << std::endl;
-           	 std::cout << "*mc != *mc2: "<< *mc != *mc2 << "== false" << std::endl;
-           std::cout << " " << std::endl;
-   //>>>>>>
 
   BOOST_CHECK_EQUAL( *mc == *mc2, true );
   BOOST_CHECK_EQUAL( *mc != *mc2, false );
@@ -311,46 +218,24 @@ BOOST_AUTO_TEST_CASE( operators )
     mc->addNeuron( nsol::NeuronPtr( new nsol::Neuron ));
   }
 
-  //<<<<<<
-            std::cout << " " << std::endl;
-            	  std::cout << "*mc == *mc2: "<< *mc == *mc2 << "== false" << std::endl;
-            	 std::cout << "*mc != *mc2: "<< *mc != *mc2 << "== true" << std::endl;
-            std::cout << " " << std::endl;
-   //>>>>>>
   BOOST_CHECK_EQUAL( *mc == *mc2, false );
   BOOST_CHECK_EQUAL( *mc != *mc2, true );
 
   // Test assignment op with minicols
   *mc2 = *mc;
 
-  //<<<<<<
-            std::cout << " " << std::endl;
-            	  std::cout << "*mc == *mc2: "<< *mc == *mc2 << "== true" << std::endl;
-            	 std::cout << "*mc != *mc2: "<< *mc != *mc2 << "== false" << std::endl;
-            std::cout << " " << std::endl;
-   //>>>>>>
   BOOST_CHECK_EQUAL( *mc == *mc2, true );
   BOOST_CHECK_EQUAL( *mc != *mc2, false );
 
   
   // Test copy constructor
   nsol::MiniColumn mc4( mc3 );
-  //<<<<<<
-            std::cout << " " << std::endl;
-            	  std::cout << "*mc == mc4: "<< *mc == mc4 << "== false" << std::endl;
-            	 std::cout << "*mc != mc4: "<< *mc != mc4 << "== true" << std::endl;
-            std::cout << " " << std::endl;
-   //>>>>>>
+
   BOOST_CHECK_EQUAL( *mc == mc4, false );
   BOOST_CHECK_EQUAL( *mc != mc4, true );
 
   nsol::MiniColumn mc5( *mc );
-  //<<<<<<
-            std::cout << " " << std::endl;
-            	  std::cout << "*mc == mc5: "<< *mc == mc5 << "== true" << std::endl;
-            	 std::cout << "*mc != mc5: "<< *mc != mc5 << "== false" << std::endl;
-            std::cout << " " << std::endl;
-   //>>>>>>
+
   BOOST_CHECK_EQUAL( *mc == mc5, true );
   BOOST_CHECK_EQUAL( *mc != mc5, false );
 
@@ -387,7 +272,7 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
 	nsol::NeuronPtr( 
 	  new nsol::Neuron( true, l, gid++, 
 			    nsol::Matrix4_4f::IDENTITY, 
-			    mc)));//, nsol::Neuron::PYRAMIDAL )));
+			    mc, nsol::NeuronMorphology::PYRAMIDAL )));
     }
     for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
     {
@@ -395,31 +280,10 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
 	nsol::NeuronPtr( 
 	  new nsol::Neuron( true, l, gid++, 
 			    nsol::Matrix4_4f::IDENTITY, 
-			    mc)));//, nsol::Neuron::INTER )));
+			    mc, nsol::NeuronMorphology::INTER_NEURON )));
     }
   }
 
-  //<<<<<<
-            std::cout << " " << std::endl;
-            	  std::cout << " mc->numberOfNeurons( ):"<<  mc->numberOfNeurons( ) <<
-            			  "== " << gid << std:endl;
-            	  std::cout << " mc->numberOfNeurons( ):"<<  mc->numberOfNeurons( ) <<
-            	             			  "== " <<  6 * ( NUM_NEURONS_PYR_PER_LAYER +
-            	             					   NUM_NEURONS_INT_PER_LAYER ) << std:endl;
-            	  std::cout << "  mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ):"<<
-            			  mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ) <<
-						  "== " <<   6 * NUM_NEURONS_PYR_PER_LAYER ) << std:endl;
-				  std::cout << " mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER ):"<<
-						  mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER)<<
-										  "== " <<   6 * NUM_NEURONS_PYR_PER_LAYER ) << std:endl;
-				  std::cout << "  mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL, 2 ):"<<
-						  mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL, 2 )<<
-						  "== " <<   6 * NUM_NEURONS_PYR_PER_LAYER ) << std:endl;
-				  std::cout << " mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER , 2 ):"<<
-						  mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER , 2 )<<
-										  "== " <<   6 * NUM_NEURONS_PYR_PER_LAYER ) << std:endl;
-            std::cout << " " << std::endl;
-   //>>>>>>
 
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( ), gid );//
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( ), 
@@ -427,11 +291,11 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
 		   NUM_NEURONS_INT_PER_LAYER ) );//
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ),
 	     6 * NUM_NEURONS_PYR_PER_LAYER );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER ),
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON ),
 	     6 * NUM_NEURONS_INT_PER_LAYER );//
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL, 2 ),
 	     NUM_NEURONS_PYR_PER_LAYER );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER , 2 ),
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON , 2 ),
   	     NUM_NEURONS_INT_PER_LAYER );
   
   // Check morphological values are still computed 

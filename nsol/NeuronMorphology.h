@@ -32,7 +32,7 @@ namespace nsol
   public:
 
   //! Type of dendrite
-	 typedef enum {PYRAMIDAL = 0, INTER} TNeuronType;
+	 typedef enum {PYRAMIDAL = 0, INTER_NEURON} TNeuronType;
 
     /**
      * Default Neuron class constructor.
