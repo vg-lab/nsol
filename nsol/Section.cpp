@@ -120,6 +120,14 @@ namespace nsol
     _lastSegment = lastSegment_;
   }
 
+  NSOL_API
+  SectionStats * stats( void )
+  {
+    NSOL_DEBUG_CHECK( false, "no stats defined");
+    return nullptr;
+  }
+
+
   // float Section::volume( void )
   // {
   //   float tmpVolume = 0.0f;

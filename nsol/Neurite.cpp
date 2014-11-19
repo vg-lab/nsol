@@ -2,25 +2,25 @@
  * @file    Neurite.cpp
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 
 #include "Neurite.h"
 
-// This include should disappear 
+// This include should disappear
 #include "Stats/SectionStats.h"
 
 
 #include <stack>
 
 
-namespace nsol 
+namespace nsol
 {
 
   //! Default constructor
-  Neurite::Neurite( TNeuriteType initNeuriteType ) 
+  Neurite::Neurite( TNeuriteType initNeuriteType )
     : _neuriteType( initNeuriteType )
     , _firstSection( nullptr)
     , _morphology( nullptr )
@@ -28,30 +28,30 @@ namespace nsol
     , _numBifurcations( 0 )
   {
   }
-  
 
-  Neurite::~Neurite( ) 
+
+  Neurite::~Neurite( )
   {
   }
-  
+
   //! Get the type of neurite
-  Neurite::TNeuriteType & Neurite::neuriteType( void ) 
+  Neurite::TNeuriteType & Neurite::neuriteType( void )
   {
     return _neuriteType;
   }
 
 
-  NeuronMorphologyPtr Neurite::morphology( void ) const 
+  NeuronMorphologyPtr Neurite::morphology( void ) const
   {
     return _morphology;
   }
-  
-  NeuronMorphologyPtr Neurite::morphology( NeuronMorphologyPtr newMorphology ) 
+
+  NeuronMorphologyPtr Neurite::morphology( NeuronMorphologyPtr newMorphology )
   {
     return _morphology = newMorphology;
   }
 
-  bool Neurite::hasMorphology( ) 
+  bool Neurite::hasMorphology( )
   {
     return ( _morphology != nullptr );
   }
@@ -76,12 +76,12 @@ namespace nsol
       SectionPtr lS = sPS.top( );
       sPS.pop( );
       for (Sections::iterator child = lS->childs( ).begin( );
-	   child != lS->childs( ).end( ); child++)
+           child != lS->childs( ).end( ); child++)
       {
-	numBranchs++;
-	numBifur += ( unsigned int ) lS->childs( ).size( );
+        numBranchs++;
+        numBifur += ( unsigned int ) lS->childs( ).size( );
 
-	sPS.push(*child);
+        sPS.push(*child);
       }
     }
 
@@ -101,102 +101,102 @@ namespace nsol
     return _numBifurcations;
   }
 
-  float Neurite::volume( void ) 
-  {
-    float tmpVolume = 0.0f;
+//   float Neurite::volume( void )
+//   {
+//     float tmpVolume = 0.0f;
 
-    if (_firstSection) 
-    {
-      std::stack<SectionPtr> sPS;
-      sPS.push(_firstSection);
+//     if (_firstSection)
+//     {
+//       std::stack<SectionPtr> sPS;
+//       sPS.push(_firstSection);
 
-      while (!sPS.empty( )) 
-      {
-	SectionPtr lS = sPS.top( );
-	sPS.pop( );
+//       while (!sPS.empty( ))
+//       {
+// 	SectionPtr lS = sPS.top( );
+// 	sPS.pop( );
 
-//	tmpVolume += lS->volume( );
-	tmpVolume += SectionStats::volume( lS );
+// //	tmpVolume += lS->volume( );
+// 	tmpVolume += SectionStats::volume( lS );
 
-	if (lS->childs( ).size( ) > 0)
-	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
-	    sPS.push(lS->childs( )[i]);
-      }
-    }
-    return tmpVolume;
-  }
+// 	if (lS->childs( ).size( ) > 0)
+// 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
+// 	    sPS.push(lS->childs( )[i]);
+//       }
+//     }
+//     return tmpVolume;
+//   }
 
-  float Neurite::surface( void ) 
-  {
-    float tmpSurface = 0.0f;
+//   float Neurite::surface( void )
+//   {
+//     float tmpSurface = 0.0f;
 
-    if (_firstSection) 
-    {
-      std::stack<SectionPtr> sPS;
-      sPS.push(_firstSection);
+//     if (_firstSection)
+//     {
+//       std::stack<SectionPtr> sPS;
+//       sPS.push(_firstSection);
 
-      while (!sPS.empty( )) 
-      {
-	SectionPtr lS = sPS.top( );
-	sPS.pop( );
+//       while (!sPS.empty( ))
+//       {
+// 	SectionPtr lS = sPS.top( );
+// 	sPS.pop( );
 
-//	tmpSurface += lS->surface( );
-	tmpSurface += SectionStats::surface( lS );
+// //	tmpSurface += lS->surface( );
+// 	tmpSurface += SectionStats::surface( lS );
 
-	if (lS->childs( ).size( ) > 0)
-	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
-	    sPS.push(lS->childs( )[i]);
-      }
-    }
+// 	if (lS->childs( ).size( ) > 0)
+// 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
+// 	    sPS.push(lS->childs( )[i]);
+//       }
+//     }
 
-    return tmpSurface;
-  }
+//     return tmpSurface;
+//   }
 
-  float Neurite::length( void ) 
-  {
-    float tmpLength = 0.0f;
+//   float Neurite::length( void )
+//   {
+//     float tmpLength = 0.0f;
 
-    if (_firstSection) 
-    {
-      std::stack<SectionPtr> sPS;
-      sPS.push(_firstSection);
+//     if (_firstSection)
+//     {
+//       std::stack<SectionPtr> sPS;
+//       sPS.push(_firstSection);
 
-      while (!sPS.empty( )) 
-      {
-	SectionPtr lS = sPS.top( );
-	sPS.pop( );
+//       while (!sPS.empty( ))
+//       {
+// 	SectionPtr lS = sPS.top( );
+// 	sPS.pop( );
 
-//	tmpLength += lS->length( );
-	tmpLength += SectionStats::length( lS );
+// //	tmpLength += lS->length( );
+// 	tmpLength += SectionStats::length( lS );
 
-	if (lS->childs( ).size( ) > 0)
-	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
-	    sPS.push(lS->childs( )[i]);
-      }
-    }
-    return tmpLength;
-  }
+// 	if (lS->childs( ).size( ) > 0)
+// 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
+// 	    sPS.push(lS->childs( )[i]);
+//       }
+//     }
+//     return tmpLength;
+//   }
 
   // Casting virtual functions
 
   //! Return pointer to Dendrite objetc
-  // Dendrite * Neurite::asDendrite( void ) 
+  // Dendrite * Neurite::asDendrite( void )
   // {
   //   return 0;
   // }
 
   // //! Return pointer to Dendrite objetc
-  // Axon * Neurite::asAxon( void ) 
+  // Axon * Neurite::asAxon( void )
   // {
   //   return 0;
   // }
 
-  void Neurite::_addBifurcationCount( unsigned int newNumBifurcations ) 
+  void Neurite::_addBifurcationCount( unsigned int newNumBifurcations )
   {
     _numBifurcations += newNumBifurcations;
   }
 
-  void Neurite::_addBranchCount( unsigned int newNumBranches ) 
+  void Neurite::_addBranchCount( unsigned int newNumBranches )
   {
     _numBranches += newNumBranches;
   }

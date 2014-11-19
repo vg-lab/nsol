@@ -14,20 +14,26 @@
 namespace nsol
 {
 
-  class NSOL_API SectionStats
+  class SectionStats : public Section
   {
 
   public:
 
-    static float surface( SectionPtr section_, bool tryCached = false );
-    // static float cachedSurface( SectionPtr cachedSection_ );
-    // static float cachedSurface( CachedSectionPtr cachedSection_ );
+    NSOL_API
+    SectionStats * stats( void )
+    {
+      return this;
+    }
 
-    static float volume( SectionPtr section_ );
+    NSOL_API
+    virtual float volume( void );
 
-    static float length( SectionPtr section_ );
+    NSOL_API
+    virtual float surface( void );
 
-    static float meanRadius( SectionPtr section_ );
+    NSOL_API
+    virtual float length( void );
+
 
   }; // class SectionStats
 

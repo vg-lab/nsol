@@ -8,11 +8,64 @@
  */
 
 #include "SectionStats.h"
-#include "SegmentStats.h"
-#include "CachedSection.h"
 
 namespace nsol
 {
+
+  float SectionStats::volume( void )
+  {
+    float accumVolume = 0.0f;
+
+    if ( _firstSegment )
+    {
+      SegmentPtr sP = _firstSegment;
+
+      while (sP)
+      {
+        accumVolume += sP->volume();
+        sP = sP->next();
+      }
+    }
+
+    return accumVolume;
+  }
+
+  float SectionStats::surface( void )
+  {
+    float accumSurface = 0.0f;
+
+    if (_firstSegment)
+    {
+      SegmentPtr sP = _firstSegment;
+
+      while (sP)
+      {
+        accumSurface += sP->surface();
+        sP = sP->next();
+      }
+    }
+
+    return accumSurface;
+  }
+
+  float SectionStats::length( void )
+  {
+    float accumLength = 0.0f;
+
+    if (_firstSegment)
+    {
+      SegmentPtr sP = _firstSegment;
+
+      while (sP)
+      {
+        accumLength += sP->length();
+        sP = sP->next();
+      }
+    }
+
+    return accumLength;
+  }
+
 
   // float SectionStats::cachedSurface( SectionPtr section_ )
   // {
@@ -38,173 +91,173 @@ namespace nsol
 
   // }
 
-  float SectionStats::surface( SectionPtr section_, bool tryCached )
-  {
-    NSOL_DEBUG_CHECK( section_, "section pointing to null");
+  // float SectionStats::surface( SectionPtr section_, bool tryCached )
+  // {
+  //   NSOL_DEBUG_CHECK( section_, "section pointing to null");
 
-    CachedSection * cachedSection = nullptr;
+  //   CachedSection * cachedSection = nullptr;
 
-    if ( tryCached )
-    {
-      cachedSection = NSOL_DYNAMIC_CAST( CachedSection ,  section_ );
+  //   if ( tryCached )
+  //   {
+  //     cachedSection = NSOL_DYNAMIC_CAST( CachedSection ,  section_ );
 
-      // If cached and not dirty no need to recompute surface
-      if ( cachedSection && ! cachedSection->dirty( ))
-        return cachedSection->value( CachedSection::SURFACE );
-    }
+  //     // If cached and not dirty no need to recompute surface
+  //     if ( cachedSection && ! cachedSection->dirty( ))
+  //       return cachedSection->value( CachedSection::SURFACE );
+  //   }
 
-    // Otherwise volume need to be computed
-    float accumSurface = 0.0f;
+  //   // Otherwise volume need to be computed
+  //   float accumSurface = 0.0f;
 
-    if ( section_->firstSegment( ))
-    {
-      SegmentPtr segment = section_->firstSegment( );
+  //   if ( section_->firstSegment( ))
+  //   {
+  //     SegmentPtr segment = section_->firstSegment( );
 
-      while ( segment )
-      {
-        accumSurface += SegmentStats::surface( segment, tryCached );
-        segment = segment->next( );
-      }
-    }
+  //     while ( segment )
+  //     {
+  //       accumSurface += SegmentStats::surface( segment, tryCached );
+  //       segment = segment->next( );
+  //     }
+  //   }
 
-    // If cached update the cached value and set clean
-    if ( cachedSection )
-    {
-      cachedSection->value( CachedSection::SURFACE ) = accumSurface;
-      cachedSection->setClean( );
-    }
+  //   // If cached update the cached value and set clean
+  //   if ( cachedSection )
+  //   {
+  //     cachedSection->value( CachedSection::SURFACE ) = accumSurface;
+  //     cachedSection->setClean( );
+  //   }
 
-    return accumSurface;
+  //   return accumSurface;
 
-  } // SectionStats::surface
+  // } // SectionStats::surface
 
 
-  float SectionStats::volume( SectionPtr section_ )
-  {
+  // float SectionStats::volume( SectionPtr section_ )
+  // {
 
-    auto cachedSection = dynamic_cast< CachedSection * >( section_);
+  //   auto cachedSection = dynamic_cast< CachedSection * >( section_);
 
-    // If cached and not dirty no need to recompute surface
-    if ( cachedSection && !cachedSection->dirty( ) )
-      return cachedSection->value( CachedSection::VOLUME );    
+  //   // If cached and not dirty no need to recompute surface
+  //   if ( cachedSection && !cachedSection->dirty( ) )
+  //     return cachedSection->value( CachedSection::VOLUME );    
       
-    // Otherwise volume need to be computed
-    float accumVolume = 0.0f;
+  //   // Otherwise volume need to be computed
+  //   float accumVolume = 0.0f;
       
-    if ( section_->firstSegment( ))
-    {
-      SegmentPtr segment = section_->firstSegment( );
+  //   if ( section_->firstSegment( ))
+  //   {
+  //     SegmentPtr segment = section_->firstSegment( );
 	
-      while ( segment )
-      {
-	accumVolume += segment->volume( );
-	segment = segment->next( );
-      }
-    }
+  //     while ( segment )
+  //     {
+  //       accumVolume += segment->volume( );
+  //       segment = segment->next( );
+  //     }
+  //   }
 
-    // If cached update the cached value and set clean
-    if ( cachedSection )
-    {
-      cachedSection->value( CachedSection::VOLUME ) = accumVolume;
-      cachedSection->setClean( );
-    }
+  //   // If cached update the cached value and set clean
+  //   if ( cachedSection )
+  //   {
+  //     cachedSection->value( CachedSection::VOLUME ) = accumVolume;
+  //     cachedSection->setClean( );
+  //   }
       
-    return accumVolume;
+  //   return accumVolume;
 
-  } // SectionStats::volume
+  // } // SectionStats::volume
 
-  float SectionStats::length( SectionPtr section_ )
-  {
+  // float SectionStats::length( SectionPtr section_ )
+  // {
     
-    auto cachedSection = dynamic_cast< CachedSection * >( section_);
+  //   auto cachedSection = dynamic_cast< CachedSection * >( section_);
     
-    // If cached and not dirty no need to recompute surface
-    if ( cachedSection && !cachedSection->dirty( ) )
-      return cachedSection->value( CachedSection::LENGTH );    
+  //   // If cached and not dirty no need to recompute surface
+  //   if ( cachedSection && !cachedSection->dirty( ) )
+  //     return cachedSection->value( CachedSection::LENGTH );    
       
-    // Otherwise length need to be computed
-    float accumLength = 0.0f;
+  //   // Otherwise length need to be computed
+  //   float accumLength = 0.0f;
       
-    if ( section_->firstSegment( ))
-    {
-      SegmentPtr segment = section_->firstSegment( );
+  //   if ( section_->firstSegment( ))
+  //   {
+  //     SegmentPtr segment = section_->firstSegment( );
 	
-      while ( segment )
-      {
-	accumLength += segment->length( );
-	segment = segment->next( );
-      }
-    }
+  //     while ( segment )
+  //     {
+  //       accumLength += segment->length( );
+  //       segment = segment->next( );
+  //     }
+  //   }
 
-    // If cached update the cached value and set clean
-    if ( cachedSection )
-    {
-      cachedSection->value( CachedSection::LENGTH ) = accumLength;
-      cachedSection->setClean( );
-    }
+  //   // If cached update the cached value and set clean
+  //   if ( cachedSection )
+  //   {
+  //     cachedSection->value( CachedSection::LENGTH ) = accumLength;
+  //     cachedSection->setClean( );
+  //   }
       
-    return accumLength;
+  //   return accumLength;
 
 
-  } // SectionStats::length
+  // } // SectionStats::length
 
 
-  float SectionStats::meanRadius( SectionPtr section_ )
-  {
+  // float SectionStats::meanRadius( SectionPtr section_ )
+  // {
 
-   auto cachedSection = dynamic_cast< CachedSection * >( section_);
+  //  auto cachedSection = dynamic_cast< CachedSection * >( section_);
     
-    // If cached and not dirty no need to recompute surface
-    if ( cachedSection && !cachedSection->dirty( ) )
-      return cachedSection->value( CachedSection::MEAN_RADIUS );
+  //   // If cached and not dirty no need to recompute surface
+  //   if ( cachedSection && !cachedSection->dirty( ) )
+  //     return cachedSection->value( CachedSection::MEAN_RADIUS );
 
-    // Otherwise mean radius has to be computed
+  //   // Otherwise mean radius has to be computed
 
-    float acummRadius = 0.0f;
+  //   float acummRadius = 0.0f;
 
-    unsigned int numSegments = 0;
+  //   unsigned int numSegments = 0;
 
 
-    if ( section_->firstSegment( ))
-    {
-      SegmentPtr segment = section_->firstSegment( );
+  //   if ( section_->firstSegment( ))
+  //   {
+  //     SegmentPtr segment = section_->firstSegment( );
 
-      while ( segment )
-      {
-	#ifdef DEBUG
-	if ( ! segment->begin( ) )
-	  NSOL_THROW( "segment has no begin node " );
-        #endif
+  //     while ( segment )
+  //     {
+  //       #ifdef DEBUG
+  //       if ( ! segment->begin( ) )
+  //         NSOL_THROW( "segment has no begin node " );
+  //       #endif
 
-  	acummRadius += segment->begin( )->radius( );
-  	numSegments++;
+  // 	acummRadius += segment->begin( )->radius( );
+  // 	numSegments++;
 
-  	segment = segment->next( );
-      }
+  // 	segment = segment->next( );
+  //     }
       
-      #ifdef DEBUG
-      if ( ! segment->end( ) )
-	NSOL_THROW( "segment has no end node " );
-      #endif
+  //     #ifdef DEBUG
+  //     if ( ! segment->end( ) )
+  //       NSOL_THROW( "segment has no end node " );
+  //     #endif
 
-      acummRadius += section_->lastSegment( )->end( )->radius( );
+  //     acummRadius += section_->lastSegment( )->end( )->radius( );
 
-    }
+  //   }
 
-    float meanRadius = acummRadius / ( numSegments + 1 );
+  //   float meanRadius = acummRadius / ( numSegments + 1 );
 
-    // If cached update the cached value and set clean
-    if ( cachedSection )
-    {
-      cachedSection->value( CachedSection::MEAN_RADIUS ) = meanRadius;
-      cachedSection->setClean( );
-    }
-
-
-    return meanRadius;
+  //   // If cached update the cached value and set clean
+  //   if ( cachedSection )
+  //   {
+  //     cachedSection->value( CachedSection::MEAN_RADIUS ) = meanRadius;
+  //     cachedSection->setClean( );
+  //   }
 
 
-  } // SectionStats::meanRadius
+  //   return meanRadius;
+
+
+  // } // SectionStats::meanRadius
 
 
 
