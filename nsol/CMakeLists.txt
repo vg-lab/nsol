@@ -1,49 +1,54 @@
-
-
 source_group(\\ FILES CMakeLists.txt)
 
 set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
-Node.h
+Axon.h
 Column.h
-Soma.h
-Writer/SwcWriter.h
-Neurite.h
-Container/Sections.h
-Container/Dendrites.h
 Container/Columns.h
+Container/Dendrites.h
 Container/MiniColumns.h
 Container/Neurites.h
-Container/Segments.h
 Container/Neurons.h
 Container/Nodes.h
-Section.h
-NeuronMorphology.h
-Segment.h
-Reader/SwcReader.h
-Reader/BBPSDKReader.h
-NsolTypes.h
-MiniColumn.h
-Neuron.h
-Axon.h
-Spine.h
+Container/Sections.h
+Container/Segments.h
 Dendrite.h
+error.h
+MiniColumn.h
+Neurite.h
+Neuron.h
+NeuronMorphology.h
+Node.h
+NsolTypes.h
+Reader/BBPSDKReader.h
+Reader/SwcReader.h
+Section.h
+Segment.h
+Soma.h
+Spine.h
+Stats/Cached.h
+Stats/CachedSection.h
+Stats/SectionStats.h
+Stats/SegmentStats.h
 Synapse.h
+Writer/SwcWriter.h
 )
 
 set(NSOL_HEADERS )
 
 set(NSOL_SOURCES ${COMMON_SOURCES}
-NeuronMorphology.cpp
-MiniColumn.cpp
-Neuron.cpp
-Node.cpp
-Dendrite.cpp
 Axon.cpp
-Soma.cpp
-Neurite.cpp
 Column.cpp
-Segment.cpp
+Dendrite.cpp
+MiniColumn.cpp
+Neurite.cpp
+Neuron.cpp
+NeuronMorphology.cpp
+Node.cpp
 Section.cpp
+Segment.cpp
+Soma.cpp
+Stats/SectionStats.cpp
+Stats/SegmentStats.cpp
 )
 
 if (BBPSDK_FOUND)

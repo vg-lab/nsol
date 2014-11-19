@@ -29,7 +29,7 @@ namespace nsol
     Section( void );
 
     NSOL_API
-    ~Section( );
+    virtual ~Section( );
 
     NSOL_API
     NeuritePtr neurite( void );
@@ -56,28 +56,34 @@ namespace nsol
      * @return pointer to the segment added (and created if needed)
      */
     NSOL_API
-    SegmentPtr addSegment( SegmentPtr segment = nullptr );
+    virtual SegmentPtr addSegment( SegmentPtr segment = nullptr );
 
     NSOL_API
-    SegmentPtr & firstSegment( void  );
+    SegmentPtr firstSegment( void );
 
     NSOL_API
-    SegmentPtr & lastSegment( void );
+    virtual void firstSegment( SegmentPtr firstSegment_ );
 
     NSOL_API
-    float volume( void );
+    SegmentPtr lastSegment( void );
 
     NSOL_API
-    float surface( void );
+    virtual void lastSegment( SegmentPtr lastSegment_ );
 
-    NSOL_API
-    float length( void );
+    // NSOL_API
+    // float volume( void );
+
+    // NSOL_API
+    // float surface( void );
+
+    // NSOL_API
+    // float length( void );
 
     NSOL_API
     unsigned int fuseSection( void );
 
-    NSOL_API
-    float meanRadius( void );
+    // NSOL_API
+    // float meanRadius( void );
 
   protected:
 

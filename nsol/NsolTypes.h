@@ -67,6 +67,8 @@ namespace nsol
   class Section;
   class Segment;
 
+  class CachedSection;
+
 
 #if (NSOL_WITH_SHARED_PTR == 1)
   typedef std::shared_ptr<Axon> AxonPtr;
@@ -79,6 +81,9 @@ namespace nsol
   typedef std::shared_ptr<Node> NodePtr;
   typedef std::shared_ptr<Section> SectionPtr;
   typedef std::shared_ptr<Segment> SegmentPtr;
+
+  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
+
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
@@ -100,13 +105,14 @@ namespace nsol
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
 
+  typedef CachedSection * CachedSectionPtr;
+
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )
 
 #define NSOL_DELETE_PTR( __PTR_TO_NSOL_OBJ__ ) \
   {                                            \
   delete __PTR_TO_NSOL_OBJ__;		       \
-  __PTR_TO_NSOL_OBJ__ = nullptr;               \
   }
 
 

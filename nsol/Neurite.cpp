@@ -9,6 +9,10 @@
 
 #include "Neurite.h"
 
+// This include should disappear 
+#include "Stats/SectionStats.h"
+
+
 #include <stack>
 
 
@@ -28,24 +32,6 @@ namespace nsol
 
   Neurite::~Neurite( ) 
   {
-    // if (_firstSection) 
-    // {
-    //   std::stack<SectionPtr> sPS;
-    //   sPS.push(_firstSection);
-      
-    //   while (!sPS.empty( )) 
-    //   {
-    // 	SectionPtr lS = sPS.top( );
-    // 	sPS.pop( );
-	  
-    // 	if (lS->childs( ).size( ) > 0) {
-    // 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
-    // 	    sPS.push(lS->childs( )[i]);
-    // 	}
-	  
-    // 	delete lS;
-    //   }
-    // }
   }
   
   //! Get the type of neurite
@@ -129,7 +115,8 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	tmpVolume += lS->volume( );
+//	tmpVolume += lS->volume( );
+	tmpVolume += SectionStats::volume( lS );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
@@ -153,7 +140,8 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	tmpSurface += lS->surface( );
+//	tmpSurface += lS->surface( );
+	tmpSurface += SectionStats::surface( lS );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)
@@ -178,7 +166,8 @@ namespace nsol
 	SectionPtr lS = sPS.top( );
 	sPS.pop( );
 
-	tmpLength += lS->length( );
+//	tmpLength += lS->length( );
+	tmpLength += SectionStats::length( lS );
 
 	if (lS->childs( ).size( ) > 0)
 	  for (unsigned int i = 0; i < lS->childs( ).size( ); ++i)

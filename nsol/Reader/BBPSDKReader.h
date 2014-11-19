@@ -19,9 +19,10 @@
 #include <map>
 #include <dirent.h>
 
-#include <nsol/NsolTypes.h>
-#include <nsol/Dendrite.h>
-#include <nsol/NeuronMorphology.h>
+#include "../NsolTypes.h"
+#include "../Dendrite.h"
+#include "../NeuronMorphology.h"
+#include "SwcReader.h"
 
 #include <BBP/bbp.h>
 
