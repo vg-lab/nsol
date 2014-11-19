@@ -2,8 +2,8 @@
  * @file    Section.cpp
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 
@@ -25,7 +25,7 @@ namespace nsol
     // if (_firstSegment)
     // {
     //   SegmentPtr sP = _firstSegment;
-    
+
     //   while (sP)
     //   {
     // 	SegmentPtr next = sP->_next;
@@ -72,9 +72,9 @@ namespace nsol
     SegmentPtr s = segment;
 
     // If needed segment is created
-    if ( ! s ) 
+    if ( ! s )
     {
-      s = SegmentPtr( new Segment );      
+      s = SegmentPtr( new Segment );
       s->begin( nullptr );
       s->end( nullptr );
     }
@@ -88,7 +88,7 @@ namespace nsol
       s->prev( nullptr );
     }
     // In other case segment is concatenated to last segment
-    else      
+    else
     {
       _lastSegment->next( s );
       s->next( nullptr );
@@ -100,70 +100,79 @@ namespace nsol
 
   }
 
-  SegmentPtr & Section::firstSegment( void )
+  SegmentPtr Section::firstSegment( void )
   {
     return _firstSegment;
   }
 
-  SegmentPtr & Section::lastSegment( void )
+  void Section::firstSegment( SegmentPtr firstSegment_ )
+  {
+    _firstSegment = firstSegment_;
+  }
+
+  SegmentPtr Section::lastSegment( void )
   {
     return _lastSegment;
   }
 
-
-  float Section::volume( void )
+  void Section::lastSegment( SegmentPtr lastSegment_ )
   {
-    float tmpVolume = 0.0f;
-
-    if ( _firstSegment )
-    {
-      SegmentPtr sP = _firstSegment;
-
-      while (sP)
-      {
-	tmpVolume += sP->volume();
-	sP = sP->next();
-      }
-    }
-
-    return tmpVolume;
+    _lastSegment = lastSegment_;
   }
 
-  float Section::surface( void )
-  {
-    float tmpSurface = 0.0f;
+  // float Section::volume( void )
+  // {
+  //   float tmpVolume = 0.0f;
 
-    if (_firstSegment)
-    {
-      SegmentPtr sP = _firstSegment;
+  //   if ( _firstSegment )
+  //   {
+  //     SegmentPtr sP = _firstSegment;
 
-      while (sP)
-      {
-	tmpSurface += sP->surface();
-	sP = sP->next();
-      }
-    }
+  //     while (sP)
+  //     {
+  // 	tmpVolume += sP->volume();
+  // 	sP = sP->next();
+  //     }
+  //   }
 
-    return tmpSurface;
-  }
+  //   return tmpVolume;
+  // }
 
-  float Section::length( void )
-  {
-    float tmpLength = 0.0f;
+  // float Section::surface( void )
+  // {
+  //   float tmpSurface = 0.0f;
 
-    if (_firstSegment)
-    {
-      SegmentPtr sP = _firstSegment;
+  //   if (_firstSegment)
+  //   {
+  //     SegmentPtr sP = _firstSegment;
 
-      while (sP)
-      {
-	tmpLength += sP->length();
-	sP = sP->next();
-      }
-    }
+  //     while (sP)
+  //     {
+  // 	tmpSurface += sP->surface();
+  // 	sP = sP->next();
+  //     }
+  //   }
 
-    return tmpLength;
-  }
+  //   return tmpSurface;
+  // }
+
+  // float Section::length( void )
+  // {
+  //   float tmpLength = 0.0f;
+
+  //   if (_firstSegment)
+  //   {
+  //     SegmentPtr sP = _firstSegment;
+
+  //     while (sP)
+  //     {
+  // 	tmpLength += sP->length();
+  // 	sP = sP->next();
+  //     }
+  //   }
+
+  //   return tmpLength;
+  // }
 
   unsigned int Section::fuseSection( void )
   {
@@ -183,28 +192,28 @@ namespace nsol
     return 0;
   }
 
-  float Section::meanRadius( void )
-  {
-    float radius = 0.0f;
-    unsigned int nN = 0;
+  // float Section::meanRadius( void )
+  // {
+  //   float radius = 0.0f;
+  //   unsigned int nN = 0;
 
-    if (_firstSegment)
-    {
-      SegmentPtr sP = _firstSegment;
+  //   if (_firstSegment)
+  //   {
+  //     SegmentPtr sP = _firstSegment;
 
-      while (sP)
-      {
-	radius += sP->begin()->radius();
-	nN++;
+  //     while (sP)
+  //     {
+  // 	radius += sP->begin()->radius();
+  // 	nN++;
 
-	sP = sP->next();
-      }
+  // 	sP = sP->next();
+  //     }
 
-      radius += _lastSegment->end()->radius();
-    }
+  //     radius += _lastSegment->end()->radius();
+  //   }
 
-    return radius/(nN + 1);
-  }
+  //   return radius/(nN + 1);
+  // }
 
 
   unsigned int Section::_removeSegment (SegmentPtr sP)
@@ -213,20 +222,16 @@ namespace nsol
     {
       if (sP == _firstSegment)
       {
-	sP->end(sP->next()->end());
-	sP->next()->_removeNodes();
-#ifndef NSOL_WITH_SHARED_PTR
-	delete sP->next();
-#endif
+        sP->end(sP->next()->end());
+        sP->next()->_removeNodes();
+        NSOL_DELETE_PTR( sP->next() );
       }
       else
       {
-	sP->_removeNodes();
-	sP->prev()->end(sP->next()->end());
-#ifndef NSOL_WITH_SHARED_PTR
-	delete sP->next();
-	delete sP;
-#endif
+        sP->_removeNodes();
+        sP->prev()->end(sP->next()->end());
+        NSOL_DELETE_PTR( sP->next() );
+        NSOL_DELETE_PTR( sP );
       }
 
       return 1;

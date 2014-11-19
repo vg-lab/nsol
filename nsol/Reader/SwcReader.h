@@ -56,7 +56,12 @@ namespace nsol
 
     NeuronPtr readNeuron(const std::string fileName)
     {
-      return NeuronPtr( new Neuron(this->readFile(std::string(fileName))));
+      NeuronMorphologyPtr nm = this->readFile(std::string(fileName));
+
+      if ( nm )
+	return NeuronPtr( new Neuron( nm ));
+      else 
+	return nullptr;
     }
 
     NeuronMorphologyPtr readFile(const char *fileName)

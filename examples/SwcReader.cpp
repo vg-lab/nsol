@@ -155,7 +155,12 @@ int main(int argc, char *argv[])
   std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
   std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
   std::cout << "Axon lenght:" << n->axonLength() << std::endl;
-  std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()->meanRadius() << std::endl;
+  // std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()- << std::endl;
+  std::cout << "Mean radius first section:" 
+	    << SectionStats::meanRadius( 
+	      n->dendrites()->begin()[0]->firstSection() ) 
+	    << std::endl;
+
 
 //  std::cout << "###############BORRAMOS UN SEGMENTO#############"<< std::endl;
 //
