@@ -28,7 +28,7 @@ Spine.h
 Stats/Cached.h
 Stats/CachedSection.h
 Stats/SectionStats.h
-Stats/SegmentStats.h
+#Stats/SegmentStats.h
 Synapse.h
 Writer/SwcWriter.h
 )
@@ -48,7 +48,8 @@ Section.cpp
 Segment.cpp
 Soma.cpp
 Stats/SectionStats.cpp
-Stats/SegmentStats.cpp
+Stats/SectionCachedStats.cpp
+#Stats/SegmentStats.cpp
 )
 
 if (BBPSDK_FOUND)

@@ -10,6 +10,7 @@
 #define __NSOL_SECTION__
 
 #include <nsol/api.h>
+#include "error.h"
 #include <nsol/NsolTypes.h>
 #include <nsol/Segment.h>
 #include <nsol/Container/Sections.h>
@@ -19,6 +20,7 @@ namespace nsol
 {
 
   class Neurite;
+  class SectionStats;
 
   class Section
   {
@@ -78,6 +80,9 @@ namespace nsol
 
     // NSOL_API
     // float length( void );
+
+    NSOL_API
+    virtual SectionStats * stats( void );
 
     NSOL_API
     unsigned int fuseSection( void );
