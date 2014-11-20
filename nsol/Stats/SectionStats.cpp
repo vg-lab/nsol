@@ -8,6 +8,7 @@
  */
 
 #include "SectionStats.h"
+#include "SegmentStats.h"
 
 namespace nsol
 {
@@ -22,7 +23,8 @@ namespace nsol
 
       while (sP)
       {
-        accumVolume += sP->volume();
+        NSOL_DEBUG_CHECK( sP->stats( ), "segment doesn't have stats" );
+        accumVolume += sP->stats( )->volume( );
         sP = sP->next();
       }
     }
@@ -30,18 +32,21 @@ namespace nsol
     return accumVolume;
   }
 
-  float SectionStats::surface( void )
+  float SectionStats::surface( void ) const
   {
     float accumSurface = 0.0f;
 
     if (_firstSegment)
     {
-      SegmentPtr sP = _firstSegment;
+      SegmentPtr segment = _firstSegment;
 
-      while (sP)
+      while (segment)
       {
-        accumSurface += sP->surface();
-        sP = sP->next();
+        NSOL_DEBUG_CHECK( segment->stats( ) != nullptr ,
+                          "segment doesn't have stats" );
+
+        accumSurface += segment->stats( )->surface( );
+        segment = segment->next();
       }
     }
 
@@ -58,8 +63,9 @@ namespace nsol
 
       while (sP)
       {
-        accumLength += sP->length();
-        sP = sP->next();
+        NSOL_DEBUG_CHECK( sP->stats( ), "segment doesn't have stats" );
+        accumLength += sP->stats( )->length( );
+        sP = sP->next( );
       }
     }
 
@@ -139,15 +145,15 @@ namespace nsol
 
   //   // If cached and not dirty no need to recompute surface
   //   if ( cachedSection && !cachedSection->dirty( ) )
-  //     return cachedSection->value( CachedSection::VOLUME );    
-      
+  //     return cachedSection->value( CachedSection::VOLUME );
+
   //   // Otherwise volume need to be computed
   //   float accumVolume = 0.0f;
-      
+
   //   if ( section_->firstSegment( ))
   //   {
   //     SegmentPtr segment = section_->firstSegment( );
-	
+
   //     while ( segment )
   //     {
   //       accumVolume += segment->volume( );
@@ -161,27 +167,27 @@ namespace nsol
   //     cachedSection->value( CachedSection::VOLUME ) = accumVolume;
   //     cachedSection->setClean( );
   //   }
-      
+
   //   return accumVolume;
 
   // } // SectionStats::volume
 
   // float SectionStats::length( SectionPtr section_ )
   // {
-    
+
   //   auto cachedSection = dynamic_cast< CachedSection * >( section_);
-    
+
   //   // If cached and not dirty no need to recompute surface
   //   if ( cachedSection && !cachedSection->dirty( ) )
-  //     return cachedSection->value( CachedSection::LENGTH );    
-      
+  //     return cachedSection->value( CachedSection::LENGTH );
+
   //   // Otherwise length need to be computed
   //   float accumLength = 0.0f;
-      
+
   //   if ( section_->firstSegment( ))
   //   {
   //     SegmentPtr segment = section_->firstSegment( );
-	
+
   //     while ( segment )
   //     {
   //       accumLength += segment->length( );
@@ -195,7 +201,7 @@ namespace nsol
   //     cachedSection->value( CachedSection::LENGTH ) = accumLength;
   //     cachedSection->setClean( );
   //   }
-      
+
   //   return accumLength;
 
 
@@ -206,7 +212,7 @@ namespace nsol
   // {
 
   //  auto cachedSection = dynamic_cast< CachedSection * >( section_);
-    
+
   //   // If cached and not dirty no need to recompute surface
   //   if ( cachedSection && !cachedSection->dirty( ) )
   //     return cachedSection->value( CachedSection::MEAN_RADIUS );
@@ -234,7 +240,7 @@ namespace nsol
 
   // 	segment = segment->next( );
   //     }
-      
+
   //     #ifdef DEBUG
   //     if ( ! segment->end( ) )
   //       NSOL_THROW( "segment has no end node " );
@@ -262,4 +268,3 @@ namespace nsol
 
 
 } // namespace nsol
-

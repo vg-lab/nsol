@@ -28,10 +28,10 @@
 
 using namespace std;
 
-namespace nsol 
+namespace nsol
 {
 
-  typedef struct 
+  typedef struct
   {
     unsigned int id;
     std::string label;
@@ -44,29 +44,29 @@ namespace nsol
     std::string morphoLabel;
   } TcsvFileLine;
 
-  class BBPSDKReader 
+  class BBPSDKReader
   {
 
   public:
 
-    const std::map<unsigned int, ColumnPtr> & 
+    const std::map<unsigned int, ColumnPtr> &
     readExperiment(const char *toRead,
-		   unsigned int directory = 0) 
+                   unsigned int directory = 0)
     {
       if (directory)
-	return this->readFromDirectory(std::string(toRead));
+        return this->readFromDirectory(std::string(toRead));
       else
-	return this->readFromBlueFile(std::string(toRead));
+        return this->readFromBlueFile(std::string(toRead));
     }
 
-    const std::map<unsigned int, ColumnPtr> & 
-    readExperiment( const std::string toRead, 
-		    unsigned int directory = 0) 
+    const std::map<unsigned int, ColumnPtr> &
+    readExperiment( const std::string toRead,
+                    unsigned int directory = 0)
     {
       if (directory)
-	return this->readFromDirectory(toRead);
+        return this->readFromDirectory(toRead);
       else
-	return this->readFromBlueFile(toRead);
+        return this->readFromBlueFile(toRead);
     }
 
   private:
@@ -76,17 +76,17 @@ namespace nsol
      * @param toRead blue config file to read
      * @return map with columns
      */
-    std::map<unsigned int, ColumnPtr> & 
-    readFromBlueFile( const std::string toRead ) 
+    std::map<unsigned int, ColumnPtr> &
+    readFromBlueFile( const std::string toRead )
     {
 
       // Types of SWC nodes
-      typedef enum 
+      typedef enum
       {
-	SWC_SOMA = 1, 
-	SWC_AXON = 2, 
-	SWC_DENDRITE = 3, 
-	SWC_APICAL = 4
+        SWC_SOMA = 1,
+        SWC_AXON = 2,
+        SWC_DENDRITE = 3,
+        SWC_APICAL = 4
       } TSwcNodeType;
 
       // A bbpsdk experiment is opened
@@ -96,8 +96,8 @@ namespace nsol
       std::cout << toRead << ": DONE " << std::endl;
 
       if (!experiment.is_open()) {
-	std::cerr << toRead << ": Experiment could not be opened"
-		  << std::endl;
+        std::cerr << toRead << ": Experiment could not be opened"
+                  << std::endl;
       }
 
       std::vector< NeuronPtr > neuronVector;
@@ -109,233 +109,234 @@ namespace nsol
       bbp::Cell_Target target;
 
       mcp.load(target,
-	       bbp::MICROCIRCUIT | 
-	       bbp::AFFERENT_SYNAPSES |
-	       bbp::EFFERENT_SYNAPSES);
+               bbp::MICROCIRCUIT |
+               bbp::AFFERENT_SYNAPSES |
+               bbp::EFFERENT_SYNAPSES);
 
-      const bbp::Neurons &neuronsExpe = 
-	experiment.microcircuit().neurons();
+      const bbp::Neurons &neuronsExpe =
+        experiment.microcircuit().neurons();
 
       std::cerr << toRead << ": Exporting " << neuronsExpe.size()
-		<< " neurons. " << std::endl;
+                << " neurons. " << std::endl;
 
       for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
-	   it != neuronsExpe.end(); ++it) 
+           it != neuronsExpe.end(); ++it)
       {
-	cout << "Neuron " << it->label() << " with morphology "
-	     << it->morphology().label() << std::endl;
+        cout << "Neuron " << it->label() << " with morphology "
+             << it->morphology().label() << std::endl;
 
-	nsol::NeuronPtr neuron (new nsol::Neuron(false)); //New neuron
-	neuronVector.push_back( neuron );
+        nsol::NeuronPtr neuron (new nsol::Neuron(false)); //New neuron
+        neuronVector.push_back( neuron );
 
-	bool miniColumnExist;
+        bool miniColumnExist;
 
-	//MiniColumn control
-	if (miniColumnMap.find(it->minicolumn()) != miniColumnMap.end())
-	{
+//MiniColumn control
+        if (miniColumnMap.find(it->minicolumn()) != miniColumnMap.end())
+        {
           //MiniColumn exist
-	  neuron->miniColumn(miniColumnMap[it->minicolumn()]);
-	  miniColumnExist = true;
-	} 
-	else						
-	{
-	  // MiniColumn does not exist
+          neuron->miniColumn(miniColumnMap[it->minicolumn()]);
+          miniColumnExist = true;
+        }
+        else
+        {
+          // MiniColumn does not exist
 
-	  miniColumnExist = false;
-	  miniColumnMap[it->minicolumn()] = 
-	    MiniColumnPtr( new MiniColumn( nullptr,
-					   it->minicolumn()) );
-	  neuron->miniColumn(miniColumnMap[it->minicolumn()]);
-	}
+          miniColumnExist = false;
+          miniColumnMap[it->minicolumn()] =
+            MiniColumnPtr( new MiniColumn( nullptr,
+                                           it->minicolumn()) );
+          neuron->miniColumn(miniColumnMap[it->minicolumn()]);
+        }
 
-	//Column control
-	if (columnMap.find(it->column()) != columnMap.end())
+//Column control
+        if (columnMap.find(it->column()) != columnMap.end())
           //Column exist
-	  neuron->miniColumn()->column(columnMap[it->column()]);
-	else							
-	{
+          neuron->miniColumn()->column(columnMap[it->column()]);
+        else
+        {
           //Column does not exist
-	  columnMap[it->column()] = ColumnPtr(new Column(it->column()));
-	  neuron->miniColumn()->column(columnMap[it->column()]);
-	}
+          columnMap[it->column()] = ColumnPtr(new Column(it->column()));
+          neuron->miniColumn()->column(columnMap[it->column()]);
+        }
 
         //Add neuron to minicolumn
-	miniColumnMap[it->minicolumn()]->addNeuron( neuron );
+        miniColumnMap[it->minicolumn()]->addNeuron( neuron );
 
         //Add minicolumn to column
-	if (!miniColumnExist)
-	  columnMap[it->column()]->addMiniColumn(
-	    miniColumnMap[it->minicolumn()]);
+        if (!miniColumnExist)
+          columnMap[it->column()]->addMiniColumn(
+            miniColumnMap[it->minicolumn()]);
 
-	//Morphology previously loaded
-	if (neuronMorphoMap.find(it->morphology().label()) != 
-	    neuronMorphoMap.end()) 
-	{
-	  cout << "Morphology previously loaded" << endl;
+//Morphology previously loaded
+        if (neuronMorphoMap.find(it->morphology().label()) !=
+            neuronMorphoMap.end())
+        {
+          cout << "Morphology previously loaded" << endl;
 
-	  neuron->morphology(
-	    neuronMorphoMap.find(it->morphology().label())->second);
-	  neuron->layer() = it->layer();
-	  neuron->transform() = it->global_transform();
-	  neuron->gid() = it->gid();
-	} else
-	{
-	  cout << "Loading morphology " << it->morphology().label()
-	       << endl;
+          neuron->morphology(
+            neuronMorphoMap.find(it->morphology().label())->second);
+          neuron->layer() = it->layer();
+          neuron->transform() = it->global_transform();
+          neuron->gid() = it->gid();
+        } else
+        {
+          cout << "Loading morphology " << it->morphology().label()
+               << endl;
 
-	  nsol::NeuronMorphologyPtr m ( new nsol::NeuronMorphology );
+          nsol::NeuronMorphologyPtr m ( new nsol::NeuronMorphology );
 
-	  neuronMorphoMap[it->morphology().label()] = m;
-	  neuron->morphology(m);
-	  neuron->layer() = it->layer();
-	  neuron->transform() = it->global_transform();
-	  neuron->gid() = it->gid();
+          neuronMorphoMap[it->morphology().label()] = m;
+          neuron->morphology(m);
+          neuron->layer() = it->layer();
+          neuron->transform() = it->global_transform();
+          neuron->gid() = it->gid();
 
-	  unsigned int id = 1;
+          unsigned int id = 1;
 
-	  //Getting morphology of the neuron
-	  const bbp::Morphology &morphology = it->morphology();
-	  //Getting soma of the morphology
-	  const bbp::Soma &soma = morphology.soma();
-	  //Writing soma
-	  for (bbp::Soma::const_iterator nodeIt = soma.begin();
-	       nodeIt != soma.end(); ++nodeIt) {
+          //Getting morphology of the neuron
+          const bbp::Morphology &morphology = it->morphology();
+          //Getting soma of the morphology
+          const bbp::Soma &soma = morphology.soma();
+          //Writing soma
+          for (bbp::Soma::const_iterator nodeIt = soma.begin();
+               nodeIt != soma.end(); ++nodeIt) {
 
-	    m->soma().addNode(NodePtr( 
-				new Node( Vec3f( ( * nodeIt)[0], 
-						 ( * nodeIt)[1], 
-						 ( * nodeIt)[2] ),
-					  id, soma.mean_radius( ))));
+            m->soma().addNode(NodePtr(
+                                new Node( Vec3f( ( * nodeIt)[0],
+                                                 ( * nodeIt)[1],
+                                                 ( * nodeIt)[2] ),
+                                          id, soma.mean_radius( ))));
 
-	    id++;
-	  }
+            id++;
+          }
 
-	  const bbp::Sections &somas = morphology.somas();
-	  //Writing neurites
-	  for (bbp::Sections::const_iterator sectionIt = somas.begin();
-	       sectionIt != somas.end(); sectionIt++) 
-	  {
+          const bbp::Sections &somas = morphology.somas();
+          //Writing neurites
+          for (bbp::Sections::const_iterator sectionIt = somas.begin();
+               sectionIt != somas.end(); sectionIt++)
+          {
 
-	    bbp::Sections children = ( * sectionIt ).children();
+            bbp::Sections children = ( * sectionIt ).children();
 
-	    for ( bbp::Sections::iterator cit = children.begin( );
-		  cit != children.end( ); cit++) 
-	    {
-	      DendritePtr dendrite = nullptr;
-	      NeuritePtr neurite = nullptr;
+            for ( bbp::Sections::iterator cit = children.begin( );
+                  cit != children.end( ); cit++)
+            {
+              DendritePtr dendrite = nullptr;
+              NeuritePtr neurite = nullptr;
 
-	      if ((*cit).type() == bbp::SECTION_AXON)
-		neurite = m->addNeurite(Neurite::AXON);
-	      else if ((*cit).type() == bbp::SECTION_DENDRITE)
-		dendrite = m->addDendrite(Dendrite::BASAL);
-	      else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
-		dendrite = m->addDendrite(Dendrite::APICAL);
+              if ((*cit).type() == bbp::SECTION_AXON)
+                neurite = m->addNeurite(Neurite::AXON);
+              else if ((*cit).type() == bbp::SECTION_DENDRITE)
+                dendrite = m->addDendrite(Dendrite::BASAL);
+              else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
+                dendrite = m->addDendrite(Dendrite::APICAL);
 
-	      const bbp::Section * bbpSection = &(*cit);
-	      std::stack<const bbp::Section *> sPS;
-	      sPS.push(bbpSection);
-	      std::stack<SectionPtr> parents;
-	      parents.push(nullptr);
-	      bool first = true;
-	      NodePtr nPre = nullptr;
-	      std::map<unsigned int, NodePtr> nodePtrMap;
+              const bbp::Section * bbpSection = &(*cit);
+              std::stack<const bbp::Section *> sPS;
+              sPS.push(bbpSection);
+              std::stack<SectionPtr> parents;
+              parents.push(nullptr);
+              bool first = true;
+              NodePtr nPre = nullptr;
+              std::map<unsigned int, NodePtr> nodePtrMap;
 
-	      while (!sPS.empty())
-	      {
-		const bbp::Section *lS = sPS.top();
-		sPS.pop();
-		SectionPtr parentSection = parents.top();
-		parents.pop();
+              while (!sPS.empty())
+              {
+                const bbp::Section *lS = sPS.top();
+                sPS.pop();
+                SectionPtr parentSection = parents.top();
+                parents.pop();
 
-		SectionPtr section ( new Section );
-		if ( dendrite )
-		{
-		  if ( ! dendrite->firstSection( ))
-		    dendrite->firstSection( section );
+                SectionPtr section ( new Section );
+                if ( dendrite )
+                {
+                  if ( ! dendrite->firstSection( ))
+                    dendrite->firstSection( section );
 
-		  section->neurite( dendrite);
-		}
-		else
-		{
-		  if ( ! neurite->firstSection( ))
-		    neurite->firstSection( section );
+                  section->neurite( dendrite);
+                }
+                else
+                {
+                  if ( ! neurite->firstSection( ))
+                    neurite->firstSection( section );
 
-		  section->neurite( neurite );
-		}
+                  section->neurite( neurite );
+                }
 
-		section->parent( parentSection );
-		SegmentPtr segment = section->addSegment();
-		segment->parentSection( section );
+                section->parent( parentSection );
+                SegmentPtr segment = section->addSegment( new Segment );
+                segment->parentSection( section );
 
-		const bbp::Cross_Sections & cross_Sections = 
-		  lS->cross_sections();
+                const bbp::Cross_Sections & cross_Sections =
+                  lS->cross_sections();
 
-		bbp::Cross_Sections::const_iterator crossSectionIt = 
-		  cross_Sections.begin();
+                bbp::Cross_Sections::const_iterator crossSectionIt =
+                  cross_Sections.begin();
 
-		if (first)
-		{
-		  //TODO: select correct initial soma point
-		  segment->begin(
-		    NodePtr( new Node( Vec3f(0, 0, 0),
-				       1, 0.0 )));
-		  first = false;
-		}
-		else
-		  segment->begin(section->parent()->lastSegment()->end());
+                if (first)
+                {
+                  //TODO: select correct initial soma point
+                  segment->begin(
+                    NodePtr( new Node( Vec3f(0, 0, 0),
+                                       1, 0.0 )));
+                  first = false;
+                }
+                else
+                  segment->begin(section->parent()->lastSegment()->end());
 
-		segment->end(
-		  NodePtr( 
-		    new Node( Vec3f( crossSectionIt->center()[0],
-				     crossSectionIt->center()[1],
-				     crossSectionIt->center()[2] ),
-			      id, crossSectionIt->radius( ))));
+                segment->end(
+                  NodePtr(
+                    new Node( Vec3f( crossSectionIt->center()[0],
+                                     crossSectionIt->center()[1],
+                                     crossSectionIt->center()[2] ),
+                              id, crossSectionIt->radius( ))));
 
-		nodePtrMap[id] = segment->end();
+                nodePtrMap[id] = segment->end();
 
-		id++;
+                id++;
 
-		if (parentSection)
-		  parentSection->addChild( section );
+                if (parentSection)
+                  parentSection->addChild( section );
 
-		nPre = segment->end();
+                nPre = segment->end();
 
-		crossSectionIt++;
+                crossSectionIt++;
 
-		for ( bbp::Cross_Sections::const_iterator itL =
-		       crossSectionIt; itL != cross_Sections.end();
-		     ++itL )
-		{
-		  SegmentPtr crossSectionSegment = section->addSegment( );
-		  crossSectionSegment->parentSection( section );
-		  crossSectionSegment->begin(nPre);
+                for ( bbp::Cross_Sections::const_iterator itL =
+                        crossSectionIt; itL != cross_Sections.end();
+                      ++itL )
+                {
+                  SegmentPtr crossSectionSegment =
+                    section->addSegment( new Segment );
+                  crossSectionSegment->parentSection( section );
+                  crossSectionSegment->begin(nPre);
 
-		  crossSectionSegment->end(
-		    NodePtr( new Node(
-			       Vec3f(itL->center()[0],
-				     itL->center()[1],
-				     itL->center()[2]),
-			       id, itL->radius())));
+                  crossSectionSegment->end(
+                    NodePtr( new Node(
+                               Vec3f(itL->center()[0],
+                                     itL->center()[1],
+                                     itL->center()[2]),
+                               id, itL->radius())));
 
-		  nodePtrMap[id] = crossSectionSegment->end();
+                  nodePtrMap[id] = crossSectionSegment->end();
 
-		  id++;
+                  id++;
 
-		  nPre = crossSectionSegment->end();
-		}
+                  nPre = crossSectionSegment->end();
+                }
 
-		for (bbp::Sections::const_iterator child =
-		       lS->children().begin();
-		     child != lS->children().end(); ++child)
-		{
-		  sPS.push( & ( * child ) );
-		  parents.push( section );
-		}
+                for (bbp::Sections::const_iterator child =
+                       lS->children().begin();
+                     child != lS->children().end(); ++child)
+                {
+                  sPS.push( & ( * child ) );
+                  parents.push( section );
+                }
 
-	      } // while not stack empty
-	    } // for all soma section childs
-	  } // for all soma sections
-	}
+              } // while not stack empty
+            } // for all soma section childs
+          } // for all soma sections
+        }
       }
 
       return columnMap;
@@ -349,7 +350,7 @@ namespace nsol
      */
     std::map<unsigned int, ColumnPtr> &readFromDirectory(
       const std::string toRead) {
-      SwcReader<> r;
+      SwcReader r;
       bool findCsv = false;
 
       std::vector<NeuronPtr> neuronVector;
@@ -359,199 +360,196 @@ namespace nsol
       DIR *pDIR;
       struct dirent *entry;
       if ((pDIR = opendir(toRead.c_str()))) {
-	std::string dir(toRead.c_str());
+        std::string dir(toRead.c_str());
 
-	while ((entry = readdir(pDIR))) {
-	  std::string str(entry->d_name);
-	  unsigned found = str.find_last_of(".");
+        while ((entry = readdir(pDIR))) {
+          std::string str(entry->d_name);
+          unsigned found = str.find_last_of(".");
 
-	  //Load neuron file
-	  if (strcmp(entry->d_name, ".") != 0
-	      && strcmp(entry->d_name, "..") != 0
-	      && str.substr(found + 1) == "csv") {
+          //Load neuron file
+          if (strcmp(entry->d_name, ".") != 0
+              && strcmp(entry->d_name, "..") != 0
+              && str.substr(found + 1) == "csv") {
 
-	    findCsv = true;
-	    cout << "\nLoading neuron file " << entry->d_name << endl;
+            findCsv = true;
+            cout << "\nLoading neuron file " << entry->d_name << endl;
 
-	    std::ifstream inFile;
-	    inFile.open(dir + entry->d_name, std::ios::in);
+            std::ifstream inFile;
+            inFile.open(dir + entry->d_name, std::ios::in);
 
-	    //Opening file checking
-	    if ((inFile.rdstate() & std::ifstream::failbit) != 0) {
-	      std::cerr << "Error opening file " << entry->d_name
-			<< std::endl;
-	      inFile.close();
+            //Opening file checking
+            if ((inFile.rdstate() & std::ifstream::failbit) != 0) {
+              std::cerr << "Error opening file " << entry->d_name
+                        << std::endl;
+              inFile.close();
 
-	      continue;
-	    }
+              continue;
+            }
 
-	    std::string line;
-	    std::getline(inFile, line);
+            std::string line;
+            std::getline(inFile, line);
 
-	    //Reading csv file with each neuron
-	    while (std::getline(inFile, line)) {
+            //Reading csv file with each neuron
+            while (std::getline(inFile, line)) {
 
-	      // TODO: this does not cover the case the # char is not the first char
-	      if (line[0] != '#') {
-		std::istringstream iss(line);
-		std::string comma;
-		TcsvFileLine csvLine;
+              // TODO: this does not cover the case the # char is not the first char
+              if (line[0] != '#') {
+                std::istringstream iss(line);
+                std::string comma;
+                TcsvFileLine csvLine;
 
-		iss >> csvLine.id;
-		getline(iss, comma, ',');
-		//				          iss >> csvLine.label;
-		getline(iss, csvLine.label, ',');
-		iss >> csvLine.column;
-		getline(iss, comma, ',');
-		iss >> csvLine.miniColumn;
-		getline(iss, comma, ',');
-		iss >> csvLine.layer;
-		getline(iss, comma, ',');
-		iss >> csvLine.position[0];
-		getline(iss, comma, ',');
-		iss >> csvLine.position[1];
-		getline(iss, comma, ',');
-		iss >> csvLine.position[2];
-		getline(iss, comma, ',');
+                iss >> csvLine.id;
+                getline(iss, comma, ',');
+//          iss >> csvLine.label;
+                getline(iss, csvLine.label, ',');
+                iss >> csvLine.column;
+                getline(iss, comma, ',');
+                iss >> csvLine.miniColumn;
+                getline(iss, comma, ',');
+                iss >> csvLine.layer;
+                getline(iss, comma, ',');
+                iss >> csvLine.position[0];
+                getline(iss, comma, ',');
+                iss >> csvLine.position[1];
+                getline(iss, comma, ',');
+                iss >> csvLine.position[2];
+                getline(iss, comma, ',');
 
-		//TODO:column order, why?
-		iss >> csvLine.globalTrans[0][0];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[1][0];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[2][0];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[3][0];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[0][1];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[1][1];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[2][1];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[3][1];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[0][2];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[1][2];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[2][2];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[3][2];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[0][3];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[1][3];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[2][3];
-		getline(iss, comma, ',');
-		iss >> csvLine.globalTrans[3][3];
-		getline(iss, comma, ',');
-		iss >> csvLine.orientation[0];
-		getline(iss, comma, ',');
-		iss >> csvLine.orientation[1];
-		getline(iss, comma, ',');
-		iss >> csvLine.orientation[2];
-		getline(iss, comma, ',');
-		iss >> csvLine.orientation[3];
-		getline(iss, comma, ',');
-		//				          iss >> csvLine.morphoLabel;
-		getline(iss, csvLine.morphoLabel, ',');
+//TODO:column order, why?
+                iss >> csvLine.globalTrans[0][0];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[1][0];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[2][0];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[3][0];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[0][1];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[1][1];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[2][1];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[3][1];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[0][2];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[1][2];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[2][2];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[3][2];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[0][3];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[1][3];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[2][3];
+                getline(iss, comma, ',');
+                iss >> csvLine.globalTrans[3][3];
+                getline(iss, comma, ',');
+                iss >> csvLine.orientation[0];
+                getline(iss, comma, ',');
+                iss >> csvLine.orientation[1];
+                getline(iss, comma, ',');
+                iss >> csvLine.orientation[2];
+                getline(iss, comma, ',');
+                iss >> csvLine.orientation[3];
+                getline(iss, comma, ',');
+//          iss >> csvLine.morphoLabel;
+                getline(iss, csvLine.morphoLabel, ',');
 
-		cout << "Neuron " << csvLine.label
-		     << " with morphology "
-		     << csvLine.morphoLabel << std::endl;
+                cout << "Neuron " << csvLine.label
+                     << " with morphology "
+                     << csvLine.morphoLabel << std::endl;
 
-		NeuronPtr neuron ( new Neuron( false ));		//New neuron
-		neuronVector.push_back( neuron );
+                NeuronPtr neuron ( new Neuron( false ));//New neuron
+                neuronVector.push_back( neuron );
 
-		bool miniColumnExist;
+                bool miniColumnExist;
 
-		//MiniColumn control
-		if (miniColumnMap.find(csvLine.miniColumn)
-		    != miniColumnMap.end())	//MiniColumn exist
-		{
-		  neuron->miniColumn(
-		    miniColumnMap[csvLine.miniColumn]);
+//MiniColumn control
+                if (miniColumnMap.find(csvLine.miniColumn)
+                    != miniColumnMap.end())//MiniColumn exist
+                {
+                  neuron->miniColumn(
+                    miniColumnMap[csvLine.miniColumn]);
+                  miniColumnExist = true;
+                } else
+                  //MiniColumn not exist
+                {
+                  miniColumnExist = false;
+                  miniColumnMap[csvLine.miniColumn] =
+                    MiniColumnPtr( new MiniColumn( nullptr,
+                                                   csvLine.miniColumn ));
+                  neuron->miniColumn(
+                    miniColumnMap[csvLine.miniColumn]);
+                }
 
-		  miniColumnExist = true;
-		} else						
-                //MiniColumn not exist
-		{
-		  miniColumnExist = false;
-		  miniColumnMap[csvLine.miniColumn] =
-		    MiniColumnPtr( new MiniColumn( nullptr, 
-						   csvLine.miniColumn ));
-		  neuron->miniColumn(
-		    miniColumnMap[csvLine.miniColumn]);
-		}
-
-		//Column control
-		if (columnMap.find(csvLine.column)
-		    != columnMap.end())	
+//Column control
+                if (columnMap.find(csvLine.column)
+                    != columnMap.end())
                   //Column exist
-		  neuron->miniColumn()->column(
-		    columnMap[csvLine.column]);
-		else							
-                //Column not exist
-		{
-		  columnMap[csvLine.column] = 
-		    ColumnPtr ( new Column( csvLine.column ));
-		  neuron->miniColumn()->column(
-		    columnMap[csvLine.column]);
-		}
+                  neuron->miniColumn()->column(
+                    columnMap[csvLine.column]);
+                else
+                  //Column not exist
+                {
+                  columnMap[csvLine.column] =
+                    ColumnPtr ( new Column( csvLine.column ));
+                  neuron->miniColumn()->column(
+                    columnMap[csvLine.column]);
+                }
 
                 //Add neuron to minicolumn
-		miniColumnMap[csvLine.miniColumn]->addNeuron(neuron);
+                miniColumnMap[csvLine.miniColumn]->addNeuron(neuron);
 
-		if (!miniColumnExist)
+                if (!miniColumnExist)
                   //Add minicolumn to column
-		  columnMap[csvLine.column]->addMiniColumn(
-		    miniColumnMap[csvLine.miniColumn]);	
-		
+                  columnMap[csvLine.column]->addMiniColumn(
+                    miniColumnMap[csvLine.miniColumn]);
+
                 //Morphology previously loaded
-		if (neuronMorphoMap.find(csvLine.morphoLabel)
-		    != neuronMorphoMap.end()) {
-		  cout << "Morphology file previously loaded"
-		       << endl;
+                if (neuronMorphoMap.find(csvLine.morphoLabel)
+                    != neuronMorphoMap.end()) {
+                  cout << "Morphology file previously loaded"
+                       << endl;
+                  neuron->morphology(
+                    neuronMorphoMap.find(csvLine.morphoLabel)->second);
+                  neuron->layer() = csvLine.layer;
+                  neuron->transform() = csvLine.globalTrans;
+                  neuron->gid() = csvLine.id;
+                } else {
+                  cout << "Loading morphology file "
+                       << csvLine.morphoLabel << ".swc"
+                       << endl;
+                  NeuronMorphologyPtr m = r.readFile(
+                    dir + csvLine.morphoLabel + ".swc");
 
-		  neuron->morphology(
-		    neuronMorphoMap.find(csvLine.morphoLabel)->second);
-		  neuron->layer() = csvLine.layer;
-		  neuron->transform() = csvLine.globalTrans;
-		  neuron->gid() = csvLine.id;
-		} else {
-		  cout << "Loading morphology file "
-		       << csvLine.morphoLabel << ".swc"
-		       << endl;
+                  if (!m) {
+                    cout << "\nError opening morphology file "
+                         << csvLine.morphoLabel << endl;
+                    continue;
+                  }
 
-		  NeuronMorphologyPtr m = r.readFile(
-		    dir + csvLine.morphoLabel + ".swc");
+                  neuronMorphoMap[csvLine.morphoLabel] = m;
+                  neuron->morphology(m);
+                  neuron->layer() = csvLine.layer;
+                  neuron->transform() = csvLine.globalTrans;
+                  neuron->gid() = csvLine.id;
+                }
+              }
+            }
 
-		  if (!m) {
-		    cout << "\nError opening morphology file "
-			 << csvLine.morphoLabel << endl;
-		    continue;
-		  }
+            inFile.close();
+          }
+        }
 
-		  neuronMorphoMap[csvLine.morphoLabel] = m;
-		  neuron->morphology(m);
-		  neuron->layer() = csvLine.layer;
-		  neuron->transform() = csvLine.globalTrans;
-		  neuron->gid() = csvLine.id;
-		}
-	      }
-	    }
-
-	    inFile.close();
-	  }
-	}
-
-	closedir(pDIR);
+        closedir(pDIR);
       }
 
       if (!findCsv)
-	cout << "Neuron file not found." << std::endl;
+        cout << "Neuron file not found." << std::endl;
 
       return columnMap;
     }

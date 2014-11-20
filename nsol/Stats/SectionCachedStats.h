@@ -42,6 +42,9 @@ namespace nsol
     virtual ~SectionCachedStats( void );
 
     NSOL_API
+    virtual void setAndPropagateDirty( unsigned int id );
+
+    NSOL_API
     virtual void setAndPropagateDirty( void );
 
     NSOL_API
@@ -56,6 +59,8 @@ namespace nsol
     NSOL_API
     virtual float volume( void );
 
+    NSOL_API
+    virtual float surface( void ) const;
 
   }; // class SectionCachedStats
 

@@ -29,11 +29,17 @@
   }
 
 
+#define NSOL_CHECK_THROW( cond, errorMsg )                       \
+    {                                                            \
+      if ( ! (cond) ) NSOL_THROW( errorMsg );                    \
+    }
+
+
 #ifdef DEBUG
   #define NSOL_DEBUG_CHECK( cond, errorMsg )                     \
-    {                                                            \
-      if ( ! cond ) NSOL_THROW( errorMsg );                      \
-    }
+{                                                                \
+  NSOL_CHECK_THROW( cond, errorMsg )                             \
+}
 #else
   #define NSOL_DEBUG_CHECK( cond, errorMsg )
 #endif

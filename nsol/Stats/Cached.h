@@ -3,79 +3,80 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
             Do not distribute without further notice.
- */
+*/
 #ifndef __NSOL_STATS_CACHED__
 #define __NSOL_STATS_CACHED__
 
 #include "../error.h"
 
-#include <vector>
+#include <map>
 
 namespace nsol
-{ 
+{
   /*! \class Cached
     \brief This class allows to cache values
-   
+
 
   */
   template < typename TYPE = float > class Cached
   {
 
   public:
-    
-    Cached( unsigned int numValues_ = 0 )
-      : _dirty( true )
+
+    Cached( void )
     {
-      _values.reserve( numValues_ );
     }
 
     virtual ~Cached( void )
     {
     }
 
-    bool & dirty( void )
+    bool dirty( unsigned int id ) const
     {
-      return _dirty;
+      return ( _values.find( id ) == _values.end( ));
+    }
+
+    void setDirty( unsigned int id )
+    {
+      _values.erase( id );
     }
 
     void setDirty( void )
     {
-      _dirty = true;
+      _values.clear( );
     }
 
-    void setClean( void )
+    virtual void setAndPropagateDirty( unsigned int id )
     {
-      _dirty = false;
+      this->setDirty( id );
+      // Note: propagation has to be reimplemented if needed
     }
 
-    virtual void setAndPropagateDirty( void ) 
+    virtual void setAndPropagateDirty( void )
     {
-      NSOL_THROW( "setAndPropagateDirty not reimplemented" );
+      this->setDirty( );
+      // Note: propagation has to be reimplemented if needed
     }
 
-
-    TYPE & value( unsigned int idx_ )
+    // This method is const to be able to cache values from 
+    // derived const methods
+    void cacheValue( const unsigned int id_, TYPE & value_ ) const
     {
-      #ifdef DEBUG
-      if ( idx_ >= _values.size( ))
-	NSOL_THROW( std::string( "value index " ) + 
-		    std::to_string( idx_) +  
-		    std::string( "not valid" );		    
-      #endif
-
-      return _values[ idx_ ];
-
+      _values[ id_ ] = value_;
     }
+
+    TYPE getValue( const unsigned int id_ ) const
+    {
+      return _values[ id_ ];
+    }
+
 
   protected:
 
-    //! Indicates if the values are updated
-    bool _dirty;
-
     //! Container of the cached values
-    std::vector < TYPE > _values;
+    mutable std::map < unsigned int, TYPE > _values;
 
   };
 

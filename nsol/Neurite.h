@@ -21,7 +21,11 @@ namespace nsol {
   class Neurite
   {
 
-    template< class NODE, class SECTION > friend class SwcReader;
+    template< class NODE,
+              class SEGMENT,
+              class SECTION,
+              class NEURON,
+              class NEURONMORPHOLOGY > friend class SwcReaderTemplated;
     friend class BBPSDKreader;
 
   public:

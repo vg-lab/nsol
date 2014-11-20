@@ -1,43 +1,40 @@
 /**
- * @file    SectionStats.h
+ * @file    SegmentStats.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef __NSOL_SECTION_STATS__
-#define __NSOL_SECTION_STATS__
+#ifndef __NSOL_SEGMENT_STATS__
+#define __NSOL_SEGMENT_STATS__
 
-#include "../Section.h"
+#include "../Segment.h"
 
 namespace nsol
 {
 
-  class SectionStats : public Section
+  class SegmentStats : public Segment
   {
 
   public:
 
     NSOL_API
-    SectionStats * stats( void )
-    {
-      return this;
-    }
+    SegmentStats * stats( void );
 
     NSOL_API
-    virtual float volume( void );
+    virtual float volume( void ) const;
 
     NSOL_API
     virtual float surface( void ) const;
 
     NSOL_API
-    virtual float length( void );
+    virtual float length( void ) const;
 
 
-  }; // class SectionStats
+  }; // class SegmentStats
 
 
 } // namespace nsol
 
-#endif // __NSOL_SECTION_STATS__
+#endif // __NSOL_SEGMENT_STATS__
