@@ -120,8 +120,7 @@ namespace nsol
     _lastSegment = lastSegment_;
   }
 
-  NSOL_API
-  SectionStats * stats( void )
+  SectionStats * Section::stats( void )
   {
     NSOL_DEBUG_CHECK( false, "no stats defined");
     return nullptr;

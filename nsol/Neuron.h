@@ -37,13 +37,13 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-	NSOL_API
+    NSOL_API
     Neuron( bool createMorphology = true,
-	    const unsigned short layer = 0,
-	    const unsigned int gid = 0,
-	    const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-	    const MiniColumnPtr miniColumn = nullptr,
-	    const TNeuronType type = PYRAMIDAL);
+            const unsigned short layer = 0,
+            const unsigned int gid = 0,
+            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
+            const MiniColumnPtr miniColumn = nullptr,
+            const TNeuronType type = PYRAMIDAL);
 
     NSOL_API
     Neuron(const NeuronMorphologyPtr neuronMorphology,
@@ -51,7 +51,7 @@ namespace nsol
            const unsigned int gid = 0,
            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
            const MiniColumnPtr miniColumn = nullptr,
-	   const TNeuronType type = PYRAMIDAL);
+           const TNeuronType type = PYRAMIDAL);
 
     NSOL_API
     ~Neuron( void );
@@ -75,9 +75,9 @@ namespace nsol
      * @return pointer to the added neurite
      */
     NSOL_API
-    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType = 
-			   Neurite::DENDRITE );
-    
+    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType =
+                           Neurite::DENDRITE );
+
 
     /**
      * Method to add a new dendrite to the neuron.
@@ -86,8 +86,8 @@ namespace nsol
      * @return pointer to the added dendrite
      */
     NSOL_API
-    DendritePtr addDendrite( Dendrite::TDendriteType dendriteType = 
-			   Dendrite::BASAL);
+    DendritePtr addDendrite( Dendrite::TDendriteType dendriteType =
+                             Dendrite::BASAL);
 
     /**
      * Method to add a new axon to the neuron.
@@ -96,65 +96,65 @@ namespace nsol
     NSOL_API
     AxonPtr addAxon( void );
 
-    NSOL_API
-    unsigned int numNeurites( void );
+    // NSOL_API
+    // unsigned int numNeurites( void );
 
-    NSOL_API
-    unsigned int numDendrites( void );
+    // NSOL_API
+    // unsigned int numDendrites( void );
 
-    NSOL_API
-    unsigned int numNeuriteBranches( void );
+    // NSOL_API
+    // unsigned int numNeuriteBranches( void );
 
-    NSOL_API
-    unsigned int numDendriteBranches( void );
+    // NSOL_API
+    // unsigned int numDendriteBranches( void );
 
-    NSOL_API
-    unsigned int numAxonBranches( void );
+    // NSOL_API
+    // unsigned int numAxonBranches( void );
 
-    NSOL_API
-    unsigned int numNeuriteBifurcations( void );
+    // NSOL_API
+    // unsigned int numNeuriteBifurcations( void );
 
-    NSOL_API
-    unsigned int numDendriteBifurcations( void );
+    // NSOL_API
+    // unsigned int numDendriteBifurcations( void );
 
-    NSOL_API
-    unsigned int numAxonBifurcations( void );
+    // NSOL_API
+    // unsigned int numAxonBifurcations( void );
 
-    NSOL_API
-    float volume( void ) const;
+    // NSOL_API
+    // float volume( void ) const;
 
-    NSOL_API
-    float neuritesVolume( void ) const;
+    // NSOL_API
+    // float neuritesVolume( void ) const;
 
-    NSOL_API
-    float dendritesVolume( void ) const;
+    // NSOL_API
+    // float dendritesVolume( void ) const;
 
-    NSOL_API
-    float axonVolume( void ) const;
+    // NSOL_API
+    // float axonVolume( void ) const;
 
-    NSOL_API
-    float surface( void ) const;
+    // NSOL_API
+    // float surface( void ) const;
 
-    NSOL_API
-    float neuritesSurface( void ) const;
+    // NSOL_API
+    // float neuritesSurface( void ) const;
 
-    NSOL_API
-    float dendritesSurface( void ) const;
+    // NSOL_API
+    // float dendritesSurface( void ) const;
 
-    NSOL_API
-    float axonSurface( void ) const;
+    // NSOL_API
+    // float axonSurface( void ) const;
 
-    NSOL_API
-    float length( void ) const;
+    // NSOL_API
+    // float length( void ) const;
 
-    NSOL_API
-    float neuritesLength( void ) const;
+    // NSOL_API
+    // float neuritesLength( void ) const;
 
-    NSOL_API
-    float dendritesLength( void ) const;
+    // NSOL_API
+    // float dendritesLength( void ) const;
 
-    NSOL_API
-    float axonLength( void ) const;
+    // NSOL_API
+    // float axonLength( void ) const;
 
     /**
      * Method to get all the dendrites in a container.
@@ -171,7 +171,7 @@ namespace nsol
      */
     NSOL_API
     Dendrites * basalDendrites( void );
-   
+
     /**
      * Method to get all the apical dendrites in a container.
      * Memory for the container is allocated.

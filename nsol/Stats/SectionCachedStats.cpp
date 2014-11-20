@@ -27,7 +27,7 @@ namespace nsol
   {
     this->setDirty( );
 
-    auto cached = NSOL_DYNAMIC_CAST( Cached, this->parenst( ));
+    auto cached = NSOL_DYNAMIC_CAST( Cached, this->parent( ));
     if ( cached )
       cached->setAndPropagateDirty( );
   }

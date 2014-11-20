@@ -37,7 +37,8 @@ namespace nsol
   } TSwcLine;
 
 
-  template < class NODE = Node >  
+  template < class NODE = Node,
+             class SECTION = Section >
   class SwcReader
   {
 
@@ -59,9 +60,9 @@ namespace nsol
       NeuronMorphologyPtr nm = this->readFile(std::string(fileName));
 
       if ( nm )
-	return NeuronPtr( new Neuron( nm ));
-      else 
-	return nullptr;
+        return NeuronPtr( new Neuron( nm ));
+      else
+        return nullptr;
     }
 
     NeuronMorphologyPtr readFile(const char *fileName)
@@ -122,7 +123,7 @@ namespace nsol
       }
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
-	   it != lines.end(); it++)
+           it != lines.end(); it++)
       {
 
         if (it->second.parent != -1)
@@ -154,11 +155,13 @@ namespace nsol
       std::map<unsigned int, NodePtr > nodeSomaPtr;
 
       for (std::map<unsigned int, TSwcLine>::iterator it = lines.begin();
-	   it != lines.end(); it++)
+           it != lines.end(); it++)
       {
         if (it->second.type == SWC_SOMA)
         {
-          NodePtr node( new NODE(it->second.xyz, it->second.id, it->second.radius) );
+          NodePtr node(
+            new NODE(it->second.xyz, it->second.id, it->second.radius) );
+
           neuronMorphology->soma().addNode(node);
 
           nodeSomaPtr[it->second.id] = node;
@@ -179,48 +182,48 @@ namespace nsol
 
         switch (lines[somaChilds[i]].type)
         {
-	case SWC_SOMA:
-	  // TODO: handle error
-	  assert(false);
+        case SWC_SOMA:
+          // TODO: handle error
+          assert(false);
 
-	case SWC_DENDRITE:
-	{
+        case SWC_DENDRITE:
+        {
 //            std::cout << "New basal dendrite" << std::endl;
 
-	  d = neuronMorphology->addDendrite(Dendrite::BASAL);
-	  d->morphology(neuronMorphology);
-	  _ReadDendrite(d, lines, somaChilds[i],
-			nodeSomaPtr[lines[somaChilds[i]].parent]);
+          d = neuronMorphology->addDendrite(Dendrite::BASAL);
+          d->morphology(neuronMorphology);
+          _ReadDendrite(d, lines, somaChilds[i],
+                        nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-	  break;
-	}
+          break;
+        }
 
-	case SWC_APICAL:
+        case SWC_APICAL:
 //            std::cout << "New apical dendrite" << std::endl;
 
-	  d = neuronMorphology->addDendrite(Dendrite::APICAL);
-	  d->morphology(neuronMorphology);
-	  _ReadDendrite(d, lines, somaChilds[i],
-			nodeSomaPtr[lines[somaChilds[i]].parent]);
+          d = neuronMorphology->addDendrite(Dendrite::APICAL);
+          d->morphology(neuronMorphology);
+          _ReadDendrite(d, lines, somaChilds[i],
+                        nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-	  break;
+          break;
 
-	case SWC_AXON:
-	{
+        case SWC_AXON:
+        {
 //            std::cout << "New axon" << std::endl;
 
 //            neuron->addNeurite(Neurite::AXON);
 
-	  NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
-	  nP->morphology(neuronMorphology);
-	  _ReadAxon(nP, lines, somaChilds[i],
-		    nodeSomaPtr[lines[somaChilds[i]].parent]);
+          NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
+          nP->morphology(neuronMorphology);
+          _ReadAxon(nP, lines, somaChilds[i],
+                    nodeSomaPtr[lines[somaChilds[i]].parent]);
 
-	  break;
-	}
+          break;
+        }
 
-	default:
-	  break;
+        default:
+          break;
         }
 
       }
@@ -276,15 +279,15 @@ namespace nsol
       unsigned int id;
       SectionPtr parent;
     } TReadDendritesStackElem;
-    
-    void _ReadDendrite( DendritePtr d, 
-			std::map<unsigned int, TSwcLine> &lines,
-			unsigned int initId, 
-			NodePtr nodeSomaPtr )
+
+    void _ReadDendrite( DendritePtr d,
+                        std::map<unsigned int, TSwcLine> &lines,
+                        unsigned int initId,
+                        NodePtr nodeSomaPtr )
     {
 
       std::stack<TReadDendritesStackElem> ids;
-      //ids.push(TReadDendritesStackElem { initId, NULL });	  
+      //ids.push(TReadDendritesStackElem { initId, NULL });
       TReadDendritesStackElem tmp = {initId, NULL};
       ids.push(tmp);
 
@@ -301,7 +304,7 @@ namespace nsol
         ids.pop();
 
         /* parentSection = s; */
-        s = SectionPtr( new Section );
+        s = SectionPtr( new SECTION );
 
         if (!d->firstSection())
           d->firstSection(s);  //->addSection();
@@ -446,8 +449,8 @@ namespace nsol
           sgPre->begin(s->parent()->lastSegment()->end());
 
         //Segment end node
-        sgPre->end(NodePtr( new NODE(lines[id].xyz, id, 
-				      lines[id].radius)));
+        sgPre->end(NodePtr( new NODE(lines[id].xyz, id,
+                                     lines[id].radius)));
 
 
         if (parentSection)
@@ -470,8 +473,8 @@ namespace nsol
           id = lines[id].childs[0];
 
           //Segment end node
-          sg->end(NodePtr( new NODE(lines[id].xyz, id, 
-				     lines[id].radius)));
+          sg->end(NodePtr( new NODE(lines[id].xyz, id,
+                                    lines[id].radius)));
 
 
           nP = sg->end();
@@ -487,7 +490,7 @@ namespace nsol
           d->_addBifurcationCount(1);
 
           for (std::vector<unsigned int>::iterator it =
-		 lines[id].childs.begin(); 
+		 lines[id].childs.begin();
 	       it != lines[id].childs.end(); it++)
           {
 	    TReadAxonStackElem tmpStackElem = { (*it), s };
