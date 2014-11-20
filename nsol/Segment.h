@@ -15,6 +15,9 @@
 
 namespace nsol
 {
+
+  class SegmentStats;
+
   class Segment
   {
 
@@ -26,7 +29,7 @@ namespace nsol
     Segment( void );
 
     NSOL_API
-    ~Segment( void );
+    virtual ~Segment( void );
 
     NSOL_API
     SegmentPtr next( void ) const;
@@ -58,14 +61,18 @@ namespace nsol
     NSOL_API
     void end( NodePtr end );
 
-    NSOL_API
-    float volume( void );
+    // NSOL_API
+    // float volume( void );
+
+    // NSOL_API
+    // float surface( void );
+
+    // NSOL_API
+    // float length( void );
 
     NSOL_API
-    float surface( void );
+    virtual SegmentStats * stats( void );
 
-    NSOL_API
-    float length( void );
 
   protected:
 

@@ -69,15 +69,19 @@ namespace nsol
   SegmentPtr Section::addSegment( SegmentPtr segment )
   {
 
+    NSOL_DEBUG_CHECK( segment, "given segment is null" )
+
     SegmentPtr s = segment;
 
+    // Pablo: I commented out this and added a check before
+    // to allow construction from classes derived from Segment
     // If needed segment is created
-    if ( ! s )
-    {
-      s = SegmentPtr( new Segment );
-      s->begin( nullptr );
-      s->end( nullptr );
-    }
+    // if ( ! s )
+    // {
+    //   s = SegmentPtr( new Segment );
+    //   s->begin( nullptr );
+    //   s->end( nullptr );
+    // }
 
     // If this section doesn't have first segment the segment
     // passed or created is added;
@@ -122,7 +126,6 @@ namespace nsol
 
   SectionStats * Section::stats( void )
   {
-    NSOL_DEBUG_CHECK( false, "no stats defined");
     return nullptr;
   }
 

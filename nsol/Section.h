@@ -53,12 +53,12 @@ namespace nsol
 
     /**
      * Adds a segment to the section
-     * @param segment pointer to the segment to add. If 
-     *        null value then a new segment is created
+     * @param segment pointer to the segment to add. 
+     *        Precondition: pointer is not null.
      * @return pointer to the segment added (and created if needed)
      */
     NSOL_API
-    virtual SegmentPtr addSegment( SegmentPtr segment = nullptr );
+    virtual SegmentPtr addSegment( SegmentPtr segment );
 
     NSOL_API
     SegmentPtr firstSegment( void );

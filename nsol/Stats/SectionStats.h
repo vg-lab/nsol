@@ -29,7 +29,7 @@ namespace nsol
     virtual float volume( void );
 
     NSOL_API
-    virtual float surface( void );
+    virtual float surface( void ) const;
 
     NSOL_API
     virtual float length( void );

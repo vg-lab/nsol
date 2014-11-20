@@ -15,7 +15,7 @@ namespace nsol
 
   SectionCachedStats::SectionCachedStats( void )
     : SectionStats( )
-    , Cached( SECTION_NUM_CACHED_VALUES )
+    , Cached( )
   {
   }
 
@@ -23,9 +23,18 @@ namespace nsol
   {
   }
 
+  void SectionCachedStats::setAndPropagateDirty( unsigned int id )
+  {
+    this->setAndPropagateDirty( id );
+
+    auto cached = NSOL_DYNAMIC_CAST( Cached, this->parent( ));
+    if ( cached )
+      cached->setAndPropagateDirty( id );
+  }
+
   void SectionCachedStats::setAndPropagateDirty( void )
   {
-    this->setDirty( );
+    this->Cached::setAndPropagateDirty( );
 
     auto cached = NSOL_DYNAMIC_CAST( Cached, this->parent( ));
     if ( cached )
@@ -53,17 +62,32 @@ namespace nsol
   float SectionCachedStats::volume( void )
   {
 
-    if ( this->dirty( ))
-      return this->value( SectionCachedStats::VOLUME );
+    float accumVolume = 0.0f;
 
-    float accumVolume = this->SectionStats::volume( );
+    // if ( this->dirty( ))
+    //   return this->value( SectionCachedStats::VOLUME );
 
-    this->value( SectionCachedStats::VOLUME ) = accumVolume;
-    this->setClean( );
+    // float accumVolume = this->SectionStats::volume( );
+
+    // this->value( SectionCachedStats::VOLUME ) = accumVolume;
+    // this->setClean( );
 
     return accumVolume;
 
   }
 
+  float SectionCachedStats::surface( void ) const
+  {
 
-}
+    if ( ! this->dirty( SectionCachedStats::SURFACE ))
+      return this->getValue( SectionCachedStats::SURFACE );
+
+    float accumSurface = this->SectionStats::surface( );
+
+    this->cacheValue( SectionCachedStats::SURFACE, accumSurface );
+
+    return accumSurface;
+
+  }
+
+} // namespace nsol
