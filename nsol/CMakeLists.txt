@@ -26,8 +26,8 @@ Segment.h
 Soma.h
 Spine.h
 Stats/Cached.h
-Stats/CachedSection.h
 Stats/SectionStats.h
+Stats/SectionCachedStats.h
 #Stats/SegmentStats.h
 Synapse.h
 Writer/SwcWriter.h

@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 
   SwcReader<> r;
   SwcWriter w;
-  
-  if ( argc < 2 ) 
+
+  if ( argc < 2 )
     std::cerr << "Error: blueconfig file parameter needed." << std::endl;
 
   cout << "Reading file " << argv[1] << endl;
@@ -135,31 +135,31 @@ int main(int argc, char *argv[])
 
   std::cout << "##############################################"<< std::endl;
 
-  std::cout << "Total volume:" << n->volume() << std::endl;
-  std::cout << "Neurites volume:" << n->neuritesVolume() << std::endl;
-  std::cout << "Dendrites volume :" << n->dendritesVolume() << std::endl;
-  std::cout << "Axon volume:" << n->axonVolume() << std::endl;
-  std::cout << "Soma volume:" << n->soma().volume() << std::endl;
+  // std::cout << "Total volume:" << n->volume() << std::endl;
+  // std::cout << "Neurites volume:" << n->neuritesVolume() << std::endl;
+  // std::cout << "Dendrites volume :" << n->dendritesVolume() << std::endl;
+  // std::cout << "Axon volume:" << n->axonVolume() << std::endl;
+  // std::cout << "Soma volume:" << n->soma().volume() << std::endl;
 
   std::cout << "##############################################"<< std::endl;
 
-  std::cout << "Total surface:" << n->surface() << std::endl;
-  std::cout << "Neurites surface:" << n->neuritesSurface() << std::endl;
-  std::cout << "Dendrites surface:" << n->dendritesSurface() << std::endl;
-  std::cout << "Axon surface:" << n->axonSurface() << std::endl;
-  std::cout << "Soma surface:" << n->soma().surface() << std::endl;
+  // std::cout << "Total surface:" << n->surface() << std::endl;
+  // std::cout << "Neurites surface:" << n->neuritesSurface() << std::endl;
+  // std::cout << "Dendrites surface:" << n->dendritesSurface() << std::endl;
+  // std::cout << "Axon surface:" << n->axonSurface() << std::endl;
+  // std::cout << "Soma surface:" << n->soma().surface() << std::endl;
 
   std::cout << "##############################################"<< std::endl;
 
-  std::cout << "Total lenght:" << n->length() << std::endl;
-  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
-  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
-  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+  // std::cout << "Total lenght:" << n->length() << std::endl;
+  // std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
+  // std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
+  // std::cout << "Axon lenght:" << n->axonLength() << std::endl;
   // std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()- << std::endl;
-  std::cout << "Mean radius first section:" 
-	    << SectionStats::meanRadius( 
-	      n->dendrites()->begin()[0]->firstSection() ) 
-	    << std::endl;
+  // std::cout << "Mean radius first section:" 
+  //           << SectionStats::meanRadius( 
+  //             n->dendrites()->begin()[0]->firstSection() ) 
+  //           << std::endl;
 
 
 //  std::cout << "###############BORRAMOS UN SEGMENTO#############"<< std::endl;

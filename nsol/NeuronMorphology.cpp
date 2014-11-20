@@ -55,92 +55,92 @@ namespace nsol
   }
 
 
-  unsigned int NeuronMorphology::numNeurites( void ) const
-  {
-    return ( unsigned int ) _neurites.size( );
-  }
+  // unsigned int NeuronMorphology::numNeurites( void ) const
+  // {
+  //   return ( unsigned int ) _neurites.size( );
+  // }
 
-  unsigned int NeuronMorphology::numDendrites( void ) const
-  {
-    unsigned int nd = 0;
+  // unsigned int NeuronMorphology::numDendrites( void ) const
+  // {
+  //   unsigned int nd = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if ( NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	nd++;
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if ( NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nd++;
 
-    return nd;
-  }
+  //   return nd;
+  // }
 
-  unsigned int NeuronMorphology::numNeuriteBranches( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numNeuriteBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      nb += (*it)->numBranches( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     nb += (*it)->numBranches( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numDendriteBranches( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numDendriteBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	nb += (*it)->numBranches( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nb += (*it)->numBranches( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numAxonBranches( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numAxonBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
-	nb += (*it)->numBranches( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if  (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       nb += (*it)->numBranches( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numNeuriteBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numNeuriteBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     nb += (*it)->numBifurcations( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numDendriteBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numDendriteBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nb += (*it)->numBifurcations( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numAxonBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numAxonBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
-	nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if  (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       nb += (*it)->numBifurcations( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
   // float NeuronMorphology::volume( void ) const
   // {
