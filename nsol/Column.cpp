@@ -70,13 +70,13 @@ namespace nsol
   bool Column::operator == (Column & other ) const
   {
     return ( ( this->id( ) == other.id( ) ) &&
-	     ( this->miniColumns( ) == other.miniColumns( )));
+             ( this->miniColumns( ) == other.miniColumns( )));
   }
 
   bool Column::operator != (Column & other ) const
   {
     return !( ( this->id( ) == other.id( ) ) &&
-	      ( this->miniColumns( ) == other.miniColumns( )));
+              ( this->miniColumns( ) == other.miniColumns( )));
   }
 
 

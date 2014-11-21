@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE( test_column_clear_minicolumns )
 
   // Free dymanic memory used
   for ( auto miniColIt = col->miniColumns( ).begin( );
-	miniColIt != col->miniColumns( ).end( ); miniColIt++ )
+        miniColIt != col->miniColumns( ).end( ); miniColIt++ )
     NSOL_DELETE_PTR( ( * miniColIt ));
 
   NSOL_DELETE_PTR( col );

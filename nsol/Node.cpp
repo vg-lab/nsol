@@ -72,6 +72,17 @@ namespace nsol
     return _id;
   }
 
+  Node & Node::operator = ( const Node & other )
+  {
+    if (this != &other)
+    {
+      this->id( ) = other.id( );
+      this->radius( other.radius( ));
+      this->point( other.point( ));
+    }
+    return *this;
+  }
+
   bool Node::operator == ( Node & other ) const
   {
     return ( ( this->id( ) == other.id( ) ) &&
