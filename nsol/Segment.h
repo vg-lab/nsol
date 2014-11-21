@@ -2,8 +2,8 @@
  * @file    Segment.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  * Do not distribute without further notice.
  */
 #ifndef __NSOL_SEGMENT__
@@ -38,45 +38,35 @@ namespace nsol
     SegmentPtr prev( void ) const;
 
     NSOL_API
-    void next( SegmentPtr next);
+    void next( SegmentPtr next_ );
 
     NSOL_API
-    void prev( SegmentPtr prev);
+    void prev( SegmentPtr prev_ );
 
     NSOL_API
-    void parentSection( SectionPtr parent);
+    void parentSection( SectionPtr parent_ );
 
     NSOL_API
-    SectionPtr parentSection( void);
+    SectionPtr parentSection( void );
 
     NSOL_API
-    NodePtr begin( void) const;
+    NodePtr begin( void ) const;
 
     NSOL_API
-    NodePtr end( void) const;
+    NodePtr end( void ) const;
 
     NSOL_API
-    void begin( NodePtr begin );
+    virtual void begin( NodePtr begin_ );
 
     NSOL_API
-    void end( NodePtr end );
-
-    // NSOL_API
-    // float volume( void );
-
-    // NSOL_API
-    // float surface( void );
-
-    // NSOL_API
-    // float length( void );
+    virtual void end( NodePtr end_ );
 
     NSOL_API
     virtual SegmentStats * stats( void );
 
-
   protected:
 
-    void _removeNodes (void);
+    void _removeNodes ( void );
 
     NodePtr _begin, _end;
 

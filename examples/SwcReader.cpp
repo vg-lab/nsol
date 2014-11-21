@@ -12,11 +12,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-  SwcReader<> r;
+  SwcReader r;
   SwcWriter w;
 
   if ( argc < 2 )
-    std::cerr << "Error: blueconfig file parameter needed." << std::endl;
+    std::cerr << "Error: swc file parameter needed." << std::endl;
 
   cout << "Reading file " << argv[1] << endl;
 
@@ -125,15 +125,15 @@ int main(int argc, char *argv[])
 
   }
 
-  std::cout << "Number neurite bifurcations:" << n->numNeuriteBifurcations() << std::endl;
-  std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
-  std::cout << "Number dentrite branchs:" << n->numDendriteBranches() << std::endl;
-  std::cout << "Number basal dentrites:" << n->basalDendrites()->size() << std::endl;
-  std::cout << "Number apical dentrites:" << n->apicalDendrites()->size() << std::endl;
-  std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
-  std::cout << "Number stems:" << n->numNeurites() << std::endl;
+  // std::cout << "Number neurite bifurcations:" << n->numNeuriteBifurcations() << std::endl;
+  // std::cout << "Number neurite branchs:" << n->numNeuriteBranches() << std::endl;
+  // std::cout << "Number dentrite branchs:" << n->numDendriteBranches() << std::endl;
+  // std::cout << "Number basal dentrites:" << n->basalDendrites()->size() << std::endl;
+  // std::cout << "Number apical dentrites:" << n->apicalDendrites()->size() << std::endl;
+  // std::cout << "Number axon branchs:" << n->numAxonBranches() << std::endl;
+  // std::cout << "Number stems:" << n->numNeurites() << std::endl;
 
-  std::cout << "##############################################"<< std::endl;
+  // std::cout << "##############################################"<< std::endl;
 
   // std::cout << "Total volume:" << n->volume() << std::endl;
   // std::cout << "Neurites volume:" << n->neuritesVolume() << std::endl;
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
   // std::cout << "Axon volume:" << n->axonVolume() << std::endl;
   // std::cout << "Soma volume:" << n->soma().volume() << std::endl;
 
-  std::cout << "##############################################"<< std::endl;
+  // std::cout << "##############################################"<< std::endl;
 
   // std::cout << "Total surface:" << n->surface() << std::endl;
   // std::cout << "Neurites surface:" << n->neuritesSurface() << std::endl;

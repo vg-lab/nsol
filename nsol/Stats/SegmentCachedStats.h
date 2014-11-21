@@ -1,28 +1,27 @@
 /**
- * @file    SectionCachedStats.h
+ * @file    SegmentCachedStats.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef __NSOL_SECTION_CACHED_STATS__
-#define __NSOL_SECTION_CACHED_STATS__
+#ifndef __NSOL_SEGMENT_CACHED_STATS__
+#define __NSOL_SEGMENT_CACHED_STATS__
 
 #include <nsol/api.h>
 
 #include "Cached.h"
-#include "SectionStats.h"
+#include "SegmentStats.h"
 
 namespace nsol
 {
 
 
-  class SectionCachedStats
-    : public SectionStats
+  class SegmentCachedStats
+    : public SegmentStats
     , public Cached<>
   {
-
 
   public:
 
@@ -32,14 +31,14 @@ namespace nsol
       VOLUME,
       LENGTH,
       MEAN_RADIUS,
-      SECTION_NUM_CACHED_VALUES
-    } TSectionCachedValues;
+      SEGMENT_NUM_CACHED_VALUES
+    } TSegmentCachedValues;
 
     NSOL_API
-    SectionCachedStats( void );
+    SegmentCachedStats( void );
 
     NSOL_API
-    virtual ~SectionCachedStats( void );
+    virtual ~SegmentCachedStats( void );
 
     NSOL_API
     virtual void setAndPropagateDirty( unsigned int id );
@@ -48,13 +47,10 @@ namespace nsol
     virtual void setAndPropagateDirty( void );
 
     NSOL_API
-    virtual SegmentPtr addSegment( SegmentPtr segment = nullptr );
+    virtual void begin( NodePtr begin_ );
 
     NSOL_API
-    virtual void firstSegment( SegmentPtr firstSegment_ );
-
-    NSOL_API
-    virtual void lastSegment( SegmentPtr lastSegment_ );
+    void end( NodePtr end_ );
 
     NSOL_API
     virtual float volume( void ) const;
@@ -65,9 +61,8 @@ namespace nsol
     NSOL_API
     virtual float length( void ) const;
 
-
-  }; // class SectionCachedStats
+  }; // class SegmentCachedStats
 
 } // namespace nsol
 
-#endif // __NSOL_SECTION_CACHED_STATS__
+#endif // __NSOL_SEGMENT_CACHED_STATS__

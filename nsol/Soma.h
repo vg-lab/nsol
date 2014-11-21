@@ -2,8 +2,8 @@
  * @file    Soma.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 #ifndef __NSOL_SOMA__
@@ -12,7 +12,7 @@
 #include <nsol/api.h>
 #include <nsol/Container/Nodes.h>
 
-namespace nsol 
+namespace nsol
 {
 
   //!  Class to represent the soma of neurons
@@ -20,7 +20,7 @@ namespace nsol
     This class represents the soma and holds a container of the nodes
     that have been traced of its contour
   */
-  class Soma 
+  class Soma
   {
 
   public:
@@ -64,7 +64,7 @@ namespace nsol
      */
     NSOL_API
     void addNode( NodePtr node );
-  
+
     /**
      * Method to create a node and add it to the soma
      * @param xyz position of the node
@@ -72,14 +72,14 @@ namespace nsol
      */
     NSOL_API
     void addNode( Vec3f & xyz, float & radius );
-  
+
     /**
      * Method to compute and get the volume of the soma
      * @return volume of the soma
      */
     NSOL_API
     float volume( void ) const;
-  
+
     /**
      * Method to compute and get the surface of the soma
      * @return surface of the soma
@@ -100,7 +100,7 @@ namespace nsol
 
   private:
 
-    
+
     void _recalculateCenter( void );
     void _recalculateMaxRadius( void );
 

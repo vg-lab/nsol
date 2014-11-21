@@ -2,8 +2,8 @@
  * @file    Segment.cpp
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 
@@ -14,7 +14,7 @@
 namespace nsol
 {
 
-  Segment::Segment( void ) 
+  Segment::Segment( void )
     : _begin( nullptr )
     , _end( nullptr )
     , _next( nullptr )
@@ -27,7 +27,7 @@ namespace nsol
   {
     //TODO:review shared nodes between segments
 
-    // @pablo: this delete can cause segmentation fault if the 
+    // @pablo: this delete can cause segmentation fault if the
     // _end node is not in dynamic memory
     // if (_end)
     // delete _end;
@@ -43,19 +43,19 @@ namespace nsol
     return _prev;
   }
 
-  void Segment::next( SegmentPtr newNext )
+  void Segment::next( SegmentPtr next_ )
   {
-    _next = newNext;
+    _next = next_;
   }
 
-  void Segment::prev( SegmentPtr newPrev )
+  void Segment::prev( SegmentPtr prev_ )
   {
-    _prev = newPrev;
+    _prev = prev_;
   }
 
-  void Segment::parentSection( SectionPtr newParent )
+  void Segment::parentSection( SectionPtr parent_ )
   {
-    _parent = newParent;
+    _parent = parent_;
   }
 
   SectionPtr Segment::parentSection( void )
@@ -73,14 +73,14 @@ namespace nsol
     return _end;
   }
 
-  void Segment::begin( NodePtr newBegin )
+  void Segment::begin( NodePtr begin_ )
   {
-    _begin = newBegin;
+    _begin = begin_;
   }
 
-  void Segment::end( NodePtr newEnd )
+  void Segment::end( NodePtr end_ )
   {
-    _end = newEnd;
+    _end = end_;
   }
 
   SegmentStats * Segment::stats( void )
@@ -92,7 +92,7 @@ namespace nsol
 
   // float Segment::volume( void )
   // {
-  //   return ( _begin && _end) ? 
+  //   return ( _begin && _end) ?
   //     float( M_PI) *
   //     ( _begin->point( ) - _end->point( )).length( ) *
   //     _end->radius( ) *
@@ -117,7 +117,7 @@ namespace nsol
   void Segment::_removeNodes ( void )
   {
     //TODO:erase memory allocation. Control shared nodes between segments
-    //@pablo: be careful, if memory to be deleted 
+    //@pablo: be careful, if memory to be deleted
     // is allocated outside of this class you might end deleting
     // non dynamic memory
   }

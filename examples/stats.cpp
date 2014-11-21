@@ -6,7 +6,7 @@
 
 
 typedef nsol::SwcReaderTemplated< nsol::Node,
-                                  nsol::SegmentStats,
+                                  nsol::SegmentCachedStats,
                                   nsol::SectionCachedStats,
                                   nsol::NeuronMorphology,
                                   nsol::Neuron >
@@ -52,7 +52,6 @@ int main ( int argc, char ** argv )
   nsol::SectionPtr sectionWithCachedStats =
     neuronWithCachedStats->morphology( )->neurites()[0]->firstSection( );
 
-
   if ( ! section || ! sectionWithStats || ! sectionWithCachedStats )
   {
     std::cerr << "Could not get sections of first neurite" << std::endl;
@@ -61,12 +60,22 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-
   // Section without stats should return nullptr when asking for its stats
   NSOL_CHECK_THROW ( section->stats( ) == nullptr, "stats not null" );
 
   // Section without stats should return SectionStats pointer
   NSOL_CHECK_THROW ( sectionWithStats->stats( ) != nullptr, "stats null" );
+
+  // Will get the base class to force cache operations
+  nsol::SectionCachedStats * sectionCached =
+    dynamic_cast< nsol::SectionCachedStats * >
+    ( sectionWithCachedStats->stats( ));
+  NSOL_CHECK_THROW( sectionCached, "non cached section" );
+
+
+#define PRINT_SURFACE_DIRTY_STATE( section )                    \
+  (( section->dirty(nsol::SectionCachedStats::SURFACE) ) ?      \
+   "Dirty" : "Clean" )
 
 
   std::cout << std::endl;
@@ -77,36 +86,53 @@ int main ( int argc, char ** argv )
   std::cout << "\tNon cached section: "
             << sectionWithStats->stats( )->surface( ) << std::endl;
 
-  std::cout << "\tCached section dirty: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
 
-  std::cout << "\tCached section clean: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+
+  std::cout << std::endl;
 
   // Next code shows how to force dirty on a specific cached value
-
-  nsol::SectionCachedStats * sectionCached =
-    dynamic_cast< nsol::SectionCachedStats * >
-    ( sectionWithCachedStats->stats( ));
-  NSOL_CHECK_THROW( sectionCached, "non cached section" );
-
   sectionCached->setDirty( nsol::SectionCachedStats::SURFACE );
 
-  std::cout << "\tCached section dirty: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
 
-  std::cout << "\tCached section clean: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
 
+  std::cout << std::endl;
 
   // Next code shows how to force dirty on all cached values
-  sectionCached->setDirty( );
+  sectionCached->setAndPropagateDirty( );
 
-  std::cout << "\tCached section dirty: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
 
-  std::cout << "\tCached section clean: "
-            << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+
+  std::cout << std::endl;
+
+  // Now lets pretend to change something on a segment an see if it propagates
+  nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
+  segment->begin( segment->begin( ));
+
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
 
   std::cout << std::endl;
 
