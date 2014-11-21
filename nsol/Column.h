@@ -47,7 +47,6 @@ namespace nsol
 
     /**
      * Default destructur
-     * @param id id of the column.
      */
     NSOL_API
     ~Column( void ) ;

@@ -3,7 +3,7 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 #ifndef __NSOL_NEURON_MORPHOLOGY__
@@ -48,8 +48,8 @@ namespace nsol
      * @return pointer to the added neurite
      */
     NSOL_API
-    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType = 
-			   Neurite::DENDRITE );
+    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType =
+                           Neurite::DENDRITE );
 
     /**
      * Method to add a new dendrite to the neuron.
@@ -153,10 +153,8 @@ namespace nsol
     Dendrites * apicalDendrites( void ) const;
 
     /**
-     * Method to add a new dendrite to the neuron.
-     * @param dendriteType  .
-     * @see Neurite::TNeuriteType
-     * @return pointer to the added dendrite
+     * Method to get the first apical dendrite
+     * @return pointer to the apical dendrite. nullptr in case not found.
      */
     NSOL_API
     DendritePtr apicalDendrite( void ) const;

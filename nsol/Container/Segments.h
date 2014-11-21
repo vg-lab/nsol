@@ -1,5 +1,4 @@
 /**
- * @file    Segments.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
@@ -11,12 +10,11 @@
 
 #include "../Segment.h"
 
-namespace nsol {
+namespace nsol
+{
 
-
-
-
-  class Segments : public Vector<SegmentPtr> {
+  class Segments : public Vector<SegmentPtr>
+  {
 
 
   protected:

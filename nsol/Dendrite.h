@@ -1,5 +1,4 @@
 /**
- * @file    Dendrite.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    

@@ -1,9 +1,9 @@
 /**
- * @file    Types.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ *          Do not distribute without further notice.
  */
 #ifndef __NSOL_TYPES__
 #define __NSOL_TYPES__
@@ -20,8 +20,6 @@
 #include <vmmlib/matrix.hpp>
 
 #include <nsol/defines.h>
-
-/* #include <boost/geometry/geometries/point.hpp> */
 
 namespace nsol
 {

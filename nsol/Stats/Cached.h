@@ -60,7 +60,7 @@ namespace nsol
       // Note: propagation has to be reimplemented if needed
     }
 
-    // This method is const to be able to cache values from 
+    // This method is const to be able to cache values from
     // derived const methods
     void cacheValue( const unsigned int id_, TYPE & value_ ) const
     {
@@ -75,7 +75,8 @@ namespace nsol
 
   protected:
 
-    //! Container of the cached values
+    //! Container of the cached values. Is mutable to allow const methods
+    //! to modify the cache if needed.
     mutable std::map < unsigned int, TYPE > _values;
 
   };

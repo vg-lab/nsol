@@ -60,7 +60,7 @@ namespace nsol
 
     /**
      * Method to add a node to the soma
-     * @param NodePtr pointer to the node to add
+     * @param node pointer to the node to add
      */
     NSOL_API
     void addNode( NodePtr node );

@@ -48,7 +48,6 @@ namespace nsol
 
     /**
      * Default destructur
-     * @param id id of the column.
      */
     NSOL_API
     ~MiniColumn();
@@ -82,7 +81,7 @@ namespace nsol
      * @param column pointer to the column
      */
     NSOL_API
-    void column( ColumnPtr colummn );
+    void column( ColumnPtr column );
 
     /**
      * Method to get the column of this minicolumn
