@@ -2,7 +2,7 @@
  * @file    Types.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
+ * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
 #ifndef __NSOL_TYPES__
@@ -45,11 +45,11 @@ namespace nsol
 #endif
 
 #ifdef _WINDOWS
-	
-#define Vector std::vector  
+
+#define Vector std::vector
 //#define List std::list
 
-#endif  
+#endif
 
 
   typedef vmml::vector<3, float> Vec3f;
@@ -85,6 +85,11 @@ namespace nsol
   typedef std::shared_ptr<CachedSection> CachedSectionPtr;
 
 
+#define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE __ )   \
+  std::enable_shared_from_this< __TYPE __>
+
+#define NSOL_THIS_POINTER shared_from_this( )
+
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
 
@@ -92,7 +97,6 @@ namespace nsol
   ( void ) __PTR_TO_NSOL_OBJ__
 
 
-  
 #else
   typedef Axon * AxonPtr;
   typedef Column * ColumnPtr;
@@ -106,6 +110,11 @@ namespace nsol
   typedef Segment * SegmentPtr;
 
   typedef CachedSection * CachedSectionPtr;
+
+#define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE__ )
+
+#define NSOL_THIS_POINTER this
+
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )

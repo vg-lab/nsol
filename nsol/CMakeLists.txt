@@ -26,6 +26,7 @@ Segment.h
 Soma.h
 Spine.h
 Stats/Cached.h
+Stats/NodeCached.h
 Stats/SectionStats.h
 Stats/SectionCachedStats.h
 Stats/SegmentStats.h
@@ -48,6 +49,7 @@ Node.cpp
 Section.cpp
 Segment.cpp
 Soma.cpp
+Stats/NodeCached.cpp
 Stats/SectionStats.cpp
 Stats/SectionCachedStats.cpp
 Stats/SegmentStats.cpp

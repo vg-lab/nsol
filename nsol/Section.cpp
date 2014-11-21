@@ -50,12 +50,12 @@ namespace nsol
     return _parent;
   }
 
-  void Section::parent(SectionPtr newParent)
+  void Section::parent( SectionPtr newParent )
   {
     _parent = newParent;
   }
 
-  void Section::addChild(SectionPtr section)
+  void Section::addChild( SectionPtr section )
   {
     assert(section);
     _childs.push_back(section);

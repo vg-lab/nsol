@@ -1,11 +1,11 @@
 /*
- * Example to show how to use stats
+ * Example to show how to use stats and cached stats
  */
 
 #include <nsol/nsol.h>
 
 
-typedef nsol::SwcReaderTemplated< nsol::Node,
+typedef nsol::SwcReaderTemplated< nsol::NodeCached,
                                   nsol::SegmentCachedStats,
                                   nsol::SectionCachedStats,
                                   nsol::NeuronMorphology,
@@ -125,6 +125,19 @@ int main ( int argc, char ** argv )
   // Now lets pretend to change something on a segment an see if it propagates
   nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
   segment->begin( segment->begin( ));
+
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+
+  std::cout << "\tCached section ("
+            << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
+  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+
+  std::cout << std::endl;
+
+  // Now changind the radius of a node should dirty segment and section
+  segment->end( )->radius( 1.0f );
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
