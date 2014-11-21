@@ -1,7 +1,7 @@
 /**
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
+ * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
 #ifndef __NSOL_DENDRITE__
@@ -12,29 +12,28 @@
 
 namespace nsol {
 
-  class Dendrite : public Neurite 
+  class Dendrite : public Neurite
   {
-
 
   public:
 
     //! Type of dendrite
-    typedef enum TDendriteType 
+    typedef enum TDendriteType
     {
-      BASAL = 0, 
+      BASAL = 0,
       APICAL
     } TDendriteType;
-    
+
     NSOL_API
     Dendrite ( TDendriteType dendriteType = BASAL );
-    
+
     //! Get the type of neurite
     NSOL_API
     TDendriteType & dendriteType( void );
-    
+
     //! Return pointer to Dendrite object
-    // virtual Dendrite * asDendrite( void );    
-    
+    // virtual Dendrite * asDendrite( void );
+
   protected:
 
     //! Type of dendrite

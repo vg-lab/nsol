@@ -18,6 +18,17 @@ namespace nsol
 {
 
 
+  /** \class SectionCachedStats
+   *  \brief This class allows to cache the stats for sections
+   *
+   *  Using this class instead of Section or SectionStats when constructing
+   *  the hierarchy allows to call the method stats from base Section
+   *  class and get the corresponding volume, surface and length. If the cached
+   *  value is dirty then the actual computation process is done. In case is
+   *  clean the cached value is returned directly.
+   *
+   *  Example: @include examples/stats.cpp
+   */
   class SectionCachedStats
     : public SectionStats
     , public Cached<>

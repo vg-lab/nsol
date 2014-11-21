@@ -14,6 +14,15 @@
 namespace nsol
 {
 
+  /** \class SectionStats
+   *  \brief This class allows to compute stats for sections
+   *
+   *  Using this class instead of Section when constructing the
+   *  hierarchy allows to call the method stats from base Section
+   *  class and get the corresponding volume, surface and length.
+   *
+   * Example: @include examples/stats.cpp
+   */
   class SectionStats : public Section
   {
 
