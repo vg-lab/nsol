@@ -26,7 +26,7 @@ namespace nsol
 
   void SegmentCachedStats::setAndPropagateDirty( unsigned int id )
   {
-    this->setAndPropagateDirty( id );
+    this->Cached::setAndPropagateDirty( id );
 
     auto cached = NSOL_DYNAMIC_CAST( Cached, this->parentSection( ));
     if ( cached )

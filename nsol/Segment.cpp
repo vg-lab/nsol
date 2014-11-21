@@ -8,6 +8,7 @@
  */
 
 #include "Segment.h"
+#include "error.h"
 
 #include <math.h>
 
@@ -75,12 +76,42 @@ namespace nsol
 
   void Segment::begin( NodePtr begin_ )
   {
+
+    NSOL_DEBUG_CHECK( begin_, "begin node is null" );
+
+    if ( _begin )
+    {
+      Segments::iterator segment =
+        std::find ( _begin->parentSegments( ).begin( ),
+                    _begin->parentSegments( ).end( ),
+                    NSOL_THIS_POINTER );
+
+      if ( segment != _begin->parentSegments( ).end( ) && _begin != _end)
+        _begin->parentSegments( ).erase( segment );
+    }
+
     _begin = begin_;
+    _begin->parentSegments( ).push_back( NSOL_THIS_POINTER );
   }
 
   void Segment::end( NodePtr end_ )
   {
+
+    NSOL_DEBUG_CHECK( end_, "begin node is null" );
+
+    if ( _end )
+    {
+      Segments::iterator segment =
+        std::find ( _begin->parentSegments( ).begin( ),
+                    _begin->parentSegments( ).end( ),
+                    NSOL_THIS_POINTER );
+
+      if ( segment != _end->parentSegments( ).end( ) && _begin != _end)
+        _begin->parentSegments( ).erase( segment );
+    }
+
     _end = end_;
+    _end->parentSegments( ).push_back( NSOL_THIS_POINTER );
   }
 
   SegmentStats * Segment::stats( void )
