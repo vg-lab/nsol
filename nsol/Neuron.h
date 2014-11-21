@@ -175,16 +175,14 @@ namespace nsol
     /**
      * Method to get all the apical dendrites in a container.
      * Memory for the container is allocated.
-     * @return pointer to the container of Dendrites
+     * @return pointer to the container of apical dendrites
      */
     NSOL_API
-    Dendrites *apicalDendrites( void );
+    Dendrites * apicalDendrites( void );
 
     /**
-     * Method to add a new dendrite to the neuron.
-     * @param dendriteType  .
-     * @see Neurite::TNeuriteType
-     * @return pointer to the added dendrite
+     * Method to get the first apical dendrite
+     * @return pointer to the apical dendrite. nullptr in case not found.
      */
     NSOL_API
     DendritePtr apicalDendrite( void );

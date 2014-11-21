@@ -1,5 +1,4 @@
 /**
- * @file    SwcReader.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
@@ -176,10 +175,6 @@ namespace nsol
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY );
 
     std::map<unsigned int, TSwcLine> lines;
-
-    /* // Padding for skkiping line 0 */
-    /* TSwcLine padding; */
-    /* linespush_back(padding); */
 
     while (std::getline(inFile, line))
     {
