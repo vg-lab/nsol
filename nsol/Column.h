@@ -126,13 +126,13 @@ namespace nsol
     ///@{
 
     NSOL_API
-    Column & operator = (const Column & other);
+    Column & operator = ( const Column & other );
 
     NSOL_API
-    bool operator == (Column & other ) const;
+    bool operator == ( Column & other ) const;
 
     NSOL_API
-    bool operator != (Column & other ) const;
+    bool operator != ( Column & other ) const;
 
     ///@}
 

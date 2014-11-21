@@ -54,6 +54,9 @@ namespace nsol
     int id( void ) const;
 
     NSOL_API
+    Node & operator = ( const Node & other );
+
+    NSOL_API
     bool operator == ( Node & other ) const;
 
     NSOL_API
