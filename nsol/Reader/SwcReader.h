@@ -325,6 +325,7 @@ namespace nsol
       s->parent(parentSection);
 
       SegmentPtr sgPre = s->addSegment( new SEGMENT );
+      sgPre->parentSection( s );
 
       //Segment begin node
       if (first)
@@ -339,8 +340,8 @@ namespace nsol
       sgPre->end(NodePtr( new NODE(lines[id].xyz, id, lines[id].radius )));
 
 
-      if (parentSection)
-        parentSection->addChild(s);
+      if ( parentSection )
+        parentSection->addChild( s );
 
 
       nP = sgPre->end( );
@@ -423,6 +424,7 @@ namespace nsol
       s->parent(parentSection);
 
       SegmentPtr sgPre = s->addSegment( new SEGMENT );
+      sgPre->parentSection( s );
 
       //Segment begin node
       if (first)

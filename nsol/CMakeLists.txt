@@ -29,6 +29,7 @@ Stats/Cached.h
 Stats/SectionStats.h
 Stats/SectionCachedStats.h
 Stats/SegmentStats.h
+Stats/SegmentCachedStats.h
 Synapse.h
 Writer/SwcWriter.h
 )
@@ -50,6 +51,7 @@ Soma.cpp
 Stats/SectionStats.cpp
 Stats/SectionCachedStats.cpp
 Stats/SegmentStats.cpp
+Stats/SegmentCachedStats.cpp
 )
 
 if (BBPSDK_FOUND)

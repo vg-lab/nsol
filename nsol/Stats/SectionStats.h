@@ -26,13 +26,13 @@ namespace nsol
     }
 
     NSOL_API
-    virtual float volume( void );
+    virtual float volume( void ) const;
 
     NSOL_API
     virtual float surface( void ) const;
 
     NSOL_API
-    virtual float length( void );
+    virtual float length( void ) const;
 
 
   }; // class SectionStats

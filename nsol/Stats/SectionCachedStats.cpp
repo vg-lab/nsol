@@ -55,22 +55,19 @@ namespace nsol
 
   void SectionCachedStats::lastSegment( SegmentPtr lastSegment_ )
   {
-    return this->Section::lastSegment( lastSegment_ );
+    this->Section::lastSegment( lastSegment_ );
     this->setAndPropagateDirty( );
   }
 
-  float SectionCachedStats::volume( void )
+  float SectionCachedStats::volume( void ) const
   {
 
-    float accumVolume = 0.0f;
+    if ( ! this->dirty( SectionCachedStats::VOLUME ))
+      return this->getValue( SectionCachedStats::VOLUME );
 
-    // if ( this->dirty( ))
-    //   return this->value( SectionCachedStats::VOLUME );
+    float accumVolume = this->SectionStats::volume( );
 
-    // float accumVolume = this->SectionStats::volume( );
-
-    // this->value( SectionCachedStats::VOLUME ) = accumVolume;
-    // this->setClean( );
+    this->cacheValue( SectionCachedStats::SURFACE, accumVolume );
 
     return accumVolume;
 
@@ -87,6 +84,20 @@ namespace nsol
     this->cacheValue( SectionCachedStats::SURFACE, accumSurface );
 
     return accumSurface;
+
+  }
+
+  float SectionCachedStats::length( void ) const
+  {
+
+    if ( ! this->dirty( SectionCachedStats::LENGTH ))
+      return this->getValue( SectionCachedStats::LENGTH );
+
+    float accumLength = this->SectionStats::length( );
+
+    this->cacheValue( SectionCachedStats::SURFACE, accumLength );
+
+    return accumLength;
 
   }
 

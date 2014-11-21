@@ -72,15 +72,6 @@ namespace nsol
     NSOL_API
     virtual void lastSegment( SegmentPtr lastSegment_ );
 
-    // NSOL_API
-    // float volume( void );
-
-    // NSOL_API
-    // float surface( void );
-
-    // NSOL_API
-    // float length( void );
-
     NSOL_API
     virtual SectionStats * stats( void );
 
@@ -103,9 +94,6 @@ namespace nsol
 
     //! Container of the childrens sections of this section
     Sections _childs;
-
-    //! Container of the segments of this section
-    /* Segments _segments; */
 
     //! First segment
     SegmentPtr _firstSegment;

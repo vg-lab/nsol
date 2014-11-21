@@ -60,28 +60,28 @@ int main( int argc, char *argv[] )
 	      << neuron->morphology()->soma().maxRadius() 
 	      << std::endl;
 
-    std::cout << "NumBranchs: " 
-	      << neuron->numNeuriteBranches() 
-	      << std::endl;
+    // std::cout << "NumBranchs: " 
+    //           << neuron->numNeuriteBranches() 
+    //           << std::endl;
 
-    std::cout << "NumBifurcation: " 
-	      << neuron->numNeuriteBifurcations() 
-	      << std::endl;
+    // std::cout << "NumBifurcation: " 
+    //           << neuron->numNeuriteBifurcations() 
+    //           << std::endl;
 
-    std::cout << "Max soma volume mini column: " 
-	      << neuron->miniColumn()->maxSomaVolume() 
-	      << std::endl;
+    // std::cout << "Max soma volume mini column: " 
+    //           << neuron->miniColumn()->maxSomaVolume() 
+    //           << std::endl;
 
-    std::cout << "Max soma surface mini column: " 
-	      << neuron->miniColumn()->maxSomaSurface() 
-	      << std::endl;
-    std::cout << "Max soma volume column: " 
-	      << neuron->miniColumn()->column()->maxSomaVolume() 
-	      << std::endl;
+    // std::cout << "Max soma surface mini column: " 
+    //           << neuron->miniColumn()->maxSomaSurface() 
+    //           << std::endl;
+    // std::cout << "Max soma volume column: " 
+    //           << neuron->miniColumn()->column()->maxSomaVolume() 
+    //           << std::endl;
 
-    std::cout << "Max soma surface column: " 
-	      << neuron->miniColumn()->column()->maxSomaSurface() 
-	      << std::endl;
+    // std::cout << "Max soma surface column: " 
+    //           << neuron->miniColumn()->column()->maxSomaSurface() 
+    //           << std::endl;
 
     std::cout << "Neuron type: "
 	      << int( neuron->neuronType( ))
