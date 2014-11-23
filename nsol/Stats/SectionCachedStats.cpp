@@ -8,6 +8,7 @@
  */
 
 #include "SectionCachedStats.h"
+#include "../Neurite.h"
 
 namespace nsol
 {
@@ -25,9 +26,10 @@ namespace nsol
 
   void SectionCachedStats::setAndPropagateDirty( unsigned int id )
   {
-    this->Cached::setAndPropagateDirty( id );
+    NSOL_DEBUG_CHECK( id < SECTION_NUM_CACHED_VALUES, "id not valid" );
 
-    auto cached = NSOL_DYNAMIC_CAST( Cached, this->parent( ));
+    this->Cached::setAndPropagateDirty( id );
+    auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
     if ( cached )
       cached->setAndPropagateDirty( id );
   }
@@ -36,7 +38,7 @@ namespace nsol
   {
     this->Cached::setAndPropagateDirty( );
 
-    auto cached = NSOL_DYNAMIC_CAST( Cached, this->parent( ));
+    auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
     if ( cached )
       cached->setAndPropagateDirty( );
   }
