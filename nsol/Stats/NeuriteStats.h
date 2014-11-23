@@ -33,7 +33,7 @@ namespace nsol
      * @return pointer to NeuriteStats object
      */
     NSOL_API
-    NeuriteStats * stats( void )
+    virtual NeuriteStats * stats( void )
     {
       return this;
     }
