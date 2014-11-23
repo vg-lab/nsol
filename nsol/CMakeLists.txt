@@ -27,6 +27,7 @@ Soma.h
 Spine.h
 Stats/Cached.h
 Stats/NeuriteStats.h
+Stats/NeuriteCachedStats.cpp
 Stats/NodeCached.h
 Stats/SectionStats.h
 Stats/SectionCachedStats.h
@@ -50,7 +51,8 @@ Node.cpp
 Section.cpp
 Segment.cpp
 Soma.cpp
-Stats/NeuriteStats.h
+Stats/NeuriteStats.cpp
+Stats/NeuriteCachedStats.cpp
 Stats/NodeCached.cpp
 Stats/SectionStats.cpp
 Stats/SectionCachedStats.cpp
