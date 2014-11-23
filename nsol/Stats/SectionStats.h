@@ -28,24 +28,38 @@ namespace nsol
 
   public:
 
+    /**
+     * Returns object as SectionStats
+     * @return pointer to SectionStats object
+     */
     NSOL_API
     SectionStats * stats( void )
     {
       return this;
     }
 
+    /**
+     * Computes volume of the section
+     * @return volume of section
+     */
     NSOL_API
     virtual float volume( void ) const;
 
+    /**
+     * Computes surface of the section
+     * @return surface of section
+     */
     NSOL_API
     virtual float surface( void ) const;
 
+    /**
+     * Computes length of the section
+     * @return length of section
+     */
     NSOL_API
     virtual float length( void ) const;
 
-
   }; // class SectionStats
-
 
 } // namespace nsol
 
