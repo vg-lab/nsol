@@ -1,6 +1,7 @@
 /**
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
+ * @author  Ricardo Suarez
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
@@ -8,10 +9,6 @@
 #ifndef __NSOL_SWC_READER__
 #define __NSOL_SWC_READER__
 
-// #include <nsol/NsolTypes.h>
-// #include <nsol/Node.h>
-// #include <nsol/Dendrite.h>
-// #include <nsol/NeuronMorphology.h>
 
 #include "../Node.h"
 #include "../Dendrite.h"
@@ -20,6 +17,8 @@
 #include "../Stats/NodeCached.h"
 #include "../Stats/SegmentCachedStats.h"
 #include "../Stats/SectionCachedStats.h"
+#include "../Stats/DendriteStats.h"
+#include "../Stats/AxonStats.h"
 
 
 #include <iostream>
@@ -121,8 +120,8 @@ namespace nsol
   typedef SwcReaderTemplated< Node,
                               SegmentStats,
                               SectionStats,
-                              Dendrite,
-                              Axon,
+                              DendriteStats,
+                              AxonStats,
                               NeuronMorphology,
                               Neuron > SwcReaderStats;
 
@@ -289,7 +288,7 @@ namespace nsol
 
       case SWC_AXON:
       {
-        NeuritePtr nP = new AXON( );
+        AxonPtr nP = new AXON( );
         neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
         _ReadAxon(nP, lines, somaChilds[i],
