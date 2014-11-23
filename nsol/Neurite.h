@@ -58,10 +58,10 @@ namespace nsol {
     NeuronMorphologyPtr morphology( NeuronMorphologyPtr morphology );
 
     NSOL_API
-    bool hasMorphology( void );
+    bool hasMorphology( void ) const;
 
     NSOL_API
-    SectionPtr firstSection();
+    SectionPtr firstSection( void ) const ;
 
     NSOL_API
     virtual void firstSection( SectionPtr section );
@@ -80,7 +80,7 @@ namespace nsol {
      * @return pointer to NeuriteStats object
      */
     NSOL_API
-    NeuriteStats * stats( void );
+    virtual NeuriteStats * stats( void );
 
     // NSOL_API
     // float volume( void );

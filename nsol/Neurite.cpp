@@ -51,16 +51,18 @@ namespace nsol
     return _morphology = newMorphology;
   }
 
-  bool Neurite::hasMorphology( )
+  bool Neurite::hasMorphology( ) const
   {
     return ( _morphology != nullptr );
   }
 
-  SectionPtr Neurite::firstSection( ) {
+  SectionPtr Neurite::firstSection( void ) const
+  {
     return _firstSection;
   }
 
-  void Neurite::firstSection(SectionPtr section) {
+  void Neurite::firstSection(SectionPtr section)
+  {
     _firstSection = section;
   }
 

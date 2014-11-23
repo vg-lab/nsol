@@ -46,6 +46,9 @@ namespace nsol
   {
     float accumSurface = 0.0f;
 
+    std::cout << "neurite stats surface" 
+              << firstSection() << std::endl;
+
     if ( _firstSection )
     {
       std::stack< SectionPtr > sectionsToProcess;
