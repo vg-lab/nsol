@@ -101,6 +101,11 @@ namespace nsol
     return _numBifurcations;
   }
 
+  NeuriteStats * Neurite::stats( void )
+  {
+    return nullptr;
+  }
+
 //   float Neurite::volume( void )
 //   {
 //     float tmpVolume = 0.0f;

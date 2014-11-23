@@ -17,6 +17,7 @@ namespace nsol {
 
   class Dendrite;
   class Axon;
+  class NeuriteStats;
 
   class Neurite
   {
@@ -61,7 +62,7 @@ namespace nsol {
     SectionPtr firstSection();
 
     NSOL_API
-    void firstSection( SectionPtr section );
+    virtual void firstSection( SectionPtr section );
 
     NSOL_API
     void computeBranchBifurcations( void );
@@ -71,6 +72,13 @@ namespace nsol {
 
     NSOL_API
     unsigned int numBifurcations( void );
+
+    /**
+     * Returns object as NeuriteStats
+     * @return pointer to NeuriteStats object
+     */
+    NSOL_API
+    NeuriteStats * stats( void );
 
     // NSOL_API
     // float volume( void );
