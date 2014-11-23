@@ -5,12 +5,6 @@
 #include <nsol/nsol.h>
 
 
-typedef nsol::SwcReaderTemplated< nsol::NodeCached,
-                                  nsol::SegmentCachedStats,
-                                  nsol::SectionCachedStats,
-                                  nsol::NeuronMorphology,
-                                  nsol::Neuron >
-  SwcReaderCachedStats;
 
 int main ( int argc, char ** argv )
 {
@@ -33,7 +27,7 @@ int main ( int argc, char ** argv )
   nsol::NeuronPtr neuronWithStats = readerWithStats.readNeuron( argv[1] );
 
   std::cout << "Reading neuron with cached stats" << std::endl;
-  SwcReaderCachedStats readerWithCachedStats;
+  nsol::SwcReaderCachedStats readerWithCachedStats;
   nsol::NeuronPtr neuronWithCachedStats =
     readerWithCachedStats.readNeuron( argv[1] );
 

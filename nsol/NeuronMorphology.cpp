@@ -18,41 +18,43 @@ namespace nsol
 
   NeuronMorphology::~NeuronMorphology( void )
   {
-    // for (Neurites::iterator it = _neurites.begin( );
-    // 	 it != _neurites.end( ); ++it)
-    //   delete *it;
-
-//    _neurites.clear( );
   }
 
   NeuritePtr
-  NeuronMorphology::addNeurite( Neurite::TNeuriteType neuriteType )
+  NeuronMorphology::addNeurite( NeuritePtr neurite_ )
+  //Neurite::TNeuriteType neuriteType )
   {
-    if ( neuriteType == Neurite::DENDRITE )
-      _neurites.push_back( DendritePtr( new Dendrite( )));
-    else if ( neuriteType == Neurite::AXON )
-      _neurites.push_back( AxonPtr( new Axon( )));
-    else
-      return nullptr;
+    // if ( neuriteType == Neurite::DENDRITE )
+    //   _neurites.push_back( DendritePtr( new Dendrite( )));
+    // else if ( neuriteType == Neurite::AXON )
+    //   _neurites.push_back( AxonPtr( new Axon( )));
+    // else
+    //   return nullptr;
 
-    return _neurites.back( );
+    // return _neurites.back( );
+    NSOL_DEBUG_CHECK( neurite_, "neurite is null" );
+    // DendritePtr dend( new Dendrite( dendriteType ));
+    _neurites.push_back( neurite_ );
+    return neurite_;
   }
 
 
-  DendritePtr
-  NeuronMorphology::addDendrite( Dendrite::TDendriteType dendriteType )
-  {
-    DendritePtr dend( new Dendrite( dendriteType ));
-    _neurites.push_back( dend );
-    return dend;
-  }
+  // DendritePtr
+  // NeuronMorphology::addDendrite( DendritePtr dendrite_ )
+  // {
+  //   NSOL_DEBUG_CHECK( axon_, "dendrite is null" );
+  //   // DendritePtr dend( new Dendrite( dendriteType ));
+  //   _neurites.push_back( dendrite_ );
+  //   return dendrite_;
+  // }
 
-  AxonPtr NeuronMorphology::addAxon( void )
-  {
-    AxonPtr axon( new Axon( ));
-    _neurites.push_back( axon );
-    return axon;
-  }
+  // AxonPtr NeuronMorphology::addAxon( AxonPtr axon_ )
+  // {
+  //   // AxonPtr axon( new Axon( ));
+  //   NSOL_DEBUG_CHECK( axon_, "axon is null" );
+  //   _neurites.push_back( axon_ );
+  //   return axon_;
+  // }
 
 
   // unsigned int NeuronMorphology::numNeurites( void ) const

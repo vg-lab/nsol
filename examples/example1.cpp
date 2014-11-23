@@ -17,11 +17,11 @@ int main () {
     cout << "Testing neurite ops" << endl;
     Neuron neuron;
 
-    Neurite * neurite = neuron.addNeurite();
+    Neurite * neurite = neuron.addNeurite( new Neurite );
     assert(neurite != NULL);
     assert(neurite->neuriteType() == Neurite::DENDRITE);
 
-    Neurite * neurite2 = neuron.addNeurite(Neurite::AXON);
+    Neurite * neurite2 = neuron.addNeurite( new Neurite( Neurite::AXON ));
     assert(neurite2 != NULL);
     assert(neurite2->neuriteType() == Neurite::AXON);
 
@@ -34,7 +34,7 @@ int main () {
     Neuron neuron;
 
     cout << "Testing dendrite ops" << endl;
-    Neurite * neurite = neuron.addNeurite();
+    Neurite * neurite = neuron.addNeurite( new Neurite );
     assert(neurite != NULL);
     assert(neurite->neuriteType() == Neurite::DENDRITE);
     assert(neuron.apicalDendrite() == NULL);
@@ -42,13 +42,15 @@ int main () {
     // assert(neuron.numNeurites() ==  1);
     // assert(neuron.numDendrites() ==  1);
 
-    Dendrite * dendrite = neuron.addDendrite();
+    Dendrite * dendrite = new Dendrite;
+    neuron.addNeurite( dendrite );
     assert(dendrite->dendriteType() == Dendrite::BASAL);
 
     // assert(neuron.numNeurites() ==  2);
     // assert(neuron.numDendrites() ==  2);
 
-    Dendrite * dendrite2 = neuron.addDendrite(Dendrite::APICAL);
+    Dendrite * dendrite2 = new Dendrite( Dendrite::APICAL );
+    neuron.addNeurite( dendrite2 );
     assert(dendrite2->dendriteType() == Dendrite::APICAL);
 
     assert(neuron.apicalDendrite() != NULL);

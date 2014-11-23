@@ -8,10 +8,19 @@
 #ifndef __NSOL_SWC_READER__
 #define __NSOL_SWC_READER__
 
-#include <nsol/NsolTypes.h>
-#include <nsol/Node.h>
-#include <nsol/Dendrite.h>
-#include <nsol/NeuronMorphology.h>
+// #include <nsol/NsolTypes.h>
+// #include <nsol/Node.h>
+// #include <nsol/Dendrite.h>
+// #include <nsol/NeuronMorphology.h>
+
+#include "../Node.h"
+#include "../Dendrite.h"
+#include "../NeuronMorphology.h"
+#include "../Neuron.h"
+#include "../Stats/NodeCached.h"
+#include "../Stats/SegmentCachedStats.h"
+#include "../Stats/SectionCachedStats.h"
+
 
 #include <iostream>
 #include <fstream>
@@ -25,17 +34,21 @@
 namespace nsol
 {
 
-#define SWC_READER_TEMPLATE_CLASSES             \
-    class NODE,                                 \
-    class SEGMENT,                              \
-    class SECTION,                              \
-    class NEURONMORPHOLOGY,                     \
+#define SWC_READER_TEMPLATE_CLASSES              \
+    class NODE,                                  \
+    class SEGMENT,                               \
+    class SECTION,                               \
+    class DENDRITE,                              \
+    class AXON,                                  \
+    class NEURONMORPHOLOGY,                      \
     class NEURON
 
 #define SWC_READER_TEMPLATE_CLASS_NAMES         \
     NODE,                                       \
     SEGMENT,                                    \
     SECTION,                                    \
+    DENDRITE,                                   \
+    AXON,                                       \
     NEURONMORPHOLOGY,                           \
     NEURON
 
@@ -100,14 +113,26 @@ namespace nsol
   typedef SwcReaderTemplated< Node,
                               Segment,
                               Section,
+                              Dendrite,
+                              Axon,
                               NeuronMorphology,
                               Neuron > SwcReader;
 
   typedef SwcReaderTemplated< Node,
                               SegmentStats,
                               SectionStats,
+                              Dendrite,
+                              Axon,
                               NeuronMorphology,
                               Neuron > SwcReaderStats;
+
+  typedef SwcReaderTemplated< NodeCached,
+                              SegmentCachedStats,
+                              SectionCachedStats,
+                              Dendrite,
+                              Axon,
+                              NeuronMorphology,
+                              Neuron > SwcReaderCachedStats;
 
 
 
@@ -244,8 +269,9 @@ namespace nsol
       case SWC_DENDRITE:
       {
 
-        d = neuronMorphology->addDendrite(Dendrite::BASAL);
-        d->morphology(neuronMorphology);
+        d = new DENDRITE( Dendrite::BASAL );
+        neuronMorphology->addNeurite( d );
+        d->morphology( neuronMorphology );
         _ReadDendrite(d, lines, somaChilds[i],
                       nodeSomaPtr[lines[somaChilds[i]].parent]);
 
@@ -253,7 +279,8 @@ namespace nsol
       }
 
       case SWC_APICAL:
-        d = neuronMorphology->addDendrite(Dendrite::APICAL);
+        d = new DENDRITE( Dendrite::APICAL );
+        neuronMorphology->addNeurite( d );
         d->morphology(neuronMorphology);
         _ReadDendrite(d, lines, somaChilds[i],
                       nodeSomaPtr[lines[somaChilds[i]].parent]);
@@ -262,8 +289,8 @@ namespace nsol
 
       case SWC_AXON:
       {
-
-        NeuritePtr nP = neuronMorphology->addNeurite(Neurite::AXON);
+        NeuritePtr nP = new AXON( );
+        neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
         _ReadAxon(nP, lines, somaChilds[i],
                   nodeSomaPtr[lines[somaChilds[i]].parent]);
