@@ -31,6 +31,12 @@ namespace nsol
 
   public:
 
+    NSOL_API
+    virtual NeuriteStats * stats( void )
+    {
+      return this;
+    }
+
     /**
      * Returns object as AxonStats
      * @return pointer to AxonStats object

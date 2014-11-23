@@ -5,7 +5,6 @@
 #include <nsol/nsol.h>
 
 
-
 int main ( int argc, char ** argv )
 {
 
@@ -36,6 +35,27 @@ int main ( int argc, char ** argv )
     std::cerr << "Could not read neurons" << std::endl;
     return -1;
   }
+
+  std::cout << neuronWithStats->morphology( )->neurites( )[0]->stats( )->firstSection( ) 
+            << std::endl;
+
+  std::cout << neuronWithStats->morphology( )->neurites( )[0]->
+    stats( )->surface( ) << std::endl;
+
+  // std::cout << neuron->morphology( )->neurites( )[0]->stats( ) << std::endl;
+  // std::cout << neuronWithStats->morphology( )->neurites( )[0]->stats( )
+  //           << std::endl;
+
+  // nsol::NeuritePtr neurite = neuronWithStats->morphology( )->neurites( )[0];
+  // std::cout << neurite << std::endl;
+
+  // nsol::NeuriteStats * neuriteStats =
+  //   dynamic_cast< nsol::NeuriteStats * >( neurite );
+  // std::cout << neuriteStats << std::endl;
+
+  // std::cout << neuriteStats->stats( ) << std::endl;
+
+  return 0;
 
   nsol::SectionPtr section =
     neuron->morphology( )->neurites( )[0]->firstSection( );

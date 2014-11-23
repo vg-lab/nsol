@@ -37,6 +37,12 @@ namespace nsol
     {
     }
 
+    NSOL_API
+    virtual NeuriteStats * stats( void )
+    {
+      return this;
+    }
+
     // /**
     //  * Returns object as DendriteStats
     //  * @return pointer to DendriteStats object
