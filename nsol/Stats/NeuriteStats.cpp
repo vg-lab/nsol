@@ -8,7 +8,9 @@
  */
 
 #include "NeuriteStats.h"
-#include "SegmentStats.h"
+#include "SectionStats.h"
+
+#include <stack>
 
 namespace nsol
 {

@@ -39,7 +39,7 @@ namespace nsol
     NeuronMorphology( void );
 
     NSOL_API
-    ~NeuronMorphology( void );
+    virtual ~NeuronMorphology( void );
 
     /**
      * Method to add a new neurite to the neuron.
