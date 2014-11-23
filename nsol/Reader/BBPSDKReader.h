@@ -225,11 +225,20 @@ namespace nsol
               NeuritePtr neurite = nullptr;
 
               if ((*cit).type() == bbp::SECTION_AXON)
-                neurite = m->addNeurite(Neurite::AXON);
+              {
+                neurite = new Axon( );
+                m->addNeurite( neurite );
+              }
               else if ((*cit).type() == bbp::SECTION_DENDRITE)
-                dendrite = m->addDendrite(Dendrite::BASAL);
+              {
+                dendrite = new Dendrite( Dendrite::BASAL );
+                m->addNeurite( dendrite);
+              }
               else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
-                dendrite = m->addDendrite(Dendrite::APICAL);
+              {
+                dendrite = new Dendrite( Dendrite::APICAL );
+                m->addNeurite( dendrite );
+              }
 
               const bbp::Section * bbpSection = &(*cit);
               std::stack<const bbp::Section *> sPS;

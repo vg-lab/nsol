@@ -75,8 +75,9 @@ namespace nsol
      * @return pointer to the added neurite
      */
     NSOL_API
-    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType =
-                           Neurite::DENDRITE );
+    NeuritePtr addNeurite( NeuritePtr neurite );
+// Neurite::TNeuriteType neuriteType =
+//                            Neurite::DENDRITE );
 
 
     /**
@@ -85,16 +86,16 @@ namespace nsol
      * @see ndsl::Dendrite::TDendriteType
      * @return pointer to the added dendrite
      */
-    NSOL_API
-    DendritePtr addDendrite( Dendrite::TDendriteType dendriteType =
-                             Dendrite::BASAL);
+    // NSOL_API
+    // DendritePtr addDendrite( Dendrite::TDendriteType dendriteType =
+    //                          Dendrite::BASAL);
 
     /**
      * Method to add a new axon to the neuron.
      * @return pointer to the added axon
      */
-    NSOL_API
-    AxonPtr addAxon( void );
+    // NSOL_API
+    // AxonPtr addAxon( void );
 
     // NSOL_API
     // unsigned int numNeurites( void );

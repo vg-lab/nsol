@@ -25,6 +25,8 @@ namespace nsol {
     template< class NODE,
               class SEGMENT,
               class SECTION,
+              class DENDRITE,
+              class AXON,
               class NEURON,
               class NEURONMORPHOLOGY > friend class SwcReaderTemplated;
     friend class BBPSDKreader;

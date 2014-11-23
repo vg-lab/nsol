@@ -76,32 +76,33 @@ namespace nsol
     _morphology = newMorphology;
   }
 
-  NeuritePtr Neuron::addNeurite( Neurite::TNeuriteType neuriteType )
+  NeuritePtr Neuron::addNeurite( NeuritePtr neurite_ )
+// Neurite::TNeuriteType neuriteType )
   {
     if ( !this->hasMorphology( ) )
       throw std::runtime_error("No morphology in neuron object");
 
-    return _morphology->addNeurite(neuriteType);
+    return _morphology->addNeurite( neurite_ );
   }
 
-  DendritePtr Neuron::addDendrite( Dendrite::TDendriteType dendriteType )
-  {
-    if ( !this->hasMorphology( ) )
-      throw std::runtime_error("No morphology in neuron object");
+  // DendritePtr Neuron::addDendrite( Dendrite::TDendriteType dendriteType )
+  // {
+  //   if ( !this->hasMorphology( ) )
+  //     throw std::runtime_error("No morphology in neuron object");
 
-    if ( dendriteType == Dendrite::APICAL )
-      _type = PYRAMIDAL;
+  //   if ( dendriteType == Dendrite::APICAL )
+  //     _type = PYRAMIDAL;
 
-    return _morphology->addDendrite(dendriteType);
-  }
+  //   return _morphology->addDendrite(dendriteType);
+  // }
 
-  AxonPtr Neuron::addAxon()
-  {
-    if ( !this->hasMorphology( ) )
-      throw std::runtime_error("No morphology in neuron object");
+  // AxonPtr Neuron::addAxon()
+  // {
+  //   if ( !this->hasMorphology( ) )
+  //     throw std::runtime_error("No morphology in neuron object");
 
-    return  _morphology->addAxon();
-  }
+  //   return  _morphology->addAxon();
+  // }
 
   // unsigned int Neuron::numNeurites( void )
   // {
