@@ -13,7 +13,7 @@
 
 namespace nsol {
 
-  class Dendrite : public Neurite
+  class Dendrite : public virtual Neurite
   {
 
   public:

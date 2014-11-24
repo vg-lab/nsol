@@ -16,7 +16,7 @@ namespace nsol
 {
 
   class Axon
-    : public Neurite
+    : public virtual Neurite
   {
 
   public:
