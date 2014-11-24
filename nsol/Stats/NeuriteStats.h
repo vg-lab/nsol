@@ -23,7 +23,7 @@ namespace nsol
    *
    * Example: @include examples/stats.cpp
    */
-  class NeuriteStats : public Neurite
+  class NeuriteStats : public virtual Neurite
   {
 
   public:
