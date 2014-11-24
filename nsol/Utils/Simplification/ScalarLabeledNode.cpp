@@ -1,5 +1,5 @@
 /**
- * @file    NodeRelevance.cpp
+ * @file    ScalarLabeledNode.cpp
  * @brief
  * @author  Daniel Mancebo <d.mancebo@alumnos.urjc.es>
  * @date    

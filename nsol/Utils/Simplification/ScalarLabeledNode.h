@@ -1,5 +1,5 @@
 /**
- * @file    NodeRelevance.h
+ * @file    ScalarLabeledNode.h
  * @brief
  * @author  Daniel Mancebo <d.mancebo@alumnos.urjc.es>
  * @date    
