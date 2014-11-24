@@ -25,6 +25,23 @@ namespace nsol {
       APICAL
     } TDendriteType;
 
+    friend std::ostream & operator<< ( std::ostream & os,
+                                       const TDendriteType & rhs)
+    {
+      switch ( rhs )
+      {
+      case BASAL:
+        return os << "BASAL";
+        break;
+      case APICAL:
+        return os << "APICAL";
+        break;
+      default:
+        return os << "UNDEFINED";
+      }
+      return os;
+    }
+
     NSOL_API
     Dendrite ( TDendriteType dendriteType = BASAL );
 

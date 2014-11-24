@@ -13,6 +13,9 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Section.h>
 
+#include <iostream>
+
+
 namespace nsol {
 
   class Dendrite;
@@ -40,9 +43,26 @@ namespace nsol {
       AXON
     } TNeuriteType;
 
+    friend std::ostream & operator<< ( std::ostream & os,
+                                       const TNeuriteType & rhs)
+    {
+      switch ( rhs )
+      {
+      case DENDRITE:
+        return os << "DENDRITE";
+        break;
+      case AXON:
+        return os << "AXON";
+        break;
+      default:
+        return os << "UNDEFINED";
+      }
+      return os;
+    }
+
     //! Default constructor
     NSOL_API
-    Neurite(TNeuriteType neuriteType = DENDRITE);
+    Neurite( TNeuriteType neuriteType = DENDRITE );
 
     NSOL_API
     virtual ~Neurite();
@@ -66,6 +86,10 @@ namespace nsol {
     NSOL_API
     virtual void firstSection( SectionPtr section );
 
+    NSOL_API
+    Sections * sections( void );
+
+    //TODO: this methods should disappear
     NSOL_API
     void computeBranchBifurcations( void );
 

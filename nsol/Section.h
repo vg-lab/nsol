@@ -79,7 +79,7 @@ namespace nsol
      * @return container of children sections
      */
     NSOL_API
-    Sections & childs( void );
+    Sections & children( void );
 
     /**
      * Adds a segment at the end of the section
@@ -141,7 +141,7 @@ namespace nsol
     SectionPtr _parent;
 
     //! Container of the childrens sections of this section
-    Sections _childs;
+    Sections _children;
 
     //! First segment
     SegmentPtr _firstSegment;

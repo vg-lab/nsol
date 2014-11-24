@@ -66,7 +66,6 @@ namespace nsol
 
   float NeuriteCachedStats::surface( void ) const
   {
-
     if ( ! this->dirty( NeuriteCachedStats::SURFACE ))
       return this->getValue( NeuriteCachedStats::SURFACE );
 

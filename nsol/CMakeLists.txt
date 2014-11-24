@@ -26,9 +26,12 @@ Segment.h
 Soma.h
 Spine.h
 Stats/AxonStats.h
+Stats/AxonCachedStats.h
 Stats/DendriteStats.h
+Stats/DendriteCachedStats.h
 Stats/Cached.h
 Stats/NeuriteStats.h
+Stats/NeuriteCachedStats.h
 Stats/NeuriteCachedStats.cpp
 Stats/NodeCached.h
 Stats/SectionStats.h

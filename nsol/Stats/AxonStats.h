@@ -26,16 +26,25 @@ namespace nsol
    */
   class AxonStats
     : public Axon
-    , public NeuriteStats
+    , public virtual NeuriteStats
   {
 
   public:
 
     NSOL_API
-    virtual NeuriteStats * stats( void )
+    AxonStats( void )
+      : Neurite( Neurite::AXON )
     {
-      return this;
+      // std::cout << "AxonStats constructor " <<  _neuriteType 
+      //           << " " << Neurite::AXON << std::endl;
     }
+
+
+    // NSOL_API
+    // virtual AxonNeuriteStats * stats( void )
+    // {
+    //   return this;
+    // }
 
     /**
      * Returns object as AxonStats

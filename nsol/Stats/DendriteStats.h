@@ -26,7 +26,8 @@ namespace nsol
    */
   class DendriteStats
     : public Dendrite
-    , public NeuriteStats
+    , public virtual NeuriteStats
+  //    , public DendriteStats
   {
 
   public:
@@ -37,11 +38,11 @@ namespace nsol
     {
     }
 
-    NSOL_API
-    virtual NeuriteStats * stats( void )
-    {
-      return this;
-    }
+    // NSOL_API
+    // virtual NeuriteStats * stats( void )
+    // {
+    //   return this;
+    // }
 
     // /**
     //  * Returns object as DendriteStats

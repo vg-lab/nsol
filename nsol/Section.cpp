@@ -58,12 +58,12 @@ namespace nsol
   void Section::addChild( SectionPtr section )
   {
     assert(section);
-    _childs.push_back(section);
+    _children.push_back(section);
   }
 
-  Sections & Section::childs()
+  Sections & Section::children( void )
   {
-    return _childs;
+    return _children;
   }
 
   SegmentPtr Section::addSegment( SegmentPtr segment )

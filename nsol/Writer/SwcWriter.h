@@ -132,9 +132,9 @@ namespace nsol
             segment = segment->next();
           }
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
+          if (lS->children().size() > 0)
+            for (unsigned int i = 0; i < lS->children().size(); ++i)
+              sPS.push(lS->children()[i]);
         }
 
         for (std::map<unsigned int, NodePtr>::iterator nodeIt = 

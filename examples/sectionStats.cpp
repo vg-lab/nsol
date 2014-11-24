@@ -8,6 +8,16 @@
 int main ( int argc, char ** argv )
 {
 
+
+  // nsol::NeuritePtr n1 = new nsol::Axon;
+  // nsol::NeuritePtr n2 = new nsol::AxonStats;
+
+  // std::cout << n1->neuriteType( ) << " " << n1->stats( ) << std::endl;
+  // std::cout << n2->neuriteType( ) << " " << n2->stats( )->surface( ) << std::endl;
+
+  // return 0;
+
+
   std::cout << std::endl;
 
   if ( argc < 2 )
@@ -36,26 +46,6 @@ int main ( int argc, char ** argv )
     return -1;
   }
 
-  std::cout << neuronWithStats->morphology( )->neurites( )[0]->stats( )->firstSection( ) 
-            << std::endl;
-
-  std::cout << neuronWithStats->morphology( )->neurites( )[0]->
-    stats( )->surface( ) << std::endl;
-
-  // std::cout << neuron->morphology( )->neurites( )[0]->stats( ) << std::endl;
-  // std::cout << neuronWithStats->morphology( )->neurites( )[0]->stats( )
-  //           << std::endl;
-
-  // nsol::NeuritePtr neurite = neuronWithStats->morphology( )->neurites( )[0];
-  // std::cout << neurite << std::endl;
-
-  // nsol::NeuriteStats * neuriteStats =
-  //   dynamic_cast< nsol::NeuriteStats * >( neurite );
-  // std::cout << neuriteStats << std::endl;
-
-  // std::cout << neuriteStats->stats( ) << std::endl;
-
-  return 0;
 
   nsol::SectionPtr section =
     neuron->morphology( )->neurites( )[0]->firstSection( );
@@ -99,6 +89,8 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tNon cached section: "
             << sectionWithStats->stats( )->surface( ) << std::endl;
+
+  std::cout << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";

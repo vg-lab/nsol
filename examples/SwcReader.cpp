@@ -90,10 +90,10 @@ int main(int argc, char *argv[])
       stack.pop();
 
 //      cout << "Section " << section << " parent " << section->parent()
-//           << " childs: ";
+//           << " children: ";
 
-      for (Sections::iterator itSect = section->childs().begin();
-          itSect != section->childs().end(); itSect++)
+      for (Sections::iterator itSect = section->children().begin();
+          itSect != section->children().end(); itSect++)
       {
         SectionPtr child = (*itSect);
 //        cout << child << " ";
@@ -112,14 +112,14 @@ int main(int argc, char *argv[])
 
     // while (section) {
     //   cout << "Section " << section << " parent " << section->parent() 
-    // 	   << " childs: ";
-    //   for (Sections::iterator itSect = section->childs().begin();
-    // 	   itSect != section->childs().end(); itSect++) {
+    // 	   << " children: ";
+    //   for (Sections::iterator itSect = section->children().begin();
+    // 	   itSect != section->children().end(); itSect++) {
     // 	SectionPtr child = (*itSect);
     // 	cout << child << " ";
     //   };
-    //   if (section->childs().size() > 0)
-    // 	section = section->childs()[0];
+    //   if (section->children().size() > 0)
+    // 	section = section->children()[0];
     //   cout << endl;
     // }
 
