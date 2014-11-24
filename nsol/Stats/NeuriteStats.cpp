@@ -15,6 +15,13 @@
 namespace nsol
 {
 
+  NeuriteStats::NeuriteStats( TNeuriteType neuriteType_ )
+    : Neurite( neuriteType_ )
+  {
+    // std::cout << "NeuriteStats constructor " << _neuriteType << std::endl;
+
+  }
+
   float NeuriteStats::volume( void ) const
   {
     float accumVolume = 0.0f;
@@ -32,9 +39,9 @@ namespace nsol
         NSOL_DEBUG_CHECK( section->stats( ), "section doesn't have stats" );
         accumVolume += section->stats( )->volume( );
 
-        if ( section->childs( ).size( ) > 0 )
-          for ( auto childrenIt = section->childs( ).begin( );
-                childrenIt != section->childs( ).end( ); childrenIt++ )
+        if ( section->children( ).size( ) > 0 )
+          for ( auto childrenIt = section->children( ).begin( );
+                childrenIt != section->children( ).end( ); childrenIt++ )
             sectionsToProcess.push( * childrenIt );
       }
     }
@@ -46,8 +53,8 @@ namespace nsol
   {
     float accumSurface = 0.0f;
 
-    std::cout << "neurite stats surface" 
-              << firstSection() << std::endl;
+    // std::cout << "neurite stats surface"
+    //           << firstSection() << std::endl;
 
     if ( _firstSection )
     {
@@ -62,9 +69,9 @@ namespace nsol
         NSOL_DEBUG_CHECK( section->stats( ), "section doesn't have stats" );
         accumSurface += section->stats( )->surface( );
 
-        if ( section->childs( ).size( ) > 0 )
-          for ( auto childrenIt = section->childs( ).begin( );
-                childrenIt != section->childs( ).end( ); childrenIt++ )
+        if ( section->children( ).size( ) > 0 )
+          for ( auto childrenIt = section->children( ).begin( );
+                childrenIt != section->children( ).end( ); childrenIt++ )
             sectionsToProcess.push( * childrenIt );
       }
     }
@@ -89,14 +96,13 @@ namespace nsol
         NSOL_DEBUG_CHECK( section->stats( ), "section doesn't have stats" );
         accumLength += section->stats( )->length( );
 
-        if ( section->childs( ).size( ) > 0 )
-          for ( auto childrenIt = section->childs( ).begin( );
-                childrenIt != section->childs( ).end( ); childrenIt++ )
+        if ( section->children( ).size( ) > 0 )
+          for ( auto childrenIt = section->children( ).begin( );
+                childrenIt != section->children( ).end( ); childrenIt++ )
             sectionsToProcess.push( * childrenIt );
       }
     }
     return accumLength;
   }
-
 
 } // namespace nsol

@@ -17,8 +17,8 @@
 #include "../Stats/NodeCached.h"
 #include "../Stats/SegmentCachedStats.h"
 #include "../Stats/SectionCachedStats.h"
-#include "../Stats/DendriteStats.h"
-#include "../Stats/AxonStats.h"
+#include "../Stats/DendriteCachedStats.h"
+#include "../Stats/AxonCachedStats.h"
 
 
 #include <iostream>
@@ -128,8 +128,8 @@ namespace nsol
   typedef SwcReaderTemplated< NodeCached,
                               SegmentCachedStats,
                               SectionCachedStats,
-                              Dendrite,
-                              Axon,
+                              DendriteCachedStats,
+                              AxonCachedStats,
                               NeuronMorphology,
                               Neuron > SwcReaderCachedStats;
 

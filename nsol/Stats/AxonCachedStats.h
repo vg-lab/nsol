@@ -1,21 +1,21 @@
 /**
- * @file    AxonStats.h
+ * @file    AxonCachedStats.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef __NSOL_AXON_STATS__
-#define __NSOL_AXON_STATS__
+#ifndef __NSOL_AXON_CACHED_STATS__
+#define __NSOL_AXON_CACHED_STATS__
 
-#include "../Axon.h"
-#include "NeuriteStats.h"
+#include "AxonStats.h"
+#include "NeuriteCachedStats.h"
 
 namespace nsol
 {
 
-  /** \class AxonStats
+  /** \class AxonCachedStats
    *  \brief This class allows to compute stats for axons
    *
    *  Using this class instead of Axon when constructing the
@@ -24,18 +24,18 @@ namespace nsol
    *
    * Example: @include examples/stats.cpp
    */
-  class AxonStats
-    : public Axon
-    , public virtual NeuriteStats
+  class AxonCachedStats
+    : public AxonStats
+    , public NeuriteCachedStats
   {
 
   public:
 
     NSOL_API
-    AxonStats( void )
+    AxonCachedStats( void )
       : Neurite( Neurite::AXON )
     {
-      // std::cout << "AxonStats constructor " <<  _neuriteType 
+      // std::cout << "AxonCachedStats constructor " <<  _neuriteType
       //           << " " << Neurite::AXON << std::endl;
     }
 
@@ -47,8 +47,8 @@ namespace nsol
     // }
 
     /**
-     * Returns object as AxonStats
-     * @return pointer to AxonStats object
+     * Returns object as AxonCachedStats
+     * @return pointer to AxonCachedStats object
      */
     // NSOL_API
     // virtual NeuriteStats * stats( void )
@@ -56,7 +56,7 @@ namespace nsol
     //   return this;
     // }
 
-  }; // class AxonStats
+  }; // class AxonCachedStats
 
 } // namespace nsol
 

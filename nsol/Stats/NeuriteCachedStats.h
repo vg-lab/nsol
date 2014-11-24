@@ -17,20 +17,19 @@
 namespace nsol
 {
 
-
   /** \class NeuriteCachedStats
    *  \brief This class allows to cache the stats for neurites
    *
    *  Using this class instead of Neurite or NeuriteStats when constructing
    *  the hierarchy allows to call the method stats from base Neurite
-   *  class and get the corresponding volume, surface and length. If the cached
-   *  value is dirty then the actual computation process is done. In case is
-   *  clean the cached value is returned directly.
+   *  class and get the corresponding volume, surface and length. If the
+   *  cached value is dirty then the actual computation process is done.
+   *  In case is clean the cached value is returned directly.
    *
    *  Example: @include examples/stats.cpp
    */
   class NeuriteCachedStats
-    : public NeuriteStats
+    : public virtual NeuriteStats
     , public Cached<>
   {
 

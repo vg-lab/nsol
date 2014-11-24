@@ -28,6 +28,9 @@ namespace nsol
 
   public:
 
+    NSOL_API
+    NeuriteStats( TNeuriteType neuriteType = DENDRITE );
+
     /**
      * Returns object as NeuriteStats
      * @return pointer to NeuriteStats object

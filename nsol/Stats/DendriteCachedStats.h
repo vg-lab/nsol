@@ -1,21 +1,21 @@
 /**
- * @file    DendriteStats.h
+ * @file    DendriteCachedStats.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef __NSOL_DENDRITE_STATS__
-#define __NSOL_DENDRITE_STATS__
+#ifndef __NSOL_DENDRITE_CACHED_STATS__
+#define __NSOL_DENDRITE_CACHED_STATS__
 
-#include "../Dendrite.h"
-#include "NeuriteStats.h"
+#include "DendriteStats.h"
+#include "NeuriteCachedStats.h"
 
 namespace nsol
 {
 
-  /** \class DendriteStats
+  /** \class DendriteCachedStats
    *  \brief This class allows to compute stats for dendrites
    *
    *  Using this class instead of Dendrite when constructing the
@@ -24,29 +24,28 @@ namespace nsol
    *
    * Example: @include examples/stats.cpp
    */
-  class DendriteStats
-    : public Dendrite
-    , public virtual NeuriteStats
-  //    , public DendriteStats
+  class DendriteCachedStats
+    : public DendriteStats
+    , public NeuriteCachedStats
   {
 
   public:
 
     NSOL_API
-    DendriteStats ( TDendriteType dendriteType_ = BASAL )
-      : Dendrite( dendriteType_ )
+    DendriteCachedStats ( TDendriteType dendriteType_ = BASAL )
+      : DendriteStats( dendriteType_ )
     {
     }
 
-    // NSOL_API
-    // virtual NeuriteStats * stats( void )
-    // {
-    //   return this;
-    // }
+    NSOL_API
+    virtual NeuriteStats * stats( void )
+    {
+      return this;
+    }
 
     // /**
-    //  * Returns object as DendriteStats
-    //  * @return pointer to DendriteStats object
+    //  * Returns object as DendriteCachedStats
+    //  * @return pointer to DendriteCachedStats object
     //  */
     // NSOL_API
     // virtual NeuriteStats * stats( void )
@@ -54,8 +53,8 @@ namespace nsol
     //   return this;
     // }
 
-  }; // class DendriteStats
+  }; // class DendriteCachedStats
 
 } // namespace nsol
 
-#endif // __NSOL_DENDRITE_STATS__
+#endif // __NSOL_DENDRITE_CACHED_STATS__

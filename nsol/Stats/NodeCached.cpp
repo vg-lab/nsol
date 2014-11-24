@@ -58,11 +58,9 @@ namespace nsol
 
   void NodeCached::radius( const float radius_ )
   {
-    std::cout << "changing radius" << std::endl;
     this->Node::radius( radius_ );
     setAndPropagateDirty( SegmentCachedStats::SURFACE );
     setAndPropagateDirty( SegmentCachedStats::VOLUME );
-    setAndPropagateDirty( SegmentCachedStats::MEAN_RADIUS );
   }
 
 

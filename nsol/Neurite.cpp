@@ -27,6 +27,7 @@ namespace nsol
     , _numBranches( 0 )
     , _numBifurcations( 0 )
   {
+    // std::cout << "Neurite constructor " << _neuriteType << std::endl;
   }
 
 
@@ -46,7 +47,8 @@ namespace nsol
     return _morphology;
   }
 
-  NeuronMorphologyPtr Neurite::morphology( NeuronMorphologyPtr newMorphology )
+  NeuronMorphologyPtr Neurite::morphology(
+    NeuronMorphologyPtr newMorphology )
   {
     return _morphology = newMorphology;
   }
@@ -66,6 +68,26 @@ namespace nsol
     _firstSection = section;
   }
 
+  Sections * Neurite::sections( void )
+  {
+    Sections * sections_ = new Sections;
+    std::stack<SectionPtr> sectionsToProcess;
+    sectionsToProcess.push( _firstSection );
+
+    while ( ! sectionsToProcess.empty( ))
+    {
+      SectionPtr section  = sectionsToProcess.top( );
+      sectionsToProcess.pop( );
+      sections_->push_back( section );
+
+      for ( auto childrenIt = section->children( ).begin( );
+           childrenIt != section->children( ).end( ); childrenIt++ )
+        sectionsToProcess.push( * childrenIt );
+    }
+
+    return sections_;
+  }
+
   void Neurite::computeBranchBifurcations( void )
   {
     unsigned int numBranchs = 0;
@@ -77,11 +99,11 @@ namespace nsol
     {
       SectionPtr lS = sPS.top( );
       sPS.pop( );
-      for (Sections::iterator child = lS->childs( ).begin( );
-           child != lS->childs( ).end( ); child++)
+      for (Sections::iterator child = lS->children( ).begin( );
+           child != lS->children( ).end( ); child++)
       {
         numBranchs++;
-        numBifur += ( unsigned int ) lS->childs( ).size( );
+        numBifur += ( unsigned int ) lS->children( ).size( );
 
         sPS.push(*child);
       }

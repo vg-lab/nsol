@@ -19,5 +19,8 @@ target_link_libraries(example1 ${NSOL_LINK_LIBRARIES} nsol)
 add_executable(example2 example2.cpp)
 target_link_libraries(example2 ${NSOL_LINK_LIBRARIES} nsol)
 
-add_executable(stats stats.cpp)
-target_link_libraries(stats ${NSOL_LINK_LIBRARIES} nsol)
+add_executable(sectionStats sectionStats.cpp)
+target_link_libraries(sectionStats ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(neuriteStats neuriteStats.cpp)
+target_link_libraries(neuriteStats ${NSOL_LINK_LIBRARIES} nsol)
