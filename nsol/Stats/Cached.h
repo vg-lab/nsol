@@ -62,7 +62,7 @@ namespace nsol
 
     // This method is const to be able to cache values from
     // derived const methods
-    void cacheValue( const unsigned int id_, TYPE & value_ ) const
+    void cacheValue( const unsigned int id_, TYPE value_ ) const
     {
       _values[ id_ ] = value_;
     }

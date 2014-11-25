@@ -30,6 +30,8 @@ Stats/AxonCachedStats.h
 Stats/DendriteStats.h
 Stats/DendriteCachedStats.h
 Stats/Cached.h
+Stats/NeuronMorphologyStats.h
+Stats/NeuronMorphologyCachedStats.h
 Stats/NeuriteStats.h
 Stats/NeuriteCachedStats.h
 Stats/NeuriteCachedStats.cpp
@@ -57,6 +59,8 @@ Section.cpp
 Segment.cpp
 Soma.cpp
 #Stats/DendriteStats.cpp
+Stats/NeuronMorphologyStats.cpp
+Stats/NeuronMorphologyCachedStats.cpp
 Stats/NeuriteStats.cpp
 Stats/NeuriteCachedStats.cpp
 Stats/NodeCached.cpp

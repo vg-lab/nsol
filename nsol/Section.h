@@ -81,6 +81,9 @@ namespace nsol
     NSOL_API
     Sections & children( void );
 
+    NSOL_API
+    const Sections & children( void ) const;
+
     /**
      * Adds a segment at the end of the section
      * @param segment pointer to the segment to add.

@@ -10,15 +10,13 @@
 #define __NSOL_SWC_READER__
 
 
-#include "../Node.h"
-#include "../Dendrite.h"
-#include "../NeuronMorphology.h"
 #include "../Neuron.h"
 #include "../Stats/NodeCached.h"
 #include "../Stats/SegmentCachedStats.h"
 #include "../Stats/SectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
+#include "../Stats/NeuronMorphologyCachedStats.h"
 
 
 #include <iostream>
@@ -122,7 +120,7 @@ namespace nsol
                               SectionStats,
                               DendriteStats,
                               AxonStats,
-                              NeuronMorphology,
+                              NeuronMorphologyStats,
                               Neuron > SwcReaderStats;
 
   typedef SwcReaderTemplated< NodeCached,
@@ -130,7 +128,7 @@ namespace nsol
                               SectionCachedStats,
                               DendriteCachedStats,
                               AxonCachedStats,
-                              NeuronMorphology,
+                              NeuronMorphologyCachedStats,
                               Neuron > SwcReaderCachedStats;
 
 
@@ -156,10 +154,14 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
     const std::string fileName)
   {
-    NeuronMorphologyPtr nm = this->readFile(std::string(fileName));
+    NeuronMorphologyPtr nm = this->readFile( std::string( fileName ));
 
     if ( nm )
-      return NeuronPtr( new NEURON( nm ));
+    {
+      NeuronPtr neuron( new NEURON( nm ));
+      nm->addParentNeuron( neuron );
+      return neuron;
+    }
     else
       return nullptr;
   }

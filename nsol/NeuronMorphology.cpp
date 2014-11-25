@@ -252,13 +252,13 @@ namespace nsol
     Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
 
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
 
       if ( dend )
-	tmpDendrites->push_back( dend );
+        tmpDendrites->push_back( dend );
     }
     return tmpDendrites;
   }
@@ -269,12 +269,12 @@ namespace nsol
     Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
       if ( dend &&
-	   ( dend->dendriteType( ) == Dendrite::BASAL ))
-	tmpDendrites->push_back( dend );
+           ( dend->dendriteType( ) == Dendrite::BASAL ))
+        tmpDendrites->push_back( dend );
     }
 
     return tmpDendrites;
@@ -285,12 +285,12 @@ namespace nsol
     Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST ( Dendrite, *it );
       if ( dend &&
-	   ( dend->dendriteType( ) == Dendrite::APICAL ))
-	tmpDendrites->push_back( dend );
+           ( dend->dendriteType( ) == Dendrite::APICAL ))
+        tmpDendrites->push_back( dend );
     }
 
     return tmpDendrites;
@@ -299,11 +299,11 @@ namespace nsol
   DendritePtr NeuronMorphology::apicalDendrite( void ) const
   {
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
       if ( dend &&
-	   ( dend->dendriteType( ) == Dendrite::APICAL ))
+           ( dend->dendriteType( ) == Dendrite::APICAL ))
         return dend;
     }
 
@@ -313,6 +313,34 @@ namespace nsol
   Neurites & NeuronMorphology::neurites( void )
   {
     return _neurites;
+  }
+
+  const Neurites & NeuronMorphology::neurites( void ) const
+  {
+    return _neurites;
+  }
+
+  Neurons & NeuronMorphology::parentNeurons( void )
+  {
+    return _parentNeurons;
+  }
+
+  const Neurons & NeuronMorphology::parentNeurons( void ) const
+  {
+    return _parentNeurons;
+  }
+
+  void NeuronMorphology::addParentNeuron( NeuronPtr neuron )
+  {
+    Neurons::iterator neuronIt =
+      std::find ( _parentNeurons.begin( ),
+                  _parentNeurons.end( ),
+                  neuron );
+
+    if ( neuronIt != _parentNeurons.end( ))
+      _parentNeurons.push_back( neuron );
+
+
   }
 
   Soma & NeuronMorphology::soma( void )

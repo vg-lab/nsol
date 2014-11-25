@@ -10,16 +10,20 @@
 #define __NSOL_NEURON_MORPHOLOGY__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Soma.h>
-#include <nsol/Axon.h>
-#include <nsol/Neurite.h>
-#include <nsol/Dendrite.h>
-#include <nsol/Container/Dendrites.h>
-#include <nsol/Container/Neurites.h>
+
+#include "NsolTypes.h"
+#include "Soma.h"
+#include "Axon.h"
+#include "Neurite.h"
+#include "Dendrite.h"
+#include "Container/Dendrites.h"
+#include "Container/Neurites.h"
+#include "Container/Neurons.h"
 
 namespace nsol
 {
+
+  class NeuronMorphologyStats;
 
   /*! \class NeuronMorphology
    \brief A class to represent morphology of neurons.
@@ -92,42 +96,6 @@ namespace nsol
     // NSOL_API
     // unsigned int numAxonBifurcations( void ) const;
 
-    // NSOL_API
-    // float volume( void ) const;
-
-    // NSOL_API
-    // float neuritesVolume( void ) const;
-
-    // NSOL_API
-    // float dendritesVolume( void ) const;
-
-    // NSOL_API
-    // float axonVolume( void ) const;
-
-    // NSOL_API
-    // float surface( void ) const;
-
-    // NSOL_API
-    // float neuritesSurface( void ) const;
-
-    // NSOL_API
-    // float dendritesSurface( void ) const;
-
-    // NSOL_API
-    // float axonSurface( void ) const;
-
-    // NSOL_API
-    // float length( void ) const;
-
-    // NSOL_API
-    // float neuritesLength( void ) const;
-
-    // NSOL_API
-    // float dendritesLength( void ) const;
-
-    // NSOL_API
-    // float axonLength( void ) const;
-
     /**
      * Method to get all the dendrites in a container.
      * Memory for the container is allocated.
@@ -160,15 +128,35 @@ namespace nsol
     DendritePtr apicalDendrite( void ) const;
 
     NSOL_API
-    Neurites & neurites( void );
+    virtual Neurites & neurites( void );
+
+    NSOL_API
+    const Neurites & neurites( void ) const;
+
+    NSOL_API
+    virtual Neurons & parentNeurons( void );
+
+    NSOL_API
+    const Neurons & parentNeurons( void ) const;
 
     NSOL_API
     Soma & soma( void );
+
+    NSOL_API
+    virtual NeuronMorphologyStats * stats( void )
+    {
+      return nullptr;
+    }
+
+    NSOL_API
+    void addParentNeuron( NeuronPtr neuron );
 
   protected:
 
     Soma _soma;
     Neurites _neurites;
+    Neurons _parentNeurons;
+
 
   };
 

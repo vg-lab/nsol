@@ -18,8 +18,6 @@ namespace nsol
   NeuriteStats::NeuriteStats( TNeuriteType neuriteType_ )
     : Neurite( neuriteType_ )
   {
-    // std::cout << "NeuriteStats constructor " << _neuriteType << std::endl;
-
   }
 
   float NeuriteStats::volume( void ) const
@@ -36,7 +34,9 @@ namespace nsol
         SectionPtr section = sectionsToProcess.top( );
         sectionsToProcess.pop( );
 
-        NSOL_DEBUG_CHECK( section->stats( ), "section doesn't have stats" );
+        NSOL_DEBUG_CHECK( section->stats( ),
+                          "section doesn't have stats" );
+
         accumVolume += section->stats( )->volume( );
 
         if ( section->children( ).size( ) > 0 )
@@ -52,9 +52,6 @@ namespace nsol
   float NeuriteStats::surface( void ) const
   {
     float accumSurface = 0.0f;
-
-    // std::cout << "neurite stats surface"
-    //           << firstSection() << std::endl;
 
     if ( _firstSection )
     {
@@ -93,7 +90,9 @@ namespace nsol
         SectionPtr section = sectionsToProcess.top( );
         sectionsToProcess.pop( );
 
-        NSOL_DEBUG_CHECK( section->stats( ), "section doesn't have stats" );
+        NSOL_DEBUG_CHECK( section->stats( ), 
+                          "section doesn't have stats" );
+
         accumLength += section->stats( )->length( );
 
         if ( section->children( ).size( ) > 0 )
@@ -104,5 +103,38 @@ namespace nsol
     }
     return accumLength;
   }
+
+  NSOL_API
+  unsigned int NeuriteStats::bifurcations( void ) const
+  {
+
+    unsigned int accumBifurcations = 0;
+
+    if ( _firstSection )
+    {
+      std::stack< SectionPtr > sectionsToProcess;
+      sectionsToProcess.push(_firstSection);
+
+      while ( ! sectionsToProcess.empty( ))
+      {
+        SectionPtr section = sectionsToProcess.top( );
+        sectionsToProcess.pop( );
+
+        NSOL_DEBUG_CHECK( section->stats( ),
+                          "section doesn't have stats" );
+
+        if ( section->children( ).size( ) > 0 )
+        {
+          accumBifurcations++;
+          NSOL_CONST_FOREACH( child, section->children( ))
+            sectionsToProcess.push( * child );
+        }
+      }
+    }
+    return accumBifurcations;
+
+
+  }
+
 
 } // namespace nsol
