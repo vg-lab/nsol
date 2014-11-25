@@ -33,7 +33,7 @@ int main( int argc, char *argv[] )
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];
 
-    cout << "soma surface: " << neuron->soma().surface() << endl;
+    cout << "soma surface: " << neuron->morphology( )->soma().surface() << endl;
 
     for (vmml::matrix<4,4,float>::const_iterator it =
 	   neuron->transform().begin();

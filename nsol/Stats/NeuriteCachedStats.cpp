@@ -85,10 +85,26 @@ namespace nsol
 
     float accumLength = this->NeuriteStats::length( );
 
-    this->cacheValue( NeuriteCachedStats::SURFACE, accumLength );
+    this->cacheValue( NeuriteCachedStats::LENGTH, accumLength );
 
     return accumLength;
 
   }
+
+  unsigned int NeuriteCachedStats::bifurcations( void ) const
+  {
+
+    if ( ! this->dirty( NeuriteCachedStats::BIFURCATIONS ))
+      return int( this->getValue( NeuriteCachedStats::BIFURCATIONS ));
+
+    unsigned int  accumBifurcations = this->NeuriteStats::bifurcations( );
+
+    this->cacheValue( NeuriteCachedStats::BIFURCATIONS,
+                      float( accumBifurcations ) );
+
+    return accumBifurcations;
+
+  }
+
 
 } // namespace nsol

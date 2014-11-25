@@ -10,8 +10,8 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
 
   unsigned int i = 0;
 
-  for ( auto it = n->neurites( ).begin( );
-        it != n->neurites( ).end( ); it++ )
+  for ( auto it = n->morphology( )->neurites( ).begin( );
+        it != n->morphology( )->neurites( ).end( ); it++ )
   {
     std::cout << "\tDendrite " << i++ << " type: "
               <<  ( * it )->neuriteType( ) << " ";
@@ -77,8 +77,7 @@ void PrintCachedSurfaceState( nsol::NeuronPtr n )
 
   unsigned int i = 0;
 
-  for ( auto it = n->neurites( ).begin( );
-        it != n->neurites( ).end( ); it++ )
+  NSOL_CONST_FOREACH( it, n->morphology( )->neurites( ))
   {
     std::cout << "\tDendrite " << i++ << " type: "
               <<  ( * it )->neuriteType( ) << " ";

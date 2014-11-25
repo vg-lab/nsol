@@ -62,6 +62,14 @@ namespace nsol
     NSOL_API
     virtual float length( void ) const;
 
+    /**
+     * Computes the number of bifurcations
+     * @return number of bifurcations
+     */
+    NSOL_API
+    virtual unsigned int bifurcations( void ) const;
+
+
   }; // class NeuriteStats
 
 } // namespace nsol

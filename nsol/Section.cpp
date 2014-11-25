@@ -66,6 +66,11 @@ namespace nsol
     return _children;
   }
 
+  const Sections & Section::children( void ) const
+  {
+    return _children;
+  }
+
   SegmentPtr Section::addSegment( SegmentPtr segment )
   {
 

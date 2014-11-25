@@ -42,6 +42,7 @@ namespace nsol
       SURFACE = 0,
       VOLUME,
       LENGTH,
+      BIFURCATIONS,
       NEURITE_NUM_CACHED_VALUES
     } TNeuriteCachedValues;
 
@@ -98,6 +99,14 @@ namespace nsol
      */
     NSOL_API
     virtual float length( void ) const;
+
+    /**
+     * Computes the number of bifurcations
+     * @return number of bifurcations
+     */
+    NSOL_API
+    virtual unsigned int bifurcations( void ) const;
+
 
 
   }; // class NeuriteCachedStats
