@@ -137,7 +137,13 @@ namespace nsol
         __ITERATOR__++ )
 
 
-}
+typedef enum
+{
+  TOTAL = 0,
+  MEAN
+} TAggregation;
+
+} // namespace nsol
 
 
 #ifndef M_2PI

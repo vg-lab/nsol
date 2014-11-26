@@ -27,3 +27,6 @@ target_link_libraries(neuriteStats ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(neuronStats neuronStats.cpp)
 target_link_libraries(neuronStats ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(miniColumnStats miniColumnStats.cpp)
+target_link_libraries(miniColumnStats ${NSOL_LINK_LIBRARIES} nsol)
