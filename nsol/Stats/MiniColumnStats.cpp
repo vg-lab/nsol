@@ -32,6 +32,13 @@ namespace nsol
   __TYPE__, __STAT_METHOD__, __AGGREG__ )                               \
   __TYPE__ value = 0;                                                   \
                                                                         \
+  __TYPE__ mean;                                                        \
+                                                                        \
+  if ( __AGGREG__ == TAggregation::STD_DEV )                            \
+    return sqrt( this->__STAT_METHOD__( TAggregation::VARIANCE ));      \
+                                                                        \
+  if ( __AGGREG__ == TAggregation::VARIANCE )                           \
+    mean = this->__STAT_METHOD__( TAggregation::MEAN );                 \
   NSOL_CONST_FOREACH( neuron, _neurons )                                \
   {                                                                     \
     NeuronMorphologyPtr morphology = ( * neuron )->morphology( );       \
@@ -39,7 +46,13 @@ namespace nsol
     NSOL_DEBUG_CHECK( morphology->stats( ),                             \
                       "neuron without morphology stats" );              \
                                                                         \
-    value += morphology->stats( )->__STAT_METHOD__( );                  \
+    if ( __AGGREG__ == TAggregation::VARIANCE )                         \
+    {                                                                   \
+      __TYPE__ tmpValue = morphology->stats( )->__STAT_METHOD__( );     \
+      value += ( mean - tmpValue ) * ( mean - tmpValue );               \
+    }                                                                   \
+    else                                                                \
+      value += morphology->stats( )->__STAT_METHOD__( );                \
   }                                                                     \
   switch ( __AGGREG__ )                                                 \
   {                                                                     \
@@ -47,23 +60,13 @@ namespace nsol
     return value;                                                       \
   case TAggregation::MEAN:                                              \
     return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
+  case TAggregation::VARIANCE:                                          \
+    return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
+  case TAggregation::STD_DEV:                                           \
+    break;                                                              \
   }                                                                     \
   NSOL_THROW( "aggregation op not valid" )                              \
   return 0;
-
-  // template< typename T >
-  // T AccumulateForAllNeurons( MiniColumn * miniColumn,
-  //                            T (NeuronMorphology::*)( TAggregation op = TOTAL ) )
-  // {
-  //   T value = 0;
-
-  //   NSOL_CONST_FOREACH( neuron, miniColumn->neurons( ))
-  //   {
-  //     NeuronMorphologyPtr morphology = ( * neuron )->morphology( );
-  //   }
-
-  //   return value;
-  // }
 
 
   float MiniColumnStats::dendriticVolume( TAggregation op ) const

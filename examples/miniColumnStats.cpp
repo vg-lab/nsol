@@ -44,35 +44,27 @@ int main ( int argc, char ** argv )
   struct timeval startTime, endTime;
   long totalTime;
 
+#define START_TIME  gettimeofday(&startTime, NULL);
+#define END_TIME                                               \
+  gettimeofday(&endTime, NULL);                                \
+  totalTime =  (endTime.tv_sec - startTime.tv_sec) * 1000000L; \
+  totalTime += (endTime.tv_usec - startTime.tv_usec);          \
+  std::cout << "\tElapsed time: "                              \
+            << (totalTime/1000L) / 1000.0f                     \
+            << std::endl << std::endl;
+
   std::cout << "Non-cached stats" << std::endl;
-  gettimeofday(&startTime, NULL);
+  START_TIME;
   printMiniColumnStats( miniColumnWithStats );
-  gettimeofday(&endTime, NULL);
-  totalTime =  (endTime.tv_sec - startTime.tv_sec) * 1000000L;
-  totalTime += (endTime.tv_usec - startTime.tv_usec);
-  std::cout << "\tElapsed time: "
-            << (totalTime/1000L) / 1000.0f
-            << std::endl << std::endl;
+  END_TIME;
 
-  std::cout << "Cached stats dirty" << std::endl;
-  gettimeofday(&startTime, NULL);
+  START_TIME;
   printMiniColumnStats( miniColumnWithCachedStats );
-  gettimeofday(&endTime, NULL);
-  totalTime =  (endTime.tv_sec - startTime.tv_sec) * 1000000L;
-  totalTime += (endTime.tv_usec - startTime.tv_usec);
-  std::cout << "\tElapsed time: "
-            << (totalTime/1000L) / 1000.0f
-            << std::endl << std::endl;
+  END_TIME;
 
-  std::cout << "Cached stats clean" << std::endl;
-  gettimeofday(&startTime, NULL);
+  START_TIME;
   printMiniColumnStats( miniColumnWithCachedStats );
-  gettimeofday(&endTime, NULL);
-  totalTime =  (endTime.tv_sec - startTime.tv_sec) * 1000000L;
-  totalTime += (endTime.tv_usec - startTime.tv_usec);
-  std::cout << "\tElapsed time: "
-            << (totalTime/1000L)
-            << std::endl << std::endl;
+  END_TIME;
 
   return 0;
 
@@ -105,8 +97,12 @@ void computeMiniColumnStats( nsol::MiniColumnPtr miniColumn )
 #define COMPUTE_AND_PRINT( __MSG__, __METHOD__ )                        \
   std::cout << __MSG__                                                  \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )      \
-  << "\tmean: "                                                          \
+  << "\tmean: "                                                         \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MEAN )       \
+  << "\tvariance: "                                                     \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::VARIANCE )   \
+  << "\tstd dev.: "                                                      \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::STD_DEV )    \
   << std::endl;                                                         \
 
 
