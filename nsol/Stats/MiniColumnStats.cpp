@@ -1,0 +1,171 @@
+/**
+ * @file    MiniColumnStats.cpp
+ * @brief
+ * @author  Pablo Toharia <pablo.toharia@urjc.es>
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+ *          Do not distribute without further notice.
+ */
+
+#include "MiniColumnStats.h"
+#include "NeuronMorphologyStats.h"
+
+namespace nsol
+{
+
+  MiniColumnStats::MiniColumnStats( const ColumnPtr column_,
+                                    const unsigned short id_ )
+    : MiniColumn( column_, id_ )
+  {
+  }
+
+  MiniColumnStats * MiniColumnStats::stats( void )
+  {
+    return this;
+  }
+
+  //
+  // Volume related methods
+  //
+
+#define RETURN_ACCUMULATED_FOR_ALL_NEURONS(                             \
+  __TYPE__, __STAT_METHOD__, __AGGREG__ )                               \
+  __TYPE__ value = 0;                                                   \
+                                                                        \
+  NSOL_CONST_FOREACH( neuron, _neurons )                                \
+  {                                                                     \
+    NeuronMorphologyPtr morphology = ( * neuron )->morphology( );       \
+    NSOL_DEBUG_CHECK( morphology, "neuron without morphology" );        \
+    NSOL_DEBUG_CHECK( morphology->stats( ),                             \
+                      "neuron without morphology stats" );              \
+                                                                        \
+    value += morphology->stats( )->__STAT_METHOD__( );                  \
+  }                                                                     \
+  switch ( __AGGREG__ )                                                 \
+  {                                                                     \
+  case TAggregation::TOTAL:                                             \
+    return value;                                                       \
+  case TAggregation::MEAN:                                              \
+    return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
+  }                                                                     \
+  NSOL_THROW( "aggregation op not valid" )                              \
+  return 0;
+
+  // template< typename T >
+  // T AccumulateForAllNeurons( MiniColumn * miniColumn,
+  //                            T (NeuronMorphology::*)( TAggregation op = TOTAL ) )
+  // {
+  //   T value = 0;
+
+  //   NSOL_CONST_FOREACH( neuron, miniColumn->neurons( ))
+  //   {
+  //     NeuronMorphologyPtr morphology = ( * neuron )->morphology( );
+  //   }
+
+  //   return value;
+  // }
+
+
+  float MiniColumnStats::dendriticVolume( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, dendriticVolume, op );
+  }
+
+
+  float MiniColumnStats::axonVolume( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, axonVolume, op );
+  }
+
+  float MiniColumnStats::neuriticVolume( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, neuriticVolume, op );
+  }
+
+  float MiniColumnStats::somaVolume( TAggregation  ) const
+  {
+    return 0.0f; //!TODO: compute soma surface
+  }
+
+  float MiniColumnStats::volume( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, volume, op );
+  }
+
+  //
+  // Surface related methods
+  //
+
+  float MiniColumnStats::dendriticSurface( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, dendriticSurface, op );
+  }
+
+  float MiniColumnStats::axonSurface( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, axonSurface, op );
+  }
+
+  float MiniColumnStats::neuriticSurface( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, neuriticSurface, op );
+  }
+
+  float MiniColumnStats::somaSurface( TAggregation ) const
+  {
+    return 0.0f; //!TODO: compute soma surface
+  }
+
+  float MiniColumnStats::surface( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, surface, op );
+  }
+
+  //
+  // Length related methods
+  //
+
+  float MiniColumnStats::dendriticLength( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, dendriticLength, op );
+  }
+
+  float MiniColumnStats::axonLength( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, axonLength, op );
+  }
+
+  float MiniColumnStats::neuriticLength( TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( float, neuriticLength, op );
+  }
+
+  //
+  // Bifuractions methods
+  //
+  unsigned int MiniColumnStats::dendriticBifurcations(
+    TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( unsigned int,
+                                        dendriticBifurcations, op );
+  }
+
+  unsigned int MiniColumnStats::axonBifurcations(
+    TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( unsigned int,
+                                        axonBifurcations, op );
+  }
+
+  unsigned int MiniColumnStats::neuriticBifurcations(
+    TAggregation op ) const
+  {
+    RETURN_ACCUMULATED_FOR_ALL_NEURONS( unsigned int,
+                                        neuriticBifurcations, op );
+  }
+
+
+
+} // namespace nsol
+
+// EOF

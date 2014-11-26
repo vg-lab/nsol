@@ -16,6 +16,8 @@
 namespace nsol
 {
 
+  class MiniColumnStats;
+
   /*! \class MiniColumn
     \brief A class to represent minicolumns.
 
@@ -50,7 +52,7 @@ namespace nsol
      * Default destructur
      */
     NSOL_API
-    ~MiniColumn();
+    virtual ~MiniColumn();
 
     ///@}
 
@@ -165,6 +167,18 @@ namespace nsol
     bool operator != (MiniColumn & other ) const;
 
     ///@}
+
+    /**
+     * Returns object as MiniColumnStats
+     * @return pointer to MiniColumnStats object
+     */
+    NSOL_API
+    virtual MiniColumnStats * stats( void )
+    {
+      return nullptr;
+    }
+
+
 
 
     /** @name Morphological measures */
