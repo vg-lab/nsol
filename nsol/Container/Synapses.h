@@ -6,21 +6,17 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
  */
 
-#ifndef _NSOL_SYNAPSES_H_
-#define _NSOL_SYNAPSES_H_
+#ifndef __NSOL_SYNAPSES__
+#define __NSOL_SYNAPSES__
 
 #include <nsol/NsolTypes.h>
 #include <nsol/Synapse.h>
 
 namespace nsol {
 
-  class Synapses : public Vector<SynapsePtr>
-  {
-
-  protected:
-
+  class Synapses : public Vector<SynapsePtr>{
   };
 
 }
 
-#endif /* _NSOL_SYNAPSE_H_ */
+#endif /* __NSOL_SYNAPSES__ */

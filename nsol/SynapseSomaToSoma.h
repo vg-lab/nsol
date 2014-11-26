@@ -38,17 +38,10 @@ namespace nsol
 
 	  ///@}
 
-
-  protected:
-
-	  SegmentPtr _preSynapticSegment;  // Segment of a presynaptic neuron
-
-	  SegmentPtr _postSynapticSegment; // Segment of a postsynaptic neuron
-
   }; // class SynapseSomaToSoma
 
 }// namespace nsol
 
-#endif
+#endif // __NSOL_SYNAPSE_SOMA_TO_SOMA__
 
 //EOF

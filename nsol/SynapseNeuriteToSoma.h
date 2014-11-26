@@ -34,15 +34,36 @@ namespace nsol
 	  * TODO: construct protected objects
 	  */
 	  NSOL_API
-	  SynapseSomaToSoma ( void );
+	  SynapseNeuriteToSoma ( SegmentPtr preSynapticSegment = nullptr);
 
 	  ///@}
+
+	  /** @name getters and setters methods */
+	  ///@{
+
+	  /**
+	  * Method to add a presynaptic segment to the synapse.
+	  * @param presynaptic segment.
+	  * @see Synapse
+	  * @return pointer to the added presynaptic segment added
+	  */
+	  NSOL_API
+	  void preSynapticSegment( SegmentPtr presynaptic_segment);
+
+	  /**
+	  * Method to get the presynaptic segment.
+	  * @return pointer to the presynaptic segment.
+	  */
+	  NSOL_API
+	  SegmentPtr preSynapticSegment( void );
+
+	  ///@}
+
+
 
   protected:
 
 	  SegmentPtr _preSynapticSegment;  // Segment of a presynaptic neuron
-
-	  SegmentPtr _postSynapticSegment; // Segment of a postsynaptic neuron
 
   }; // class SynapseNeuriteToSoma
 

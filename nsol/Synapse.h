@@ -33,11 +33,11 @@ namespace nsol
 	 //! Possible types of synapse
 	  typedef enum
 	  {
+		  DENDRODENDRITIC = 0,
 		  AXODENDRITIC,
+		  AXOAXONIC,
 		  SOMATOSOMAL,
 		  AXOSOMATIC,
-		  AXOAXONIC,
-		  DENDRODENDRÍTIC,
 		  DENDROSOMATIC
 	  } TSynapseType;
 
@@ -45,10 +45,10 @@ namespace nsol
 	  ///@{
 
 	 /**
-	  * Default Synapse class constructor.
+	  * !Default Synapse class constructor.
 	  */
 	  NSOL_API
-	  Synapse(const TSynapseType neuriteType);
+	  Synapse (TSynapseType synapseType = AXODENDRITIC);
 
 	  NSOL_API
 	  virtual ~Synapse(void);
@@ -66,37 +66,38 @@ namespace nsol
 	  * @return pointer to the added presynaptic neuron added
 	  */
 	 NSOL_API
-	 NeuronPtr addPreSinapticNeuron( Neuron presinaptic_neuron);
+	 void preSynapticNeuron( NeuronPtr presynaptic_neuron);
 
 	  /**
 	  * Method to add a postsynaptic neuron to the synapse.
 	  * @param postsynaptic neuron.
-	  * @see Neuron
+	  * @see Neuronreturn _dendriteType
 	  * @return pointer to the added postsynaptic neuron added
 	  */
 	 NSOL_API
-	 NeuronPtr addPostSinapticNeuron( Neuron postsinaptic_neuron);
+	 void postSynapticNeuron( NeuronPtr postsynaptic_neuron);
 
 	 /**
 	 * Method to get the presynaptic neuron.
 	 * @return pointer to the presynaptic neuron.
 	 */
 	 NSOL_API
-	 NeuronPtr preSynapticNeuron( void ) const;
+	 NeuronPtr preSynapticNeuron( void );
 
 	 /**
 	 * Method to get the postsynaptic neuron.
 	 * @return pointer to the postsynaptic neuron.
 	 */
 	 NSOL_API
-	 NeuronPtr postSynapticNeuron( void ) const;
+	 NeuronPtr postSynapticNeuron( void );
 
 	 /**
 	 * Method to get the synapse type.
 	 * @return synapse type
 	 */
 	NSOL_API
-	TSynapseType & synapseType();
+	//! Get the type of synapse
+	TSynapseType & synapseType(void);
 
 	///@}
 
@@ -106,7 +107,7 @@ namespace nsol
 
 	  NeuronPtr _postSynapticNeuron;
 
-	  TSynapseType _type;
+	  TSynapseType _synapseType;
   }; // namespace nsol
 
 }
