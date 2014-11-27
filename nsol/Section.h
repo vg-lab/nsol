@@ -32,7 +32,7 @@ namespace nsol
     Section( NeuritePtr initNeurite
       , SectionPtr initSection
       , Sections initChilds
-      , List<NodePtr> list );
+      , List<NodePtr>* list );
 
     NSOL_API
     ~Section( );

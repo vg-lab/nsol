@@ -23,31 +23,26 @@ namespace nsol
   Section::Section( NeuritePtr initNeurite = nullptr
              , SectionPtr initParent = nullptr
              , Sections initChilds = Sections()
-             , List<NodePtr> list = List<NodePtr>() )
+             , List<NodePtr>* list = new List<NodePtr>() )
     : _neurite ( initNeurite )
     , _parent ( initParent )
     , _childs ( initChilds )
   {
-    if (! list.empty( ) )
-    {
-      List<NodePtr>::iterator it = list.begin( );
-      SegmentPtr s = this->addSegment( );
+    _firstSegment = nullptr;
+    _lastSegment = nullptr;
 
-      s->begin( *it );
-      s->parentSection ( initParent );
-      it++;
-      while (! *it ) 
+    if (! list->empty( ) )
+    {
+      List<NodePtr>::iterator it = list->begin( );
+
+      while ( *it != list->back( ) )
       {
-        s->end( *it );
-      
-        if ( it != list.end( ) ) 
-        {
-          s = this->addSegment( );
-          s->begin( *it );
-          s->parentSection( initParent );     
-        }
-        
+        SegmentPtr segaux = this->addSegment( nullptr );
+        segaux->begin( *it );  
+
         it++;
+
+        segaux->end( *it );
       } // while
     } // if
   }
