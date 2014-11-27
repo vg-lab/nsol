@@ -35,4 +35,8 @@ BOOST_AUTO_TEST_CASE( test_constructor_synapseNeuriteToSoma )
 
 	BOOST_CHECK_EQUAL( sats->preSynapticSegment( ), presynaptic_segment );
 
+	// Free dymanic memory used
+	NSOL_DELETE_PTR( snts );
+	NSOL_DELETE_PTR( sats );
+
 }
