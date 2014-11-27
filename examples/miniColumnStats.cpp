@@ -28,6 +28,9 @@ int main ( int argc, char ** argv )
   nsol::MiniColumnPtr miniColumnWithStats =
     columnsWithStats[0]->miniColumns( )[0];
 
+  // columnsWithStats[0]->miniColumns( )[0]->stats()->dendriticSurface();
+  // return 0;
+
   nsol::BBPSDKReaderCachedStats readerWithCachedStats;
   std::map<unsigned int, nsol::ColumnPtr> columnsWithCachedStats =
     readerWithCachedStats.readExperiment( argv[1] );
@@ -35,9 +38,12 @@ int main ( int argc, char ** argv )
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];
 
-  NSOL_CHECK_THROW( miniColumnWithStats->stats( ), "no stats in column" );
+  NSOL_CHECK_THROW( miniColumnWithStats->stats( ), "no stats in minicolumn" );
   NSOL_CHECK_THROW( miniColumnWithCachedStats->stats( ),
-                    "no stats in column" );
+                    "no stats in minicolumn" );
+
+  std::cout << "Number of neurons: "
+            << miniColumnWithStats->neurons().size() << std::endl;
 
   std::cout << std::endl;
 
@@ -93,15 +99,24 @@ void computeMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   miniColumn->stats( )->neuriticBifurcations( );
 }
 
+#define COMPUTE_AND_PRINT2( __MSG__, __METHOD__ )                        \
+  std::cout << __MSG__                                                  \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )      \
+  << std::endl;                                                         \
+
 
 #define COMPUTE_AND_PRINT( __MSG__, __METHOD__ )                        \
   std::cout << __MSG__                                                  \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )      \
+  << "\tmin: "                                                          \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MIN )        \
+  << "\tmax: "                                                          \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MAX )        \
   << "\tmean: "                                                         \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MEAN )       \
   << "\tvariance: "                                                     \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::VARIANCE )   \
-  << "\tstd dev.: "                                                      \
+  << "\tstd dev.: "                                                     \
   << miniColumn->stats( )->__METHOD__( nsol::TAggregation::STD_DEV )    \
   << std::endl;                                                         \
 

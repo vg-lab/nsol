@@ -27,8 +27,6 @@
 
 #include <BBP/bbp.h>
 
-using namespace std;
-
 namespace nsol
 {
 
@@ -176,9 +174,9 @@ namespace nsol
 
     // A bbpsdk experiment is opened
     bbp::Experiment experiment;
-    std::cout << toRead << ": Opening experiment " << std::endl;
+    std::cerr << toRead << ": Opening experiment " << std::endl;
     experiment.open(toRead);
-    std::cout << toRead << ": DONE " << std::endl;
+    std::cerr << toRead << ": DONE " << std::endl;
 
     if (!experiment.is_open()) {
       std::cerr << toRead << ": Experiment could not be opened"
@@ -186,7 +184,7 @@ namespace nsol
     }
 
     std::vector< NeuronPtr > neuronVector;
-    std::map< string, NeuronMorphologyPtr > neuronMorphoMap;
+    std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
     std::map< unsigned int, MiniColumnPtr > miniColumnMap;
 
     // The microcircuit of the experiment loads the data
@@ -207,8 +205,8 @@ namespace nsol
     for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
          it != neuronsExpe.end(); ++it)
     {
-      cout << "Neuron " << it->label() << " with morphology "
-           << it->morphology().label() << std::endl;
+      std::cerr << "Neuron " << it->label() << " with morphology "
+               << it->morphology().label() << std::endl;
 
       NeuronPtr neuron (new NEURON(false)); //New neuron
       neuronVector.push_back( neuron );
@@ -256,7 +254,7 @@ namespace nsol
       if (neuronMorphoMap.find(it->morphology().label()) !=
           neuronMorphoMap.end())
       {
-        cout << "Morphology previously loaded" << endl;
+        std::cerr << "Morphology previously loaded" << std::endl;
 
         NeuronMorphologyPtr m =
           neuronMorphoMap.find(it->morphology().label())->second;
@@ -267,10 +265,11 @@ namespace nsol
         neuron->layer() = it->layer();
         neuron->transform() = it->global_transform();
         neuron->gid() = it->gid();
-      } else
+      }
+      else
       {
-        cout << "Loading morphology " << it->morphology().label()
-             << endl;
+        std::cerr << "Loading morphology " << it->morphology().label()
+                  << std::endl;
 
         NeuronMorphologyPtr m ( new NEURONMORPHOLOGY );
 
@@ -454,7 +453,7 @@ namespace nsol
     bool findCsv = false;
 
     std::vector<NeuronPtr> neuronVector;
-    std::map<string, NeuronMorphologyPtr> neuronMorphoMap;
+    std::map<std::string, NeuronMorphologyPtr> neuronMorphoMap;
     std::map<unsigned int, MiniColumnPtr> miniColumnMap;
 
     DIR *pDIR;
@@ -472,7 +471,7 @@ namespace nsol
             && str.substr(found + 1) == "csv") {
 
           findCsv = true;
-          cout << "\nLoading neuron file " << entry->d_name << endl;
+          std::cerr << "\nLoading neuron file " << entry->d_name << std::endl;
 
           std::ifstream inFile;
           inFile.open(dir + entry->d_name, std::ios::in);
@@ -559,7 +558,7 @@ namespace nsol
 //          iss >> csvLine.morphoLabel;
               getline(iss, csvLine.morphoLabel, ',');
 
-              cout << "Neuron " << csvLine.label
+              std::cerr << "Neuron " << csvLine.label
                    << " with morphology "
                    << csvLine.morphoLabel << std::endl;
 
@@ -575,7 +574,8 @@ namespace nsol
                 neuron->miniColumn(
                   miniColumnMap[csvLine.miniColumn]);
                 miniColumnExist = true;
-              } else
+              }
+              else
                 //MiniColumn not exist
               {
                 miniColumnExist = false;
@@ -612,23 +612,25 @@ namespace nsol
               //Morphology previously loaded
               if (neuronMorphoMap.find(csvLine.morphoLabel)
                   != neuronMorphoMap.end()) {
-                cout << "Morphology file previously loaded"
-                     << endl;
+                std::cerr << "Morphology file previously loaded"
+                          << std::endl;
                 neuron->morphology(
                   neuronMorphoMap.find(csvLine.morphoLabel)->second);
                 neuron->layer() = csvLine.layer;
                 neuron->transform() = csvLine.globalTrans;
                 neuron->gid() = csvLine.id;
-              } else {
-                cout << "Loading morphology file "
+              } else
+              {
+                std::cerr << "Loading morphology file "
                      << csvLine.morphoLabel << ".swc"
-                     << endl;
+                          << std::endl;
                 NeuronMorphologyPtr m = r.readFile(
                   dir + csvLine.morphoLabel + ".swc");
 
-                if (!m) {
-                  cout << "\nError opening morphology file "
-                       << csvLine.morphoLabel << endl;
+                if (!m)
+                {
+                  std::cerr << "\nError opening morphology file "
+                       << csvLine.morphoLabel << std::endl;
                   continue;
                 }
 
@@ -649,7 +651,7 @@ namespace nsol
     }
 
     if (!findCsv)
-      cout << "Neuron file not found." << std::endl;
+      std::cerr << "Neuron file not found." << std::endl;
 
     return columnMap;
   }

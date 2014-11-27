@@ -142,7 +142,9 @@ typedef enum
   TOTAL = 0,
   MEAN,
   VARIANCE,
-  STD_DEV
+  STD_DEV,
+  MIN,
+  MAX
 } TAggregation;
 
 } // namespace nsol

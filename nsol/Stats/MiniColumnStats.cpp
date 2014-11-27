@@ -28,9 +28,16 @@ namespace nsol
   // Volume related methods
   //
 
-#define RETURN_ACCUMULATED_FOR_ALL_NEURONS(                             \
+//    std::cout << this << "," << morphology << "," <<  morphology->stats( )->__STAT_METHOD__( ) << std::endl; 
+
+#define RETURN_ACCUMULATED_FOR_ALL_NEURONS(                              \
   __TYPE__, __STAT_METHOD__, __AGGREG__ )                               \
   __TYPE__ value = 0;                                                   \
+                                                                        \
+  if ( __AGGREG__ == TAggregation::MIN )                                \
+    value = std::numeric_limits< float >::max( );                       \
+  if ( __AGGREG__ == TAggregation::MAX )                                \
+    value = std::numeric_limits< float >::min( );                       \
                                                                         \
   __TYPE__ mean;                                                        \
                                                                         \
@@ -41,22 +48,28 @@ namespace nsol
     mean = this->__STAT_METHOD__( TAggregation::MEAN );                 \
   NSOL_CONST_FOREACH( neuron, _neurons )                                \
   {                                                                     \
-    NeuronMorphologyPtr morphology = ( * neuron )->morphology( );       \
-    NSOL_DEBUG_CHECK( morphology, "neuron without morphology" );        \
-    NSOL_DEBUG_CHECK( morphology->stats( ),                             \
-                      "neuron without morphology stats" );              \
+  NeuronMorphologyPtr morphology = ( * neuron )->morphology( );         \
+  NSOL_DEBUG_CHECK( morphology, "neuron without morphology" );          \
+  NSOL_DEBUG_CHECK( morphology->stats( ),                               \
+                    "neuron without morphology stats" );                \
                                                                         \
-    if ( __AGGREG__ == TAggregation::VARIANCE )                         \
-    {                                                                   \
-      __TYPE__ tmpValue = morphology->stats( )->__STAT_METHOD__( );     \
-      value += ( mean - tmpValue ) * ( mean - tmpValue );               \
-    }                                                                   \
-    else                                                                \
-      value += morphology->stats( )->__STAT_METHOD__( );                \
+  if ( __AGGREG__ == TAggregation::VARIANCE )                           \
+  {                                                                     \
+    __TYPE__ tmpValue = morphology->stats( )->__STAT_METHOD__( );       \
+    value += ( mean - tmpValue ) * ( mean - tmpValue );                 \
+  }                                                                     \
+  else if ( __AGGREG__ == TAggregation::MIN )                           \
+    value = std::min( value, morphology->stats( )->__STAT_METHOD__( )); \
+  else if ( __AGGREG__ == TAggregation::MAX )                           \
+    value = std::max( value, morphology->stats( )->__STAT_METHOD__( )); \
+  else                                                                  \
+    value += morphology->stats( )->__STAT_METHOD__( );                  \
   }                                                                     \
   switch ( __AGGREG__ )                                                 \
   {                                                                     \
   case TAggregation::TOTAL:                                             \
+  case TAggregation::MIN:                                               \
+  case TAggregation::MAX:                                               \
     return value;                                                       \
   case TAggregation::MEAN:                                              \
     return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
