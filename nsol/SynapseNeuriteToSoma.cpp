@@ -13,10 +13,9 @@ namespace nsol
 {
 
 		SynapseNeuriteToSoma::SynapseNeuriteToSoma (
-				TSynapseType synapseType_ = Synapse::DENDROSOMATIC,
-				SegmentPtr preSynapticSegment_ = nullptr )
-			:Synapse( synapseType_ )
-			, _preSynapticSegment( preSynapticSegment_ )
+				TSynapseType synapseType_)
+			: Synapse( synapseType_ )
+			, _preSynapticSegment( nullptr )
 			{
 				NSOL_DEBUG_CHECK( synapseType_ == Synapse::DENDROSOMATIC ||
 						          synapseType_ == Synapse::AXOSOMATIC,

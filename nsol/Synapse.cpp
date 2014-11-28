@@ -11,14 +11,14 @@
 namespace nsol
 {
 	  //! Default constructor and destructor
-	 Synapse::Synapse( TSynapseType synapseType)
-	 : _synapseType(synapseType)
-	 , _preSynapticNeuron( nullptr)
-	 , _postSynapticNeuron( nullptr)
+	 Synapse::Synapse( TSynapseType synapseType_ )
+	 : _preSynapticNeuron( nullptr )
+	 , _postSynapticNeuron( nullptr )
+	 , _synapseType( synapseType_ )
 	 {
 	 }
 
-	 Synapse::~Synapse(void)
+	 Synapse::~Synapse( void )
 	 {
 	 }
 

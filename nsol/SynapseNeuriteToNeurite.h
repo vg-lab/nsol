@@ -9,8 +9,9 @@
 #define __NSOL_SYNAPSE_NEURITE_TO_NEURITE__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Segment.h>
+#include "NsolTypes.h"
+#include "Segment.h"
+#include "Synapse.h"
 
 namespace nsol
 {
@@ -27,14 +28,13 @@ namespace nsol
 
 	  /** @name Constructors  */
 	  ///@{
-	  void
+
 	  /**
 	  * Default SynapseNeuriteToNeurite class constructor.
 	  * TODO: construct protected objects
 	  */
 	  NSOL_API
-	  SynapseNeuriteToNeurite ( SegmentPtr preSynapticSegment = nullptr,
-			                    SegmentPtr postSynapticSegment = nullptr );
+	  SynapseNeuriteToNeurite (TSynapseType synapseType_ = Synapse::AXODENDRITIC);
 
 	  ///@}
 

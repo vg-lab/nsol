@@ -105,8 +105,8 @@ namespace nsol
 	 * @see Synapse
 	 * @return pointer to the added synapse
 	 */
-	NSOL_API
-	SynapsePtr addSynapse( Synapse::TSynapseType synapseType);
+//	NSOL_API
+//	SynapsePtr addSynapse( Synapse::TSynapseType synapseType);
 
     NSOL_API
     unsigned int numNeurites( void );

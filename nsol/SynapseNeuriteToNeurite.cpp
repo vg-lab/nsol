@@ -13,12 +13,11 @@ namespace nsol
 {
 
 	SynapseNeuriteToNeurite::SynapseNeuriteToNeurite (
-			TSynapseType synapseType_ = Synapse::AXODENDRITIC,
-			SegmentPtr preSynapticSegment_ = nullptr,
-            SegmentPtr postSynapticSegment_ = nullptr )
-	: Synapse( synapseType_ )
-	, _preSynapticSegment( preSynapticSegment_ )
-	, _postSynapticSegment( preSynapticSegment_ )
+			TSynapseType synapseType_)
+	:  Synapse( synapseType_ )
+	, _preSynapticSegment( nullptr )
+	, _postSynapticSegment( nullptr )
+
 	{
 		NSOL_DEBUG_CHECK( synapseType_ == Synapse::AXODENDRITIC ||
 				          synapseType_ == Synapse::DENDRODENDRITIC ||

@@ -9,9 +9,10 @@
 #define __NSOL_SYNAPSE_NEURITE_TO_SOMA__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Neuron.h>
-#include <nsol/Segment.h>
+#include "NsolTypes.h"
+#include "Synapse.h"
+#include "Neuron.h"
+#include "Segment.h"
 
 namespace nsol
 {
@@ -34,7 +35,7 @@ namespace nsol
 	  * TODO: construct protected objects
 	  */
 	  NSOL_API
-	  SynapseNeuriteToSoma ( SegmentPtr preSynapticSegment = nullptr);
+	  SynapseNeuriteToSoma (TSynapseType synapseType_ = Synapse::DENDROSOMATIC);
 
 	  ///@}
 
