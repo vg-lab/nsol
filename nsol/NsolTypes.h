@@ -1,5 +1,5 @@
 /**
- * @file    Types.h
+ * @file    NsolTypes.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date    
@@ -67,6 +67,9 @@ namespace nsol
   class Section;
   class Segment;
   class Synapse;
+  class SynapseNeuriteToNeurite;
+  class SynapseNeuriteToSoma;
+  class SynapseSomaToSoma;
 
 
 #if (NSOL_WITH_SHARED_PTR == 1)
@@ -81,6 +84,9 @@ namespace nsol
   typedef std::shared_ptr<Section> SectionPtr;
   typedef std::shared_ptr<Segment> SegmentPtr;
   typedef std::shared_ptr<Synapse> SynapsePtr;
+  typedef std::shared_ptr<SynapseNeuriteToNeurite> SynapseNeuriteToNeuritePtr;
+  typedef std::shared_ptr<SynapseNeuriteToSoma> SynapseNeuriteToSomaPtr;
+  typedef std::shared_ptr<SynapseSomaToSoma> SynapseSomaToSomaPtr;
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
@@ -102,6 +108,9 @@ namespace nsol
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
   typedef Synapse * SynapsePtr;
+  typedef SynapseNeuriteToNeurite * SynapseNeuriteToNeuritePtr;
+  typedef SynapseNeuriteToSoma * SynapseNeuriteToSomaPtr;
+  typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )

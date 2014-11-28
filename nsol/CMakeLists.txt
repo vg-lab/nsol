@@ -28,6 +28,9 @@ Axon.h
 Spine.h
 Dendrite.h
 Synapse.h
+SynapseNeuriteToNeurite.h
+SynapseNeuriteToSoma.h
+SynapseSomaToSoma.h
 )
 
 set(NSOL_HEADERS )
@@ -44,6 +47,10 @@ Neurite.cpp
 Column.cpp
 Segment.cpp
 Section.cpp
+Synapse.cpp
+SynapseNeuriteToNeurite.cpp
+SynapseNeuriteToSoma.cpp
+SynapseSomaToSoma.cpp
 )
 
 if (BBPSDK_FOUND)

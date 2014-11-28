@@ -23,7 +23,8 @@ BOOST_AUTO_TEST_CASE( test_constructor_synapseNeuriteToNeurite )
 	BOOST_CHECK_EQUAL( sntn->synapseType( ), Synapse::AXODENDRITIC );
 
 	// Create a synapse dendrodendritic
-	nsol::SynapseNeuriteToNeuritePtr  sdd(new nsol::SynapseNeuriteToNeurite(Synapse::DENDRODENDRITIC ));
+
+	nsol::SynapseNeuriteToNeuritePtr sdd(new nsol::SynapseNeuriteToNeurite(Synapse::DENDRODENDRITIC));
 
 	// Check the type of the synapse
 	BOOST_CHECK_EQUAL( sdd->synapseType( ), Synapse::DENDRODENDRITIC );
@@ -41,8 +42,8 @@ BOOST_AUTO_TEST_CASE( test_constructor_synapseNeuriteToNeurite )
 	saa->preSynapticSegment( presynaptic_segment );
 	saa->postSynapticSegment( postsynaptic_segment );
 
-	BOOST_CHECK_EQUAL( sats->preSynapticSegment( ), presynaptic_segment );
-	BOOST_CHECK_EQUAL( sats->postSynapticSegment( ), postsynaptic_segment );
+	BOOST_CHECK_EQUAL( saa->preSynapticSegment( ), presynaptic_segment );
+	BOOST_CHECK_EQUAL( saa->postSynapticSegment( ), postsynaptic_segment );
 
 	// Free dymanic memory used
     NSOL_DELETE_PTR( sntn);
