@@ -28,6 +28,15 @@ namespace nsol
 
   public:
 
+    //! Stats that can be computed for Section
+    typedef enum
+    {
+      SURFACE = 0,
+      VOLUME,
+      LENGTH,
+      SECTION_NUM_STATS
+    } TSectionStat;
+
     /**
      * Returns object as SectionStats
      * @return pointer to SectionStats object
@@ -38,26 +47,34 @@ namespace nsol
       return this;
     }
 
-    /**
-     * Computes volume of the section
-     * @return volume of section
-     */
     NSOL_API
-    virtual float volume( void ) const;
+    virtual float getStat( TSectionStat stat,
+                           TAggregation agg = TAggregation::TOTAL ) const;
 
-    /**
-     * Computes surface of the section
-     * @return surface of section
-     */
-    NSOL_API
-    virtual float surface( void ) const;
+    // /**
+    //  * Computes volume of the section
+    //  * @return volume of section
+    //  */
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    /**
-     * Computes length of the section
-     * @return length of section
-     */
-    NSOL_API
-    virtual float length( void ) const;
+    // /**
+    //  * Computes surface of the section
+    //  * @return surface of section
+    //  */
+    // NSOL_API
+    // virtual float surface( void ) const;
+
+    // /**
+    //  * Computes length of the section
+    //  * @return length of section
+    //  */
+    // NSOL_API
+    // virtual float length( void ) const;
+
+
+  protected:
+
 
   }; // class SectionStats
 

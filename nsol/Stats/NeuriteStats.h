@@ -28,6 +28,16 @@ namespace nsol
 
   public:
 
+    typedef enum
+    {
+      SURFACE = 0,
+      VOLUME,
+      LENGTH,
+      BIFURCATIONS,
+      NEURITE_NUM_STATS
+    } TNeuriteStat;
+
+
     NSOL_API
     NeuriteStats( TNeuriteType neuriteType = DENDRITE );
 
@@ -41,33 +51,38 @@ namespace nsol
       return this;
     }
 
+    NSOL_API
+    virtual float getStat( TNeuriteStat stat,
+                           TAggregation agg = TAggregation::TOTAL ) const;
+
+
     /**
      * Computes volume of the neurite
      * @return volume of neurite
      */
-    NSOL_API
-    virtual float volume( void ) const;
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    /**
-     * Computes surface of the neurite
-     * @return surface of neurite
-     */
-    NSOL_API
-    virtual float surface( void ) const;
+    // /**
+    //  * Computes surface of the neurite
+    //  * @return surface of neurite
+    //  */
+    // NSOL_API
+    // virtual float surface( void ) const;
 
-    /**
-     * Computes length of the neurite
-     * @return length of neurite
-     */
-    NSOL_API
-    virtual float length( void ) const;
+    // /**
+    //  * Computes length of the neurite
+    //  * @return length of neurite
+    //  */
+    // NSOL_API
+    // virtual float length( void ) const;
 
-    /**
-     * Computes the number of bifurcations
-     * @return number of bifurcations
-     */
-    NSOL_API
-    virtual unsigned int bifurcations( void ) const;
+    // /**
+    //  * Computes the number of bifurcations
+    //  * @return number of bifurcations
+    //  */
+    // NSOL_API
+    // virtual unsigned int bifurcations( void ) const;
 
 
   }; // class NeuriteStats

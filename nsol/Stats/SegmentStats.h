@@ -19,17 +19,31 @@ namespace nsol
 
   public:
 
+    //! Stats that can be computed for Segment
+    typedef enum
+    {
+      SURFACE = 0,
+      VOLUME,
+      LENGTH,
+      MEAN_RADIUS,
+      SEGMENT_NUM_STATS
+    } TSegmentStat;
+
+
     NSOL_API
     SegmentStats * stats( void );
 
     NSOL_API
-    virtual float volume( void ) const;
+    virtual float getStat( TSegmentStat stat ) const;
 
-    NSOL_API
-    virtual float surface( void ) const;
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    NSOL_API
-    virtual float length( void ) const;
+    // NSOL_API
+    // virtual float surface( void ) const;
+
+    // NSOL_API
+    // virtual float length( void ) const;
 
 
   }; // class SegmentStats

@@ -48,28 +48,33 @@ Writer/SwcWriter.h
 set(NSOL_HEADERS )
 
 set(NSOL_SOURCES ${COMMON_SOURCES}
-Axon.cpp
-Column.cpp
-Dendrite.cpp
-MiniColumn.cpp
-Neurite.cpp
-Neuron.cpp
-NeuronMorphology.cpp
-Node.cpp
-Section.cpp
-Segment.cpp
-Soma.cpp
-#Stats/DendriteStats.cpp
-Stats/MiniColumnStats.cpp
-Stats/NeuronMorphologyStats.cpp
-Stats/NeuronMorphologyCachedStats.cpp
-Stats/NeuriteStats.cpp
-Stats/NeuriteCachedStats.cpp
-Stats/NodeCached.cpp
-Stats/SectionStats.cpp
-Stats/SectionCachedStats.cpp
-Stats/SegmentStats.cpp
-Stats/SegmentCachedStats.cpp
+  Axon.cpp
+  Column.cpp
+  Dendrite.cpp
+  MiniColumn.cpp
+  Neurite.cpp
+  Neuron.cpp
+  NeuronMorphology.cpp
+  Node.cpp
+  Section.cpp
+  Segment.cpp
+  Soma.cpp
+  Stats/MiniColumnStats.cpp
+  Stats/NeuronMorphologyStats.cpp
+  Stats/NeuronMorphologyCachedStats.cpp
+  Stats/NeuriteStats.cpp
+  Stats/NeuriteCachedStats.cpp
+  Stats/NodeCached.cpp
+  Stats/SectionStats.cpp
+  Stats/SectionCachedStats.cpp
+  Stats/SegmentStats.cpp
+  Stats/SegmentCachedStats.cpp
+# Segment.cpp
+# Section.cpp
+# Stats/SectionStats.cpp
+# Stats/SegmentStats.cpp
+# Stats/SegmentCachedStats.cpp
+# Stats/SectionCachedStats.cpp
 )
 
 if (BBPSDK_FOUND)

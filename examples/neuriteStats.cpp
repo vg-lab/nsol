@@ -31,7 +31,8 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
       //   std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
       //                  ? "Clean" : "Dirty" );
 
-      std::cout << " " << ( * it )->stats( )->surface( ) << " ";
+      std::cout << " " << ( * it )->stats( )->getStat(
+        nsol::NeuriteStats::SURFACE ) << " ";
 
       // if ( cached )
       //   std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
@@ -57,7 +58,9 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
         //     ( ! cached->dirty( nsol::SectionCachedStats::SURFACE )
         //       ? "Clean, " : "Dirty, " );
 
-        std::cout << ( * sectionsIt )->stats( )->surface( ) << " ";
+//        std::cout << ( * sectionsIt )->stats( )->surface( ) << " ";
+        std::cout << ( * sectionsIt )->stats( )->getStat(
+          nsol::SectionStats::TSectionStat::SURFACE ) << " ";
       }
       delete sections;
 

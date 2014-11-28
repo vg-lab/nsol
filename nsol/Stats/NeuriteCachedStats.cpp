@@ -27,7 +27,7 @@ namespace nsol
 
   void NeuriteCachedStats::setAndPropagateDirty( unsigned int id )
   {
-    NSOL_DEBUG_CHECK( id < NEURITE_NUM_CACHED_VALUES, "id not valid" );
+    NSOL_DEBUG_CHECK( id < NEURITE_NUM_STATS, "id not valid" );
 
     this->Cached::setAndPropagateDirty( id );
     auto cached = NSOL_DYNAMIC_CAST( Cached, this->morphology( ));
@@ -50,61 +50,80 @@ namespace nsol
     this->setAndPropagateDirty( );
   }
 
-  float NeuriteCachedStats::volume( void ) const
+
+  float NeuriteCachedStats::getStat(
+    TNeuriteStat stat, TAggregation agg ) const
   {
+    if ( agg == TAggregation::TOTAL )
+    {
+      if ( ! this->dirty( stat ))
+        return this->getValue( stat );
 
-    if ( ! this->dirty( NeuriteCachedStats::VOLUME ))
-      return this->getValue( NeuriteCachedStats::VOLUME );
+      float statValue = this->NeuriteStats::getStat( stat, agg );
+      this->cacheValue( stat, statValue );
 
-    float accumVolume = this->NeuriteStats::volume( );
+      return statValue;
+    }
 
-    this->cacheValue( NeuriteCachedStats::SURFACE, accumVolume );
-
-    return accumVolume;
-
+    return this->NeuriteStats::getStat( stat, agg );
   }
 
-  float NeuriteCachedStats::surface( void ) const
-  {
-    if ( ! this->dirty( NeuriteCachedStats::SURFACE ))
-      return this->getValue( NeuriteCachedStats::SURFACE );
 
-    float accumSurface = this->NeuriteStats::surface( );
+  // float NeuriteCachedStats::volume( void ) const
+  // {
 
-    this->cacheValue( NeuriteCachedStats::SURFACE, accumSurface );
+  //   if ( ! this->dirty( NeuriteCachedStats::VOLUME ))
+  //     return this->getValue( NeuriteCachedStats::VOLUME );
 
-    return accumSurface;
+  //   float accumVolume = this->NeuriteStats::volume( );
 
-  }
+  //   this->cacheValue( NeuriteCachedStats::SURFACE, accumVolume );
 
-  float NeuriteCachedStats::length( void ) const
-  {
+  //   return accumVolume;
 
-    if ( ! this->dirty( NeuriteCachedStats::LENGTH ))
-      return this->getValue( NeuriteCachedStats::LENGTH );
+  // }
 
-    float accumLength = this->NeuriteStats::length( );
+  // float NeuriteCachedStats::surface( void ) const
+  // {
+  //   if ( ! this->dirty( NeuriteCachedStats::SURFACE ))
+  //     return this->getValue( NeuriteCachedStats::SURFACE );
 
-    this->cacheValue( NeuriteCachedStats::LENGTH, accumLength );
+  //   float accumSurface = this->NeuriteStats::surface( );
 
-    return accumLength;
+  //   this->cacheValue( NeuriteCachedStats::SURFACE, accumSurface );
 
-  }
+  //   return accumSurface;
 
-  unsigned int NeuriteCachedStats::bifurcations( void ) const
-  {
+  // }
 
-    if ( ! this->dirty( NeuriteCachedStats::BIFURCATIONS ))
-      return int( this->getValue( NeuriteCachedStats::BIFURCATIONS ));
+  // float NeuriteCachedStats::length( void ) const
+  // {
 
-    unsigned int  accumBifurcations = this->NeuriteStats::bifurcations( );
+  //   if ( ! this->dirty( NeuriteCachedStats::LENGTH ))
+  //     return this->getValue( NeuriteCachedStats::LENGTH );
 
-    this->cacheValue( NeuriteCachedStats::BIFURCATIONS,
-                      float( accumBifurcations ) );
+  //   float accumLength = this->NeuriteStats::length( );
 
-    return accumBifurcations;
+  //   this->cacheValue( NeuriteCachedStats::LENGTH, accumLength );
 
-  }
+  //   return accumLength;
+
+  // }
+
+  // unsigned int NeuriteCachedStats::bifurcations( void ) const
+  // {
+
+  //   if ( ! this->dirty( NeuriteCachedStats::BIFURCATIONS ))
+  //     return int( this->getValue( NeuriteCachedStats::BIFURCATIONS ));
+
+  //   unsigned int  accumBifurcations = this->NeuriteStats::bifurcations( );
+
+  //   this->cacheValue( NeuriteCachedStats::BIFURCATIONS,
+  //                     float( accumBifurcations ) );
+
+  //   return accumBifurcations;
+
+  // }
 
 
 } // namespace nsol

@@ -55,47 +55,58 @@ namespace nsol
     this->setAndPropagateDirty( );
   }
 
-
-  float SegmentCachedStats::volume( void ) const
+  float SegmentCachedStats::getStat( TSegmentStat stat ) const
   {
+    if ( ! this->dirty( stat ))
+      return this->getValue( stat );
 
-    if ( ! this->dirty( SegmentCachedStats::VOLUME ))
-      return this->getValue( SegmentCachedStats::VOLUME );
+    float statValue = this->SegmentStats::getStat( stat );
+    this->cacheValue( stat, statValue );
 
-    float accumVolume = this->SegmentStats::volume( );
-
-    this->cacheValue( SegmentCachedStats::SURFACE, accumVolume );
-
-    return accumVolume;
-
+    return statValue;
   }
 
-  float SegmentCachedStats::surface( void ) const
-  {
 
-    if ( ! this->dirty( SegmentCachedStats::SURFACE ))
-      return this->getValue( SegmentCachedStats::SURFACE );
+  // float SegmentCachedStats::volume( void ) const
+  // {
 
-    float accumSurface = this->SegmentStats::surface( );
+  //   if ( ! this->dirty( SegmentCachedStats::VOLUME ))
+  //     return this->getValue( SegmentCachedStats::VOLUME );
 
-    this->cacheValue( SegmentCachedStats::SURFACE, accumSurface );
+  //   float accumVolume = this->SegmentStats::volume( );
 
-    return accumSurface;
+  //   this->cacheValue( SegmentCachedStats::SURFACE, accumVolume );
 
-  }
+  //   return accumVolume;
 
-  float SegmentCachedStats::length( void ) const
-  {
+  // }
 
-    if ( ! this->dirty( SegmentCachedStats::LENGTH ))
-      return this->getValue( SegmentCachedStats::LENGTH );
+  // float SegmentCachedStats::surface( void ) const
+  // {
 
-    float accumLength = this->SegmentStats::length( );
+  //   if ( ! this->dirty( SegmentCachedStats::SURFACE ))
+  //     return this->getValue( SegmentCachedStats::SURFACE );
 
-    this->cacheValue( SegmentCachedStats::SURFACE, accumLength );
+  //   float accumSurface = this->SegmentStats::surface( );
 
-    return accumLength;
+  //   this->cacheValue( SegmentCachedStats::SURFACE, accumSurface );
 
-  }
+  //   return accumSurface;
+
+  // }
+
+  // float SegmentCachedStats::length( void ) const
+  // {
+
+  //   if ( ! this->dirty( SegmentCachedStats::LENGTH ))
+  //     return this->getValue( SegmentCachedStats::LENGTH );
+
+  //   float accumLength = this->SegmentStats::length( );
+
+  //   this->cacheValue( SegmentCachedStats::SURFACE, accumLength );
+
+  //   return accumLength;
+
+  // }
 
 } // namespace nsol
