@@ -36,15 +36,15 @@ namespace nsol
 
   public:
 
-    //! Stats that can be cached for NeuriteStats
-    typedef enum
-    {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      BIFURCATIONS,
-      NEURITE_NUM_CACHED_VALUES
-    } TNeuriteCachedValues;
+    // //! Stats that can be cached for NeuriteStats
+    // typedef enum
+    // {
+    //   SURFACE = 0,
+    //   VOLUME,
+    //   LENGTH,
+    //   BIFURCATIONS,
+    //   NEURITE_NUM_CACHED_VALUES
+    // } TNeuriteCachedValues;
 
     /**
      * Default constructor
@@ -79,33 +79,38 @@ namespace nsol
     NSOL_API
     virtual void firstSection( SectionPtr section );
 
+    NSOL_API
+    virtual float getStat( TNeuriteStat stat,
+                           TAggregation agg = TAggregation::TOTAL ) const;
+
+
     /**
      * Computes volume of the neurite
      * @return volume of neurite
      */
-    NSOL_API
-    virtual float volume( void ) const;
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    /**
-     * Computes surface of the neurite
-     * @return surface of neurite
-     */
-    NSOL_API
-    virtual float surface( void ) const;
+    // /**
+    //  * Computes surface of the neurite
+    //  * @return surface of neurite
+    //  */
+    // NSOL_API
+    // virtual float surface( void ) const;
 
-    /**
-     * Computes length of the neurite
-     * @return length of neurite
-     */
-    NSOL_API
-    virtual float length( void ) const;
+    // /**
+    //  * Computes length of the neurite
+    //  * @return length of neurite
+    //  */
+    // NSOL_API
+    // virtual float length( void ) const;
 
-    /**
-     * Computes the number of bifurcations
-     * @return number of bifurcations
-     */
-    NSOL_API
-    virtual unsigned int bifurcations( void ) const;
+    // /**
+    //  * Computes the number of bifurcations
+    //  * @return number of bifurcations
+    //  */
+    // NSOL_API
+    // virtual unsigned int bifurcations( void ) const;
 
 
 

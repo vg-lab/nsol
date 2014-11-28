@@ -25,14 +25,14 @@ namespace nsol
 
   public:
 
-    typedef enum
-    {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      MEAN_RADIUS,
-      SEGMENT_NUM_CACHED_VALUES
-    } TSegmentCachedValues;
+    // typedef enum
+    // {
+    //   SURFACE = 0,
+    //   VOLUME,
+    //   LENGTH,
+    //   MEAN_RADIUS,
+    //   SEGMENT_NUM_CACHED_VALUES
+    // } TSegmentCachedValues;
 
     NSOL_API
     SegmentCachedStats( void );
@@ -53,13 +53,16 @@ namespace nsol
     void end( NodePtr end_ );
 
     NSOL_API
-    virtual float volume( void ) const;
+    virtual float getStat( TSegmentStat stat ) const;
 
-    NSOL_API
-    virtual float surface( void ) const;
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    NSOL_API
-    virtual float length( void ) const;
+    // NSOL_API
+    // virtual float surface( void ) const;
+
+    // NSOL_API
+    // virtual float length( void ) const;
 
   }; // class SegmentCachedStats
 

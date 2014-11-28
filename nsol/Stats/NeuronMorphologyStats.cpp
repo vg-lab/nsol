@@ -34,7 +34,9 @@ namespace nsol
                           "dendrite type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "dendrite does not have stats" );
-        accumVolume += ( * neurite )->stats( )->volume( );
+//        accumVolume += ( * neurite )->stats( )->volume( );
+        accumVolume += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::VOLUME );
       }
     }
     return accumVolume;
@@ -52,7 +54,8 @@ namespace nsol
                           "axon type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "axon does not have stats" );
-        accumVolume += ( * neurite )->stats( )->volume( );
+        accumVolume += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::VOLUME );
       }
     }
     return accumVolume;
@@ -89,7 +92,8 @@ namespace nsol
                           "dendrite type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "dendrite does not have stats" );
-        accumSurface += ( * neurite )->stats( )->surface( );
+        accumSurface += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::SURFACE );
       }
     }
     return accumSurface;
@@ -107,7 +111,8 @@ namespace nsol
                           "axon type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "axon does not have stats" );
-        accumSurface += ( * neurite )->stats( )->surface( );
+        accumSurface += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::SURFACE );
       }
     }
     return accumSurface;
@@ -144,7 +149,8 @@ namespace nsol
                           "dendrite type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "dendrite does not have stats" );
-        accumLength += ( * neurite )->stats( )->length( );
+        accumLength += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::LENGTH );
       }
     }
     return accumLength;
@@ -162,7 +168,8 @@ namespace nsol
                           "axon type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "axon does not have stats" );
-        accumLength += ( * neurite )->stats( )->length( );
+        accumLength += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::LENGTH );
       }
     }
     return accumLength;
@@ -188,7 +195,9 @@ namespace nsol
                           "dendrite type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "dendrite does not have stats" );
-        accumBifurcations += ( * neurite )->stats( )->bifurcations( );
+        accumBifurcations += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::BIFURCATIONS );
+
       }
     }
     return accumBifurcations;
@@ -207,7 +216,8 @@ namespace nsol
                           "axon type not consistent" );
         NSOL_DEBUG_CHECK( ( * neurite )->stats( ),
                           "axon does not have stats" );
-        accumBifurcations += ( * neurite )->stats( )->bifurcations( );
+        accumBifurcations += ( * neurite )->stats( )->getStat(
+          NeuriteStats::TNeuriteStat::BIFURCATIONS );
       }
     }
     return accumBifurcations;

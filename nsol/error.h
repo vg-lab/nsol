@@ -11,16 +11,11 @@
 
 #include <stdexcept>
 
-#ifdef DEBUG
-  #define NSOL_LOG( msg )                                        \
-    std::cerr << "nsol "                                         \
-              << __FILE__ << "("                                 \
-              << __LINE__ << "): "                               \
-              << msg << std::endl;
-#else
-  #define NSOL_LOG( msg )
-#endif
-
+#define NSOL_LOG( msg )                                          \
+  std::cerr << "nsol "                                           \
+  << __FILE__ << "("                                             \
+  << __LINE__ << "): "                                           \
+  << msg << std::endl;
 
 #define NSOL_THROW( msg )                                        \
   {                                                              \
@@ -28,12 +23,10 @@
     throw std::runtime_error( msg );                             \
   }
 
-
 #define NSOL_CHECK_THROW( cond, errorMsg )                       \
     {                                                            \
       if ( ! (cond) ) NSOL_THROW( errorMsg );                    \
     }
-
 
 #ifdef DEBUG
   #define NSOL_DEBUG_CHECK( cond, errorMsg )                     \

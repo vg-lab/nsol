@@ -88,17 +88,20 @@ int main ( int argc, char ** argv )
             << std::endl;
 
   std::cout << "\tNon cached section: "
-            << sectionWithStats->stats( )->surface( ) << std::endl;
+            << sectionWithStats->stats( )->getStat(
+              nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -107,11 +110,13 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -120,11 +125,13 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -134,11 +141,13 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -147,11 +156,13 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
-  std::cout << sectionWithCachedStats->stats( )->surface( ) << std::endl;
+  std::cout << sectionWithCachedStats->stats( )->getStat(
+    nsol::SectionStats::TSectionStat::SURFACE ) << std::endl;
 
   std::cout << std::endl;
 

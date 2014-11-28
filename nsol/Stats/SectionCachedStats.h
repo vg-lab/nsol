@@ -38,13 +38,13 @@ namespace nsol
   public:
 
     //! Stats that can be cached for SectionStats
-    typedef enum
-    {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      SECTION_NUM_CACHED_VALUES
-    } TSectionCachedValues;
+    // typedef enum
+    // {
+    //   SURFACE = 0,
+    //   VOLUME,
+    //   LENGTH,
+    //   SECTION_NUM_CACHED_VALUES
+    // } TSectionCachedValues;
 
     /**
      * Default constructor
@@ -90,26 +90,30 @@ namespace nsol
     NSOL_API
     virtual void lastSegment( SegmentPtr lastSegment_ );
 
-    /**
-     * Computes volume of the section
-     * @return volume of section
-     */
-    NSOL_API
-    virtual float volume( void ) const;
 
-    /**
-     * Computes surface of the section
-     * @return surface of section
-     */
     NSOL_API
-    virtual float surface( void ) const;
+    virtual float getStat( TSectionStat stat ) const;
 
-    /**
-     * Computes length of the section
-     * @return length of section
-     */
-    NSOL_API
-    virtual float length( void ) const;
+    // /**
+    //  * Computes volume of the section
+    //  * @return volume of section
+    //  */
+    // NSOL_API
+    // virtual float volume( void ) const;
+
+    // /**
+    //  * Computes surface of the section
+    //  * @return surface of section
+    //  */
+    // NSOL_API
+    // virtual float surface( void ) const;
+
+    // /**
+    //  * Computes length of the section
+    //  * @return length of section
+    //  */
+    // NSOL_API
+    // virtual float length( void ) const;
 
 
   }; // class SectionCachedStats
