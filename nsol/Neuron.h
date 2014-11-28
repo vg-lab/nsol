@@ -16,7 +16,6 @@
 #include <nsol/Dendrite.h>
 #include <nsol/Container/Dendrites.h>
 #include <nsol/Container/Neurites.h>
-#include <nsol/Container/Synapses.h>
 
 namespace nsol
 {
@@ -99,23 +98,11 @@ namespace nsol
     NSOL_API
     AxonPtr addAxon( void );
 
-    /**
-	 * Method to add a new synapse to the neuron.
-	 * @param synapseType type of Synapse.
-	 * @see Synapse
-	 * @return pointer to the added synapse
-	 */
-//	NSOL_API
-//	SynapsePtr addSynapse( Synapse::TSynapseType synapseType);
-
     NSOL_API
     unsigned int numNeurites( void );
 
     NSOL_API
     unsigned int numDendrites( void );
-
-    NSOL_API
-	unsigned int numSynapses( void );
 
     NSOL_API
     unsigned int numNeuriteBranches( void );
@@ -210,9 +197,6 @@ namespace nsol
     NSOL_API
     Soma & soma( void );
 
-    NSOL_API
-	Synapses & synapses( void );
-
     /**
      * Method to get the transformation matrix of the neuron.
      * @return transformation matrix
@@ -259,8 +243,6 @@ namespace nsol
     unsigned short _layer; //> Layer
 
     unsigned int _gid; //> Neuron id
-
-    Synapses _synapses; //!! Container of the synapses of this neuron
 
     //TNeuronType _type;
 
