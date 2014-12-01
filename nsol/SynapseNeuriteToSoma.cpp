@@ -22,6 +22,13 @@ namespace nsol
 							  "synapse type not consistent");
 		}
 
+		SynapseNeuriteToSoma::SynapseNeuriteToSoma(
+				SynapseNeuriteToSoma & other )
+		:  Synapse( other)
+		, _preSynapticSegment( other.preSynapticSegment( ) )
+		{
+		}
+
 
 		void SynapseNeuriteToSoma::preSynapticSegment( SegmentPtr presynaptic_segment)
 		{

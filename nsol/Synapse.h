@@ -50,6 +50,16 @@ namespace nsol
 	  NSOL_API
 	  Synapse (TSynapseType synapseType = AXODENDRITIC);
 
+	  /**
+	   * Copy constructor
+	   * @param other synapse to be copied
+	   */
+	  NSOL_API
+	  Synapse( Synapse & other );
+
+	  /**
+	  * Default destructur
+	  */
 	  NSOL_API
 	  virtual ~Synapse(void);
 

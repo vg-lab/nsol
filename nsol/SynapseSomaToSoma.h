@@ -37,6 +37,13 @@ namespace nsol
 	  NSOL_API
 	  SynapseSomaToSoma ( void );
 
+	  /**
+	  * Copy constructor
+	  * @param other synapse somaToSoma to be copied
+	  */
+	  NSOL_API
+	  SynapseSomaToSoma( SynapseSomaToSoma & other );
+
 	  ///@}
 
 	  /** @name Operators */

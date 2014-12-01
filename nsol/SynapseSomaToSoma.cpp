@@ -15,6 +15,12 @@ namespace nsol
 	{
 	}
 
+ 	SynapseSomaToSoma::SynapseSomaToSoma(
+ 			SynapseSomaToSoma & other )
+	:  Synapse( other)
+	{
+	}
+
    //
    // Operators
    //

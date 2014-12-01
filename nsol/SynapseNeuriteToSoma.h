@@ -37,6 +37,13 @@ namespace nsol
 	  NSOL_API
 	  SynapseNeuriteToSoma (TSynapseType synapseType_ = Synapse::DENDROSOMATIC);
 
+	  /**
+	  * Copy constructor
+	  * @param other synapse neuriteToSoma to be copied
+	  */
+	  NSOL_API
+	  SynapseNeuriteToSoma( SynapseNeuriteToSoma & other );
+
 	  ///@}
 
 	  /** @name getters and setters methods */

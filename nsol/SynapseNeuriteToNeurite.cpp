@@ -17,12 +17,19 @@ namespace nsol
 	:  Synapse( synapseType_ )
 	, _preSynapticSegment( nullptr )
 	, _postSynapticSegment( nullptr )
-
 	{
 		NSOL_DEBUG_CHECK( synapseType_ == Synapse::AXODENDRITIC ||
 				          synapseType_ == Synapse::DENDRODENDRITIC ||
 				          synapseType_ == Synapse::AXOAXONIC,
 				          "synapse type not consistent");
+	}
+
+	SynapseNeuriteToNeurite::SynapseNeuriteToNeurite(
+			SynapseNeuriteToNeurite & other )
+	:  Synapse( other)
+	, _preSynapticSegment( other.preSynapticSegment( ) )
+	, _postSynapticSegment( other.postSynapticSegment( ))
+	{
 	}
 
 	void SynapseNeuriteToNeurite::preSynapticSegment( SegmentPtr presynaptic_segment)

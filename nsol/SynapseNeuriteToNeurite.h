@@ -36,6 +36,13 @@ namespace nsol
 	  NSOL_API
 	  SynapseNeuriteToNeurite (TSynapseType synapseType_ = Synapse::AXODENDRITIC);
 
+	  /**
+	  * Copy constructor
+	  * @param other synapse neutiteToneurite to be copied
+	  */
+	  NSOL_API
+	  SynapseNeuriteToNeurite( SynapseNeuriteToNeurite & other );
+
 	  ///@}
 	  /** @name getters and setters methods */
 	  ///@{
