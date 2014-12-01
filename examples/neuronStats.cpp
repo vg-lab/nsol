@@ -86,20 +86,60 @@ void computeNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology )
   NSOL_DEBUG_CHECK( morphology , "morphology is null" );
   NSOL_DEBUG_CHECK( morphology->stats( ) , "no stats" );
 
-  morphology->stats( )->dendriticSurface( );
-  morphology->stats( )->axonSurface( );
-  morphology->stats( )->neuriticSurface( );
-  morphology->stats( )->surface( );
-  morphology->stats( )->dendriticVolume( );
-  morphology->stats( )->axonVolume( );
-  morphology->stats( )->neuriticVolume( );
-  morphology->stats( )->volume( );
-  morphology->stats( )->dendriticLength( );
-  morphology->stats( )->axonLength( );
-  morphology->stats( )->neuriticLength( );
-  morphology->stats( )->dendriticBifurcations( );
-  morphology->stats( )->axonBifurcations( );
-  morphology->stats( )->neuriticBifurcations( );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::DENDRITIC_VOLUME );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::AXON_VOLUME );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::NEURITIC_VOLUME );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::SOMA_VOLUME );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::VOLUME );
+
+  // Surface
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::DENDRITIC_SURFACE );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::AXON_SURFACE );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::NEURITIC_SURFACE );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::SOMA_SURFACE );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::SURFACE );
+
+  // Length
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::DENDRITIC_LENGTH );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::AXON_LENGTH );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::NEURITIC_LENGTH
+    );
+  // Bifurcations
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::AXON_BIFURCATIONS );
+  morphology->stats( )->getStat(
+    nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS );
+
+
+  // morphology->stats( )->dendriticSurface( );
+  // morphology->stats( )->axonSurface( );
+  // morphology->stats( )->neuriticSurface( );
+  // morphology->stats( )->surface( );
+  // morphology->stats( )->dendriticVolume( );
+  // morphology->stats( )->axonVolume( );
+  // morphology->stats( )->neuriticVolume( );
+  // morphology->stats( )->volume( );
+  // morphology->stats( )->dendriticLength( );
+  // morphology->stats( )->axonLength( );
+  // morphology->stats( )->neuriticLength( );
+  // morphology->stats( )->dendriticBifurcations( );
+  // morphology->stats( )->axonBifurcations( );
+  // morphology->stats( )->neuriticBifurcations( );
 }
 
 void printNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology )
@@ -108,66 +148,171 @@ void printNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology )
   NSOL_DEBUG_CHECK( morphology , "morphology is null" );
   NSOL_DEBUG_CHECK( morphology->stats( ) , "no stats" );
 
+  #define NMS morphology->stats( )
+
   std::cout << "\tDendritic surface:\t"
-            << morphology->stats( )->dendriticSurface( )
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_SURFACE )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_SURFACE,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_SURFACE,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_SURFACE,
+                             nsol::TAggregation::STD_DEV ) << " "
             << std::endl;
 
   std::cout << "\tAxon surface:\t\t"
-            << morphology->stats( )->axonSurface( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_SURFACE )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_SURFACE,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_SURFACE,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_SURFACE,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << "\tNeuritic surface:\t"
-            << morphology->stats( )->neuriticSurface( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_SURFACE )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_SURFACE,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_SURFACE,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_SURFACE,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
-  std::cout << "\tNeuron surface:\t\t"
-            << morphology->stats( )->surface( )
-            << std::endl;
+  std::cout << "\tSurface:\t\t"
+            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tDendritic volume:\t"
-            << morphology->stats( )->dendriticVolume( )
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_VOLUME )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_VOLUME,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_VOLUME,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_VOLUME,
+                             nsol::TAggregation::STD_DEV ) << " "
             << std::endl;
 
   std::cout << "\tAxon volume:\t\t"
-            << morphology->stats( )->axonVolume( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_VOLUME )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_VOLUME,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_VOLUME,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_VOLUME,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << "\tNeuritic volume:\t"
-            << morphology->stats( )->neuriticVolume( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_VOLUME )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_VOLUME,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_VOLUME,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_VOLUME,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
-  std::cout << "\tNeuron volume:\t\t"
-            << morphology->stats( )->volume( )
-            << std::endl;
+  std::cout << "\tVolume:\t\t\t"
+            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tDendritic length:\t"
-            << morphology->stats( )->dendriticLength( )
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_LENGTH )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_LENGTH,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_LENGTH,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::DENDRITIC_LENGTH,
+                             nsol::TAggregation::STD_DEV ) << " "
             << std::endl;
 
   std::cout << "\tAxon length:\t\t"
-            << morphology->stats( )->axonLength( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_LENGTH )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_LENGTH,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_LENGTH,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_LENGTH,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << "\tNeuritic length:\t"
-            << morphology->stats( )->neuriticLength( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_LENGTH )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_LENGTH,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_LENGTH,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_LENGTH,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tDendritic bifurcations:\t"
-            << morphology->stats( )->dendriticBifurcations( )
+            << NMS->getStat(
+              nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS )
+            << " "
+            << NMS->getStat(
+              nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS,
+              nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat(
+              nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS,
+              nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat(
+              nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS,
+              nsol::TAggregation::STD_DEV ) << " "
             << std::endl;
 
   std::cout << "\tAxon bifurcations:\t"
-            << morphology->stats( )->axonBifurcations( )
-            << std::endl;
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_BIFURCATIONS )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_BIFURCATIONS,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_BIFURCATIONS,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::AXON_BIFURCATIONS,
+                             nsol::TAggregation::STD_DEV ) << " "
+             << std::endl;
 
   std::cout << "\tNeuritic bifurcations:\t"
-            << morphology->stats( )->neuriticBifurcations( )
+            << NMS->getStat(
+              nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS )
+            << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS,
+                             nsol::TAggregation::MEAN ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS,
+                             nsol::TAggregation::VARIANCE ) << " "
+            << NMS->getStat( nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS,
+                             nsol::TAggregation::STD_DEV ) << " "
             << std::endl;
 
   std::cout << std::endl;

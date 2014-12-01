@@ -54,6 +54,7 @@ namespace nsol
   float NeuriteCachedStats::getStat(
     TNeuriteStat stat, TAggregation agg ) const
   {
+    // Only totals are cached
     if ( agg == TAggregation::TOTAL )
     {
       if ( ! this->dirty( stat ))

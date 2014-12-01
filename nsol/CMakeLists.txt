@@ -30,6 +30,7 @@ Stats/AxonCachedStats.h
 Stats/DendriteStats.h
 Stats/DendriteCachedStats.h
 Stats/Cached.h
+Stats/ColumnStats.h
 Stats/MiniColumnStats.h
 Stats/NeuronMorphologyStats.h
 Stats/NeuronMorphologyCachedStats.h
@@ -59,6 +60,7 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Section.cpp
   Segment.cpp
   Soma.cpp
+  Stats/ColumnStats.cpp
   Stats/MiniColumnStats.cpp
   Stats/NeuronMorphologyStats.cpp
   Stats/NeuronMorphologyCachedStats.cpp
