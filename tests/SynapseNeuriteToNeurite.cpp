@@ -51,3 +51,54 @@ BOOST_AUTO_TEST_CASE( test_constructor_synapseNeuriteToNeurite )
     NSOL_DELETE_PTR( saa );
 
 }
+
+BOOST_AUTO_TEST_CASE( test_synapseNeuriteToNeurite_operators)
+{
+	// Create a neuritetoneurite synsapse
+	nsol::SynapseNeuriteToNeuritePtr  s(new nsol::SynapseNeuriteToNeurite());
+
+	//Compare empty neuritetoneurite synsapses
+	nsol::SynapseNeuriteToNeuritePtr s2( new nsol::SynapseNeuriteToNeurite( ));
+	BOOST_CHECK_EQUAL( *s == *s2, true );
+	BOOST_CHECK_EQUAL( *s != *s2, false );
+
+	// Change the type and compare
+	s2->synapseType() = Synapse::DENDRODENDRITIC;
+	BOOST_CHECK_EQUAL( *s == *s2, false );
+	BOOST_CHECK_EQUAL( *s != *s2, true );
+
+	// Assignment operator
+	SynapseNeuriteToNeurite s3 = *s2;
+	BOOST_CHECK_EQUAL( s3 == *s2, true );
+	BOOST_CHECK_EQUAL( s3 != *s2, false );
+
+	// Add presynaptic segment and postsynaptic segment, and test if equal
+    *s2 = *s;
+    BOOST_CHECK_EQUAL( *s == *s2, true );
+    BOOST_CHECK_EQUAL( *s != *s2, false );
+
+    s->preSynapticSegment(SegmentPtr( new nsol::Segment( )));
+    s->postSynapticSegment(SegmentPtr( new nsol::Segment( )));
+
+    BOOST_CHECK_EQUAL( *s == *s2, false );
+    BOOST_CHECK_EQUAL( *s != *s2, true );
+
+    // Test assigment op with presynaptic and postsynaptic segments
+    *s2 = *s;
+    BOOST_CHECK_EQUAL( *s == *s2, true );
+    BOOST_CHECK_EQUAL( *s != *s2, false );
+
+    // Test copy constructor
+    nsol::SynapseNeuriteToNeurite s4( s3 );
+    BOOST_CHECK_EQUAL( *s == s4, false );
+    BOOST_CHECK_EQUAL( *s != s4, true );
+
+    nsol::SynapseNeuriteToNeurite s5( *s );
+    BOOST_CHECK_EQUAL( *s == s5, true );
+    BOOST_CHECK_EQUAL( *s != s5, false );
+
+	// Free dymanic memory used
+	NSOL_DELETE_PTR( s );
+	NSOL_DELETE_PTR( s2 );
+}
+
