@@ -54,7 +54,7 @@ namespace nsol
   float NeuriteStats::getStat( TNeuriteStat stat,
                                TAggregation agg ) const
   {
-    NSOL_DEBUG_CHECK( stat < NEURITE_NUM_STATS, "section stat unknown");
+    NSOL_DEBUG_CHECK( stat < NEURITE_NUM_STATS, "neurite stat unknown");
     NSOL_DEBUG_CHECK( validAggregation( agg ), "unknown aggregation");
 
     NSOL_DEBUG_CHECK( ! ( stat == TNeuriteStat::BIFURCATIONS &&
@@ -108,7 +108,7 @@ namespace nsol
             value =
               std::max( value,
                         section->stats( )->getStat( toSectionStat( stat )));
-          else
+          else if (  agg != TAggregation::MEAN )
             value += section->stats( )->getStat( toSectionStat( stat ));
         }
 
@@ -129,9 +129,14 @@ namespace nsol
       case TAggregation::MIN:
       case TAggregation::MAX:
         return value;
+        break;
       case TAggregation::MEAN:
+        NSOL_DEBUG_CHECK( value == 0.0f, "value should be 0" );
+        return this->getStat( stat, TAggregation::TOTAL ) / numSections;
+        break;
       case TAggregation::VARIANCE:
         return value / numSections;
+        break;
       case TAggregation::STD_DEV:
         break;
       }

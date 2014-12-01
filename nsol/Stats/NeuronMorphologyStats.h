@@ -29,6 +29,31 @@ namespace nsol
 
   public:
 
+    typedef enum
+    {
+      // Volume
+      DENDRITIC_VOLUME,
+      AXON_VOLUME,
+      NEURITIC_VOLUME,
+      SOMA_VOLUME,
+      VOLUME,
+      // Surface
+      DENDRITIC_SURFACE,
+      AXON_SURFACE,
+      NEURITIC_SURFACE,
+      SOMA_SURFACE,
+      SURFACE,
+      // Length
+      DENDRITIC_LENGTH,
+      AXON_LENGTH,
+      NEURITIC_LENGTH,
+      // Bifurcations
+      DENDRITIC_BIFURCATIONS,
+      AXON_BIFURCATIONS,
+      NEURITIC_BIFURCATIONS,
+      NEURON_MORPHOLOGY_NUM_STATS
+    } TNeuronMorphologyStat;
+
     /**
      * Returns object as NeuronMorphologyStats
      * @return pointer to NeuronMorphologyStats object
@@ -36,53 +61,58 @@ namespace nsol
     NSOL_API
     virtual NeuronMorphologyStats * stats( void );
 
-    NSOL_API
-    virtual float dendriticVolume( void ) const;
 
-    NSOL_API
-    virtual float axonVolume( void ) const;
+    virtual float getStat( TNeuronMorphologyStat stat,
+                           TAggregation agg = TAggregation::TOTAL ) const;
 
-    NSOL_API
-    virtual float neuriticVolume( void ) const;
 
-    NSOL_API
-    virtual float somaVolume( void ) const;
+    // NSOL_API
+    // virtual float dendriticVolume( void ) const;
 
-    NSOL_API
-    virtual float volume( void ) const;
+    // NSOL_API
+    // virtual float axonVolume( void ) const;
 
-    NSOL_API
-    virtual float dendriticSurface( void ) const;
+    // NSOL_API
+    // virtual float neuriticVolume( void ) const;
 
-    NSOL_API
-    virtual float axonSurface( void ) const;
+    // NSOL_API
+    // virtual float somaVolume( void ) const;
 
-    NSOL_API
-    virtual float neuriticSurface( void ) const;
+    // NSOL_API
+    // virtual float volume( void ) const;
 
-    NSOL_API
-    virtual float somaSurface( void ) const;
+    // NSOL_API
+    // virtual float dendriticSurface( void ) const;
 
-    NSOL_API
-    virtual float surface( void ) const;
+    // NSOL_API
+    // virtual float axonSurface( void ) const;
 
-    NSOL_API
-    virtual float dendriticLength( void ) const;
+    // NSOL_API
+    // virtual float neuriticSurface( void ) const;
 
-    NSOL_API
-    virtual float axonLength( void ) const;
+    // NSOL_API
+    // virtual float somaSurface( void ) const;
 
-    NSOL_API
-    virtual float neuriticLength( void ) const;
+    // NSOL_API
+    // virtual float surface( void ) const;
 
-    NSOL_API
-    virtual unsigned int dendriticBifurcations( void ) const;
+    // NSOL_API
+    // virtual float dendriticLength( void ) const;
 
-    NSOL_API
-    virtual unsigned int axonBifurcations( void ) const;
+    // NSOL_API
+    // virtual float axonLength( void ) const;
 
-    NSOL_API
-    virtual unsigned int neuriticBifurcations( void ) const;
+    // NSOL_API
+    // virtual float neuriticLength( void ) const;
+
+    // NSOL_API
+    // virtual unsigned int dendriticBifurcations( void ) const;
+
+    // NSOL_API
+    // virtual unsigned int axonBifurcations( void ) const;
+
+    // NSOL_API
+    // virtual unsigned int neuriticBifurcations( void ) const;
 
   }; // class NeuronMorphologyStats
 

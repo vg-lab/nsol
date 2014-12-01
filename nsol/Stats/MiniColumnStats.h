@@ -29,9 +29,40 @@ namespace nsol
 
   public:
 
+    typedef enum
+    {
+      // Volume
+      DENDRITIC_VOLUME = 0,
+      AXON_VOLUME,
+      NEURITIC_VOLUME,
+      SOMA_VOLUME,
+      VOLUME,
+      // Surface
+      DENDRITIC_SURFACE,
+      AXON_SURFACE,
+      NEURITIC_SURFACE,
+      SOMA_SURFACE,
+      SURFACE,
+      // Length
+      DENDRITIC_LENGTH,
+      AXON_LENGTH,
+      NEURITIC_LENGTH,
+      // Bifurcations
+      DENDRITIC_BIFURCATIONS,
+      AXON_BIFURCATIONS,
+      NEURITIC_BIFURCATIONS,
+      // This last one allows to know the number of stats
+      MINI_COLUMN_NUM_STATS
+    } TMiniColumnStat;
+
     NSOL_API
     MiniColumnStats( const ColumnPtr column = nullptr,
-                const unsigned short id = 0 );
+                     const unsigned short id = 0 );
+
+
+    NSOL_API
+    float getStat( TMiniColumnStat stat,
+                   TAggregation agg = TAggregation::TOTAL ) const;
 
 
     /**
@@ -41,59 +72,59 @@ namespace nsol
     NSOL_API
     virtual MiniColumnStats * stats( void );
 
-    NSOL_API
-    virtual float dendriticVolume( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float dendriticVolume( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float axonVolume( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float axonVolume( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float neuriticVolume( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float neuriticVolume( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float somaVolume( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float somaVolume( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float volume( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float volume( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float dendriticSurface( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float dendriticSurface( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float axonSurface( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float axonSurface( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float neuriticSurface( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float neuriticSurface( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float somaSurface( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float somaSurface( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float surface( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float surface( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float dendriticLength( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float dendriticLength( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float axonLength( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float axonLength( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual float neuriticLength( TAggregation op = TOTAL ) const;
+    // NSOL_API
+    // virtual float neuriticLength( TAggregation op = TOTAL ) const;
 
-    NSOL_API
-    virtual unsigned int dendriticBifurcations( TAggregation op = TOTAL )
-      const;
+    // NSOL_API
+    // virtual unsigned int dendriticBifurcations( TAggregation op = TOTAL )
+    //   const;
 
-    NSOL_API
-    virtual unsigned int axonBifurcations( TAggregation op = TOTAL )
-      const;
+    // NSOL_API
+    // virtual unsigned int axonBifurcations( TAggregation op = TOTAL )
+    //   const;
 
-    NSOL_API
-    virtual unsigned int neuriticBifurcations( TAggregation op = TOTAL )
-      const;
+    // NSOL_API
+    // virtual unsigned int neuriticBifurcations( TAggregation op = TOTAL )
+    //   const;
 
   }; // class MiniColumnStats
 
 } // namespace nsol
 
-#endif // __NSOL_MINICOLUMN_STATS__
+#endif // __NSOL_COLUMN_STATS__

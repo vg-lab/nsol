@@ -83,20 +83,46 @@ void computeMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   NSOL_DEBUG_CHECK( miniColumn , "miniColumn is null" );
   NSOL_DEBUG_CHECK( miniColumn->stats( ) , "no stats" );
 
-  miniColumn->stats( )->dendriticSurface( );
-  miniColumn->stats( )->axonSurface( );
-  miniColumn->stats( )->neuriticSurface( );
-  miniColumn->stats( )->surface( );
-  miniColumn->stats( )->dendriticVolume( );
-  miniColumn->stats( )->axonVolume( );
-  miniColumn->stats( )->neuriticVolume( );
-  miniColumn->stats( )->volume( );
-  miniColumn->stats( )->dendriticLength( );
-  miniColumn->stats( )->axonLength( );
-  miniColumn->stats( )->neuriticLength( );
-  miniColumn->stats( )->dendriticBifurcations( );
-  miniColumn->stats( )->axonBifurcations( );
-  miniColumn->stats( )->neuriticBifurcations( );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::DENDRITIC_VOLUME );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::AXON_VOLUME );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::NEURITIC_VOLUME );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::SOMA_VOLUME );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::VOLUME );
+
+  // Surface
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::DENDRITIC_SURFACE );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::AXON_SURFACE );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::NEURITIC_SURFACE );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::SOMA_SURFACE );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::SURFACE );
+
+  // Length
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::DENDRITIC_LENGTH );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::AXON_LENGTH );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::NEURITIC_LENGTH
+    );
+  // Bifurcations
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::DENDRITIC_BIFURCATIONS );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::AXON_BIFURCATIONS );
+  miniColumn->stats( )->getStat( nsol::MiniColumnStats::NEURITIC_BIFURCATIONS );
+
+
+
+  // miniColumn->stats( )->dendriticSurface( );
+  // miniColumn->stats( )->axonSurface( );
+  // miniColumn->stats( )->neuriticSurface( );
+  // miniColumn->stats( )->surface( );
+  // miniColumn->stats( )->dendriticVolume( );
+  // miniColumn->stats( )->axonVolume( );
+  // miniColumn->stats( )->neuriticVolume( );
+  // miniColumn->stats( )->volume( );
+  // miniColumn->stats( )->dendriticLength( );
+  // miniColumn->stats( )->axonLength( );
+  // miniColumn->stats( )->neuriticLength( );
+  // miniColumn->stats( )->dendriticBifurcations( );
+  // miniColumn->stats( )->axonBifurcations( );
+  // miniColumn->stats( )->neuriticBifurcations( );
+
 }
 
 #define COMPUTE_AND_PRINT2( __MSG__, __METHOD__ )                        \
@@ -105,19 +131,19 @@ void computeMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   << std::endl;                                                         \
 
 
-#define COMPUTE_AND_PRINT( __MSG__, __METHOD__ )                        \
+#define COMPUTE_AND_PRINT( __MSG__, _S_ )                               \
   std::cout << __MSG__                                                  \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )      \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::TOTAL )    \
   << "\tmin: "                                                          \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MIN )        \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::MIN )      \
   << "\tmax: "                                                          \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MAX )        \
-  << "\tmean: "                                                         \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::MEAN )       \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::MAX )      \
+    << "\tmean: "                                                       \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::MEAN )     \
   << "\tvariance: "                                                     \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::VARIANCE )   \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::VARIANCE ) \
   << "\tstd dev.: "                                                     \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::STD_DEV )    \
+  << miniColumn->stats( )->getStat( _S_, nsol::TAggregation::STD_DEV )  \
   << std::endl;                                                         \
 
 
@@ -127,31 +153,47 @@ void printMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   NSOL_DEBUG_CHECK( miniColumn , "miniColumn is null" );
   NSOL_DEBUG_CHECK( miniColumn->stats( ) , "no stats" );
 
-  COMPUTE_AND_PRINT( "\tDendritic surface:\t", dendriticSurface );
-  COMPUTE_AND_PRINT( "\tAxon surface:\t\t", axonSurface );
-  COMPUTE_AND_PRINT( "\tNeuritic surface:\t", neuriticSurface );
-  COMPUTE_AND_PRINT( "\tSoma surface:\t\t", somaSurface );
-  COMPUTE_AND_PRINT( "\tMiniColumn surface:\t", surface );
+  COMPUTE_AND_PRINT( "\tDendritic surface:\t",
+                     nsol::MiniColumnStats::DENDRITIC_SURFACE );
+  COMPUTE_AND_PRINT( "\tAxon surface:\t\t",
+                     nsol::MiniColumnStats::AXON_SURFACE );
+  COMPUTE_AND_PRINT( "\tNeuritic surface:\t",
+                     nsol::MiniColumnStats::NEURITIC_SURFACE );
+  COMPUTE_AND_PRINT( "\tSoma surface:\t\t",
+                     nsol::MiniColumnStats::SOMA_SURFACE );
+  COMPUTE_AND_PRINT( "\tMiniColumn surface:\t",
+                     nsol::MiniColumnStats::SURFACE );
 
   std::cout << std::endl;
 
-  COMPUTE_AND_PRINT( "\tDendritic volume:\t", dendriticVolume );
-  COMPUTE_AND_PRINT( "\tAxon volume:\t\t", axonVolume );
-  COMPUTE_AND_PRINT( "\tNeuritic volume:\t", neuriticVolume );
-  COMPUTE_AND_PRINT( "\tSoma volume:\t\t", somaVolume );
-  COMPUTE_AND_PRINT( "\tMiniColumn volume:\t", volume );
+  COMPUTE_AND_PRINT( "\tDendritic volume:\t",
+                     nsol::MiniColumnStats::DENDRITIC_SURFACE );
+  COMPUTE_AND_PRINT( "\tAxon volume:\t\t",
+                     nsol::MiniColumnStats::AXON_VOLUME );
+  COMPUTE_AND_PRINT( "\tNeuritic volume:\t",
+                     nsol::MiniColumnStats::NEURITIC_VOLUME );
+  COMPUTE_AND_PRINT( "\tSoma volume:\t\t",
+                     nsol::MiniColumnStats::SOMA_VOLUME );
+  COMPUTE_AND_PRINT( "\tMiniColumn volume:\t",
+                     nsol::MiniColumnStats::VOLUME );
 
   std::cout << std::endl;
 
-  COMPUTE_AND_PRINT( "\tDendritic length:\t", dendriticLength );
-  COMPUTE_AND_PRINT( "\tAxon length:\t\t", axonLength );
-  COMPUTE_AND_PRINT( "\tNeuritic length:\t", neuriticLength );
+  COMPUTE_AND_PRINT( "\tDendritic length:\t",
+                     nsol::MiniColumnStats::DENDRITIC_LENGTH );
+  COMPUTE_AND_PRINT( "\tAxon length:\t\t",
+                     nsol::MiniColumnStats::AXON_LENGTH );
+  COMPUTE_AND_PRINT( "\tNeuritic length:\t",
+                     nsol::MiniColumnStats::NEURITIC_LENGTH );
 
   std::cout << std::endl;
 
-  COMPUTE_AND_PRINT( "\tDendritic bifurcations:\t",dendriticBifurcations );
-  COMPUTE_AND_PRINT( "\tAxon bifurcations:\t", axonBifurcations );
-  COMPUTE_AND_PRINT( "\tNeuritic bifurcations:\t", neuriticBifurcations );
+  COMPUTE_AND_PRINT( "\tDendritic bifurcations:\t",
+                     nsol::MiniColumnStats::DENDRITIC_BIFURCATIONS );
+  COMPUTE_AND_PRINT( "\tAxon bifurcations:\t",
+                     nsol::MiniColumnStats::AXON_BIFURCATIONS );
+  COMPUTE_AND_PRINT( "\tNeuritic bifurcations:\t",
+                     nsol::MiniColumnStats::NEURITIC_BIFURCATIONS );
 
   std::cout << std::endl;
 

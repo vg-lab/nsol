@@ -16,6 +16,8 @@
 
 namespace nsol
 {
+  class ColumnStats;
+
 
   /*! \class Column
     \brief A class to represent columns.
@@ -49,7 +51,18 @@ namespace nsol
      * Default destructur
      */
     NSOL_API
-    ~Column( void ) ;
+    virtual ~Column( void ) ;
+
+        /**
+     * Returns object as MiniColumnStats
+     * @return pointer to MiniColumnStats object
+     */
+    NSOL_API
+    virtual ColumnStats * stats( void )
+    {
+      return nullptr;
+    }
+
 
     ///@}
 
