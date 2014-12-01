@@ -48,6 +48,46 @@ namespace nsol
 		 return _postSynapticNeuron;
 	 }
 
+	  //
+	  // Operators
+	  //const
+
+	  Synapse & Synapse::operator = (Synapse & other)
+	  {
+		 Synapse * SynapseDerivedPtr;
+		 SynapseDerivedPtr = dynamic_cast<  Synapse *>(&other);
+		if ( SynapseDerivedPtr == 0)
+			throw std::runtime_error("Unlike types.");
+
+	    if (this != SynapseDerivedPtr)
+	    {
+	      this->synapseType( ) = SynapseDerivedPtr->synapseType( );
+	      this->preSynapticNeuron(SynapseDerivedPtr->preSynapticNeuron( ) );
+	      this->postSynapticNeuron(SynapseDerivedPtr->postSynapticNeuron( ));
+	    }
+
+	    return *this;
+	  }
+
+	  bool Synapse::operator == (Synapse & other )
+	  {
+	    return ( ( this->synapseType( ) == other.synapseType( ) ) &&
+	    	   ( (this->preSynapticNeuron( )) == (other.preSynapticNeuron( ))) &&
+	    	   ( (this->postSynapticNeuron( )) == (other.postSynapticNeuron( ))));
+	  }
+
+	  bool Synapse::operator != (Synapse & other )
+	  {
+
+		  Synapse * synapseDerivedPtr;
+		  synapseDerivedPtr = dynamic_cast<Synapse *>(&other);
+
+		 if ( synapseDerivedPtr == 0)
+		    return true;
+
+	     return !( *this == *synapseDerivedPtr);
+	  }
+
 } // namespace nsol
 
 // EOF

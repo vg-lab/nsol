@@ -60,6 +60,20 @@ namespace nsol
 
 	  ///@}
 
+	  /** @name Operators */
+	  ///@{
+
+	  NSOL_API
+	  virtual SynapseNeuriteToSoma & operator = (Synapse & other);
+
+	  NSOL_API
+	  virtual bool operator == (Synapse & other );
+
+	  NSOL_API
+	  virtual bool operator != (Synapse & other );
+
+	  ///@}
+
 
 
   protected:

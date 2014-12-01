@@ -37,7 +37,6 @@ namespace nsol
 	  SynapseNeuriteToNeurite (TSynapseType synapseType_ = Synapse::AXODENDRITIC);
 
 	  ///@}
-
 	  /** @name getters and setters methods */
 	  ///@{
 
@@ -72,6 +71,20 @@ namespace nsol
 	  */
 	  NSOL_API
 	  SegmentPtr postSynapticSegment( void ) const;
+
+	  ///@}
+
+	  /** @name Operators */
+	  ///@{
+
+	  NSOL_API
+	  virtual SynapseNeuriteToNeurite & operator = (Synapse & other);
+
+	  NSOL_API
+	  virtual bool operator == (Synapse & other );
+
+	  NSOL_API
+	  virtual bool operator != (Synapse & other );
 
 	  ///@}
 

@@ -9,9 +9,10 @@
 #define __NSOL_SYNAPSE_SOMA_TO_SOMA__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Neuron.h>
-#include <nsol/Segment.h>
+#include "NsolTypes.h"
+#include "Neuron.h"
+#include "Segment.h"
+#include "Synapse.h"
 
 namespace nsol
 {
@@ -35,6 +36,34 @@ namespace nsol
 	  */
 	  NSOL_API
 	  SynapseSomaToSoma ( void );
+
+	  ///@}
+
+	  /** @name Operators */
+	  ///@{
+
+	  NSOL_API
+	  virtual SynapseSomaToSoma & operator = (Synapse & other);
+
+	  NSOL_API
+	  virtual bool operator == (Synapse & other );
+
+	  NSOL_API
+	  virtual bool operator != (Synapse & other );
+
+	  ///@}
+
+	  /** @name Operators */
+	  ///@{
+
+	  NSOL_API
+	  virtual SynapseSomaToSoma & operator = (const Synapse & other);
+
+	  NSOL_API
+	  virtual bool operator == (Synapse & other ) const;
+
+	  NSOL_API
+	  virtual bool operator != (Synapse & other ) const;
 
 	  ///@}
 
