@@ -60,19 +60,6 @@ namespace nsol
 
 	  ///@}
 
-	  /** @name Operators */
-	  ///@{
-
-	  NSOL_API
-	  virtual SynapseSomaToSoma & operator = (const Synapse & other);
-
-	  NSOL_API
-	  virtual bool operator == (Synapse & other ) const;
-
-	  NSOL_API
-	  virtual bool operator != (Synapse & other ) const;
-
-	  ///@}
 
   }; // class SynapseSomaToSoma
 
