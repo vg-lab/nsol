@@ -50,6 +50,7 @@ namespace nsol
     class SECTION,                              \
     class DENDRITE,                             \
     class AXON,                                 \
+    class SOMA,                                 \
     class NEURONMORPHOLOGY,                     \
     class NEURON,                               \
     class MINICOLUMN,                           \
@@ -61,6 +62,7 @@ namespace nsol
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
+    SOMA,                                       \
     NEURONMORPHOLOGY,                           \
     NEURON,                                     \
     MINICOLUMN,                                 \
@@ -132,6 +134,7 @@ namespace nsol
                                  Section,
                                  Dendrite,
                                  Axon,
+                                 Soma,
                                  NeuronMorphology,
                                  Neuron,
                                  MiniColumn,
@@ -142,6 +145,7 @@ namespace nsol
                                  SectionStats,
                                  DendriteStats,
                                  AxonStats,
+                                 SomaStats,
                                  NeuronMorphologyStats,
                                  Neuron,
                                  MiniColumnStats,
@@ -153,6 +157,7 @@ namespace nsol
                                  SectionCachedStats,
                                  DendriteCachedStats,
                                  AxonCachedStats,
+                                 SomaStats,
                                  NeuronMorphologyCachedStats,
                                  Neuron,
                                  MiniColumnStats,
@@ -208,7 +213,7 @@ namespace nsol
       std::cerr << "Neuron " << it->label() << " with morphology "
                << it->morphology().label() << std::endl;
 
-      NeuronPtr neuron (new NEURON(false)); //New neuron
+      NeuronPtr neuron (new NEURON( )); //New neuron
       neuronVector.push_back( neuron );
 
       bool miniColumnExist;
@@ -271,7 +276,7 @@ namespace nsol
         std::cerr << "Loading morphology " << it->morphology().label()
                   << std::endl;
 
-        NeuronMorphologyPtr m ( new NEURONMORPHOLOGY );
+        NeuronMorphologyPtr m ( new NEURONMORPHOLOGY ( new SOMA ));
 
         neuronMorphoMap[it->morphology().label()] = m;
 
@@ -292,7 +297,7 @@ namespace nsol
         for (bbp::Soma::const_iterator nodeIt = soma.begin();
              nodeIt != soma.end(); ++nodeIt) {
 
-          m->soma().addNode(NodePtr(
+          m->soma()->addNode(NodePtr(
                               new NODE( Vec3f( ( * nodeIt)[0],
                                                ( * nodeIt)[1],
                                                ( * nodeIt)[2] ),
@@ -562,7 +567,7 @@ namespace nsol
                    << " with morphology "
                    << csvLine.morphoLabel << std::endl;
 
-              NeuronPtr neuron ( new NEURON( false ));//New neuron
+              NeuronPtr neuron ( new NEURON( ));//New neuron
               neuronVector.push_back( neuron );
 
               bool miniColumnExist;

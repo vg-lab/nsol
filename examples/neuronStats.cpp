@@ -183,15 +183,19 @@ void printNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology )
                              nsol::TAggregation::STD_DEV ) << " "
              << std::endl;
 
+  std::cout << "\tSoma surface:\t\t"
+            << NMS->getStat( nsol::NeuronMorphologyStats::SOMA_SURFACE )
+            << std::endl;
+
   std::cout << "\tSurface:\t\t"
             << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE )
             << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
-                             nsol::TAggregation::MEAN ) << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
-                             nsol::TAggregation::VARIANCE ) << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
-                             nsol::TAggregation::STD_DEV ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+            //                  nsol::TAggregation::MEAN ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+            //                  nsol::TAggregation::VARIANCE ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::SURFACE,
+            //                  nsol::TAggregation::STD_DEV ) << " "
              << std::endl;
 
   std::cout << std::endl;
@@ -229,15 +233,19 @@ void printNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology )
                              nsol::TAggregation::STD_DEV ) << " "
              << std::endl;
 
+  std::cout << "\tSoma volume:\t\t"
+            << NMS->getStat( nsol::NeuronMorphologyStats::SOMA_VOLUME )
+            << std::endl;
+
   std::cout << "\tVolume:\t\t\t"
             << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME )
             << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
-                             nsol::TAggregation::MEAN ) << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
-                             nsol::TAggregation::VARIANCE ) << " "
-            << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
-                             nsol::TAggregation::STD_DEV ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+            //                  nsol::TAggregation::MEAN ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+            //                  nsol::TAggregation::VARIANCE ) << " "
+            // << NMS->getStat( nsol::NeuronMorphologyStats::VOLUME,
+            //                  nsol::TAggregation::STD_DEV ) << " "
              << std::endl;
 
   std::cout << std::endl;

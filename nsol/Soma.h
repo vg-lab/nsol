@@ -15,6 +15,8 @@
 namespace nsol
 {
 
+  class SomaStats;
+
   //!  Class to represent the soma of neurons
   /*!
     This class represents the soma and holds a container of the nodes
@@ -35,7 +37,7 @@ namespace nsol
      * Destructor
      */
     NSOL_API
-    ~Soma( );
+    virtual ~Soma( );
 
     /**
      * Method to get the center of the soma
@@ -77,15 +79,22 @@ namespace nsol
      * Method to compute and get the volume of the soma
      * @return volume of the soma
      */
-    NSOL_API
-    float volume( void ) const;
+    // NSOL_API
+    // float volume( void ) const;
 
-    /**
-     * Method to compute and get the surface of the soma
-     * @return surface of the soma
-     */
+    // /**
+    //  * Method to compute and get the surface of the soma
+    //  * @return surface of the soma
+    //  */
+    // NSOL_API
+    // float surface( void ) const;
+
     NSOL_API
-    float surface( void ) const;
+    virtual const SomaStats * stats( void ) const
+    {
+      return nullptr;
+    }
+
 
   protected:
 

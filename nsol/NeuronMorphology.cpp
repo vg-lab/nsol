@@ -12,7 +12,8 @@
 namespace nsol
 {
 
-  NeuronMorphology::NeuronMorphology( void )
+  NeuronMorphology::NeuronMorphology( SomaPtr soma_ )
+    : _soma( soma_ )
   {
   }
 
@@ -343,7 +344,7 @@ namespace nsol
 
   }
 
-  Soma & NeuronMorphology::soma( void )
+  SomaPtr NeuronMorphology::soma( void )
   {
     return _soma;
   }

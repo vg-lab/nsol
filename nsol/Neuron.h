@@ -41,21 +41,21 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
+    // NSOL_API
+    // Neuron( bool createMorphology = true,
+    //         const unsigned short layer = 0,
+    //         const unsigned int gid = 0,
+    //         const Matrix4_4f transform = Matrix4_4f::IDENTITY,
+    //         const MiniColumnPtr miniColumn = nullptr,
+    //         const TNeuronType type = PYRAMIDAL);
+
     NSOL_API
-    Neuron( bool createMorphology = true,
+    Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
             const unsigned short layer = 0,
             const unsigned int gid = 0,
             const Matrix4_4f transform = Matrix4_4f::IDENTITY,
             const MiniColumnPtr miniColumn = nullptr,
-            const TNeuronType type = PYRAMIDAL);
-
-    NSOL_API
-    Neuron(const NeuronMorphologyPtr neuronMorphology,
-           const unsigned short layer = 0,
-           const unsigned int gid = 0,
-           const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-           const MiniColumnPtr miniColumn = nullptr,
-           const TNeuronType type = PYRAMIDAL);
+            const TNeuronType type = PYRAMIDAL );
 
     NSOL_API
     ~Neuron( void );
@@ -63,8 +63,8 @@ namespace nsol
     NSOL_API
     bool hasMorphology() const;
 
-    NSOL_API
-    NeuronMorphologyPtr createMorphology( void );
+    // NSOL_API
+    // NeuronMorphologyPtr createMorphology( void );
 
     NSOL_API
     NeuronMorphologyPtr morphology( void ) const;

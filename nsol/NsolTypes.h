@@ -64,6 +64,7 @@ namespace nsol
   class Node;
   class Section;
   class Segment;
+  class Soma;
 
   class CachedSection;
 
@@ -79,8 +80,9 @@ namespace nsol
   typedef std::shared_ptr<Node> NodePtr;
   typedef std::shared_ptr<Section> SectionPtr;
   typedef std::shared_ptr<Segment> SegmentPtr;
+  typedef std::shared_ptr<Soma> SomaPtr;
 
-  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
+//  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
 
 
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE __ )   \
@@ -106,8 +108,9 @@ namespace nsol
   typedef Node * NodePtr;
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
+  typedef Soma * SomaPtr;
 
-  typedef CachedSection * CachedSectionPtr;
+//  typedef CachedSection * CachedSectionPtr;
 
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE__ )
 

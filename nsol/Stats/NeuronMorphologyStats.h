@@ -54,6 +54,11 @@ namespace nsol
       NEURON_MORPHOLOGY_NUM_STATS
     } TNeuronMorphologyStat;
 
+    NeuronMorphologyStats( SomaPtr soma_ )
+      : NeuronMorphology( soma_ )
+    {
+    }
+
     /**
      * Returns object as NeuronMorphologyStats
      * @return pointer to NeuronMorphologyStats object

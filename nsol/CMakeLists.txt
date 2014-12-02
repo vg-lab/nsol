@@ -42,6 +42,7 @@ Stats/SectionStats.h
 Stats/SectionCachedStats.h
 Stats/SegmentStats.h
 Stats/SegmentCachedStats.h
+Stats/SomaStats.h
 Synapse.h
 Writer/SwcWriter.h
 )
@@ -71,12 +72,7 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
   Stats/SegmentCachedStats.cpp
-# Segment.cpp
-# Section.cpp
-# Stats/SectionStats.cpp
-# Stats/SegmentStats.cpp
-# Stats/SegmentCachedStats.cpp
-# Stats/SectionCachedStats.cpp
+  Stats/SomaStats.cpp
 )
 
 if (BBPSDK_FOUND)

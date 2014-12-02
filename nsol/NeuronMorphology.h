@@ -40,7 +40,7 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
-    NeuronMorphology( void );
+    NeuronMorphology( SomaPtr soma );
 
     NSOL_API
     virtual ~NeuronMorphology( void );
@@ -140,7 +140,7 @@ namespace nsol
     const Neurons & parentNeurons( void ) const;
 
     NSOL_API
-    Soma & soma( void );
+    SomaPtr soma( void );
 
     NSOL_API
     virtual NeuronMorphologyStats * stats( void )
@@ -153,7 +153,7 @@ namespace nsol
 
   protected:
 
-    Soma _soma;
+    Soma * _soma;
     Neurites _neurites;
     Neurons _parentNeurons;
 

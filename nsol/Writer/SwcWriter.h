@@ -67,8 +67,8 @@ namespace nsol
       outFile << "#File exporter" << std::endl;
 
       //Writing soma
-      for (Vector<NodePtr>::iterator it = morphology->soma().nodes().begin();
-      it != morphology->soma().nodes().end(); ++it)
+      for (Vector<NodePtr>::iterator it = morphology->soma()->nodes().begin();
+      it != morphology->soma()->nodes().end(); ++it)
       {
         outFile << " "
                 << (*it)->id()

@@ -264,23 +264,27 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
   MiniColumns miniCols = c->miniColumns( );
 
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
-	mcIt != miniCols.end( ); mcIt++ )
+        mcIt != miniCols.end( ); mcIt++ )
   {
     for ( int l = 1 ; l < 7 ; l++ )
     {
       for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
       {
-	( *mcIt )->addNeuron(
-	  NeuronPtr( new Neuron( true, l, gid++,
-				 Matrix4_4f::IDENTITY,
-				 *mcIt, Neuron::PYRAMIDAL )));
+        ( *mcIt )->addNeuron(
+          NeuronPtr( new Neuron( NeuronMorphologyPtr(
+                                   new NeuronMorphology ( new Soma ) ),
+                                 l, gid++,
+                                 Matrix4_4f::IDENTITY,
+                                 *mcIt, Neuron::PYRAMIDAL )));
       }
       for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
-	( *mcIt )->addNeuron(
-	  NeuronPtr( new Neuron( true, l, gid++,
-				 Matrix4_4f::IDENTITY,
-				 *mcIt, Neuron::INTER )));
+        ( *mcIt )->addNeuron(
+          NeuronPtr( new Neuron( NeuronMorphologyPtr(
+                                   new NeuronMorphology ( new Soma ) ),
+                                 l, gid++,
+                                 Matrix4_4f::IDENTITY,
+                                 *mcIt, Neuron::INTER )));
       }
     }
   }

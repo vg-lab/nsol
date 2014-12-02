@@ -30,8 +30,9 @@ namespace nsol {
               class SECTION,
               class DENDRITE,
               class AXON,
-              class NEURON,
-              class NEURONMORPHOLOGY > friend class SwcReaderTemplated;
+              class SOMA,
+              class NEURONMORPHOLOGY,
+              class NEURON > friend class SwcReaderTemplated;
     friend class BBPSDKreader;
 
   public:

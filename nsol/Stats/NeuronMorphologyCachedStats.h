@@ -62,7 +62,9 @@ namespace nsol
      * Default constructor
      */
     NSOL_API
-    NeuronMorphologyCachedStats( void ) {}
+    NeuronMorphologyCachedStats( SomaPtr soma_ )
+      : NeuronMorphologyStats( soma_ )
+    {}
 
     /**
      * Default destructor
