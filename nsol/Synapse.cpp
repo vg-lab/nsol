@@ -19,9 +19,9 @@ namespace nsol
 	 }
 
 	 Synapse::Synapse( Synapse & other )
-	     : _preSynapticNeuron( other.preSynapticNeuron( ))
-	 	 , _postSynapticNeuron( other.postSynapticNeuron( ) )
-	 	 , _synapseType( other.synapseType( ) )
+	 :_preSynapticNeuron( other.preSynapticNeuron( ))
+	 ,_postSynapticNeuron( other.postSynapticNeuron( ))
+	 ,_synapseType( other.synapseType( ) )
 	 {
 	 }
 
