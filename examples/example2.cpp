@@ -95,16 +95,21 @@ int main ( void )
       for ( unsigned short j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
       {
         ( *mcIt )->addNeuron(
-          NeuronPtr( new Neuron( true, l, gid++,
-                                 Matrix4_4f::IDENTITY,
-                                 *mcIt, Neuron::PYRAMIDAL )));
+          NeuronPtr( new Neuron(
+            new nsol::NeuronMorphology( new nsol::Soma ),
+            l, gid++,
+            Matrix4_4f::IDENTITY,
+            *mcIt, Neuron::PYRAMIDAL )));
       }
       for ( unsigned short j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
         ( *mcIt )->addNeuron(
-          NeuronPtr( new Neuron( true, l, gid++,
-                                 Matrix4_4f::IDENTITY,
-                                 *mcIt, Neuron::INTER )));
+          NeuronPtr( new Neuron(
+                       nsol::NeuronMorphologyPtr (
+                         new nsol::NeuronMorphology( new nsol::Soma )),
+                       l, gid++,
+                       Matrix4_4f::IDENTITY,
+                       *mcIt, Neuron::INTER )));
       }
     }
   }

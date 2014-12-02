@@ -32,20 +32,22 @@ namespace nsol
 {
 
 #define SWC_READER_TEMPLATE_CLASSES              \
-    class NODE,                                  \
+  class NODE,                                    \
     class SEGMENT,                               \
     class SECTION,                               \
     class DENDRITE,                              \
     class AXON,                                  \
+    class SOMA,                                  \
     class NEURONMORPHOLOGY,                      \
     class NEURON
 
 #define SWC_READER_TEMPLATE_CLASS_NAMES         \
-    NODE,                                       \
+  NODE,                                         \
     SEGMENT,                                    \
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
+    SOMA,                                       \
     NEURONMORPHOLOGY,                           \
     NEURON
 
@@ -112,6 +114,7 @@ namespace nsol
                               Section,
                               Dendrite,
                               Axon,
+                              Soma,
                               NeuronMorphology,
                               Neuron > SwcReader;
 
@@ -120,6 +123,7 @@ namespace nsol
                               SectionStats,
                               DendriteStats,
                               AxonStats,
+                              SomaStats,
                               NeuronMorphologyStats,
                               Neuron > SwcReaderStats;
 
@@ -128,6 +132,7 @@ namespace nsol
                               SectionCachedStats,
                               DendriteCachedStats,
                               AxonCachedStats,
+                              SomaStats,
                               NeuronMorphologyCachedStats,
                               Neuron > SwcReaderCachedStats;
 
@@ -198,7 +203,7 @@ namespace nsol
     std::string line;
     std::getline(inFile, line);
 
-    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY );
+    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
 
     std::map<unsigned int, TSwcLine> lines;
 
@@ -245,7 +250,7 @@ namespace nsol
         NodePtr node(
           new NODE(it->second.xyz, it->second.id, it->second.radius) );
 
-        neuronMorphology->soma( ).addNode(node);
+        neuronMorphology->soma( )->addNode(node);
 
         nodeSomaPtr[it->second.id] = node;
 

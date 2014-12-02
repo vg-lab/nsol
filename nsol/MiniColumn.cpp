@@ -42,10 +42,11 @@ namespace nsol
   NeuronPtr MiniColumn::addNeuron( NeuronPtr neuron )
   {
 
-    if ( neuron )
-      _neurons.push_back(neuron);
-    else
-      _neurons.push_back(NeuronPtr(new Neuron()));
+    // if ( neuron )
+    //   _neurons.push_back(neuron);
+    // else
+    NSOL_DEBUG_CHECK( neuron, "neuron to be added is null" );
+    _neurons.push_back( neuron );
 
     return _neurons.back();
   }

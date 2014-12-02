@@ -9,6 +9,7 @@
 
 #include "NeuronMorphologyStats.h"
 #include "NeuriteStats.h"
+#include "SomaStats.h"
 
 namespace nsol
 {
@@ -24,7 +25,6 @@ namespace nsol
       case __NMS::DENDRITIC_VOLUME:
       case __NMS::AXON_VOLUME:
       case __NMS::NEURITIC_VOLUME:
-      case __NMS::SOMA_VOLUME:
       case __NMS::VOLUME:
         return NeuriteStats::TNeuriteStat::VOLUME;
         break;
@@ -32,7 +32,6 @@ namespace nsol
       case __NMS::DENDRITIC_SURFACE:
       case __NMS::AXON_SURFACE:
       case __NMS::NEURITIC_SURFACE:
-      case __NMS::SOMA_SURFACE:
       case __NMS::SURFACE:
         return NeuriteStats::TNeuriteStat::SURFACE;
         break;
@@ -49,6 +48,8 @@ namespace nsol
         return NeuriteStats::TNeuriteStat::BIFURCATIONS;
         break;
 
+    case __NMS::SOMA_SURFACE:
+    case __NMS::SOMA_VOLUME:
     case __NMS::NEURON_MORPHOLOGY_NUM_STATS:
     default:
       NSOL_THROW(
@@ -70,7 +71,7 @@ namespace nsol
 
     switch( stat )
     {
-      // Dendrite
+    // Dendrite
     case __NMS::DENDRITIC_VOLUME:
     case __NMS::DENDRITIC_SURFACE:
     case __NMS::DENDRITIC_LENGTH:
@@ -81,7 +82,7 @@ namespace nsol
       return ( neurite->neuriteType( ) == Neurite::DENDRITE );
       break;
 
-      // Axon
+    // Axon
     case __NMS::AXON_VOLUME:
     case __NMS::AXON_SURFACE:
     case __NMS::AXON_LENGTH:
@@ -121,6 +122,43 @@ namespace nsol
                       "neuron morphology stat unknown");
     NSOL_DEBUG_CHECK( validAggregation( agg ), "unknown aggregation");
 
+
+    if ( stat == SURFACE )
+    {
+      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+                        "invalid aggregation" );
+      return
+        this->getStat( NEURITIC_SURFACE ) +
+        this->getStat( SOMA_SURFACE );
+    }
+
+    if ( stat == VOLUME )
+    {
+      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+                        "invalid aggregation" );
+      return
+        this->getStat( NEURITIC_VOLUME ) +
+        this->getStat( SOMA_VOLUME );
+    }
+
+
+    // Computation for soma based
+    if ( stat == SOMA_SURFACE )
+    {
+      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+                        "soma stats aggregation invalid" );
+      NSOL_DEBUG_CHECK( _soma->stats( ), "soma without stats" );
+      return _soma->stats( )->getStat( SomaStats::TSomaStat::SURFACE );
+    }
+    if ( stat == SOMA_VOLUME )
+    {
+      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+                        "soma stats aggregation invalid" );
+      NSOL_DEBUG_CHECK( _soma->stats( ), "soma without stats" );
+      return _soma->stats( )->getStat( SomaStats::VOLUME );
+    }
+
+    // Computation for neurite based
     float value = 0.0f;
     float mean;
 

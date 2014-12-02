@@ -77,7 +77,8 @@ BOOST_AUTO_TEST_CASE( addNeuron)
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
 
   // Create a neuron
-  nsol::NeuronPtr n ( new nsol::Neuron ( ));
+  nsol::NeuronPtr n (
+    new nsol::Neuron ( new nsol::NeuronMorphology ( new nsol::Soma )));
 
   // Add the neuron to the minicol
   mc->addNeuron( n );
@@ -103,8 +104,10 @@ BOOST_AUTO_TEST_CASE( removeNeuron)
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
 
   // Create two neurons
-  nsol::NeuronPtr n1 ( new nsol::Neuron );
-  nsol::NeuronPtr n2 ( new nsol::Neuron );
+  nsol::NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  nsol::NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
 
   // Add one of them to the column
   mc->addNeuron( n1 );
@@ -142,7 +145,9 @@ BOOST_AUTO_TEST_CASE( clearNeurons )
 
   // Create and add some neurons
   for ( int i = 0; i < NUM_NEURONS; i++ )
-    mc->addNeuron( nsol::NeuronPtr( new nsol::Neuron ));
+    mc->addNeuron(
+      nsol::NeuronPtr(
+        new nsol::Neuron( new nsol::NeuronMorphology( new nsol::Soma ))));
 
   // Clear neurons
   mc->clearNeurons( );
@@ -194,7 +199,9 @@ BOOST_AUTO_TEST_CASE( operators )
 
   for ( int i = 0 ; i < NUM_NEURONS ; i++ )
   {
-    mc->addNeuron( nsol::NeuronPtr( new nsol::Neuron ));
+    mc->addNeuron(
+      nsol::NeuronPtr( new nsol::Neuron(
+                         new nsol::NeuronMorphology( new nsol::Soma ))));
   }
 
   BOOST_CHECK_EQUAL( *mc == *mc2, false );
@@ -245,18 +252,22 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
     for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
     {
       mc->addNeuron(
-	nsol::NeuronPtr(
-	  new nsol::Neuron( true, l, gid++,
-			    nsol::Matrix4_4f::IDENTITY,
-			    mc, nsol::Neuron::PYRAMIDAL )));
+        nsol::NeuronPtr(
+          new nsol::Neuron(
+            new nsol::NeuronMorphology( new nsol::Soma ),
+            l, gid++,
+            nsol::Matrix4_4f::IDENTITY,
+            mc, nsol::Neuron::PYRAMIDAL )));
     }
     for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
     {
       mc->addNeuron(
-	nsol::NeuronPtr(
-	  new nsol::Neuron( true, l, gid++,
-			    nsol::Matrix4_4f::IDENTITY,
-			    mc, nsol::Neuron::INTER )));
+        nsol::NeuronPtr(
+          new nsol::Neuron(
+            new nsol::NeuronMorphology( new nsol::Soma ),
+            l, gid++,
+            nsol::Matrix4_4f::IDENTITY,
+            mc, nsol::Neuron::INTER )));
     }
   }
 

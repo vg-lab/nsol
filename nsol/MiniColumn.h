@@ -104,7 +104,7 @@ namespace nsol
      * @return pointer to the added neuron
      */
     NSOL_API
-    NeuronPtr addNeuron( NeuronPtr neuron = nullptr );
+    NeuronPtr addNeuron( NeuronPtr neuron );
 
     /**
      * Method to remove a neuron.
