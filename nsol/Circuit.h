@@ -110,6 +110,20 @@ namespace nsol
 
 		///@}
 
+		/** @name Operators */
+		///@{
+
+		NSOL_API
+		Circuit & operator = (const Circuit & other);
+
+		NSOL_API
+		bool operator == (Circuit & other ) const;
+
+		NSOL_API
+		bool operator != (Circuit & other ) const;
+
+		///@}
+
 		/** @name Connections related methods */
 		 ///@{
 
@@ -135,10 +149,28 @@ namespace nsol
 		 NSOL_API
 		 void clearConnections( void );
 
+		 /**
+		  * Method to get connections.
+		  * @return connections of the circuit
+		  */
+		 NSOL_API
+		 Columns & connections( void );
+
+		 /**
+		 * Method to get connections as const.
+		 * @return connections of the circuit
+		 */
+		NSOL_API
+		Columns connections( void ) const;
+
+		/**
+		 * Method to get the number of connections.
+		 * @return numbers of connections
+		 */
+		NSOL_API
+		unsigned int numberOfConnections( void ) const;
+
 		///@}
-
-
-
 
 	  protected:
 
@@ -150,8 +182,6 @@ namespace nsol
 
 		  //! Container with the all connections between neurons
 		  std::map <NeuronPtr, SynapsePtr> _connections;
-
-
 
 	  }; // namespace std
 	}; // namespace nsol

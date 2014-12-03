@@ -78,6 +78,76 @@ namespace nsol
 	      return ( unsigned int ) _morphology.size();
 	    }
 
+	    //
+	    // Operators
+	    //
+	    // TODO:
+	    Circuit & operator = (const Circuit & other)
+	    {
+	    	if (this != &other)
+			{
+			  this->columns( ) = other->columns( );
+			  this->connections( ) = other.connections( );
+			}
+
+			return *this;
+
+	    }
+
+		bool operator == (Circuit & other ) const
+		{
+			return ( ( this->columns( ) == other.columns( ) ) &&
+				     ( this->connections( ) == other.connections( )));
+		}
+
+		bool operator != (Circuit & other ) const
+		{
+			return !( ( this->columns( ) == other.columns( ) ) &&
+				      ( this->connections( ) == other.connections( )));
+		}
+	    //
+
+	    //
+	    // Connections methods
+	    //
+	    // TODO:
+	    void addConnection( NeuronPtr neuron, SynapsePtr synapse )
+	    {
+	    	_connections[ neuron ] = synapse;
+	    }
+
+	    bool removeConnection( NeuronPtr neuron )
+	    {
+	    	std::map <NeuronPtr, SynapsePtr>::iterator it = _connections.find(neuron);
+
+	    	if(it == _connections.end())
+	    		return false;
+
+	    	_connections.erase(neuron);
+	    	return true;
+
+	    }
+
+	    void clearConnections( void )
+	    {
+	    	_connections.clear();
+	    }
+
+	    Columns & connections( void )
+	    {
+	    	return _connections;
+	    }
+
+	    Columns connections( void ) const
+	    {
+	    	return _connections;
+	    }
+
+	    unsigned int numberOfConnections( void ) const
+	    {
+	    	return ( unsigned int ) _connections.size();
+	    }
+	    //
 
 
 	 } // namespace std
