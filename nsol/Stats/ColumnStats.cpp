@@ -83,7 +83,8 @@ namespace nsol
   }
 
   float ColumnStats::getStat( TColumnStat stat,
-                              TAggregation agg ) const
+                              TAggregation miniColAgg,
+                              TAggregation neuronAgg ) const
   {
 
     MiniColumnStats::TMiniColumnStat nStat =
@@ -92,19 +93,19 @@ namespace nsol
     float value = 0;
     float mean;
 
-    if ( agg == TAggregation::STD_DEV )
+    if ( miniColAgg == TAggregation::STD_DEV )
       return sqrt( this->getStat( stat, TAggregation::VARIANCE ));
 
-    if ( agg == TAggregation::MIN )
+    if ( miniColAgg == TAggregation::MIN )
       value = std::numeric_limits< float >::max( );
 
-    if ( agg == TAggregation::MAX )
+    if ( miniColAgg == TAggregation::MAX )
       value = std::numeric_limits< float >::min( );
 
-    if ( agg == TAggregation::VARIANCE )
+    if ( miniColAgg == TAggregation::VARIANCE )
       mean = this->getStat( stat, TAggregation::MEAN );
 
-    if ( agg == TAggregation::MEAN )
+    if ( miniColAgg == TAggregation::MEAN )
       return ( _miniColumns.size( ) == 0 ? 0.0f :
                this->getStat( stat, TAggregation::TOTAL ) /
                float( _miniColumns.size( )));
@@ -114,34 +115,35 @@ namespace nsol
       NSOL_DEBUG_CHECK( ( * miniCol )->stats( ),
                         "neuron without morphology stats" );
 
-      float tmpValue = ( * miniCol )->stats( )->getStat( nStat );
+      float tmpValue =
+        ( * miniCol )->stats( )->getStat( nStat, neuronAgg );
 
-    if ( agg == TAggregation::VARIANCE )
-      value += ( mean - tmpValue ) * ( mean - tmpValue );
+      if ( miniColAgg == TAggregation::VARIANCE )
+        value += ( mean - tmpValue ) * ( mean - tmpValue );
 
-    else if ( agg == TAggregation::MIN )
-      value = std::min( value, tmpValue );
-    else if ( agg == TAggregation::MAX )
-      value = std::max( value, tmpValue );
-    else
-      value += tmpValue;
-  }
-  switch ( agg )
-  {
-  case TAggregation::TOTAL:
-  case TAggregation::MIN:
-  case TAggregation::MAX:
-    return value;
-  case TAggregation::VARIANCE:
-    return ( _miniColumns.size( ) == 0 ? 0.0f :
-             value / float( _miniColumns.size( )));
-  case TAggregation::MEAN:
-  case TAggregation::STD_DEV:
-    break;
-  }
-  NSOL_THROW( "aggregation op not valid" )
-  return 0;
+      else if ( miniColAgg == TAggregation::MIN )
+        value = std::min( value, tmpValue );
+      else if ( miniColAgg == TAggregation::MAX )
+        value = std::max( value, tmpValue );
+      else
+        value += tmpValue;
+    }
+    switch ( miniColAgg )
+    {
+    case TAggregation::TOTAL:
+    case TAggregation::MIN:
+    case TAggregation::MAX:
+      return value;
+    case TAggregation::VARIANCE:
+      return ( _miniColumns.size( ) == 0 ? 0.0f :
+               value / float( _miniColumns.size( )));
+    case TAggregation::MEAN:
+    case TAggregation::STD_DEV:
+      break;
+    }
+    NSOL_THROW( "aggregation op not valid" );
 
+    return 0;
   }
 
 
