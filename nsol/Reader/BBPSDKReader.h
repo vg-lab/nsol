@@ -149,7 +149,7 @@ namespace nsol
                                  NeuronMorphologyStats,
                                  Neuron,
                                  MiniColumnStats,
-                                 Column
+                                 ColumnStats
                                  > BBPSDKReaderStats;
 
   typedef BBPSDKReaderTemplated< NodeCached,
@@ -161,7 +161,7 @@ namespace nsol
                                  NeuronMorphologyCachedStats,
                                  Neuron,
                                  MiniColumnStats,
-                                 Column
+                                 ColumnStats
                                  > BBPSDKReaderCachedStats;
 
 
