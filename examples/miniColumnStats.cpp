@@ -38,7 +38,8 @@ int main ( int argc, char ** argv )
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];
 
-  NSOL_CHECK_THROW( miniColumnWithStats->stats( ), "no stats in minicolumn" );
+  NSOL_CHECK_THROW( miniColumnWithStats->stats( ),
+                    "no stats in minicolumn" );
   NSOL_CHECK_THROW( miniColumnWithCachedStats->stats( ),
                     "no stats in minicolumn" );
 

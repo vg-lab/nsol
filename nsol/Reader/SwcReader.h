@@ -1,4 +1,4 @@
-/**
+ /**
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @author  Ricardo Suarez
@@ -73,7 +73,7 @@ namespace nsol
       Vec3f xyz;
       float radius;
       int parent;
-      std::vector<unsigned int> childs;
+      std::vector<unsigned int> children;
     } TSwcLine;
 
     typedef enum
@@ -227,23 +227,18 @@ namespace nsol
       }
     }
 
-    for (typename std::map<unsigned int, TSwcLine>::iterator it =
-           lines.begin( ); it != lines.end( ); it++)
+    NSOL_CONST_FOREACH( it, lines )
     {
-
       if (it->second.parent != -1)
       {
-        lines[it->second.parent].childs.push_back(it->first);
+        lines[it->second.parent].children.push_back(it->first);
       }
-
     }
 
-
-    std::vector<unsigned int> somaChilds;
+    std::vector<unsigned int> somaChildren;
     std::map<unsigned int, NodePtr > nodeSomaPtr;
 
-    for (typename std::map<unsigned int, TSwcLine>::iterator it =
-           lines.begin( ); it != lines.end( ); it++)
+    NSOL_CONST_FOREACH( it, lines )
     {
       if (it->second.type == SWC_SOMA)
       {
@@ -254,19 +249,19 @@ namespace nsol
 
         nodeSomaPtr[it->second.id] = node;
 
-        for (unsigned int i = 0; i < it->second.childs.size( ); i++)
-          if (lines[it->second.childs[i]].type != SWC_SOMA)
-            somaChilds.push_back(it->second.childs[i]);
+        for (unsigned int i = 0; i < it->second.children.size( ); i++)
+          if (lines[it->second.children[i]].type != SWC_SOMA)
+            somaChildren.push_back(it->second.children[i]);
       }
     }
 
     DendritePtr d;
 
-    for (unsigned int i = 0; i < somaChilds.size( ); i++)
+    for (unsigned int i = 0; i < somaChildren.size( ); i++)
     {
 
 
-      switch (lines[somaChilds[i]].type)
+      switch (lines[somaChildren[i]].type)
       {
       case SWC_SOMA:
         // TODO: handle error
@@ -278,8 +273,8 @@ namespace nsol
         d = new DENDRITE( Dendrite::BASAL );
         neuronMorphology->addNeurite( d );
         d->morphology( neuronMorphology );
-        _ReadDendrite(d, lines, somaChilds[i],
-                      nodeSomaPtr[lines[somaChilds[i]].parent]);
+        _ReadDendrite(d, lines, somaChildren[i],
+                      nodeSomaPtr[lines[somaChildren[i]].parent]);
 
         break;
       }
@@ -288,8 +283,8 @@ namespace nsol
         d = new DENDRITE( Dendrite::APICAL );
         neuronMorphology->addNeurite( d );
         d->morphology(neuronMorphology);
-        _ReadDendrite(d, lines, somaChilds[i],
-                      nodeSomaPtr[lines[somaChilds[i]].parent]);
+        _ReadDendrite(d, lines, somaChildren[i],
+                      nodeSomaPtr[lines[somaChildren[i]].parent]);
 
         break;
 
@@ -298,8 +293,8 @@ namespace nsol
         AxonPtr nP = new AXON( );
         neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
-        _ReadAxon(nP, lines, somaChilds[i],
-                  nodeSomaPtr[lines[somaChilds[i]].parent]);
+        _ReadAxon(nP, lines, somaChildren[i],
+                  nodeSomaPtr[lines[somaChildren[i]].parent]);
 
         break;
       }
@@ -375,7 +370,7 @@ namespace nsol
       nP = sgPre->end( );
 
       // While same section create the segments
-      while (lines[id].childs.size( ) == 1)
+      while (lines[id].children.size( ) == 1)
       {
 
         SegmentPtr sg = s->addSegment( new SEGMENT );
@@ -384,7 +379,7 @@ namespace nsol
         //Segmenet begin node
         sg->begin(nP);
 
-        id = lines[id].childs[0];
+        id = lines[id].children[0];
 
         //Segment end node
         sg->end(NodePtr(new NODE(lines[id].xyz, id, lines[id].radius)));
@@ -395,28 +390,23 @@ namespace nsol
       }
 
       // New branching point
-      if (lines[id].childs.size( ) > 1)
+      if (lines[id].children.size( ) > 1)
       {
         //Plus new branch
-        d->_addBranchCount( ( unsigned int ) lines[id].childs.size( ) );
+        d->_addBranchCount( ( unsigned int ) lines[id].children.size( ) );
         //Plus new bifurcation
         d->_addBifurcationCount(1);
 
-        /* for (std::vector<unsigned int>::reverse_iterator it = lines[id].childs.rbegin( ); */
-        /*      it != lines[id].childs.rend( ); it++) */
-        for (std::vector<unsigned int>::iterator it =
-               lines[id].childs.begin( ); it != lines[id].childs.end( ); it++)
+        NSOL_CONST_FOREACH( it, lines[ id ].children )
         {
           TReadDendritesStackElem tmpStackElem = { (*it), s };
           ids.push( tmpStackElem );
-          // ids.push(TStackElem { (*it), s });
         }
       }
 
     }
 
   }
-
 
   template < SWC_READER_TEMPLATE_CLASSES > void
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadAxon(
@@ -473,7 +463,7 @@ namespace nsol
       nP = sgPre->end( );
 
       // While same section create the segments
-      while (lines[id].childs.size( ) == 1)
+      while (lines[id].children.size( ) == 1)
       {
 
         SegmentPtr sg = s->addSegment( new SEGMENT );
@@ -482,7 +472,7 @@ namespace nsol
         //Segmenet begin node
         sg->begin(nP);
 
-        id = lines[id].childs[0];
+        id = lines[id].children[0];
 
         //Segment end node
         sg->end(NodePtr( new NODE(lines[id].xyz, id,
@@ -494,16 +484,14 @@ namespace nsol
       }
 
       // New branching point
-      if (lines[id].childs.size( ) > 1)
+      if (lines[id].children.size( ) > 1)
       {
         //Plus new branch
-        d->_addBranchCount( ( unsigned int ) lines[id].childs.size( ));
+        d->_addBranchCount( ( unsigned int ) lines[id].children.size( ));
         //Plus new bifurcation
         d->_addBifurcationCount(1);
 
-        for (std::vector<unsigned int>::iterator it =
-               lines[id].childs.begin( );
-             it != lines[id].childs.end( ); it++)
+        NSOL_CONST_FOREACH( it, lines[ id ].children )
         {
           TReadAxonStackElem tmpStackElem = { (*it), s };
           ids.push( tmpStackElem );

@@ -53,48 +53,6 @@ namespace nsol
      */
     NSOL_API
     NeuritePtr addNeurite( NeuritePtr neurite );
-// neuriteNeurite::TNeuriteType neuriteType =
-//                            Neurite::DENDRITE );
-
-    /**
-     * Method to add a new dendrite to the neuron.
-     * @param dendriteType type of Dendrite
-     * @see ndsl::Dendrite::TDendriteType
-     * @return pointer to the added dendrite
-     */
-    // NSOL_API
-    // DendritePtr addDendrite( DendritePtr dendrite );
-
-    // /**
-    //  * Method to add a new axon to the neuron.
-    //  * @return pointer to the added axon
-    //  */
-    // NSOL_API
-    // AxonPtr addAxon( AxonPtr axon );
-
-    // NSOL_API
-    // unsigned int numNeurites( void ) const;
-
-    // NSOL_API
-    // unsigned int numDendrites( void ) const;
-
-    // NSOL_API
-    // unsigned int numNeuriteBranches( void ) const;
-
-    // NSOL_API
-    // unsigned int numDendriteBranches( void ) const ;
-
-    // NSOL_API
-    // unsigned int numAxonBranches( void ) const;
-
-    // NSOL_API
-    // unsigned int numNeuriteBifurcations( void ) const;
-
-    // NSOL_API
-    // unsigned int numDendriteBifurcations( void ) const;
-
-    // NSOL_API
-    // unsigned int numAxonBifurcations( void ) const;
 
     /**
      * Method to get all the dendrites in a container.
@@ -156,7 +114,6 @@ namespace nsol
     Soma * _soma;
     Neurites _neurites;
     Neurons _parentNeurons;
-
 
   };
 

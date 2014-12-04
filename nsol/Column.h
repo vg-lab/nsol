@@ -10,9 +10,9 @@
 #define __NSOL_COLUMN__
 
 #include <nsol/api.h>
-#include <nsol/MiniColumn.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Container/MiniColumns.h>
+#include "MiniColumn.h"
+#include "NsolTypes.h"
+#include "Container/MiniColumns.h"
 
 namespace nsol
 {
@@ -148,10 +148,6 @@ namespace nsol
 
     ///@}
 
-
-    /** @name Morphological measures */
-    ///@{
-
     /**
      * Method to get the number of neurons in the column.
      * @param all if this is true all neurons are counted
@@ -168,72 +164,6 @@ namespace nsol
                      const Neuron::TNeuronType neuronType =
                      Neuron::PYRAMIDAL,
                      const unsigned int layer = 0 ) const;
-
-
-    /**
-     * Method to get the mean soma volume.
-     * @return the mean soma volume
-     */
-    // NSOL_API
-    // float meanSomaVolume( void ) const;
-
-    // /**
-    //  * Method to get the mean soma surface.
-    //  * @return the mean soma surface
-    //  */
-    // NSOL_API
-    // float meanSomaSurface( void ) const;
-
-    // /**
-    //  * Method to get the mean dendrite volume.
-    //  * @return the mean dendrite volume
-    //  */
-    // NSOL_API
-    // float meanDendriteVolume( void ) const;
-
-    // /**
-    //  * Method to get the mean dendrite surface.
-    //  * @return the mean dendrite surface
-    //  */
-    // NSOL_API
-    // float meanDendriteSurface( void ) const;
-
-    // /**
-    //  * Method to get the max soma volume.
-    //  * @return the max soma volume
-    //  */
-    // NSOL_API
-    // float maxSomaVolume( void ) const;
-
-    // /**
-    //  * Method to get the max soma surface.
-    //  * @return the max soma surface
-    //  */
-    // NSOL_API
-    // float maxSomaSurface( void ) const;
-
-    // /**
-    //  * Method to get the max dendrite volume.
-    //  * @return the max dendrite volume
-    //  */
-    // NSOL_API
-    // float maxDendriteVolume( void ) const;
-
-    // /**
-    //  * Method to get the max dendrite surface.
-    //  * @return the max dendrite surface
-    //  */
-    // NSOL_API
-    // float maxDendriteSurface( void ) const;
-
-    // /**
-    //  * Method to get the number of branches in dendrites.
-    //  * @return number of branches in dendrites
-    //  */
-    // NSOL_API
-    // unsigned int numDendriteBranches( void ) const;
-
-    ///@}
 
   protected:
 

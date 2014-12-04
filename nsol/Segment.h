@@ -10,8 +10,8 @@
 #define __NSOL_SEGMENT__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Node.h>
+#include "NsolTypes.h"
+#include "Node.h"
 
 namespace nsol
 {

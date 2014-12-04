@@ -9,21 +9,13 @@
 
 #include "Axon.h"
 
-
 namespace nsol
 {
 
   Axon::Axon ( void )
     : Neurite( Neurite::AXON )
   {
-    // std::cout << "Axon  " <<  _neuriteType
-    //           << std::endl;
   }
-
-  // Axon * Axon::asAxon( void )
-  // {
-  //   return this; // AxonPtr(this);
-  // }
 
 }
 

@@ -12,23 +12,6 @@
 namespace nsol
 {
 
-  // Neuron::Neuron( bool initCreateMorphology,
-  //                 const unsigned short initLayer,
-  //                 const unsigned int initGid,
-  //                 const Matrix4_4f initTransform,
-  //                 const MiniColumnPtr initMiniColumn,
-  //                 const Neuron::TNeuronType initType )
-  //   : _morphology( nullptr )
-  //   , _miniColumn( initMiniColumn )
-  //   , _transform( initTransform )
-  //   , _layer( initLayer )
-  //   , _gid( initGid )
-  //   , _type( initType )
-  // {
-  //   if ( initCreateMorphology )
-  //     _morphology = NeuronMorphologyPtr( new NeuronMorphology );
-  // }
-
   Neuron::Neuron( const NeuronMorphologyPtr initNeuronMorphology,
                   const unsigned short initLayer,
                   const unsigned int initGid,
@@ -53,18 +36,6 @@ namespace nsol
   {
     return ( _morphology != NULL );
   }
-
-  // NeuronMorphologyPtr Neuron::createMorphology( void )
-  // {
-  //   if ( _morphology )
-  //     std::cerr << "nsol::Neuron::createMorphology: "
-  //               << "warning, morphology already exist"
-  //               << std::endl;
-
-  //   _morphology = NeuronMorphologyPtr( new NeuronMorphology );
-
-  //   return _morphology;
-  // }
 
   NeuronMorphologyPtr Neuron::morphology( void ) const
   {
@@ -103,13 +74,7 @@ namespace nsol
 
   Neuron::TNeuronType & Neuron::neuronType( void )
   {
-    // if (this->apicalDendrites()->size() == 0)
-    //   assert( PYRAMIDAL == _type);
-    // else
-    //   assert( INTER == _type);
-
     return _type;
-
   };
 
 

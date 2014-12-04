@@ -119,32 +119,6 @@ namespace nsol
     return nullptr;
   }
 
-
-
-  // float Segment::volume( void )
-  // {
-  //   return ( _begin && _end) ?
-  //     float( M_PI) *
-  //     ( _begin->point( ) - _end->point( )).length( ) *
-  //     _end->radius( ) *
-  //     _end->radius( ) : 0.0f;
-  // }
-
-  // float Segment::surface( void )
-  // {
-  //   return ( _begin && _end) ?
-  //     float( M_2PI) * _end->radius( ) *
-  //     ( _begin->point( ) - _end->point( )).length( ) :
-  //     0.0f;
-  // }
-
-  // float Segment::length( void )
-  // {
-  //   return ( _begin && _end) ?
-  //     ( _begin->point( ) - _end->point( )).length( ) : 0.0f;
-  // }
-
-
   void Segment::_removeNodes ( void )
   {
     //TODO:erase memory allocation. Control shared nodes between segments

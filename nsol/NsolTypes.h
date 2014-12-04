@@ -129,14 +129,24 @@ namespace nsol
 #endif
 
 
-#define NSOL_CONST_FOREACH( __ITERATOR__, __CONTAINER__ ) \
-  for ( auto __ITERATOR__ = (__CONTAINER__).cbegin( );    \
-        __ITERATOR__ != (__CONTAINER__).cend( );          \
+#define NSOL_CONST_FOREACH( __ITERATOR__, __CONTAINER__ )         \
+  for ( auto __ITERATOR__ = (__CONTAINER__).cbegin( );            \
+        __ITERATOR__ != (__CONTAINER__).cend( );                  \
         __ITERATOR__++ )
 
-#define NSOL_FOREACH( __ITERATOR__, __CONTAINER__ )       \
-  for ( auto __ITERATOR__ = (__CONTAINER__).begin( );     \
-        __ITERATOR__ != (__CONTAINER__).end( );           \
+#define NSOL_FOREACH( __ITERATOR__, __CONTAINER__ )               \
+  for ( auto __ITERATOR__ = (__CONTAINER__).begin( );             \
+        __ITERATOR__ != (__CONTAINER__).end( );                   \
+        __ITERATOR__++ )
+
+#define NSOL_CONST_REVERSE_FOREACH( __ITERATOR__, __CONTAINER__ ) \
+  for ( auto __ITERATOR__ = (__CONTAINER__).crbegin( );           \
+        __ITERATOR__ != (__CONTAINER__).crend( );                 \
+        __ITERATOR__++ )
+
+#define NSOL_REVERSE_FOREACH( __ITERATOR__, __CONTAINER__ )       \
+  for ( auto __ITERATOR__ = (__CONTAINER__).rbegin( );            \
+        __ITERATOR__ != (__CONTAINER__).rend( );                  \
         __ITERATOR__++ )
 
 
