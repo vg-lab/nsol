@@ -21,6 +21,12 @@ namespace nsol
 		   _id = identifier;
 		 }
 
+		 Circuit::Circuit( const Circuit & other )
+		     : _id( other.id( ))
+		     , _morphology( other.columns( ))
+		 	 , _connections( other.connections( ))
+		   {}
+
 		 Circuit::~Circuit()
 		 {
 			 _morphology.clear();
