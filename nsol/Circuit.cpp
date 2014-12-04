@@ -17,19 +17,18 @@ namespace nsol
 		 //
 
 		 Circuit::Circuit( const unsigned short identifier )
+		 : _id (identifier)
+		  , _morphology( nullptr )
+		  , _efferentConnections( nullptr )
+		  , _afferentConnections( nullptr )
 		 {
-		   _id = identifier;
 		 }
-
-		 Circuit::Circuit( const Circuit & other )
-		     : _id( other.id( ))
-		     , _morphology( other.columns( ))
-		 	 , _connections( other.connections( ))
-		   {}
 
 		 Circuit::~Circuit()
 		 {
-			 _morphology.clear();
+			 _morphology.clear( );
+			 _efferentConnections.clear( );
+			 _afferentConnections.clear( );
 		 }
 
 		 //
@@ -92,8 +91,10 @@ namespace nsol
 	    {
 	    	if (this != &other)
 			{
+	    	  this->id( ) = other.id( );
 			  this->columns( ) = other->columns( );
-			  this->connections( ) = other.connections( );
+			  this->efferentConnections( ) = other.efferentConnections( );
+			  this->afferentConnections( ) = other.afferentConnections( );
 			}
 
 			return *this;
@@ -102,44 +103,170 @@ namespace nsol
 
 		bool operator == (Circuit & other ) const
 		{
-			return ( ( this->columns( ) == other.columns( ) ) &&
-				     ( this->connections( ) == other.connections( )));
+			return ( ( this->id( ) = other.id( ) )
+					 ( this->columns( ) == other.columns( ) ) &&
+				     ( this->efferentConnections( ) == other.efferentConnections( )) &&
+				     ( this->afferentConnections( ) == other.afferentConnections( )));
 		}
 
 		bool operator != (Circuit & other ) const
 		{
-			return !( ( this->columns( ) == other.columns( ) ) &&
-				      ( this->connections( ) == other.connections( )));
+			return !( ( this->id( ) = other.id( ) )
+					 ( this->columns( ) == other.columns( ) ) &&
+				     ( this->efferentConnections( ) == other.efferentConnections( )) &&
+				     ( this->afferentConnections( ) == other.afferentConnections( )));
 		}
 	    //
 
 	    //
-	    // Connections methods
+	    // Efferent and Afferent connections methods
 	    //
-	    // TODO:
-	    void addConnection( NeuronPtr neuron, SynapsePtr synapse )
+	    bool addEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse )
 	    {
-	    	_connections[ neuron ] = synapse;
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+	    									_efferentConnections.find(neuron);
+
+			if(it == _efferentConnections.end())
+				return false;
+
+			(_efferentConnections[ neuron ]).push_back( efferentSynapse );
+			return true;
 	    }
 
-	    bool removeConnection( NeuronPtr neuron )
+	    bool addAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse )
+		{
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				return false;
+
+			(_afferentConnections[ neuron ]).push_back( afferentSynapse );
+			return true;
+		}
+
+	    bool removeEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse )
 	    {
-	    	std::map <NeuronPtr, SynapsePtr>::iterator it = _connections.find(neuron);
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_efferentConnections.find(neuron);
 
-	    	if(it == _connections.end())
-	    		return false;
+			if(it == _efferentConnections.end())
+				return false;
 
-	    	_connections.erase(neuron);
+			(_efferentConnections[ neuron ]).erase( efferentSynapse );
 	    	return true;
 
 	    }
 
-	    void clearConnections( void )
+	    bool removeAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse )
+		{
+			std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				return false;
+
+			(_afferentConnections[ neuron ]).erase( afferentSynapse );
+			return true;
+
+		}
+
+	    void clearEfferentConnections( NeuronPtr neuron )
 	    {
-	    	_connections.clear();
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_efferentConnections.find(neuron);
+
+			if(it == _efferentConnections.end())
+				throw std::runtime_error("No efferent connections in neuron object");
+
+			_efferentConnections.clear();
 	    }
 
-	    Columns & connections( void )
+	    void clearAfferentConnections( NeuronPtr neuron )
+		{
+			std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				throw std::runtime_error("No afferent connections in neuron object");
+
+			_afferentConnections.clear();
+		}
+
+	    void  clearConnections( NeuronPtr neuron )
+	    {
+	    	clearEfferentConnections( neuron );
+			clearAfferentConnections( neuron );
+	    }
+
+	    std::Vector<SynapsePtr> & efferentConnections( NeuronPtr neuron )
+		{
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_efferentConnections.find(neuron);
+
+			if(it == _efferentConnections.end())
+				throw std::runtime_error("No efferent connections in neuron object");
+
+			return _efferentConnections[ neuron ];
+		}
+
+	    std::Vector<SynapsePtr> & afferentConnections( NeuronPtr neuron )
+		{
+			std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				throw std::runtime_error("No afferent connections in neuron object");
+
+			return _afferentConnections[ neuron ];
+		}
+
+	    std::Vector<SynapsePtr> efferentConnections( NeuronPtr neuron ) const
+		{
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_efferentConnections.find(neuron);
+
+			if(it == _efferentConnections.end())
+				throw std::runtime_error("No efferent connections in neuron object");
+
+			return _efferentConnections[ neuron ];
+		}
+
+	    std::Vector<SynapsePtr> afferentConnections( NeuronPtr neuron ) const
+		{
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				throw std::runtime_error("No afferent connections in neuron object");
+
+			return _afferentConnections[ neuron ];
+		}
+
+	    unsigned int numberOfEfferentConnections( NeuronPtr neuron ) const
+	    {
+	    	std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_efferentConnections.find(neuron);
+
+			if(it == _efferentConnections.end())
+				throw std::runtime_error("Don't found the neuron object");
+
+			return ( unsigned int ) _efferentConnections[ neuron ].size();
+	    }
+
+	    unsigned int numberOfAfferentConnections( NeuronPtr neuron ) const
+		{
+			std::map <NeuronPtr, std::Vector<SynapsePtr>>::iterator it =
+											_afferentConnections.find(neuron);
+
+			if(it == _afferentConnections.end())
+				throw std::runtime_error("Don't found the neuron object");
+
+			return ( unsigned int ) _afferentConnections[ neuron ].size();
+		}
+
+
+	    /*Columns & connections( void )
 	    {
 	    	return _connections;
 	    }
@@ -152,7 +279,7 @@ namespace nsol
 	    unsigned int numberOfConnections( void ) const
 	    {
 	    	return ( unsigned int ) _connections.size();
-	    }
+	    }*/
 	    //
 
 

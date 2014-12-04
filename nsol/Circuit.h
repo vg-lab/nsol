@@ -131,51 +131,108 @@ namespace nsol
 
 		///@}
 
-		/** @name Connections related methods */
+		/** @name Efferent and Afferent Connections related methods */
 		 ///@{
 
-		// TODO:
 		/**
-	    * Method to add a connection.
-	    * @param connection connection to add to this circuit
+	    * Method to add an efferent connection.
+	    * @param efferent connection to add to this circuit
+	    * @return true if efferent connection added false otherwise
 	    */
 	    NSOL_API
-	    void addConnection( NeuronPtr neuron, SynapsePtr synapse );
+	    bool addEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
 
 	    /**
-		 * Method to remove a connection.
-		 * @param neuron pointer to the connection to be removed
-   	     * @return true if connection removed false otherwise
+		* Method to add an afferent connection.
+		* @param afferent connection to add to this circuit
+		* @return true if afferent connection added false otherwise
+		*/
+		NSOL_API
+		bool addAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
+
+	     /**
+		 * Method to remove an efferent connection.
+		 * @param neuron pointer to the efferent connection to be removed
+   	     * @return true if efferent connection removed false otherwise
 	     */
 		 NSOL_API
-		 bool removeConnection( NeuronPtr neuron );
+		 bool removeEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
 
 		 /**
-		  * Method to clear connections.
+		 * Method to remove an afferent connection.
+		 * @param neuron pointer to the afferent connection to be removed
+		 * @return true if afferent connection removed false otherwise
+		 */
+		 NSOL_API
+		 bool removeAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
+
+		 /**
+		  * Method to clear efferent connections of the one neuron.
 		  */
 		 NSOL_API
-		 void clearConnections( void );
+		 void clearEfferentConnections( NeuronPtr neuron );
 
 		 /**
-		  * Method to get connections.
-		  * @return connections of the circuit
+		  * Method to clear afferent connections of the  neuron.
 		  */
 		 NSOL_API
-		 Columns & connections( void );
+		 void clearAfferentConnections( NeuronPtr neuron );
 
 		 /**
-		 * Method to get connections as const.
-		 * @return connections of the circuit
+		  * Method to clear all the connections (efferents and afferents)
+		  * of a neuron.
+		  */
+		 NSOL_API
+		 void clearConnections( NeuronPtr neuron );
+
+		 /**
+		  * Method to get efferent connections.
+		  * @return efferent connections of a neuron
+		  */
+		 NSOL_API
+		 std::Vector<SynapsePtr> & efferentConnections( NeuronPtr neuron );
+
+		 /**
+		  * Method to get afferent connections.
+		  * @return afferent connections of a neuron
+		  */
+		 NSOL_API
+		 std::Vector<SynapsePtr> & afferentConnections( NeuronPtr neuron );
+
+		 /**
+		 * Method to get efferent connections as const.
+		 * @return efferent connections of a neuron
 		 */
 		NSOL_API
-		Columns connections( void ) const;
+		std::Vector<SynapsePtr> efferentConnections( NeuronPtr neuron ) const;
 
 		/**
-		 * Method to get the number of connections.
-		 * @return numbers of connections
+		 * Method to get afferent connections as const.
+		 * @return afferent connections of a neuron
 		 */
 		NSOL_API
-		unsigned int numberOfConnections( void ) const;
+		std::Vector<SynapsePtr> afferentConnections( NeuronPtr neuron ) const;
+
+		/**
+		 * Method to get the number of efferent connections of a neuron.
+		 * @return numbers of efferent connections
+		 */
+		NSOL_API
+		unsigned int numberOfEfferentConnections( NeuronPtr neuron ) const;
+
+		/**
+		 * Method to get the number of afferent connections of a neuron.
+		 * @return numbers of afferent connections
+		 */
+		NSOL_API
+		unsigned int numberOfAfferentConnections( NeuronPtr neuron ) const;
+
+		/**
+		 * Method to get the total number of connections of a neuron.
+		 * @return total numbers of connections
+		 */
+		NSOL_API
+		unsigned int numberOfConnections( NeuronPtr neuron ) const;
 
 		///@}
 
@@ -187,8 +244,11 @@ namespace nsol
 		  //! Container of columns, with all the morphology
 		  Columns _morphology;
 
-		  //! Container with the all connections between neurons
-		  std::map <NeuronPtr, SynapsePtr> _connections;
+		  //! Container with the all efferent connections between neurons
+		  std::map <NeuronPtr, std::Vector<SynapsePtr>> _efferentConnections;
+
+		  //! Container with the all afferent connections between neurons
+		  std::map <NeuronPtr, std::Vector<SynapsePtr>> _afferentConnections;
 
 	  }; // namespace std
 	}; // namespace nsol
