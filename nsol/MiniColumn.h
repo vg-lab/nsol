@@ -10,8 +10,8 @@
 #define __NSOL_MINICOLUMN__
 
 #include <nsol/api.h>
-#include <nsol/Neuron.h>
-#include <nsol/Container/Neurons.h>
+#include "Neuron.h"
+#include "Container/Neurons.h"
 
 namespace nsol
 {
@@ -177,77 +177,6 @@ namespace nsol
     {
       return nullptr;
     }
-
-
-
-
-    /** @name Morphological measures */
-    ///@{
-
-    /**
-     * Method to get the mean soma volume.
-     * @return the mean soma volume
-     */
-    // NSOL_API
-    // float meanSomaVolume( void ) const;
-
-    // /**
-    //  * Method to get the mean soma surface.
-    //  * @return the mean soma surface
-    //  */
-    // NSOL_API
-    // float meanSomaSurface( void ) const;
-
-    // /**
-    //  * Method to get the mean dendrite volume.
-    //  * @return the mean dendrite volume
-    //  */
-    // NSOL_API
-    // float meanDendriteVolume( void ) const;
-
-    // /**
-    //  * Method to get the mean dendrite.
-    //  * @return the mean dendrite surface
-    //  */
-    // NSOL_API
-    // float meanDendriteSurface( void ) const;
-
-    // /**
-    //  * Method to get the max soma volume.
-    //  * @return the max soma volume
-    //  */
-    // NSOL_API
-    // float maxSomaVolume( void ) const;
-
-    // /**
-    //  * Method to get the max soma surface.
-    //  * @return the max soma surface
-    //  */
-    // NSOL_API
-    // float maxSomaSurface( void ) const;
-
-    // /**
-    //  * Method to get the max dendrite volume.
-    //  * @return the max dendrite volume
-    //  */
-    // NSOL_API
-    // float maxDendriteVolume( void ) const;
-
-    // /**
-    //  * Method to get the max dendrite surface.
-    //  * @return the max dendrite surface
-    //  */
-    // NSOL_API
-    // float maxDendriteSurface( void ) const;
-
-    // /**
-    //  * Method to compute the number of branches in dendrites
-    //  * @return number of branches
-    //  */
-    // NSOL_API
-    // unsigned int numDendriteBranches( void );
-
-    ///@}
 
   protected:
 

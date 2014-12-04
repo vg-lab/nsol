@@ -9,9 +9,10 @@
 #define __NSOL_DENDRITE__
 
 #include <nsol/api.h>
-#include <nsol/Neurite.h>
+#include "Neurite.h"
 
-namespace nsol {
+namespace nsol
+{
 
   class Dendrite : public virtual Neurite
   {
@@ -48,9 +49,6 @@ namespace nsol {
     //! Get the type of neurite
     NSOL_API
     TDendriteType & dendriteType( void );
-
-    //! Return pointer to Dendrite object
-    // virtual Dendrite * asDendrite( void );
 
   protected:
 

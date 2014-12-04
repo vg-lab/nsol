@@ -10,13 +10,13 @@
 #define __NSOL_NEURON__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/NeuronMorphology.h>
-#include <nsol/Soma.h>
-#include <nsol/Neurite.h>
-#include <nsol/Dendrite.h>
-#include <nsol/Container/Dendrites.h>
-#include <nsol/Container/Neurites.h>
+#include "NsolTypes.h"
+#include "NeuronMorphology.h"
+#include "Soma.h"
+#include "Neurite.h"
+#include "Dendrite.h"
+#include "Container/Dendrites.h"
+#include "Container/Neurites.h"
 
 namespace nsol
 {
@@ -36,18 +36,6 @@ namespace nsol
       PYRAMIDAL = 0,
       INTER
     } TNeuronType;
-
-    /**
-     * Default Neuron class constructor.
-     * TODO: construct protected objects
-     */
-    // NSOL_API
-    // Neuron( bool createMorphology = true,
-    //         const unsigned short layer = 0,
-    //         const unsigned int gid = 0,
-    //         const Matrix4_4f transform = Matrix4_4f::IDENTITY,
-    //         const MiniColumnPtr miniColumn = nullptr,
-    //         const TNeuronType type = PYRAMIDAL);
 
     NSOL_API
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
@@ -109,16 +97,22 @@ namespace nsol
 
   protected:
 
-    NeuronMorphologyPtr _morphology; //> Morphology
+    //! Morphology pointer
+    NeuronMorphologyPtr _morphology;
 
-    MiniColumnPtr _miniColumn;	//> Minicolumn
+    //! Minicolumn pointer
+    MiniColumnPtr _miniColumn;
 
-    Matrix4_4f _transform; //> Matrix of global transformation
+    //! Matrix of global transformation
+    Matrix4_4f _transform;
 
+    //! Layer
     unsigned short _layer; //> Layer
 
-    unsigned int _gid; //> Neuron id
+    //! Unique id
+    unsigned int _gid;
 
+    //! Type of neuron
     TNeuronType _type;
 
   };

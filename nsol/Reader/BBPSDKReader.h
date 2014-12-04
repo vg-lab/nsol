@@ -207,8 +207,9 @@ namespace nsol
     std::cerr << toRead << ": Exporting " << neuronsExpe.size()
               << " neurons. " << std::endl;
 
-    for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
-         it != neuronsExpe.end(); ++it)
+    // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
+    //      it != neuronsExpe.end(); ++it)
+    NSOL_FOREACH( it, neuronsExpe )
     {
       std::cerr << "Neuron " << it->label() << " with morphology "
                << it->morphology().label() << std::endl;
@@ -294,8 +295,10 @@ namespace nsol
         //Getting soma of the morphology
         const bbp::Soma &soma = morphology.soma();
         //Writing soma
-        for (bbp::Soma::const_iterator nodeIt = soma.begin();
-             nodeIt != soma.end(); ++nodeIt) {
+        // for (bbp::Soma::const_iterator nodeIt = soma.begin();
+        //      nodeIt != soma.end(); ++nodeIt)
+        NSOL_FOREACH( nodeIt, soma )
+        {
 
           m->soma()->addNode(NodePtr(
                               new NODE( Vec3f( ( * nodeIt)[0],
@@ -308,14 +311,16 @@ namespace nsol
 
         const bbp::Sections &somas = morphology.somas();
         //Writing neurites
-        for (bbp::Sections::const_iterator sectionIt = somas.begin();
-             sectionIt != somas.end(); sectionIt++)
+        // for (bbp::Sections::const_iterator sectionIt = somas.begin();
+        //      sectionIt != somas.end(); sectionIt++)
+        NSOL_FOREACH( sectionIt, somas )
         {
 
           bbp::Sections children = ( * sectionIt ).children();
 
-          for ( bbp::Sections::iterator cit = children.begin( );
-                cit != children.end( ); cit++)
+          // for ( bbp::Sections::iterator cit = children.begin( );
+          //       cit != children.end( ); cit++)
+          NSOL_FOREACH( cit, children )
           {
             DendritePtr dendrite = nullptr;
             NeuritePtr neurite = nullptr;
@@ -430,9 +435,10 @@ namespace nsol
                 nPre = crossSectionSegment->end();
               }
 
-              for (bbp::Sections::const_iterator child =
-                     lS->children().begin();
-                   child != lS->children().end(); ++child)
+              // for (bbp::Sections::const_iterator child =
+              //        lS->children().begin();
+              //      child != lS->children().end(); ++child)
+              NSOL_FOREACH( child, lS->children( ))
               {
                 sPS.push( & ( * child ) );
                 parents.push( section );

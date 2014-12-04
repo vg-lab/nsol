@@ -10,8 +10,8 @@
 #define __NSOL_NEURITE__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Section.h>
+#include "NsolTypes.h"
+#include "Section.h"
 
 #include <iostream>
 
@@ -106,23 +106,6 @@ namespace nsol {
      */
     NSOL_API
     virtual NeuriteStats * stats( void );
-
-    // NSOL_API
-    // float volume( void );
-
-    // NSOL_API
-    // float surface( void );
-
-    // NSOL_API
-    // float length( void );
-
-    // Casting virtual functions
-
-    //! Return pointer to Dendrite object
-    // virtual Dendrite * asDendrite( void );
-
-    // //! Return pointer to Axon object
-    // virtual Axon * asAxon( void );
 
   protected:
 

@@ -3,7 +3,7 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
             Do not distribute without further notice.
  */
 
@@ -21,11 +21,6 @@ namespace nsol
     , _id( initId )
   {
   }
-
-  // Vec3f & Node::point(void)
-  // {
-  //   return _point;
-  // }
 
   Node::~Node( void )
   {
