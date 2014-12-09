@@ -141,7 +141,7 @@ namespace nsol
      * @param neuronType if "all" is false neurons of the
      *        passed type will be counted
      * @param layer if "all" is false neurons of the
-     *        layer will be counted. If later is 0 then all
+     *        layer will be counted. If layer is 0 then all
      *        neurons of all layers will be counted.
      * @return number of neurons that match the criteria
      */
