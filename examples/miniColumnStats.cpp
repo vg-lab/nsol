@@ -48,6 +48,24 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
+
+  for ( unsigned int layer = 0 ; layer < 7; layer++ )
+  {
+    std::cout << layer << " pyr: " <<
+      miniColumnWithStats->numberOfNeurons( false,
+                                            nsol::Neuron::PYRAMIDAL,
+                                            layer )
+              <<  " inter: " <<
+      miniColumnWithStats->numberOfNeurons( false,
+                                            nsol::Neuron::INTER,
+                                            layer )
+              << std::endl;
+  }
+
+
+
+  return 0;
+
   struct timeval startTime, endTime;
   long totalTime;
 
