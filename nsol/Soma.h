@@ -10,7 +10,7 @@
 #define __NSOL_SOMA__
 
 #include <nsol/api.h>
-#include <nsol/Container/Nodes.h>
+#include "Container/Nodes.h"
 
 namespace nsol
 {
@@ -66,28 +66,6 @@ namespace nsol
      */
     NSOL_API
     void addNode( NodePtr node );
-
-    /**
-     * Method to create a node and add it to the soma
-     * @param xyz position of the node
-     * @param radius radius of the node
-     */
-    NSOL_API
-    void addNode( Vec3f & xyz, float & radius );
-
-    /**
-     * Method to compute and get the volume of the soma
-     * @return volume of the soma
-     */
-    // NSOL_API
-    // float volume( void ) const;
-
-    // /**
-    //  * Method to compute and get the surface of the soma
-    //  * @return surface of the soma
-    //  */
-    // NSOL_API
-    // float surface( void ) const;
 
     NSOL_API
     virtual const SomaStats * stats( void ) const

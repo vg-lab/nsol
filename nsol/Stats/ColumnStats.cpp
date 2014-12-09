@@ -105,10 +105,10 @@ namespace nsol
     if ( miniColAgg == TAggregation::VARIANCE )
       mean = this->getStat( stat, TAggregation::MEAN );
 
-    if ( miniColAgg == TAggregation::MEAN )
-      return ( _miniColumns.size( ) == 0 ? 0.0f :
-               this->getStat( stat, TAggregation::TOTAL ) /
-               float( _miniColumns.size( )));
+    // if ( miniColAgg == TAggregation::MEAN )
+    //   return ( _miniColumns.size( ) == 0 ? 0.0f :
+    //            this->getStat( stat, TAggregation::TOTAL ) /
+    //            float( _miniColumns.size( )));
 
     NSOL_CONST_FOREACH( miniCol, _miniColumns )
     {
@@ -135,9 +135,9 @@ namespace nsol
     case TAggregation::MAX:
       return value;
     case TAggregation::VARIANCE:
+    case TAggregation::MEAN:
       return ( _miniColumns.size( ) == 0 ? 0.0f :
                value / float( _miniColumns.size( )));
-    case TAggregation::MEAN:
     case TAggregation::STD_DEV:
       break;
     }

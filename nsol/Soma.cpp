@@ -23,7 +23,6 @@ namespace nsol
     // for (Nodes::iterator it = _nodes.begin();
     // 	 it != _nodes.end(); ++it)
     //   delete *it;
-
     _nodes.clear();
   }
 
@@ -49,26 +48,6 @@ namespace nsol
     _recalculateCenter();
     _recalculateMaxRadius();
   }
-
-  void Soma::addNode( Vec3f & xyz, float & radius )
-  {
-    this->addNode( NodePtr( new Node( xyz, 0, radius )));
-
-    _recalculateCenter();
-    _recalculateMaxRadius();
-  }
-
-  // float Soma::volume( void ) const
-  // {
-  //   //TODO: use real volume soma formula, now use sphere volume formula
-  //   return float( M_4PI_3 * _maxRadius * _maxRadius * _maxRadius );
-  // }
-
-  // float Soma::surface( void ) const
-  // {
-  //   //TODO: use real soma surface, now use sphere surface formula
-  //   return float( M_4PI * _maxRadius * _maxRadius );
-  // }
 
   void Soma::_recalculateCenter( void )
   {
