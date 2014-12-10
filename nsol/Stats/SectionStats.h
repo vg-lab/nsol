@@ -21,7 +21,7 @@ namespace nsol
    *  hierarchy allows to call the method stats from base Section
    *  class and get the corresponding volume, surface and length.
    *
-   * Example: @include examples/stats.cpp
+   * Example: @include examples/sectionStats.cpp
    */
   class SectionStats : public Section
   {

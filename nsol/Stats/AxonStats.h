@@ -22,7 +22,7 @@ namespace nsol
    *  hierarchy allows to call the method stats from base Axon
    *  class and get the corresponding volume, surface and length.
    *
-   * Example: @include examples/stats.cpp
+   * Example: @include examples/neuriteStats.cpp
    */
   class AxonStats
     : public Axon

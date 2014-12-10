@@ -26,7 +26,7 @@ namespace nsol
    *  cached value is dirty then the actual computation process is done.
    *  In case is clean the cached value is returned directly.
    *
-   *  Example: @include examples/stats.cpp
+   *  Example: @include examples/neuriteStats.cpp
    */
   class NeuriteCachedStats
     : public virtual NeuriteStats

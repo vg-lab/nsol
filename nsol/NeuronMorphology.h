@@ -47,8 +47,7 @@ namespace nsol
 
     /**
      * Method to add a new neurite to the neuron.
-     * @param neuriteType type of Neurite.
-     * @see Neurite::TNeuriteType
+     * @param neurite pointer to the neurite to be added.
      * @return pointer to the added neurite
      */
     NSOL_API
