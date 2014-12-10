@@ -36,13 +36,6 @@ namespace nsol
 		  Circuit( unsigned short id = 0 );
 
 		  /**
-		  * Copy constructor
-		  * @param other circuit to be copied
-		  */
-		  NSOL_API
-		  Circuit( const Circuit & other );
-
-		  /**
 		  * Default destructor
 		  * @param id id of the circuit.
 		  */
@@ -140,7 +133,7 @@ namespace nsol
 	    * @return true if efferent connection added false otherwise
 	    */
 	    NSOL_API
-	    bool addEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
+	    void addEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
 
 	    /**
 		* Method to add an afferent connection.
@@ -148,7 +141,7 @@ namespace nsol
 		* @return true if afferent connection added false otherwise
 		*/
 		NSOL_API
-		bool addAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
+		void addAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
 
 	     /**
 		 * Method to remove an efferent connection.
@@ -186,32 +179,62 @@ namespace nsol
 		 void clearConnections( NeuronPtr neuron );
 
 		 /**
+		  * Method to clear all the connections (efferents and afferents)
+		  * of all the circuit.
+		  */
+		 NSOL_API
+		 void clearAllConnections( void );
+
+		 /**
+		  * Method to get efferent connections.
+		  * @return efferent connections of the circuit
+		  */
+		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &efferentConnections( void );
+
+		 /**
+		  * Method to get afferent connections.
+		  * @return afferent connections of the circuit
+		  */
+		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &afferentConnections( void );
+		 /**
+		  * Method to get efferent connections as const.
+		  * @return efferent connections of the circuit
+		  */
+		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &efferentConnections( void ) const;
+
+		 /**
+		  * Method to get afferent connections as const.
+		  * @return afferent connections of the circuit
+		  */
+		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &afferentConnections( void ) const;
+
+		 /**
 		  * Method to get efferent connections.
 		  * @return efferent connections of a neuron
 		  */
 		 NSOL_API
-		 std::Vector<SynapsePtr> & efferentConnections( NeuronPtr neuron );
+		 std::Vector<SynapsePtr> & efferentConnectionsOfANeuron( NeuronPtr neuron );
 
 		 /**
 		  * Method to get afferent connections.
 		  * @return afferent connections of a neuron
 		  */
 		 NSOL_API
-		 std::Vector<SynapsePtr> & afferentConnections( NeuronPtr neuron );
+		 std::Vector<SynapsePtr> & afferentConnectionsOfANeuron( NeuronPtr neuron );
 
 		 /**
 		 * Method to get efferent connections as const.
 		 * @return efferent connections of a neuron
 		 */
 		NSOL_API
-		std::Vector<SynapsePtr> efferentConnections( NeuronPtr neuron ) const;
+		std::Vector<SynapsePtr> efferentConnectionsOfANeuron( NeuronPtr neuron ) const;
 
 		/**
 		 * Method to get afferent connections as const.
 		 * @return afferent connections of a neuron
 		 */
 		NSOL_API
-		std::Vector<SynapsePtr> afferentConnections( NeuronPtr neuron ) const;
+		std::Vector<SynapsePtr> afferentConnectionsOfANeuron( NeuronPtr neuron ) const;
 
 		/**
 		 * Method to get the number of efferent connections of a neuron.
