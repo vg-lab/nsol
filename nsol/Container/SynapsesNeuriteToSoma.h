@@ -1,0 +1,22 @@
+/**
+ * @file    SynapsesNeuriteToSoma.h
+ * @brief   Test for class nsol::SynapsesNeuriteToSomaPtr
+ * @author  Raquel Jarillo Pellon <r.jarillo@alumnos.urjc.es>
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+            Do not distribute without further notice.
+ */
+#ifndef __NSOL_SYNAPSES_NEURITE_TO_NEURITE__
+#define __NSOL_SYNAPSES_NEURITE_TO_NEURITE__
+
+#include <nsol/NsolTypes.h>
+#include <nsol/SynapseNeuriteToSoma.h>
+
+namespace nsol {
+
+  class SynapsesNeuriteToSoma : public Vector<SynapseNeuriteToSomaPtr> {
+  };
+
+}
+
+#endif

@@ -70,6 +70,7 @@ namespace nsol
   class SynapseNeuriteToNeurite;
   class SynapseNeuriteToSoma;
   class SynapseSomaToSoma;
+  class Circuit;
 
 
 #if (NSOL_WITH_SHARED_PTR == 1)
@@ -87,6 +88,7 @@ namespace nsol
   typedef std::shared_ptr<SynapseNeuriteToNeurite> SynapseNeuriteToNeuritePtr;
   typedef std::shared_ptr<SynapseNeuriteToSoma> SynapseNeuriteToSomaPtr;
   typedef std::shared_ptr<SynapseSomaToSoma> SynapseSomaToSomaPtr;
+  typedef std::shared_ptr<Circuit> CircuitPtr;
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
@@ -111,6 +113,7 @@ namespace nsol
   typedef SynapseNeuriteToNeurite * SynapseNeuriteToNeuritePtr;
   typedef SynapseNeuriteToSoma * SynapseNeuriteToSomaPtr;
   typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
+  typedef Circuit * CircuitPtr;
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )
