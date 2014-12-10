@@ -36,21 +36,11 @@ namespace nsol
 
   public:
 
-    // //! Stats that can be cached for NeuriteStats
-    // typedef enum
-    // {
-    //   SURFACE = 0,
-    //   VOLUME,
-    //   LENGTH,
-    //   BIFURCATIONS,
-    //   NEURITE_NUM_CACHED_VALUES
-    // } TNeuriteCachedValues;
-
     /**
      * Default constructor
      */
     NSOL_API
-    NeuriteCachedStats( void );
+    NeuriteCachedStats( TNeuriteType neuriteType = DENDRITE );
 
     /**
      * Default destructor
@@ -79,39 +69,18 @@ namespace nsol
     NSOL_API
     virtual void firstSection( SectionPtr section );
 
+
+    /**
+     * Returns the stat given if the cache is clean and if it is dirty
+     * then computes the stat and stores the value in the cache. Only
+     * TAggregation::TOTAL caches values, other aggregations are computed
+     * @param stat stat to compute
+     * @param agg aggregation used
+     * @return stat value using the aggregation given
+     */
     NSOL_API
     virtual float getStat( TNeuriteStat stat,
                            TAggregation agg = TAggregation::TOTAL ) const;
-
-
-    /**
-     * Computes volume of the neurite
-     * @return volume of neurite
-     */
-    // NSOL_API
-    // virtual float volume( void ) const;
-
-    // /**
-    //  * Computes surface of the neurite
-    //  * @return surface of neurite
-    //  */
-    // NSOL_API
-    // virtual float surface( void ) const;
-
-    // /**
-    //  * Computes length of the neurite
-    //  * @return length of neurite
-    //  */
-    // NSOL_API
-    // virtual float length( void ) const;
-
-    // /**
-    //  * Computes the number of bifurcations
-    //  * @return number of bifurcations
-    //  */
-    // NSOL_API
-    // virtual unsigned int bifurcations( void ) const;
-
 
 
   }; // class NeuriteCachedStats

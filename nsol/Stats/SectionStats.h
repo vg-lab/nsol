@@ -51,27 +51,6 @@ namespace nsol
     virtual float getStat( TSectionStat stat,
                            TAggregation agg = TAggregation::TOTAL ) const;
 
-    // /**
-    //  * Computes volume of the section
-    //  * @return volume of section
-    //  */
-    // NSOL_API
-    // virtual float volume( void ) const;
-
-    // /**
-    //  * Computes surface of the section
-    //  * @return surface of section
-    //  */
-    // NSOL_API
-    // virtual float surface( void ) const;
-
-    // /**
-    //  * Computes length of the section
-    //  * @return length of section
-    //  */
-    // NSOL_API
-    // virtual float length( void ) const;
-
 
   protected:
 
