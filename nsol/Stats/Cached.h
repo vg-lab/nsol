@@ -69,7 +69,10 @@ namespace nsol
 
     TYPE getValue( const unsigned int id_ ) const
     {
-      return _values[ id_ ];
+      if ( ! dirty( id_ ))
+        return _values[ id_ ];
+      else
+        return TYPE( 0 );
     }
 
 

@@ -15,8 +15,8 @@ namespace nsol
 {
 
 
-  NeuriteCachedStats::NeuriteCachedStats( void )
-    : NeuriteStats( )
+  NeuriteCachedStats::NeuriteCachedStats( TNeuriteType neuriteType_ )
+    : NeuriteStats( neuriteType_ )
     , Cached( )
   {
   }
