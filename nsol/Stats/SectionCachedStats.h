@@ -27,7 +27,7 @@ namespace nsol
    *  value is dirty then the actual computation process is done. In case is
    *  clean the cached value is returned directly.
    *
-   *  Example: @include examples/stats.cpp
+   *  Example: @include examples/sectionStats.cpp
    */
   class SectionCachedStats
     : public SectionStats
