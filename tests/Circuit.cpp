@@ -13,7 +13,7 @@
 
 using namespace nsol;
 
-void CheckNullMorphologicalValues( CircuitPtr cir )
+/*void CheckNullMorphologicalValues( CircuitPtr cir )
 {
 	BOOST_CHECK_EQUAL( cir->numberOfColumns( ), 0 );
 	BOOST_CHECK_EQUAL( cir->numberOfColumns( false ), 0 );
@@ -27,7 +27,7 @@ void CheckNoCircuits( CircuitPtr cir )
 
 BOOST_AUTO_TEST_CASE( test_empty_circuit )
 {
-	nsol::Circuit cir;
+	nsol::Circuit cir(new nsol::Circuit( ));
 
 	// Check id equal to 0
 	#define CIR_ID 2
@@ -393,5 +393,5 @@ BOOST_AUTO_TEST_CASE( test_circuit_clear_all_connections )
 	NSOL_DELETE_PTR( cir );
 
 }
-
+*/
 
