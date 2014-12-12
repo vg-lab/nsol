@@ -42,11 +42,6 @@ namespace nsol
       ( _begin->point( ) - _end->point( )).length( ) : 0.0f;
       break;
 
-    case MEAN_RADIUS:
-      NSOL_LOG( "mean radius not implemented for SegmentStats" );
-      return 0.0f;
-      break;
-
     default:
       NSOL_THROW( "stat not implemented for SegmentStats" );
     }

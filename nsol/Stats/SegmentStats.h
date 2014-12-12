@@ -25,7 +25,6 @@ namespace nsol
       SURFACE = 0,
       VOLUME,
       LENGTH,
-      MEAN_RADIUS,
       SEGMENT_NUM_STATS
     } TSegmentStat;
 
@@ -35,15 +34,6 @@ namespace nsol
 
     NSOL_API
     virtual float getStat( TSegmentStat stat ) const;
-
-    // NSOL_API
-    // virtual float volume( void ) const;
-
-    // NSOL_API
-    // virtual float surface( void ) const;
-
-    // NSOL_API
-    // virtual float length( void ) const;
 
 
   }; // class SegmentStats
