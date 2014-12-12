@@ -66,21 +66,26 @@ namespace nsol
   class Segment;
   class Soma;
 
-  class CachedSection;
+  class NodeCached;
+  class SegmentCachedStats;
 
 
 #if (NSOL_WITH_SHARED_PTR == 1)
-  typedef std::shared_ptr<Axon> AxonPtr;
-  typedef std::shared_ptr<Column> ColumnPtr;
-  typedef std::shared_ptr<Dendrite> DendritePtr;
-  typedef std::shared_ptr<MiniColumn> MiniColumnPtr;
-  typedef std::shared_ptr<Neurite> NeuritePtr;
-  typedef std::shared_ptr<Neuron> NeuronPtr;
-  typedef std::shared_ptr<NeuronMorphology> NeuronMorphologyPtr;
-  typedef std::shared_ptr<Node> NodePtr;
-  typedef std::shared_ptr<Section> SectionPtr;
-  typedef std::shared_ptr<Segment> SegmentPtr;
-  typedef std::shared_ptr<Soma> SomaPtr;
+  typedef std::shared_ptr< Axon > AxonPtr;
+  typedef std::shared_ptr< Column > ColumnPtr;
+  typedef std::shared_ptr< Dendrite > DendritePtr;
+  typedef std::shared_ptr< MiniColumn > MiniColumnPtr;
+  typedef std::shared_ptr< Neurite > NeuritePtr;
+  typedef std::shared_ptr< Neuron > NeuronPtr;
+  typedef std::shared_ptr< NeuronMorphology > NeuronMorphologyPtr;
+  typedef std::shared_ptr< Node > NodePtr;
+  typedef std::shared_ptr< Section > SectionPtr;
+  typedef std::shared_ptr< Segment > SegmentPtr;
+  typedef std::shared_ptr< Soma > SomaPtr;
+
+  typedef std::shared_ptr< NodeCached > NodeCachedPtr;
+  typedef std::shared_ptr< SegmentCachedStats > SegmentCachedStatsPtr;
+
 
 //  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
 
@@ -109,6 +114,11 @@ namespace nsol
   typedef Section * SectionPtr;
   typedef Segment * SegmentPtr;
   typedef Soma * SomaPtr;
+
+
+  typedef NodeCached * NodeCachedPtr;
+  typedef SegmentCachedStats * SegmentCachedStatsPtr;
+
 
 //  typedef CachedSection * CachedSectionPtr;
 
