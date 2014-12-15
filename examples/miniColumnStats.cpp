@@ -9,6 +9,15 @@ void computeMiniColumnStats( nsol::MiniColumnPtr column );
 void printMiniColumnStats( nsol::MiniColumnPtr column );
 
 
+#ifndef NSOL_WITH_BBPSDK
+
+int main ( int /* argc */, char ** /* argv */ )
+{
+  std::cout << "BBPSDK support not built-in" << std::endl;
+
+  return 0;
+}
+#else
 
 int main ( int argc, char ** argv )
 {
@@ -217,3 +226,5 @@ void printMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   std::cout << std::endl;
 
 }
+
+#endif // NSOL_WITH_BBPSDK
