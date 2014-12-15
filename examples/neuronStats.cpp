@@ -3,8 +3,7 @@
  */
 
 #include <nsol/nsol.h>
-
-
+#include <sys/time.h>
 
 void computeNeuronMorphologyStats( nsol::NeuronMorphologyPtr morphology );
 
