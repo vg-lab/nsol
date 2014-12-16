@@ -31,10 +31,8 @@ namespace nsol
   {
     this->Cached::setAndPropagateDirty( id_ );
 
-    for ( auto segIt = _parentSegments.begin( );
-          segIt != _parentSegments.end( ); segIt++ )
+    NSOL_CONST_FOREACH( segIt, _parentSegments )
     {
-
       auto cached = NSOL_DYNAMIC_CAST( Cached, * segIt );
       if ( cached )
         cached->setAndPropagateDirty( id_ );
@@ -45,10 +43,8 @@ namespace nsol
   {
     this->Cached::setAndPropagateDirty( );
 
-    for ( auto segIt = _parentSegments.begin( );
-          segIt != _parentSegments.end( ); segIt++ )
+    NSOL_CONST_FOREACH( segIt, _parentSegments )
     {
-
       auto cached = NSOL_DYNAMIC_CAST( Cached, * segIt );
       if ( cached )
         cached->setAndPropagateDirty( );
