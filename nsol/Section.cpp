@@ -221,16 +221,36 @@ namespace nsol
 
       while (sP)
       {
-  radius += sP->begin()->radius();
-  nN++;
+        radius += sP->begin()->radius();
+        nN++;
 
-  sP = sP->next();
+        sP = sP->next();
       }
 
       radius += _lastSegment->end()->radius();
     }
 
     return radius/(nN + 1);
+  }
+
+  unsigned int Section::numNodes( void )
+  {
+    unsigned int cont = 0;
+    SegmentPtr saux = this->_firstSegment;
+
+    while ( saux )
+    {
+      cont++;
+
+      if ( saux != this->_lastSegment )
+        saux = saux->next( );
+      else {
+        cont++;
+        break;
+      }
+    } // while
+
+    return cont;
   }
 
 

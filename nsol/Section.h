@@ -85,6 +85,9 @@ namespace nsol
     NSOL_API
     float meanRadius( void );
 
+    NSOL_API
+    unsigned int numNodes( void );
+
   protected:
 
     /* //! Parent neuron of the section */
