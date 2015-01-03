@@ -67,8 +67,8 @@ namespace nsol
       outFile << "#File exporter" << std::endl;
 
       //Writing soma
-      for (Vector<NodePtr>::iterator it = morphology->soma().nodes().begin();
-      it != morphology->soma().nodes().end(); ++it)
+      for (Vector<NodePtr>::iterator it = morphology->soma()->nodes().begin();
+      it != morphology->soma()->nodes().end(); ++it)
       {
         outFile << " "
                 << (*it)->id()
@@ -132,9 +132,9 @@ namespace nsol
             segment = segment->next();
           }
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
+          if (lS->children().size() > 0)
+            for (unsigned int i = 0; i < lS->children().size(); ++i)
+              sPS.push(lS->children()[i]);
         }
 
         for (std::map<unsigned int, NodePtr>::iterator nodeIt = 

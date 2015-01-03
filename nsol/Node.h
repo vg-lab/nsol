@@ -2,14 +2,16 @@
  * @file    Node.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+            Do not distribute without further notice.
  */
 #ifndef __NSOL_NODE__
 #define __NSOL_NODE__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
+#include "NsolTypes.h"
+#include "Container/Segments.h"
 
 namespace nsol
 {
@@ -20,21 +22,27 @@ namespace nsol
   public:
 
     NSOL_API
-    Node( const Vec3f & point = Vec3f(0,0,0), 
-	  const int &id = 0, 
-	  const float &radius = 0.0f );
+    Node( const Vec3f & point = Vec3f(0,0,0),
+          const int & id = 0,
+          const float & radius = 0.0f );
 
     NSOL_API
     virtual ~Node( void );
 
     NSOL_API
-    Vec3f & point( void );
+    Segments & parentSegments( void );
 
-	NSOL_API
+    NSOL_API
+    void addParentSegment( SegmentPtr segment_ );
+
+    NSOL_API
+    virtual void point( const Vec3f & point_ );
+
+    NSOL_API
     Vec3f point( void ) const;
 
     NSOL_API
-    float & radius( void );
+    virtual void radius( const float radius_ );
 
     NSOL_API
     float radius( void ) const;
@@ -43,11 +51,14 @@ namespace nsol
     int & id( void );
 
     NSOL_API
-    int id( void ) const;   
+    int id( void ) const;
 
     NSOL_API
-    virtual bool operator == ( Node & other ) const;
-    
+    Node & operator = ( const Node & other );
+
+    NSOL_API
+    bool operator == ( Node & other ) const;
+
     NSOL_API
     virtual bool operator != ( Node & other ) const;
 
@@ -56,6 +67,8 @@ namespace nsol
     Vec3f _point;
     float _radius;
     int _id;
+
+    Segments _parentSegments;
 
   };
 

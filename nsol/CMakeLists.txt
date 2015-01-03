@@ -1,54 +1,86 @@
-
-
 source_group(\\ FILES CMakeLists.txt)
 
 set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
-Node.h
-Utils/Simplification/ScalarLabeledNode.h
-Utils/Simplification/SimplifySection.h
-Column.h
-Soma.h
-Writer/SwcWriter.h
-Neurite.h
-Container/Sections.h
-Container/Dendrites.h
-Container/Columns.h
-Container/MiniColumns.h
-Container/Neurites.h
-Container/Segments.h
-Container/Neurons.h
-Container/Nodes.h
-Section.h
-NeuronMorphology.h
-Segment.h
-Reader/SwcReader.h
-Reader/BBPSDKReader.h
-NsolTypes.h
-MiniColumn.h
-Neuron.h
-Axon.h
-Spine.h
-Dendrite.h
-Synapse.h
-)
+
+  Axon.h
+  Column.h
+  Container/Columns.h
+  Container/Dendrites.h
+  Container/MiniColumns.h
+  Container/Neurites.h
+  Container/Neurons.h
+  Container/Nodes.h
+  Container/Sections.h
+  Container/Segments.h
+  Dendrite.h
+  error.h
+  MiniColumn.h
+  Neurite.h
+  Neuron.h
+  NeuronMorphology.h
+  Node.h
+  NsolTypes.h
+  Section.h
+  Segment.h
+  Soma.h
+  Spine.h
+  Utils/Simplification/ScalarLabeledNode.h
+  Utils/Simplification/SimplifySection.h
+  Stats/AxonStats.h
+  Stats/AxonCachedStats.h
+  Stats/DendriteStats.h
+  Stats/DendriteCachedStats.h
+  Stats/Cached.h
+  Stats/ColumnStats.h
+  Stats/MiniColumnStats.h
+  Stats/NeuronMorphologyStats.h
+  Stats/NeuronMorphologyCachedStats.h
+  Stats/NeuriteStats.h
+  Stats/NeuriteCachedStats.h
+  Stats/NeuriteCachedStats.cpp
+  Stats/NodeCached.h
+  Stats/SectionStats.h
+  Stats/SectionCachedStats.h
+  Stats/SegmentStats.h
+  Stats/SegmentCachedStats.h
+  Stats/SomaStats.h
+  Synapse.h
+  # templated classes at last
+  Writer/SwcWriter.h
+  Factory.h
+  Reader/BBPSDKReader.h
+  Reader/SwcReader.h
+  )
 
 set(NSOL_HEADERS )
 
 set(NSOL_SOURCES ${COMMON_SOURCES}
-NeuronMorphology.cpp
-MiniColumn.cpp
-Neuron.cpp
-Node.cpp
-Dendrite.cpp
-Axon.cpp
-Soma.cpp
-Neurite.cpp
-Column.cpp
-Segment.cpp
-Section.cpp
-Utils/Simplification/ScalarLabeledNode.cpp
-Utils/Simplification/SimplifySection.cpp
-)
+  Axon.cpp
+  Column.cpp
+  Dendrite.cpp
+  MiniColumn.cpp
+  Neurite.cpp
+  Neuron.cpp
+  NeuronMorphology.cpp
+  Node.cpp
+  Section.cpp
+  Segment.cpp
+  Soma.cpp
+  Utils/Simplification/ScalarLabeledNode.cpp
+  Utils/Simplification/SimplifiySection.cpp
+  Stats/ColumnStats.cpp
+  Stats/MiniColumnStats.cpp
+  Stats/NeuronMorphologyStats.cpp
+  Stats/NeuronMorphologyCachedStats.cpp
+  Stats/NeuriteStats.cpp
+  Stats/NeuriteCachedStats.cpp
+  Stats/NodeCached.cpp
+  Stats/SectionStats.cpp
+  Stats/SectionCachedStats.cpp
+  Stats/SegmentStats.cpp
+  Stats/SegmentCachedStats.cpp
+  Stats/SomaStats.cpp
+  )
 
 if (BBPSDK_FOUND)
   set(NSOL_LINK_LIBRARIES ${BBPSDK_LIBRARIES})

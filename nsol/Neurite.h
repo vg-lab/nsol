@@ -2,40 +2,68 @@
  * @file    Neurite.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 #ifndef __NSOL_NEURITE__
 #define __NSOL_NEURITE__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Section.h>
+#include "NsolTypes.h"
+#include "Section.h"
+
+#include <iostream>
+
 
 namespace nsol {
 
   class Dendrite;
   class Axon;
+  class NeuriteStats;
 
-  class Neurite 
+  class Neurite
   {
 
-    template< class NODE > friend class SwcReader;
+    template< class NODE,
+              class SEGMENT,
+              class SECTION,
+              class DENDRITE,
+              class AXON,
+              class SOMA,
+              class NEURONMORPHOLOGY,
+              class NEURON > friend class SwcReaderTemplated;
     friend class BBPSDKreader;
 
   public:
 
     //! Possible types of neurite
-    typedef enum 
+    typedef enum
     {
-      DENDRITE = 0, 
+      DENDRITE = 0,
       AXON
     } TNeuriteType;
 
+    friend std::ostream & operator<< ( std::ostream & os,
+                                       const TNeuriteType & rhs)
+    {
+      switch ( rhs )
+      {
+      case DENDRITE:
+        return os << "DENDRITE";
+        break;
+      case AXON:
+        return os << "AXON";
+        break;
+      default:
+        return os << "UNDEFINED";
+      }
+      return os;
+    }
+
     //! Default constructor
     NSOL_API
-    Neurite(TNeuriteType neuriteType = DENDRITE);
+    Neurite( TNeuriteType neuriteType = DENDRITE );
 
     NSOL_API
     virtual ~Neurite();
@@ -51,14 +79,18 @@ namespace nsol {
     NeuronMorphologyPtr morphology( NeuronMorphologyPtr morphology );
 
     NSOL_API
-    bool hasMorphology( void );
+    bool hasMorphology( void ) const;
 
     NSOL_API
-    SectionPtr firstSection();
+    SectionPtr firstSection( void ) const ;
 
     NSOL_API
-    void firstSection( SectionPtr section );
+    virtual void firstSection( SectionPtr section );
 
+    NSOL_API
+    Sections * sections( void );
+
+    //TODO: this methods should disappear
     NSOL_API
     void computeBranchBifurcations( void );
 
@@ -68,28 +100,18 @@ namespace nsol {
     NSOL_API
     unsigned int numBifurcations( void );
 
+    /**
+     * Returns object as NeuriteStats
+     * @return pointer to NeuriteStats object
+     */
     NSOL_API
-    float volume( void );
-
-    NSOL_API
-    float surface( void ); 
-
-    NSOL_API
-    float length( void );
-
-    // Casting virtual functions
-
-    //! Return pointer to Dendrite object
-    // virtual Dendrite * asDendrite( void ); 
-
-    // //! Return pointer to Axon object
-    // virtual Axon * asAxon( void ); 
+    virtual NeuriteStats * stats( void );
 
   protected:
 
-    void _addBifurcationCount( unsigned int numBifurcations ); 
+    void _addBifurcationCount( unsigned int numBifurcations );
 
-    void _addBranchCount( unsigned int numBranches ); 
+    void _addBranchCount( unsigned int numBranches );
 
     TNeuriteType _neuriteType;
 

@@ -3,23 +3,27 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 #ifndef __NSOL_NEURON_MORPHOLOGY__
 #define __NSOL_NEURON_MORPHOLOGY__
 
 #include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <nsol/Soma.h>
-#include <nsol/Axon.h>
-#include <nsol/Neurite.h>
-#include <nsol/Dendrite.h>
-#include <nsol/Container/Dendrites.h>
-#include <nsol/Container/Neurites.h>
+
+#include "NsolTypes.h"
+#include "Soma.h"
+#include "Axon.h"
+#include "Neurite.h"
+#include "Dendrite.h"
+#include "Container/Dendrites.h"
+#include "Container/Neurites.h"
+#include "Container/Neurons.h"
 
 namespace nsol
 {
+
+  class NeuronMorphologyStats;
 
   /*! \class NeuronMorphology
    \brief A class to represent morphology of neurons.
@@ -36,97 +40,18 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
-    NeuronMorphology( void );
+    NeuronMorphology( SomaPtr soma );
 
     NSOL_API
-    ~NeuronMorphology( void );
+    virtual ~NeuronMorphology( void );
 
     /**
      * Method to add a new neurite to the neuron.
-     * @param neuriteType type of Neurite.
-     * @see Neurite::TNeuriteType
+     * @param neurite pointer to the neurite to be added.
      * @return pointer to the added neurite
      */
     NSOL_API
-    NeuritePtr addNeurite( Neurite::TNeuriteType neuriteType = 
-			   Neurite::DENDRITE );
-
-    /**
-     * Method to add a new dendrite to the neuron.
-     * @param dendriteType type of Dendrite
-     * @see ndsl::Dendrite::TDendriteType
-     * @return pointer to the added dendrite
-     */
-    NSOL_API
-    DendritePtr addDendrite( Dendrite::TDendriteType dendriteType = 
-			     Dendrite::BASAL );
-
-    /**
-     * Method to add a new axon to the neuron.
-     * @return pointer to the added axon
-     */
-    NSOL_API
-    AxonPtr addAxon( void );
-
-    NSOL_API
-    unsigned int numNeurites( void ) const;
-
-    NSOL_API
-    unsigned int numDendrites( void ) const;
-
-    NSOL_API
-    unsigned int numNeuriteBranches( void ) const;
-
-    NSOL_API
-    unsigned int numDendriteBranches( void ) const ;
-
-    NSOL_API
-    unsigned int numAxonBranches( void ) const;
-
-    NSOL_API
-    unsigned int numNeuriteBifurcations( void ) const;
-
-    NSOL_API
-    unsigned int numDendriteBifurcations( void ) const;
-
-    NSOL_API
-    unsigned int numAxonBifurcations( void ) const;
-
-    NSOL_API
-    float volume( void ) const;
-
-    NSOL_API
-    float neuritesVolume( void ) const;
-
-    NSOL_API
-    float dendritesVolume( void ) const;
-
-    NSOL_API
-    float axonVolume( void ) const;
-
-    NSOL_API
-    float surface( void ) const;
-
-    NSOL_API
-    float neuritesSurface( void ) const;
-
-    NSOL_API
-    float dendritesSurface( void ) const;
-
-    NSOL_API
-    float axonSurface( void ) const;
-
-    NSOL_API
-    float length( void ) const;
-
-    NSOL_API
-    float neuritesLength( void ) const;
-
-    NSOL_API
-    float dendritesLength( void ) const;
-    
-    NSOL_API
-    float axonLength( void ) const;
+    NeuritePtr addNeurite( NeuritePtr neurite );
 
     /**
      * Method to get all the dendrites in a container.
@@ -153,24 +78,41 @@ namespace nsol
     Dendrites * apicalDendrites( void ) const;
 
     /**
-     * Method to add a new dendrite to the neuron.
-     * @param dendriteType  .
-     * @see Neurite::TNeuriteType
-     * @return pointer to the added dendrite
+     * Method to get the first apical dendrite
+     * @return pointer to the apical dendrite. nullptr in case not found.
      */
     NSOL_API
     DendritePtr apicalDendrite( void ) const;
 
     NSOL_API
-    Neurites & neurites( void );
+    virtual Neurites & neurites( void );
 
     NSOL_API
-    Soma & soma( void );
+    const Neurites & neurites( void ) const;
+
+    NSOL_API
+    virtual Neurons & parentNeurons( void );
+
+    NSOL_API
+    const Neurons & parentNeurons( void ) const;
+
+    NSOL_API
+    SomaPtr soma( void );
+
+    NSOL_API
+    virtual NeuronMorphologyStats * stats( void )
+    {
+      return nullptr;
+    }
+
+    NSOL_API
+    void addParentNeuron( NeuronPtr neuron );
 
   protected:
 
-    Soma _soma;
+    Soma * _soma;
     Neurites _neurites;
+    Neurons _parentNeurons;
 
   };
 
