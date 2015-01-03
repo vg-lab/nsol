@@ -67,7 +67,7 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Segment.cpp
   Soma.cpp
   Utils/Simplification/ScalarLabeledNode.cpp
-  Utils/Simplification/SimplifiySection.cpp
+  Utils/Simplification/SimplifySection.cpp
   Stats/ColumnStats.cpp
   Stats/MiniColumnStats.cpp
   Stats/NeuronMorphologyStats.cpp

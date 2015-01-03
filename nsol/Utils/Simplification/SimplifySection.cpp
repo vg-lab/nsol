@@ -213,7 +213,7 @@ namespace nsol
       SectionPtr simplifed = ( SectionPtr ) new Section( 
                                     polyline->neurite( )
                                   , polyline->parent( )
-                                  , polyline->childs( )
+                                  , polyline->children( )
                                   , simple );
 
       delete simple;
@@ -393,7 +393,7 @@ namespace nsol
       SectionPtr simplifed = ( SectionPtr ) new Section( 
                                       polyline->neurite( )
                                     , polyline->parent( )
-                                    , polyline->childs( )
+                                    , polyline->children( )
                                     , simple );
 
       delete simple;

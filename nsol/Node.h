@@ -57,7 +57,7 @@ namespace nsol
     Node & operator = ( const Node & other );
 
     NSOL_API
-    bool operator == ( Node & other ) const;
+    virtual bool operator == ( Node & other ) const;
 
     NSOL_API
     virtual bool operator != ( Node & other ) const;

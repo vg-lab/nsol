@@ -26,10 +26,6 @@ namespace nsol
   {    
   }
 
-  Vec3f & Node::point(void)
-  {
-  }
-
   Segments & Node::parentSegments( void )
   {
     return _parentSegments;

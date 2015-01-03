@@ -26,7 +26,7 @@ namespace nsol
              , List<NodePtr>* list = new List<NodePtr>() )
     : _neurite ( initNeurite )
     , _parent ( initParent )
-    , _childs ( initChilds )
+    , _children ( initChilds )
   {
     _firstSegment = nullptr;
     _lastSegment = nullptr;
