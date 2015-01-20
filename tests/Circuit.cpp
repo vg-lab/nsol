@@ -13,16 +13,14 @@
 
 using namespace nsol;
 
-/*void CheckNullMorphologicalValues( CircuitPtr cir )
+void CheckNullMorphologicalValues( CircuitPtr cir )
 {
 	BOOST_CHECK_EQUAL( cir->numberOfColumns( ), 0 );
-	BOOST_CHECK_EQUAL( cir->numberOfColumns( false ), 0 );
 }
 
 void CheckNoCircuits( CircuitPtr cir )
 {
 	BOOST_CHECK_EQUAL( cir->numberOfConnections( ), 0 );
-	BOOST_CHECK_EQUAL( cir->numberOfConnections( false ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( test_empty_circuit )
@@ -53,6 +51,7 @@ BOOST_AUTO_TEST_CASE( test_circuit_constructors )
 	nsol::Circuit cir1Copy( cir1 );
 	BOOST_CHECK_EQUAL( cir1.id( ), 1 );
 	BOOST_CHECK_EQUAL( cir1Copy.id( ), 1 );
+	BOOST_CHECK_EQUAL( cir1Copy.id( ), cir1.id( ) );
 }
 
 BOOST_AUTO_TEST_CASE( test_circuit_change_id )
@@ -200,7 +199,7 @@ BOOST_AUTO_TEST_CASE( test_circuit_operators )
 
 }
 
-BOOST_AUTO_TEST_CASE( test_circuit_number_of_efferentConnectionsOfANeuron )
+/*BOOST_AUTO_TEST_CASE( test_circuit_number_of_efferentConnectionsOfANeuron )
 {
 	// Create a circuit
 	nsol::CircuitPtr cir( new nsol::Circuit );
