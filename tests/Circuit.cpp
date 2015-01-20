@@ -25,7 +25,7 @@ void CheckNoCircuits( CircuitPtr cir )
 
 BOOST_AUTO_TEST_CASE( test_empty_circuit )
 {
-	nsol::Circuit cir(new nsol::Circuit( ));
+	nsol::Circuit cir;
 
 	// Check id equal to 0
 	#define CIR_ID 2
@@ -78,11 +78,6 @@ BOOST_AUTO_TEST_CASE( test_circuit_add_column_to_the_morphology )
 	BOOST_CHECK_EQUAL( cir->columns( ).size( ), 1);
 	BOOST_CHECK_EQUAL( cir->columns( ).size( ),
 	cir->numberOfColumns( ));
-
-	// Check morphological values are still computed
-	// to 0 without errors
-	CheckNullMorphologicalValues( cir );
-	CheckNoCircuits( cir );
 
 	// Free dynamic memory used
 	NSOL_DELETE_PTR( col );
@@ -141,7 +136,7 @@ BOOST_AUTO_TEST_CASE( test_circuit_clear_columns )
      // Check morphological values are still computed
      // to 0 without errors
      CheckNullMorphologicalValues( cir );
-     CheckNoNeurons( cir );
+     CheckNoCircuits( cir );
 
      // Free dymanic memory used
      for ( auto colIt = cir->columns( ).begin( );
@@ -199,198 +194,90 @@ BOOST_AUTO_TEST_CASE( test_circuit_operators )
 
 }
 
-/*BOOST_AUTO_TEST_CASE( test_circuit_number_of_efferentConnectionsOfANeuron )
+BOOST_AUTO_TEST_CASE( test_circuit_add_connections )
+{
+		// Create a circuit
+		nsol::CircuitPtr cir( new nsol::Circuit );
+
+		// Create a synapse
+		nsol::SynapsePtr syn( new nsol::Synapse( ));
+
+		// Add the synapse to the circuit
+		cir->addConnection( syn );
+
+		// Check if added ok
+		BOOST_CHECK_EQUAL( cir->connections( ).size( ), 1);
+		BOOST_CHECK_EQUAL( cir->connections( ).size( ),
+		cir->numberOfConnections( ));
+
+		// Free dynamic memory used
+		NSOL_DELETE_PTR( syn );
+		NSOL_DELETE_PTR( cir );
+}
+
+BOOST_AUTO_TEST_CASE( test_circuit_remove_connections )
+{
+		// Create a circuit
+		nsol::CircuitPtr cir( new nsol::Circuit );
+
+		// Create two columns
+		nsol::SynapsePtr syn( new nsol::Synapse );
+		nsol::SynapsePtr syn2( new nsol::Synapse );
+
+		// Add the column to the morphology of the circuit
+		cir->addConnection( syn );
+
+		// Try to remove the one not added
+		BOOST_CHECK_EQUAL( cir->removeConnection( syn2 ), false);
+		BOOST_CHECK_EQUAL( cir->connections( ).size( ), 1);
+	    BOOST_CHECK_EQUAL( cir->connections( ).size( ),
+		                   cir->numberOfConnections( ));
+
+	    // Remove the one added
+	    BOOST_CHECK_EQUAL( cir->removeConnection( syn ), true);
+		BOOST_CHECK_EQUAL( cir->connections( ).size( ), 0);
+		BOOST_CHECK_EQUAL( cir->connections( ).size( ),
+						   cir->numberOfConnections( ));
+
+		// Free dynamic memory used
+		NSOL_DELETE_PTR( syn2 );
+		NSOL_DELETE_PTR( syn );
+		NSOL_DELETE_PTR( cir );
+}
+
+
+BOOST_AUTO_TEST_CASE( test_circuit_clear_connections)
 {
 	// Create a circuit
 	nsol::CircuitPtr cir( new nsol::Circuit );
 
-	// Create a neuron
-	NeuronPtr neuron( new Neuron( ));
-	SynapsePtr synapse( new Synapse( ));
+	#define NUM_SYNS 10
 
-	// Add one efferent connection inside of circuit
-	cir->addEfferentConnection( neuron, synapse);
+	 // Create and add some connections (synapses)
+	 for ( int i = 0; i < NUM_SYNS; i++ )
+	   cir->addConnection( SynapsePtr( new nsol::Synapse ));
 
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 1 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfefferentConnections( neuron ) );
+	 // Clear connections
+     cir->clearConnections( );
 
-	// Remove the efferent connection
-	NeuronPtr neuron2 ( new Neuron( ));
-	BOOST_CHECK_EQUAL(cir->removeEfferentConnection( neuron2, SynapsePtr (new Synapse( ))),
-					  false);
-	BOOST_CHECK_EQUAL(cir->removeEfferentConnection( neuron, synapse),
-					  true);
+     // Check number of synapses inside of circuit
+     BOOST_CHECK_EQUAL( cir->connections( ).size( ), 0);
+     BOOST_CHECK_EQUAL( cir->connections( ).size( ),
+    		 	 	    cir->numberOfConnections( ));
 
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfefferentConnections( neuron ) );
+     // Check morphological values are still computed
+     // to 0 without errors
+     CheckNullMorphologicalValues( cir );
+     CheckNoCircuits( cir );
 
-	// Free dymanic memory used
-	NSOL_DELETE_PTR( synapse );
-	NSOL_DELETE_PTR( neuron );
-	NSOL_DELETE_PTR( neuron2 );
-	NSOL_DELETE_PTR( cir );
+     // Free dymanic memory used
+     /*for ( auto synIt = cir->connections( ).begin( );
+    		 synIt != cir->connections( ).end( ); synIt++ )
+    	 NSOL_DELETE_PTR( ( * synIt ));*/
+
+     NSOL_DELETE_PTR( cir );
 
 }
 
-BOOST_AUTO_TEST_CASE( test_circuit_number_of_afferentConnectionsOfANeuron )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
 
-	// Create a neuron
-	NeuronPtr neuron( new Neuron( ));
-	SynapsePtr synapse( new Synapse( ));
-
-	// Add one afferent connection inside of circuit
-	cir->addAfferentConnection( neuron, synapse);
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 1 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	// Remove the afferent connection
-	NeuronPtr neuron2 ( new Neuron( ));
-	BOOST_CHECK_EQUAL(cir->removeAfferentConnection( neuron2, SynapsePtr (new Synapse( ))),
-					  false);
-	BOOST_CHECK_EQUAL(cir->removeAfferentConnection( neuron, synapse),
-					  true);
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	// Free dymanic memory used
-	NSOL_DELETE_PTR( synapse );
-	NSOL_DELETE_PTR( neuron );
-	NSOL_DELETE_PTR( neuron2 );
-	NSOL_DELETE_PTR( cir );
-
-}
-
-BOOST_AUTO_TEST_CASE( test_circuit_clear_eff_aff_connections )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
-
-	// Create a neuron
-	NeuronPtr neuron( new Neuron( ));
-
-	#define NUM_EFF_CONN 10
-	#define NUM_AFF_CONN 10
-
-	// Create and add some efferent connections
-	for ( int i = 0; i < NUM_EFF_CONN; i++ )
-	  cir->addEfferentConnection( neuron, NeuronPtr( new nsol::Neuron ));
-
-	// Create and add some afferent connections
-	for ( int i = 0; i < NUM_AFF_CONN; i++ )
-	  cir->addAfferentConnection( neuron, NeuronPtr( new nsol::Neuron ));
-
-
-	// Clear efferent and afferent connections
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfEfferentConnections( neuron ) );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	cir->clearEfferentConnections( neuron );
-
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfEfferentConnections( neuron ) );
-
-	cir->clearAfferentConnections( neuron );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	// Free dymanic memory used
-	NSOL_DELETE_PTR( neuron );
-	NSOL_DELETE_PTR( cir );
-}
-
-BOOST_AUTO_TEST_CASE( test_circuit_clear_all_connections )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
-
-	// Create two neurons
-	NeuronPtr neuron( new Neuron( ));
-	NeuronPtr neuron2( new Neuron( ));
-
-	// Create and add some efferent connections
-	for ( int i = 0; i < NUM_EFF_CONN; i++ )
-	{
-	  cir->addEfferentConnection( neuron, NeuronPtr( new nsol::Neuron ));
-	  cir->addEfferentConnection( neuron2, NeuronPtr( new nsol::Neuron ));
-	}
-
-	// Create and add some afferent connections
-	for ( int i = 0; i < NUM_AFF_CONN; i++ )
-	{
-	  cir->addAfferentConnection( neuron, NeuronPtr( new nsol::Neuron ));
-	  cir->addAfferentConnection( neuron2, NeuronPtr( new nsol::Neuron ));
-	}
-
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfEfferentConnections( neuron ) );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	BOOST_CHECK_EQUAL( cir->numberOfConnections( neuron ), 20 );
-
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron2 ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron2 ).size( ),
-					   cir->numberOfEfferentConnections( neuron2 ) );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron2 ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron2 ).size( ),
-					   cir->numberOfAfferentConnections( neuron2 ) );
-
-	BOOST_CHECK_EQUAL( cir->numberOfConnections( neuron2 ), 20 );
-
-	// Clear all the connections of one neuron
-	cir->clearConnections( neuron );
-
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfEfferentConnections( neuron ) );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron ).size( ),
-					   cir->numberOfAfferentConnections( neuron ) );
-
-	BOOST_CHECK_EQUAL( cir->numberOfConnections( neuron ), 0 );
-
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron2 ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->efferentConnectionsOfANeuron( neuron2 ).size( ),
-					   cir->numberOfEfferentConnections( neuron2 ) );
-
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron2 ).size( ), 10 );
-	BOOST_CHECK_EQUAL( cir->afferentConnectionsOfANeuron( neuron2 ).size( ),
-					   cir->numberOfAfferentConnections( neuron2 ) );
-
-	BOOST_CHECK_EQUAL( cir->numberOfConnections( neuron2 ), 0 );
-
-	// Clear all the connections of the circuit
-	cir->clearAllConnections( );
-	BOOST_CHECK_EQUAL( cir->efferentConnections( ).size( ), 0 );
-	BOOST_CHECK_EQUAL( cir->afferentConnections( ).size( ), 0 );
-
-	// Free dymanic memory used
-	NSOL_DELETE_PTR( neuron2 );
-	NSOL_DELETE_PTR( neuron );
-	NSOL_DELETE_PTR( cir );
-
-}
-*/
 
