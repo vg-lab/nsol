@@ -8,14 +8,15 @@
 #ifndef __NSOL_CIRCUIT__
 #define __NSOL_CIRCUIT__
 
-#include <iostream.h>
+#include <iostream>
+#include <set>
+//#include <map>
+
 #include <nsol/Container/Columns.h>
 
 
 namespace nsol
 {
-	namespace std{
-
 		/*! \class Circuit
 		  \brief A class to represent connections between neurons.
 		  TODO: extend long description
@@ -124,140 +125,55 @@ namespace nsol
 
 		///@}
 
-		/** @name Efferent and Afferent Connections related methods */
+		 /** @name Connections related methods */
 		 ///@{
 
-		/**
-	    * Method to add an efferent connection.
-	    * @param efferent connection to add to this circuit
-	    * @return true if efferent connection added false otherwise
-	    */
-	    NSOL_API
-	    void addEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
-
-	    /**
-		* Method to add an afferent connection.
-		* @param afferent connection to add to this circuit
-		* @return true if afferent connection added false otherwise
-		*/
-		NSOL_API
-		void addAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
+	     /**
+		 * Method to add a connection.
+		 * @param synapse to add to this circuit
+		 * @return true if connection added false otherwise
+		 */
+		 NSOL_API
+		 virtual void addConnection(SynapsePtr synapse );
 
 	     /**
-		 * Method to remove an efferent connection.
-		 * @param neuron pointer to the efferent connection to be removed
-   	     * @return true if efferent connection removed false otherwise
-	     */
-		 NSOL_API
-		 bool removeEfferentConnection( NeuronPtr neuron, SynapsePtr efferentSynapse );
-
-		 /**
-		 * Method to remove an afferent connection.
-		 * @param neuron pointer to the afferent connection to be removed
-		 * @return true if afferent connection removed false otherwise
+		 * Method to remove a connection.
+		 * @param synapse to be removed
+		 * @return true if the connection removed false otherwise
 		 */
 		 NSOL_API
-		 bool removeAfferentConnection( NeuronPtr neuron, SynapsePtr afferentSynapse );
+		 virtual bool removeConnection(SynapsePtr synapse );
 
 		 /**
-		  * Method to clear efferent connections of the one neuron.
-		  */
-		 NSOL_API
-		 void clearEfferentConnections( NeuronPtr neuron );
-
-		 /**
-		  * Method to clear afferent connections of the  neuron.
-		  */
-		 NSOL_API
-		 void clearAfferentConnections( NeuronPtr neuron );
-
-		 /**
-		  * Method to clear all the connections (efferents and afferents)
-		  * of a neuron.
-		  */
-		 NSOL_API
-		 void clearConnections( NeuronPtr neuron );
-
-		 /**
-		  * Method to clear all the connections (efferents and afferents)
-		  * of all the circuit.
-		  */
-		 NSOL_API
-		 void clearAllConnections( void );
-
-		 /**
-		  * Method to get efferent connections.
-		  * @return efferent connections of the circuit
-		  */
-		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &efferentConnections( void );
-
-		 /**
-		  * Method to get afferent connections.
-		  * @return afferent connections of the circuit
-		  */
-		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &afferentConnections( void );
-		 /**
-		  * Method to get efferent connections as const.
-		  * @return efferent connections of the circuit
-		  */
-		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &efferentConnections( void ) const;
-
-		 /**
-		  * Method to get afferent connections as const.
-		  * @return afferent connections of the circuit
-		  */
-		 std::map <NeuronPtr, std::Vector<SynapsePtr>> &afferentConnections( void ) const;
-
-		 /**
-		  * Method to get efferent connections.
-		  * @return efferent connections of a neuron
-		  */
-		 NSOL_API
-		 std::Vector<SynapsePtr> & efferentConnectionsOfANeuron( NeuronPtr neuron );
-
-		 /**
-		  * Method to get afferent connections.
-		  * @return afferent connections of a neuron
-		  */
-		 NSOL_API
-		 std::Vector<SynapsePtr> & afferentConnectionsOfANeuron( NeuronPtr neuron );
-
-		 /**
-		 * Method to get efferent connections as const.
-		 * @return efferent connections of a neuron
+		 * Method to clear all the connections
+		 * of all the circuit.
 		 */
-		NSOL_API
-		std::Vector<SynapsePtr> efferentConnectionsOfANeuron( NeuronPtr neuron ) const;
+		 NSOL_API
+		 virtual void clearConnections( void );
 
-		/**
-		 * Method to get afferent connections as const.
-		 * @return afferent connections of a neuron
+		 /**
+		  * Method to get all the connections (synapses of the circuit).
+		  * @return synapses of the circuit
+		  */
+		 NSOL_API
+		 virtual std::set<SynapsePtr> & connections( void );
+
+		 /**
+		 * Method to get all the connections as const.
+		 * @return synapses of the circuit
 		 */
-		NSOL_API
-		std::Vector<SynapsePtr> afferentConnectionsOfANeuron( NeuronPtr neuron ) const;
+		 NSOL_API
+		 virtual std::set<SynapsePtr> connections( void ) const;
 
-		/**
-		 * Method to get the number of efferent connections of a neuron.
-		 * @return numbers of efferent connections
-		 */
-		NSOL_API
-		unsigned int numberOfEfferentConnections( NeuronPtr neuron ) const;
-
-		/**
-		 * Method to get the number of afferent connections of a neuron.
-		 * @return numbers of afferent connections
-		 */
-		NSOL_API
-		unsigned int numberOfAfferentConnections( NeuronPtr neuron ) const;
-
-		/**
-		 * Method to get the total number of connections of a neuron.
+		 /**
+		 * Method to get the total number of connections of the circuit.
 		 * @return total numbers of connections
 		 */
-		NSOL_API
-		unsigned int numberOfConnections( NeuronPtr neuron ) const;
+		 NSOL_API
+		 virtual unsigned int numberOfConnections( ) const;
 
 		///@}
+
 
 	  protected:
 
@@ -267,13 +183,10 @@ namespace nsol
 		  //! Container of columns, with all the morphology
 		  Columns _morphology;
 
-		  //! Container with the all efferent connections between neurons
-		  std::map <NeuronPtr, std::Vector<SynapsePtr>> _efferentConnections;
+		  //! Container with the all connections between neurons
+		  std::set<SynapsePtr> _connections;
 
-		  //! Container with the all afferent connections between neurons
-		  std::map <NeuronPtr, std::Vector<SynapsePtr>> _afferentConnections;
 
-	  }; // namespace std
 	}; // namespace nsol
 
 }
