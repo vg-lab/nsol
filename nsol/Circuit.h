@@ -49,7 +49,7 @@ namespace nsol
 		  * @param id id of the circuit.
 		  */
 		  NSOL_API
-		  ~Circuit( void ) ;
+		  virtual ~Circuit( void ) ;
 
 		 ///@}
 

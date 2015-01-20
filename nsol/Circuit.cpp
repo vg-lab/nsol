@@ -118,14 +118,14 @@ namespace nsol
 		//
 		// Connections methods
 		//
-		virtual void Circuit::addConnection(SynapsePtr synapse )
+		void Circuit::addConnection(SynapsePtr synapse )
 		{
 
 			_connections.insert(synapse);
 
 		}
 
-		virtual bool Circuit::removeConnection(SynapsePtr synapse )
+		bool Circuit::removeConnection(SynapsePtr synapse )
 		{
 			std::set<SynapsePtr>::iterator cIt = _connections.find(synapse);
 
@@ -137,25 +137,25 @@ namespace nsol
 
 		}
 
-		virtual void Circuit::clearConnections( void )
+		void Circuit::clearConnections( void )
 		{
 
 			_connections.clear();
 		}
 
-		virtual std::set<SynapsePtr> & Circuit::connections( void )
+		std::set<SynapsePtr> & Circuit::connections( void )
 		{
 
 			return _connections;
 		}
 
-		virtual std::set<SynapsePtr> Circuit::connections( void ) const
+		std::set<SynapsePtr> Circuit::connections( void ) const
 		{
 
 			return _connections;
 		}
 
-		virtual unsigned int Circuit::numberOfConnections( ) const
+		 unsigned int Circuit::numberOfConnections( ) const
 		{
 
 			return ( unsigned int ) _connections.size();
