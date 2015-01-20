@@ -31,6 +31,7 @@ Synapse.h
 SynapseNeuriteToNeurite.h
 SynapseNeuriteToSoma.h
 SynapseSomaToSoma.h
+Circuit.h
 )
 
 set(NSOL_HEADERS )
@@ -51,6 +52,7 @@ Synapse.cpp
 SynapseNeuriteToNeurite.cpp
 SynapseNeuriteToSoma.cpp
 SynapseSomaToSoma.cpp
+Circuit.cpp
 )
 
 if (BBPSDK_FOUND)

@@ -19,4 +19,4 @@ namespace nsol {
 
 }
 
-#endif
+#endif /* __NSOL_CIRCUITS__ */
