@@ -15,9 +15,14 @@ namespace nsol
 		 //
 
 		 Circuit::Circuit( const unsigned short identifier )
-		 : _id (identifier)
-		  , _morphology( )
-		  , _connections( )
+		 {
+			 _id = identifier;
+		 }
+
+		 Circuit::Circuit( const Circuit & other )
+		 : _id (other.id())
+		  , _morphology(other.columns())
+		  , _connections( other.connections())
 		 {
 		 }
 

@@ -37,11 +37,19 @@ namespace nsol
 		  Circuit( unsigned short id = 0 );
 
 		  /**
+		  * Copy constructor
+		  * @param other circuit to be copied
+		  */
+		  NSOL_API
+		  Circuit( const Circuit & other );
+
+
+		  /**
 		  * Default destructor
 		  * @param id id of the circuit.
 		  */
-		 NSOL_API
-		 ~Circuit( void ) ;
+		  NSOL_API
+		  ~Circuit( void ) ;
 
 		 ///@}
 
