@@ -195,10 +195,10 @@ namespace nsol
 		  std::set<SynapsePtr> _connections;
 
 
-	}; // namespace nsol
+	}; // class Circuit
 
-}
+} // namespace nsol
 
-#endif
 
+#endif // __NSOL_CIRCUIT__
 // EOF
