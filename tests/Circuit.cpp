@@ -13,6 +13,7 @@
 
 using namespace nsol;
 
+
 void CheckNullMorphologicalValues( CircuitPtr cir )
 {
 	BOOST_CHECK_EQUAL( cir->numberOfColumns( ), 0 );
@@ -271,9 +272,9 @@ BOOST_AUTO_TEST_CASE( test_circuit_clear_connections)
      CheckNoCircuits( cir );
 
      // Free dymanic memory used
-     /*for ( auto synIt = cir->connections( ).begin( );
+     for ( auto synIt = cir->connections( ).begin( );
     		 synIt != cir->connections( ).end( ); synIt++ )
-    	 NSOL_DELETE_PTR( ( * synIt ));*/
+    	 delete( * synIt );
 
      NSOL_DELETE_PTR( cir );
 
