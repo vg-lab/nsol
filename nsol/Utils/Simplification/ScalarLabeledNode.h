@@ -36,6 +36,9 @@ namespace nsol
     float relevance( void ) const;
 
     NSOL_API
+    void relevance( float relevance_ );
+
+    NSOL_API
     bool operator == ( ScalarLabeledNode & other ) const;
     
     NSOL_API

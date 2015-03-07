@@ -34,6 +34,11 @@ namespace nsol
     return _relevance;
   }
 
+  void ScalarLabeledNode::relevance( float relevance_ )
+  {
+    _relevance = relevance_;
+  }
+
   bool ScalarLabeledNode::operator == ( ScalarLabeledNode & other ) const
   {
     return ( ( this->id( ) == other.id( ) ) &&

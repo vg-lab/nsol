@@ -29,7 +29,7 @@ namespace nsol
                   , float threshold );
 
     NSOL_API
-    SectionPtr simplifyRadialv1 ( Vector<ScalarLabeledNodePtr> polyline
+    SectionPtr simplifyRadialv1 ( Vector<NodePtr> polyline
                   , float tolerance
                   , unsigned int begin
                   , unsigned int end );
@@ -41,7 +41,7 @@ namespace nsol
                   , NodePtr end );
 
     NSOL_API
-    SectionPtr simplifyRWv1 ( Vector<ScalarLabeledNodePtr> polyline
+    SectionPtr simplifyRWv1 ( Vector<NodePtr> polyline
                   , float tolerance
                   , unsigned int begin
                   , unsigned int end );
@@ -53,7 +53,7 @@ namespace nsol
                   , NodePtr end );
 
     NSOL_API
-    SectionPtr simplifyDP ( Vector<ScalarLabeledNodePtr> polyline
+    SectionPtr simplifyDP ( Vector<NodePtr> polyline
                   , float tolerance
                   , unsigned int begin
                   , unsigned int end );
@@ -61,9 +61,9 @@ namespace nsol
   //private:    
 
     NSOL_API
-    Vector<ScalarLabeledNodePtr> _vectorize ( SectionPtr polyline
-                        , ScalarLabeledNodePtr begin
-                        , ScalarLabeledNodePtr end );
+    Vector<NodePtr> _vectorize ( SectionPtr polyline
+                        , NodePtr begin
+                        , NodePtr end );
     
     private:
 
@@ -84,8 +84,7 @@ namespace nsol
     NSOL_API
     float _perpDistance ( NodePtr p1
              , NodePtr p2
-             , NodePtr point );
-    
+             , NodePtr point );    
 
     NSOL_API
     float _distance ( NodePtr p1, NodePtr p2);

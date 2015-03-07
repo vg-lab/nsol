@@ -120,8 +120,39 @@ namespace nsol
 
     if ( neuronIt != _parentNeurons.end( ))
       _parentNeurons.push_back( neuron );
+  }
 
+  void NeuronMorphology::initRelevance( float relevance )
+  {
+    for ( Neurites::const_iterator it = _neurites.begin( );
+          it != _neurites.end( ); ++it )
+    {
+      NeuritePtr naux = *it;
 
+      for ( Sections::const_iterator it2 = naux->sections( )->begin( );
+            it2 != naux->sections( )->end( ); ++it2 )
+      {
+        SectionPtr section = *it2;
+        SegmentPtr segaux = section->firstSegment( );
+
+        while ( segaux != nullptr )
+        {
+          NodePtr node = segaux->begin( );
+
+          ScalarLabeledNodePtr sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, node );
+          sNode->relevance( relevance );
+
+          if ( segaux == section->lastSegment( ) )
+          {
+            node = segaux->end( );
+            sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, node );
+            sNode->relevance( relevance );
+          }
+
+          segaux->next( );
+        }
+      }
+    }
   }
 
   SomaPtr NeuronMorphology::soma( void )

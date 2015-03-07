@@ -19,6 +19,7 @@
 #include "Container/Dendrites.h"
 #include "Container/Neurites.h"
 #include "Container/Neurons.h"
+#include "Utils/Simplification/ScalarLabeledNode.h"
 
 namespace nsol
 {
@@ -107,6 +108,9 @@ namespace nsol
 
     NSOL_API
     void addParentNeuron( NeuronPtr neuron );
+
+    NSOL_API
+    void initRelevance( float relevance );
 
   protected:
 

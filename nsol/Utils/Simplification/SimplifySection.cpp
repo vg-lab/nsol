@@ -20,12 +20,12 @@ namespace nsol
    *  con Reumann-Witkam, si no, simplifica con
    *  un algoritmo radial y luego con Douglas-Peucker
    */
-  SectionPtr SimplifySection::simplify ( SectionPtr polyline
+  /*SectionPtr SimplifySection::simplify ( SectionPtr polyline
                                , float tolerance
                                , int range
                                , float threshold )
   {
-    Vector<ScalarLabeledNodePtr> vaux = _vectorize( polyline
+    Vector<NodePtr> vaux = _vectorize( polyline
                                             , nullptr
                                             , nullptr );
     SectionPtr simple, sectaux;
@@ -75,7 +75,7 @@ namespace nsol
     simple = sectaux;
 
     return simple;
-  }
+  }*/
 
 
   /*
@@ -85,17 +85,17 @@ namespace nsol
    *  It must be done outside this function.
    */
   SectionPtr SimplifySection::simplifyRadialv1 ( 
-                                      Vector<ScalarLabeledNodePtr> polyline
+                                      Vector<NodePtr> polyline
                                     , float tolerance
                                     , unsigned int begin
                                     , unsigned int end ) 
   {
     // This structure will store the simplified section
-    Vector<ScalarLabeledNodePtr> vaux = Vector<ScalarLabeledNodePtr>( );
+    Vector<NodePtr> vaux = Vector<NodePtr>( );
     SectionPtr simple = ( SectionPtr ) new Section;
     SegmentPtr segaux;
     unsigned int pivot = begin;
-    unsigned next = pivot + 1;
+    unsigned int next = pivot + 1;
     unsigned int i;
 
     // While there's section left
@@ -123,9 +123,12 @@ namespace nsol
     // Create a section using the auxiliar vector
     for ( i = 0; i < ( vaux.size( ) - 1 ); i++ )
     {
-      segaux = simple->addSegment( nullptr );
+      segaux = ( SegmentPtr ) new Segment( );
       segaux->begin( vaux[ i ] );
       segaux->end( vaux[ i + 1 ] );
+      segaux->parentSection( simple );
+
+      simple->addSegment( segaux );
     }
 
 	  return simple;
@@ -233,13 +236,13 @@ namespace nsol
    *  the attributes from the original Section are NOT copied,
    *  It must be done outside this function.
    */
-  SectionPtr SimplifySection::simplifyRWv1 ( Vector<ScalarLabeledNodePtr> polyline
+  SectionPtr SimplifySection::simplifyRWv1 ( Vector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end ) 
   {
     // This structure will store the simplified section
-    Vector<ScalarLabeledNodePtr> vaux = Vector<ScalarLabeledNodePtr> ( );
+    Vector<NodePtr> vaux = Vector<NodePtr> ( );
     SectionPtr simple = ( SectionPtr ) new Section;
     SegmentPtr segaux;
     unsigned int iniSeg, endSeg, aux, i;
@@ -287,9 +290,12 @@ namespace nsol
     // Create a section using the auxiliar vector
     for ( i = 0; i < ( vaux.size( ) - 1 ); i++ )
     {
-      segaux = simple->addSegment( nullptr );
+      segaux = ( SegmentPtr ) new Segment( );
       segaux->begin( vaux[ i ] );
       segaux->end( vaux[ i + 1 ] );
+      segaux->parentSection( simple );      
+
+      simple->addSegment( segaux );
     }
 
     return simple;
@@ -414,7 +420,7 @@ namespace nsol
    *  It must be done outside this function. This is the 
    *  non-recursive algorithm version.
    */
-  SectionPtr SimplifySection::simplifyDP ( Vector<ScalarLabeledNodePtr> polyline
+  SectionPtr SimplifySection::simplifyDP ( Vector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end )
@@ -425,7 +431,7 @@ namespace nsol
     if ( tolerance > 0 )
     {
       // This structure will store the simplified section
-      Vector<ScalarLabeledNodePtr> vaux = Vector<ScalarLabeledNodePtr>( );      
+      Vector<NodePtr> vaux = Vector<NodePtr>( );      
 
       unsigned int len = polyline.size( ) - 1;
       // Vector of boolean that indicates which nodes won't be simplified.
@@ -506,9 +512,12 @@ namespace nsol
       // Create a section using the auxiliar vector
       for ( i = 0; i < (int)( vaux.size( ) - 1 ); i++ )
       {
-        segaux = simple->addSegment( nullptr );
+        segaux = ( SegmentPtr ) new Segment( );
         segaux->begin( vaux[ i ] );
-        segaux->end( vaux[ i + 1 ] );
+        segaux->end( vaux[ i + 1 ] );  
+        segaux->parentSection( simple );  
+
+        simple->addSegment( segaux );
       }
 
       delete firstStack;
@@ -533,12 +542,12 @@ namespace nsol
    *  This method vectorizes a Section. In order to vectorize the entire
    *  Section, 'begin' and 'end' should point to null.
    */ 
-  Vector<ScalarLabeledNodePtr> SimplifySection::_vectorize ( SectionPtr polyline 
-                                        , ScalarLabeledNodePtr begin = nullptr
-                                        , ScalarLabeledNodePtr end = nullptr ) 
+  Vector<NodePtr> SimplifySection::_vectorize ( SectionPtr polyline 
+                                        , NodePtr begin = nullptr
+                                        , NodePtr end = nullptr ) 
   {
     SegmentPtr segment = polyline->firstSegment( );
-    Vector<ScalarLabeledNodePtr> vaux = Vector<ScalarLabeledNodePtr>( );
+    Vector<NodePtr> vaux = Vector<NodePtr>( );
 
     if ( begin )
     {
@@ -550,11 +559,11 @@ namespace nsol
 
     begin = end;
 
-    vaux.push_back( dynamic_cast<ScalarLabeledNodePtr> ( segment->begin( ) ) );
+    vaux.push_back( dynamic_cast<NodePtr> ( segment->begin( ) ) );
 
 	  while ( segment ) 
 	  {
-	    vaux.push_back( dynamic_cast<ScalarLabeledNodePtr> ( segment->end( ) ) );
+	    vaux.push_back( dynamic_cast<NodePtr> ( segment->end( ) ) );
 	    segment = segment->next( );
 	  }
 
