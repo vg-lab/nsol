@@ -31,7 +31,7 @@ namespace nsol
 
     typedef enum
     {
-      SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL = 4
+      SWC_UNDEFINED = 0, SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL = 4
     } TSwcNodeType;
 
     typedef struct
@@ -90,20 +90,23 @@ namespace nsol
       }
 
       Neurites neurites = morphology->neurites();
-      unsigned int type;
+      unsigned int type = SWC_UNDEFINED;
 
       //Writing neurites
       for (Neurites::iterator it = neurites.begin();
 	   it != neurites.end(); ++it)
       {
-        if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+      	DendritePtr dendrite = NSOL_DYNAMIC_CAST( Dendrite, *it );
+      	AxonPtr axon = NSOL_DYNAMIC_CAST( Axon, *it );
+
+        if ( dendrite )
         {
-          if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::APICAL)
+          if ( dendrite->dendriteType() == Dendrite::APICAL)
             type = SWC_APICAL;
-          else if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::BASAL)
+          else if ( dendrite->dendriteType() == Dendrite::BASAL)
             type = SWC_DENDRITE;
         }
-        else if (NSOL_DYNAMIC_CAST( Axon, *it ))
+        else if ( axon )
           type = SWC_AXON;
 
         SectionPtr fSection = (*it)->firstSection();

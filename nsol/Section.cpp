@@ -100,10 +100,9 @@ namespace nsol
 
   SegmentPtr Section::addSegment( SegmentPtr segment )
   {
-
-    NSOL_DEBUG_CHECK( segment, "given segment is null" )
-
     SegmentPtr s = segment;
+
+    NSOL_DEBUG_CHECK( segment, "given segment is null" )   
 
     // If this section doesn't have first segment the segment
     // passed or created is added;
@@ -191,6 +190,26 @@ namespace nsol
     }
 
     return 0;
+  }
+
+  unsigned int Section::numNodes( void )
+  {
+    unsigned int cont = 0;
+    SegmentPtr saux = this->_firstSegment;
+
+    while ( saux )
+    {
+      cont++;
+
+      if ( saux != this->_lastSegment )
+        saux = saux->next( );
+      else {
+        cont++;
+        break;
+      }
+    } // while
+
+    return cont;
   }
 
 } // namespace nsol
