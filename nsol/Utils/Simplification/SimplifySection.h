@@ -14,80 +14,58 @@
 #include <nsol/Node.h>
 #include <nsol/Section.h>
 #include <nsol/Utils/Simplification/ScalarLabeledNode.h>
+#include <nsol/Container/Neurites.h>
+#include <nsol/NeuronMorphology.h>
+#include <nsol/Neurite.h>
 
 namespace nsol
 {
   class SimplifySection
   {
 
-  public:
+  public:     
 
     NSOL_API
-    SectionPtr simplify ( SectionPtr polyline 
-				          , float tolerance
-                  , int range
-                  , float threshold );
+    static NeuronMorphologyPtr simplifyNeuron( NeuronMorphologyPtr neuron
+                                  , const int algorithm
+                                  , const float tolerance );
 
-    NSOL_API
-    SectionPtr simplifyRadialv1 ( Vector<NodePtr> polyline
-                  , float tolerance
-                  , unsigned int begin
-                  , unsigned int end );
+  private:    
 
-    NSOL_API  
-    SectionPtr simplifyRadialv2 ( SectionPtr polyline
-                  , float tolerance
-                  , NodePtr begin
-                  , NodePtr end );
-
-    NSOL_API
-    SectionPtr simplifyRWv1 ( Vector<NodePtr> polyline
-                  , float tolerance
-                  , unsigned int begin
-                  , unsigned int end );
-
-    NSOL_API
-    SectionPtr simplifyRWv2 ( SectionPtr polyline
-                  , float tolerance
-                  , NodePtr begin
-                  , NodePtr end );
-
-    NSOL_API
-    SectionPtr simplifyDP ( Vector<NodePtr> polyline
-                  , float tolerance
-                  , unsigned int begin
-                  , unsigned int end );
-
-  //private:    
-
-    NSOL_API
-    Vector<NodePtr> _vectorize ( SectionPtr polyline
-                        , NodePtr begin
-                        , NodePtr end );
+    static Vector<NodePtr> _vectorize ( SectionPtr polyline
+                              , NodePtr begin
+                              , NodePtr end );
     
-    private:
+    static SectionPtr _simplifyRW ( Vector<NodePtr> polyline
+                          , float tolerance
+                          , unsigned int begin
+                          , unsigned int end );
 
-    NSOL_API
-    float _average ( Vector<ScalarLabeledNodePtr> polyline
-             , unsigned int begin
-             , unsigned int end );
+    static SectionPtr _simplifyRadial ( Vector<NodePtr> polyline
+                          , float tolerance
+                          , unsigned int begin
+                          , unsigned int end );
 
-    NSOL_API
-    Vec3f _crossProduct( Vec3f a, Vec3f b );
+    static SectionPtr _simplifyDP ( Vector<NodePtr> polyline
+                          , float tolerance
+                          , unsigned int begin
+                          , unsigned int end );
 
-    NSOL_API
-    Vec3f _subtract( Vec3f a, Vec3f b );
+    static float _average ( Vector<ScalarLabeledNodePtr> polyline
+                     , unsigned int begin
+                     , unsigned int end );
 
-    NSOL_API
-    float _length( Vec3f v );
+    static Vec3f _crossProduct( Vec3f a, Vec3f b );
 
-    NSOL_API
-    float _perpDistance ( NodePtr p1
+    static Vec3f _subtract( Vec3f a, Vec3f b );
+
+    static float _length( Vec3f v );
+
+    static float _perpDistance ( NodePtr p1
              , NodePtr p2
              , NodePtr point );    
 
-    NSOL_API
-    float _distance ( NodePtr p1, NodePtr p2);
+    static float _distance ( NodePtr p1, NodePtr p2);
 
   };
 

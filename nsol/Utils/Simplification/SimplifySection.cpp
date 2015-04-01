@@ -10,81 +10,18 @@
 #include "SimplifySection.h"
 
 #include <math.h>
+#include <queue>
+#include <iostream>
 
 namespace nsol
 {
-
-  /*
-   *  Método que divide en grupos la Section, 
-   *  si la importancia supera un umbral simplifica
-   *  con Reumann-Witkam, si no, simplifica con
-   *  un algoritmo radial y luego con Douglas-Peucker
-   */
-  /*SectionPtr SimplifySection::simplify ( SectionPtr polyline
-                               , float tolerance
-                               , int range
-                               , float threshold )
-  {
-    Vector<NodePtr> vaux = _vectorize( polyline
-                                            , nullptr
-                                            , nullptr );
-    SectionPtr simple, sectaux;
-    bool highestQuality;
-    unsigned int size = vaux.size( );
-    unsigned int index, indBegin, indEnd = 0;    
-
-    while ( index < size )
-    {
-      indBegin = index;
-      float reference = vaux[ index ]->relevance( );
-
-      while ( ( index < size ) &&
-              ( vaux[ index ]->relevance( ) <= ( reference + range ) ) && 
-              ( vaux[ index ]->relevance( ) >= ( reference - range ) ) )
-      {
-        indEnd = index++;
-      } // while #2
-
-      highestQuality = ( _average( vaux, indBegin, indEnd ) > threshold );
-
-      if ( ( indEnd - indBegin ) > 2 )
-      {        
-        if ( ! highestQuality ) 
-        {
-          sectaux = simplifyRadialv1( vaux, tolerance,
-                                      indBegin, indEnd );
-          sectaux = simplifyDP ( vaux, tolerance,
-                                 indBegin, indEnd );
-        } else 
-        {
-          sectaux = simplifyRWv1( vaux, tolerance, 
-                                  indBegin, indEnd );
-        } // else 
-      }  // if    
-
-      // combinar las subsecciones en una
-
-    } // while #1
-
-    // copiar atributos de polyline a sectaux, falta childs
-    sectaux->neurite( polyline->neurite( ) );
-    sectaux->parent( polyline->parent( ) ); 
-
-    vaux.clear( );
-
-    simple = sectaux;
-
-    return simple;
-  }*/
-
-
   /*
    *  This method simplifies a Section previously vectorized
    *  using the Radial algorithm. Returns SectionPtr, the 
    *  attributes from the original Section are NOT copied,
    *  It must be done outside this function.
    */
-  SectionPtr SimplifySection::simplifyRadialv1 ( 
+  SectionPtr SimplifySection::_simplifyRadial ( 
                                       Vector<NodePtr> polyline
                                     , float tolerance
                                     , unsigned int begin
@@ -133,102 +70,7 @@ namespace nsol
 
 	  return simple;
 
-	}	// simplifyRadialv1
-
-  /*
-   *  As the previous method, this method simplifies a Section, but
-   *  the Section has not to be previously vectorized. Returns a 
-   *  SectionPtr, unlike the v1 method, this one copies the attributes
-   *  from the original Section into the new one. 
-   */
-  SectionPtr SimplifySection::simplifyRadialv2 ( SectionPtr polyline
-                                  , float tolerance
-                                  , NodePtr begin
-                                  , NodePtr end )
-  {
-    if ( polyline->firstSegment( ) != polyline->lastSegment( ) )
-    {
-      // This structure will store the simplified section
-      List<NodePtr>* simple = new List<NodePtr>( );
-      NodePtr next;
-      NodePtr pivot = polyline->lastSegment( )->end( );
-      SegmentPtr segaux = polyline->lastSegment( );
-      SegmentPtr backup;    
-
-      // We move back until the last node is reached
-      while ( pivot != end ) 
-      {
-        segaux = segaux->prev( );
-        pivot = segaux->end( );
-      }
-
-      // Backup will keep track of the next Segment
-      backup = segaux->next( );
-      segaux->next( nullptr );
-
-      // We move to the first node
-      pivot = polyline->firstSegment( )->begin( );
-      segaux = polyline->firstSegment( );
-      while ( pivot != begin )
-      {
-        segaux = segaux->next( );
-        pivot = segaux->begin( );
-      }
-
-      segaux = segaux->next( );
-      next = segaux->begin( );
-
-      // While there's Section left
-      while ( pivot != end )
-      {
-        simple->push_back( pivot );
-        
-        // While there's section left and the tolerance is
-        // greater than the distance between the two nodes
-        while ( ( next != end ) &&
-                ( _distance( pivot, next ) <= tolerance ) )
-        {
-          // If there's another Segment remaining, we advance.
-          // Else 'next' will be the end node of the current Segment
-          if ( segaux->next( ) )
-          {
-            segaux = segaux->next( );
-            next = segaux->begin( ); 
-          } else {
-            next = segaux->end( );
-          }          
-        } // while #2
-
-        pivot = next;
-        if ( segaux->next( ) )
-        {
-          segaux = segaux->next( );
-          next = segaux->begin( );
-        } else {
-          next = segaux->end( );
-        }
-      } // while #1
-
-      // The last node is never simplified.
-      simple->push_back( end );
-
-      // Create the simplified Section using the auxiliar list
-      SectionPtr simplifed = ( SectionPtr ) new Section( 
-                                    polyline->neurite( )
-                                  , polyline->parent( )
-                                  , polyline->children( )
-                                  , simple );
-
-      delete simple;
-
-      // Undo the change made in the beginning.
-      segaux->next( backup );
-
-      return simplifed;
-    } else {
-      return polyline;
-    }
-  } // simplifyRadialv2
+	}	// simplifyRadial
 
   /*
    *  This method simplifies a Section previously vectorized
@@ -236,7 +78,7 @@ namespace nsol
    *  the attributes from the original Section are NOT copied,
    *  It must be done outside this function.
    */
-  SectionPtr SimplifySection::simplifyRWv1 ( Vector<NodePtr> polyline
+  SectionPtr SimplifySection::_simplifyRW ( Vector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end ) 
@@ -300,118 +142,7 @@ namespace nsol
 
     return simple;
 
-  } // simplifyRWv1
-
-  /*
-   *  As the previous method, this method simplifies a Section, but
-   *  the Section has not to be previously vectorized. Returns a 
-   *  SectionPtr, unlike the v1 method, this one copies the attributes
-   *  from the original Section into the new one. 
-   */
-  SectionPtr SimplifySection::simplifyRWv2 ( SectionPtr polyline
-                                    , float tolerance
-                                    , NodePtr begin
-                                    , NodePtr end )
-  {
-    if ( polyline->firstSegment( ) != polyline->lastSegment( ) )
-    {
-      // This structure will store the simplified section
-      List<NodePtr>* simple = new List<NodePtr>( );
-      NodePtr aux, endSeg;
-      NodePtr iniSeg = polyline->lastSegment( )->end( );
-      SegmentPtr segaux = polyline->lastSegment( );
-      SegmentPtr backup;  
-      // 'in' is true when the previous node to the last is simplified.  
-      bool in = false;
-
-      // We move back until the last node is reached
-      while ( iniSeg != end ) 
-      {
-        segaux = segaux->prev( );
-        iniSeg = segaux->end( );
-      }
-
-      // Backup will keep track of the next Segment
-      backup = segaux->next( );
-      segaux->next( nullptr );
-
-      // We move to the first node
-      iniSeg = polyline->firstSegment( )->begin( );
-      segaux = polyline->firstSegment( );
-      while ( iniSeg != begin )
-      {
-        segaux = segaux->next( );
-        iniSeg = segaux->begin( );
-      }
-
-      segaux = segaux->next( );
-      endSeg = segaux->begin( );
-
-      // The first node is never simplified.
-      simple->push_back( begin );
-
-      // While there's Section left
-      while ( endSeg != end )
-      {
-        if ( segaux->next( ) )
-        {
-          segaux = segaux->next( );
-          aux = segaux->begin( );
-        } else {
-          aux = segaux->end( );
-          in = ( _perpDistance( iniSeg, endSeg, aux ) <= tolerance );
-        }
-
-        // While there's Section left and the tolerance is greater than
-        // the distance between the segment and the node.
-        while ( ( _perpDistance( iniSeg, endSeg, aux ) <= tolerance ) &&
-                ( aux != end ) )
-        {
-          if ( segaux->next( ) )
-          {
-            segaux = segaux->next( );
-            aux = segaux->begin( ); 
-          } else {
-            aux = segaux->end( );
-          }    
-        } // while #2
-
-        // Add to the simplified section the last node
-        // that falls within the tolerance.
-        endSeg = aux;
-        if ( aux != end )
-        {
-          iniSeg = segaux->prev( )->begin( );
-        } else {
-          iniSeg = segaux->begin( );
-        }      
-          
-        if ( !in )
-        {
-          simple->push_back( iniSeg );
-        }          
-      } // while #1
-
-      // The last node is never simplified.
-      simple->push_back( end );
-
-      // Create the simplified Section using the auxiliar list
-      SectionPtr simplifed = ( SectionPtr ) new Section( 
-                                      polyline->neurite( )
-                                    , polyline->parent( )
-                                    , polyline->children( )
-                                    , simple );
-
-      delete simple;
-
-      // Undo the change made in the beginning.
-      segaux->next( backup );
-
-      return simplifed;
-    } else {
-      return polyline;
-    }
-  } // simplifyRWv2
+  } // simplifyRW
 
   /*
    *  This method simplifies a Section previously vectorized
@@ -420,7 +151,7 @@ namespace nsol
    *  It must be done outside this function. This is the 
    *  non-recursive algorithm version.
    */
-  SectionPtr SimplifySection::simplifyDP ( Vector<NodePtr> polyline
+  SectionPtr SimplifySection::_simplifyDP ( Vector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end )
@@ -444,7 +175,7 @@ namespace nsol
 
       float maxDist, dist;
 
-      // Stacks in order to avoid recursion
+      // Stacks used in order to avoid recursion
       List<int>* firstStack  = new List<int> ( );
       List<int>* lastStack   = new List<int> ( );
 
@@ -537,6 +268,151 @@ namespace nsol
 
   } // simplifyDP
 
+  /*
+   * 
+   */
+  NeuronMorphologyPtr SimplifySection::simplifyNeuron( NeuronMorphologyPtr neuron
+                                              , int algorithm
+                                              , float tolerance )
+  {
+    // Queue used in order to breadth traverse the neuron
+    std::deque<SectionPtr> q_sections;
+    // Vector used to store every simplified section
+    nsol::Vector<SectionPtr> q_simples;
+    // Vector used to store every section which is parent (has children)
+    nsol::Vector<SectionPtr> q_parents;
+    // Queue used to store the position of the parents in the q_parents queue
+    std::deque<int> q_index;
+
+    // Actual section simplified
+    nsol::SectionPtr simple = nullptr;
+    // Neuron simplified
+    NeuronMorphologyPtr _simplifiedNeuron = 
+            ( NeuronMorphologyPtr ) new NeuronMorphology( neuron->soma( ) );
+
+    // Iterate over the neurites
+    for ( Neurites::const_iterator it = neuron->neurites( ).begin( ); 
+                                   it != neuron->neurites( ).end( );
+                                   it++ )
+    {
+      // Create simplified neurite
+      NeuritePtr naux = *it;
+
+      nsol::SectionPtr section = naux->firstSection( );
+      switch ( naux->neuriteType( ) )
+      {
+        case Neurite::DENDRITE:
+        {
+          DendritePtr dendrite = NSOL_DYNAMIC_CAST( Dendrite, naux );
+          naux = ( NeuritePtr ) new Dendrite( dendrite->dendriteType( ));
+          break;
+        }
+        case Neurite::AXON:
+        {
+          naux = new nsol::Axon( );
+          break;
+        }
+        default:
+        {
+          return nullptr;
+        }
+      } // switch
+
+      // Add it to the simplifed neuron
+      naux->morphology( _simplifiedNeuron );
+      _simplifiedNeuron->addNeurite( naux );
+
+      // Iterate over the sections of the neurite
+      q_sections.push_back( section );
+      while ( ! q_sections.empty( ) )
+      {
+        section = q_sections.front( );
+        q_sections.pop_front( );
+
+
+        nsol::Vector<NodePtr> vaux = _vectorize( section
+                                                , nullptr
+                                                , nullptr );
+
+        switch ( algorithm )
+        {
+          case 1:
+          {
+            simple = _simplifyRadial( vaux
+                                , tolerance
+                                , 0
+                                , ( vaux.size( ) - 1 ) );
+            break;
+           }
+          case 2:
+          {
+            simple = _simplifyRW( vaux
+                            , tolerance
+                            , 0
+                            , ( vaux.size( ) - 1 ) );
+            break;
+          }
+          case 3:
+          {
+            simple = _simplifyDP( vaux
+                          , tolerance
+                          , 0
+                          , ( vaux.size( ) - 1 ) );
+            break;
+          }
+          default:
+          {
+            return nullptr;
+          }
+        } // switch
+
+        // Check if I have children, if so, I add myself to parent's list
+        // And add to q_index my position in parent's list, 
+        // that way my children know where I am.
+        if ( !section->children( ).empty( ) )
+        {
+          q_parents.push_back( simple );
+
+          // Iterate over the children
+          Sections childs = section->children( );
+          for ( Sections::iterator it2 = childs.begin( ); 
+                                  it2 != childs.end( ); it2++ )
+          {
+            q_sections.push_back( *it2 );
+            q_index.push_back( ( q_parents.size( ) - 1 ) );
+          } // 
+        }
+
+        // Store its neurite
+        simple->neurite( naux );
+          
+        // If it has parent, look for it in the parent's list using q_index
+        if ( section->parent( ) != nullptr )
+        {
+          simple->parent( q_parents[ q_index.front( ) ] );
+          q_index.pop_front( );
+          simple->parent( )->addChild( simple );
+        } else
+          simple->parent( nullptr );
+
+        // Add the simplified section to the list
+        q_simples.push_back( simple );
+
+      } // while
+
+      // This neurite is now simplified, so we store its first section
+      naux->firstSection( q_simples.front( ) );
+
+      // Delete every data structure.
+      q_simples.clear( );
+      q_parents.clear( );
+      q_index.clear( );
+
+    } // for
+
+    return _simplifiedNeuron;
+
+  } // simplifyNeuron
 
   /*
    *  This method vectorizes a Section. In order to vectorize the entire
@@ -583,7 +459,7 @@ namespace nsol
 
     for ( i = begin; i <= end; i++)
     {
-      sum += vaux[ i ]->relevance( );
+      sum += vaux[i]->relevance( );
     }
 
     return ( sum / ( float ) (( end - begin ) + 1 ) );
