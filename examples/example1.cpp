@@ -29,6 +29,9 @@ int main () {
     // assert(neuron.numNeurites() ==  2);
     // assert(neuron.numDendrites() ==  1);
 
+    // To avoid warnings for unused in release mode
+    ( ( void )( neurite ));
+    ( ( void )( neurite2 ));
   }
 
   {
@@ -57,6 +60,9 @@ int main () {
     assert(neuron.morphology( )->apicalDendrite() != NULL);
     // assert(neuron.numNeurites() ==  3);
     // assert(neuron.numDendrites() ==  3);
+
+    // To avoid warnings for unused in release mode
+    ( ( void )( neurite ));
 
 
   }
