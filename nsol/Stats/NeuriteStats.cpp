@@ -59,7 +59,7 @@ namespace nsol
                       std::to_string( int( agg )));
 
     float value = 0.0f;
-    float mean;
+    float mean = 0.0f;
     int numSections = 0;
 
     if ( agg == TAggregation::STD_DEV )
