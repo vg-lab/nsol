@@ -255,7 +255,6 @@ namespace nsol
       delete lastStack;
 
     } else {
-
       for ( unsigned int i = begin; i < end ; i++ )
       {
         segaux = simple->addSegment( nullptr );
@@ -269,12 +268,19 @@ namespace nsol
   } // simplifyDP
 
   /*
-   * 
+   * This method simplifies a neuron received as param and returns a new one.
+   * Nodes are shared though. Algorithm must be a number between 1 and 3. 
    */
   NeuronMorphologyPtr SimplifySection::simplifyNeuron( NeuronMorphologyPtr neuron
                                               , int algorithm
                                               , float tolerance )
   {
+    if ( neuron == nullptr ) 
+    {
+      NSOL_THROW( "Error: Neuron is empty" );
+      return nullptr;
+    }
+
     // Queue used in order to breadth traverse the neuron
     std::deque<SectionPtr> q_sections;
     // Vector used to store every simplified section
@@ -314,6 +320,7 @@ namespace nsol
         }
         default:
         {
+          NSOL_THROW( "Warning: Unknown neurite type, cannot cast" );
           return nullptr;
         }
       } // switch
@@ -362,6 +369,7 @@ namespace nsol
           }
           default:
           {
+            NSOL_THROW( "Warning: No algorithm specified" );
             return nullptr;
           }
         } // switch
