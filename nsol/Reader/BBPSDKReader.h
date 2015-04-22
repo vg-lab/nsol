@@ -25,7 +25,7 @@
 #include "../NeuronMorphology.h"
 #include "SwcReader.h"
 
-#include <BBP/bbp.h>
+#include <BBP/BBP.h>
 
 namespace nsol
 {
