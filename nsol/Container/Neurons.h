@@ -13,7 +13,7 @@
 
 namespace nsol {
 
-  class Neurons : public Vector<NeuronPtr> {
+  class Neurons : public Vector_<NeuronPtr> {
 
 
   protected:

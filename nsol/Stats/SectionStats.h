@@ -9,6 +9,8 @@
 #ifndef __NSOL_SECTION_STATS__
 #define __NSOL_SECTION_STATS__
 
+#pragma clang diagnostic ignored "-Woverloaded-virtual" 
+
 #include "../Section.h"
 
 namespace nsol
