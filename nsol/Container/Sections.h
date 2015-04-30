@@ -12,7 +12,7 @@
 
 namespace nsol
 {
-  class Sections : public Vector<SectionPtr>
+  class Sections : public NsolVector<SectionPtr>
   {
 
   protected:

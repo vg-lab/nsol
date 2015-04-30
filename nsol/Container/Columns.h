@@ -13,7 +13,7 @@
 namespace nsol 
 {
 
-  class Columns : public Vector<ColumnPtr> 
+  class Columns : public NsolVector<ColumnPtr> 
   {
 
   protected:
