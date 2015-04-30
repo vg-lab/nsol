@@ -13,7 +13,7 @@
 namespace nsol
 {
 
-  class Segments : public Vector_<SegmentPtr>
+  class Segments : public NsolVector<SegmentPtr>
   {
 
 

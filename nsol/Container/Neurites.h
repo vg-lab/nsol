@@ -14,7 +14,7 @@
 namespace nsol
 {
 
-  class Neurites : public Vector_<NeuritePtr>
+  class Neurites : public NsolVector<NeuritePtr>
   {
   };
 
