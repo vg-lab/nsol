@@ -13,7 +13,7 @@
 
 namespace nsol {
 
-  class MiniColumns : public Vector_< MiniColumnPtr > 
+  class MiniColumns : public NsolVector< MiniColumnPtr > 
   {
 
 

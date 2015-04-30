@@ -14,7 +14,7 @@
 namespace nsol
 {
 
-  class Nodes : public Vector_<NodePtr>
+  class Nodes : public NsolVector<NodePtr>
   {
 
 

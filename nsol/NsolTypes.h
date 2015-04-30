@@ -21,31 +21,34 @@
 
 #include <nsol/defines.h>
 
+// This pragma should be removed. Added to macosx clang building
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+
 namespace nsol
 {
 
 #if __GNUC__ == 4
 #if  __GNUC_MINOR__ > 6
-  //! Vector_ container template alias (gcc 4.7 min required)
+  //! NsolVector container template alias (gcc 4.7 min required)
   template<typename T>
-  using Vector_ = std::vector<T>;
+  using NsolVector = std::vector<T>;
 
-  //! List_ container template alias (gcc 4.7 min required)
+  //! NsolList container template alias (gcc 4.7 min required)
   template<typename T>
-  using List_ = std::list<T>;
+  using NsolList = std::list<T>;
 #else
-  //! Vector_ container redefinition for gcc 4.6 and previous
-#define Vector_ std::vector
-  //! List_ container redefinition for gcc 4.6 and previous
-#define List_ std::list
+  //! NsolVector container redefinition for gcc 4.6 and previous
+#define NsolVector std::vector
+  //! NsolList container redefinition for gcc 4.6 and previous
+#define NsolList std::list
 
 #endif
 #endif
 
 #ifdef _WINDOWS
 
-#define Vector_ std::vector
-//#define List_ std::list
+#define NsolVector std::vector
+#define NsolList std::list
 
 #endif
 
