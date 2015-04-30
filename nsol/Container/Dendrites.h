@@ -13,7 +13,7 @@
 
 namespace nsol {
 
-  class Dendrites : public Vector<DendritePtr> {
+  class Dendrites : public NsolVector<DendritePtr> {
   };
 
 }

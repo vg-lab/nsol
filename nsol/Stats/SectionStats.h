@@ -9,6 +9,7 @@
 #ifndef __NSOL_SECTION_STATS__
 #define __NSOL_SECTION_STATS__
 
+
 #include "../Section.h"
 
 namespace nsol

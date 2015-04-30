@@ -90,7 +90,6 @@ namespace nsol
     NSOL_API
     virtual void lastSegment( SegmentPtr lastSegment_ );
 
-
     NSOL_API
     virtual float getStat( TSectionStat stat ) const;
 
