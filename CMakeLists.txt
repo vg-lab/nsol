@@ -49,10 +49,10 @@ include(FindPackages)
 add_subdirectory(nsol)
 
 # tests subdirectory
-#add_subdirectory(tests)
+add_subdirectory(tests)
 
 # examples subdirectory
-#add_subdirectory(examples)
+add_subdirectory(examples)
 
 include(CPackConfig)
 include(DoxygenRule)
