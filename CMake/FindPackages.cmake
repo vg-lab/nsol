@@ -14,7 +14,7 @@ if(PKG_CONFIG_EXECUTABLE)
       "Could not find Boost COMPONENTS unit_test_framework")
   endif()
 else()
-  find_package(Boost unit_test_framework)
+  find_package(Boost COMPONENTS unit_test_framework)
 endif()
 
 
@@ -46,7 +46,6 @@ if(WITH_BBPSDK)
     set(bbpsdk_name libzmq)
     set(bbpsdk_FOUND TRUE)
   endif()
-message ("bbpsdk name is ${bbpsdk_name}")
   if(bbpsdk_name)
 
     list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
