@@ -41,7 +41,7 @@ if [[ -n "${JAMBS_TARGETS}" ]]; then
               -DJAMBS_TARGETS="$JAMBS_TARGETS" \
               -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
               -G"$BUILD_GENERATOR"
-        cmake --build . -- ${GENERATOR_EXTRA_OPTIONS}
+        cmake --build . --config ${BUILD_TYPE} -- ${GENERATOR_EXTRA_OPTIONS}
         cd ..
     done
 
@@ -62,10 +62,10 @@ for BUILD_TYPE in Debug Release; do
           -G"$BUILD_GENERATOR" \
           -DCMAKE_PREFIX_PATH="`pwd`/../jambs/${BUILD_DIR}/install"
 
-    cmake --build . -- ${GENERATOR_EXTRA_OPTIONS}
+    cmake --build . --config ${BUILD_TYPE} -- ${GENERATOR_EXTRA_OPTIONS}
 
     if [[ -n ${RUN_TESTS} ]]; then
-        cmake --build . --target tests -- ${GENERATOR_EXTRA_OPTIONS}
+        cmake --build . --target tests --config ${BUILD_TYPE} -- ${GENERATOR_EXTRA_OPTIONS}
     fi
 
     cd ..
