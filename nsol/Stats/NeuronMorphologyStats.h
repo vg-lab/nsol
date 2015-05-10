@@ -68,7 +68,7 @@ namespace nsol
 
 
     virtual float getStat( TNeuronMorphologyStat stat,
-                           TAggregation agg = TAggregation::TOTAL ) const;
+                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
     // NSOL_API

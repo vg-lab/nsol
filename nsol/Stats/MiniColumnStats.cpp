@@ -13,8 +13,8 @@
 namespace nsol
 {
 
-#define __NMS NeuronMorphologyStats::TNeuronMorphologyStat
-#define __MCS MiniColumnStats::TMiniColumnStat
+#define __NMS NeuronMorphologyStats/*::TNeuronMorphologyStat*/
+#define __MCS MiniColumnStats/*::TMiniColumnStat*/
 
   NeuronMorphologyStats::TNeuronMorphologyStat
   toNeuronMorphologyStat( MiniColumnStats::TMiniColumnStat stat )
@@ -67,7 +67,7 @@ namespace nsol
         "no know converstion from TMiniColumnStat to TNeuronMorphologyStat");
     }
 
-    return NeuronMorphologyStats::TNeuronMorphologyStat::SURFACE;
+  return NeuronMorphologyStats::/*TNeuronMorphologyStat::*/SURFACE;
   }
 
 
@@ -93,21 +93,21 @@ namespace nsol
     float value = 0;
     float mean;
 
-    if ( agg == TAggregation::STD_DEV )
-      return sqrt( this->getStat( stat, TAggregation::VARIANCE ));
+    if ( agg == /*TAggregation::*/STD_DEV )
+      return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
 
-    if ( agg == TAggregation::MIN )
+    if ( agg == /*TAggregation::*/MIN )
       value = std::numeric_limits< float >::max( );
 
-    if ( agg == TAggregation::MAX )
+    if ( agg == /*TAggregation::*/MAX )
       value = std::numeric_limits< float >::min( );
 
-    if ( agg == TAggregation::VARIANCE )
-      mean = this->getStat( stat, TAggregation::MEAN );
+    if ( agg == /*TAggregation::*/VARIANCE )
+      mean = this->getStat( stat, /*TAggregation::*/MEAN );
 
-    if ( agg == TAggregation::MEAN )
+    if ( agg == /*TAggregation::*/MEAN )
       return ( _neurons.size( ) == 0 ? 0.0f :
-               this->getStat( stat, TAggregation::TOTAL ) /
+               this->getStat( stat, /*TAggregation::*/TOTAL ) /
                float( _neurons.size( )));
 
     NSOL_CONST_FOREACH( neuron, _neurons )
@@ -119,27 +119,27 @@ namespace nsol
 
       float tmpValue = morphology->stats( )->getStat( nStat );
 
-    if ( agg == TAggregation::VARIANCE )
+    if ( agg == /*TAggregation::*/VARIANCE )
       value += ( mean - tmpValue ) * ( mean - tmpValue );
 
-    else if ( agg == TAggregation::MIN )
+    else if ( agg == /*TAggregation::*/MIN )
       value = std::min( value, tmpValue );
-    else if ( agg == TAggregation::MAX )
+    else if ( agg == /*TAggregation::*/MAX )
       value = std::max( value, tmpValue );
     else
       value += tmpValue;
   }
   switch ( agg )
   {
-  case TAggregation::TOTAL:
-  case TAggregation::MIN:
-  case TAggregation::MAX:
+  case /*TAggregation::*/TOTAL:
+  case /*TAggregation::*/MIN:
+  case /*TAggregation::*/MAX:
     return value;
-  case TAggregation::VARIANCE:
+  case /*TAggregation::*/VARIANCE:
     return ( _neurons.size( ) == 0 ? 0.0f :
              value / float( _neurons.size( )));
-  case TAggregation::MEAN:
-  case TAggregation::STD_DEV:
+  case /*TAggregation::*/MEAN:
+  case /*TAggregation::*/STD_DEV:
     break;
   }
   NSOL_THROW( "aggregation op not valid" )
@@ -158,18 +158,18 @@ namespace nsol
   __TYPE__, __STAT_METHOD__, __AGGREG__ )                               \
   __TYPE__ value = 0;                                                   \
                                                                         \
-  if ( __AGGREG__ == TAggregation::MIN )                                \
+  if ( __AGGREG__ == /*TAggregation::*/MIN )                                \
     value = std::numeric_limits< float >::max( );                       \
-  if ( __AGGREG__ == TAggregation::MAX )                                \
+  if ( __AGGREG__ == /*TAggregation::*/MAX )                                \
     value = std::numeric_limits< float >::min( );                       \
                                                                         \
   __TYPE__ mean;                                                        \
                                                                         \
-  if ( __AGGREG__ == TAggregation::STD_DEV )                            \
-    return sqrt( this->__STAT_METHOD__( TAggregation::VARIANCE ));      \
+  if ( __AGGREG__ == /*TAggregation::*/STD_DEV )                            \
+    return sqrt( this->__STAT_METHOD__( /*TAggregation::*/VARIANCE ));      \
                                                                         \
-  if ( __AGGREG__ == TAggregation::VARIANCE )                           \
-    mean = this->__STAT_METHOD__( TAggregation::MEAN );                 \
+  if ( __AGGREG__ == /*TAggregation::*/VARIANCE )                           \
+    mean = this->__STAT_METHOD__( /*TAggregation::*/MEAN );                 \
   NSOL_CONST_FOREACH( neuron, _neurons )                                \
   {                                                                     \
   NeuronMorphologyPtr morphology = ( * neuron )->morphology( );         \
@@ -177,29 +177,29 @@ namespace nsol
   NSOL_DEBUG_CHECK( morphology->stats( ),                               \
                     "neuron without morphology stats" );                \
                                                                         \
-  if ( __AGGREG__ == TAggregation::VARIANCE )                           \
+  if ( __AGGREG__ == /*TAggregation::*/VARIANCE )                           \
   {                                                                     \
     __TYPE__ tmpValue = morphology->stats( )->__STAT_METHOD__( );       \
     value += ( mean - tmpValue ) * ( mean - tmpValue );                 \
   }                                                                     \
-  else if ( __AGGREG__ == TAggregation::MIN )                           \
+  else if ( __AGGREG__ == /*TAggregation::*/MIN )                           \
     value = std::min( value, morphology->stats( )->__STAT_METHOD__( )); \
-  else if ( __AGGREG__ == TAggregation::MAX )                           \
+  else if ( __AGGREG__ == /*TAggregation::*/MAX )                           \
     value = std::max( value, morphology->stats( )->__STAT_METHOD__( )); \
   else                                                                  \
     value += morphology->stats( )->__STAT_METHOD__( );                  \
   }                                                                     \
   switch ( __AGGREG__ )                                                 \
   {                                                                     \
-  case TAggregation::TOTAL:                                             \
-  case TAggregation::MIN:                                               \
-  case TAggregation::MAX:                                               \
+  case /*TAggregation::*/TOTAL:                                             \
+  case /*TAggregation::*/MIN:                                               \
+  case /*TAggregation::*/MAX:                                               \
     return value;                                                       \
-  case TAggregation::MEAN:                                              \
+  case /*TAggregation::*/MEAN:                                              \
     return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
-  case TAggregation::VARIANCE:                                          \
+  case /*TAggregation::*/VARIANCE:                                          \
     return ( __TYPE__ )( float( value ) / float( _neurons.size( )));    \
-  case TAggregation::STD_DEV:                                           \
+  case /*TAggregation::*/STD_DEV:                                           \
     break;                                                              \
   }                                                                     \
   NSOL_THROW( "aggregation op not valid" )                              \

@@ -50,7 +50,7 @@ namespace nsol
 
     NSOL_API
     virtual float getStat( TSectionStat stat,
-                           TAggregation agg = TAggregation::TOTAL ) const;
+                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
   protected:

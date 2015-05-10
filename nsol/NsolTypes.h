@@ -177,12 +177,12 @@ namespace nsol
   {
     switch( agg )
     {
-    case TAggregation::TOTAL:
-    case TAggregation::MEAN:
-    case TAggregation::VARIANCE:
-    case TAggregation::STD_DEV:
-    case TAggregation::MIN:
-    case TAggregation::MAX:
+    case /*TAggregation::*/TOTAL:
+    case /*TAggregation::*/MEAN:
+    case /*TAggregation::*/VARIANCE:
+    case /*TAggregation::*/STD_DEV:
+    case /*TAggregation::*/MIN:
+    case /*TAggregation::*/MAX:
       return true;
       break;
     default:

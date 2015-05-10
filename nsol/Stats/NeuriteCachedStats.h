@@ -80,7 +80,7 @@ namespace nsol
      */
     NSOL_API
     virtual float getStat( TNeuriteStat stat,
-                           TAggregation agg = TAggregation::TOTAL ) const;
+                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
   }; // class NeuriteCachedStats
