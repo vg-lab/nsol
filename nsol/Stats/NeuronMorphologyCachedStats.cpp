@@ -17,7 +17,7 @@ namespace nsol
                                               TAggregation agg ) const
   {
     // Only totals are cached
-    if ( agg == TAggregation::TOTAL )
+    if ( agg == /*TAggregation::*/TOTAL )
     {
       if ( ! this->dirty( stat ))
         return this->getValue( stat );
