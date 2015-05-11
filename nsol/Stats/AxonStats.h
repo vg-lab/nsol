@@ -32,10 +32,7 @@ namespace nsol
   public:
 
     NSOL_API
-    AxonStats( void )
-      : Neurite( Neurite::AXON )
-    {
-    }
+    AxonStats( void );
 
 
     // NSOL_API
