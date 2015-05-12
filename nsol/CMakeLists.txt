@@ -63,7 +63,11 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Section.cpp
   Segment.cpp
   Soma.cpp
+  Stats/AxonStats.cpp
+  Stats/AxonCachedStats.cpp
   Stats/ColumnStats.cpp
+  Stats/DendriteStats.cpp
+  Stats/DendriteCachedStats.cpp
   Stats/MiniColumnStats.cpp
   Stats/NeuronMorphologyStats.cpp
   Stats/NeuronMorphologyCachedStats.cpp

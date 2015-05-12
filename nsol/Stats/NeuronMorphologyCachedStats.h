@@ -72,8 +72,9 @@ namespace nsol
     NSOL_API
     virtual ~NeuronMorphologyCachedStats( void ) {}
 
+    NSOL_API
     virtual float getStat( TNeuronMorphologyStat stat,
-                           TAggregation agg = TAggregation::TOTAL ) const;
+                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
     /**
      * Set dirty a cached stat and propagates dirty to
