@@ -60,7 +60,7 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
 
 //        std::cout << ( * sectionsIt )->stats( )->surface( ) << " ";
         std::cout << ( * sectionsIt )->stats( )->getStat(
-          nsol::SectionStats::TSectionStat::SURFACE ) << " ";
+	  nsol::SectionStats::/*TSectionStat::*/SURFACE ) << " ";
       }
       delete sections;
 

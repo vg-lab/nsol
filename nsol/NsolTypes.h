@@ -16,13 +16,16 @@
 
 #include <iostream>
 
-#include <vmmlib/vector.hpp>
-#include <vmmlib/matrix.hpp>
+#include <vmmlib/vmmlib.hpp>
+/* #include <vmmlib/matrix.hpp> */
 
 #include <nsol/defines.h>
 
 // This pragma should be removed. Added to macosx clang building
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
+
+// Visual Studio Warning disable.
+#pragma warning( disable : 4250 )
 
 namespace nsol
 {
@@ -52,11 +55,14 @@ namespace nsol
 
 #endif
 
+  
+  typedef ::vmml::vector<3, float> Vec3f;
+  typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
+  typedef ::vmml::vector<4, float> Vec4f;
 
-  typedef vmml::vector<3, float> Vec3f;
-  typedef vmml::matrix<4, 4, float> Matrix4_4f;
-  typedef vmml::vector<4, float> Vec4f;
+  static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
 
+  
   class Axon;
   class Column;
   class Dendrite;
@@ -177,12 +183,12 @@ namespace nsol
   {
     switch( agg )
     {
-    case TAggregation::TOTAL:
-    case TAggregation::MEAN:
-    case TAggregation::VARIANCE:
-    case TAggregation::STD_DEV:
-    case TAggregation::MIN:
-    case TAggregation::MAX:
+    case /*TAggregation::*/TOTAL:
+    case /*TAggregation::*/MEAN:
+    case /*TAggregation::*/VARIANCE:
+    case /*TAggregation::*/STD_DEV:
+    case /*TAggregation::*/MIN:
+    case /*TAggregation::*/MAX:
       return true;
       break;
     default:

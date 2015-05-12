@@ -33,11 +33,8 @@ namespace nsol
   public:
 
     NSOL_API
-    DendriteStats ( TDendriteType dendriteType_ = BASAL )
-      : Dendrite( dendriteType_ )
-    {
-    }
-
+    DendriteStats ( TDendriteType dendriteType_ = BASAL );
+    
     // NSOL_API
     // virtual NeuriteStats * stats( void )
     // {

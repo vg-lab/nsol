@@ -61,8 +61,8 @@ namespace nsol
 
     NSOL_API
     float getStat( TColumnStat stat,
-                   TAggregation miniColAgg = TAggregation::TOTAL,
-                   TAggregation neuronAgg = TAggregation::TOTAL ) const;
+                   TAggregation miniColAgg = /*TAggregation::*/TOTAL,
+                   TAggregation neuronAgg = /*TAggregation::*/TOTAL ) const;
 
     /**
      * Returns object as ColumnStats

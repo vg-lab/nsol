@@ -62,7 +62,7 @@ namespace nsol
 
     NSOL_API
     float getStat( TMiniColumnStat stat,
-                   TAggregation agg = TAggregation::TOTAL ) const;
+                   TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
     /**
