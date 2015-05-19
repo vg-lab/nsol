@@ -75,23 +75,23 @@ namespace nsol
   public:
 
     const std::map<unsigned int, ColumnPtr> &
-    readExperiment(const char *toRead,
+    readExperiment(const char *inputFile,
                    unsigned int directory = 0)
     {
       if (directory)
-        return this->readFromDirectory(std::string(toRead));
+        return this->readFromDirectory(std::string(inputFile));
       else
-        return this->readFromBlueFile(std::string(toRead));
+        return this->readFromBlueConfig(std::string(inputFile));
     }
 
     const std::map<unsigned int, ColumnPtr> &
-    readExperiment( const std::string toRead,
+    readExperiment( const std::string inputFile,
                     unsigned int directory = 0)
     {
       if (directory)
-        return this->readFromDirectory(toRead);
+        return this->readFromDirectory(inputFile);
       else
-        return this->readFromBlueFile(toRead);
+        return this->readFromBlueConfig(inputFile);
     }
 
 
@@ -101,15 +101,22 @@ namespace nsol
      * @return map with columns
      */
     std::map<unsigned int, ColumnPtr> & readFromDirectory(
-      const std::string toRead );
+      const std::string inputFile );
 
     /**
      * Method to get a columns for BBPSDK experiment allocated in memory
-     * @param toRead blue config file to read
+     * @param inputFile blue config file to read
+     * @param bbpTarget BBPSDK target to be used.
+     *                  By default a new one is created
+     * @param bbpDataTypes Structures to be loaded. By default
+     *                     bbp::MICROCIRCUIT  | bbp::AFFERENT_SYNAPSES |
+     *                     bbp::EFFERENT_SYNAPSES is used
      * @return map with columns
      */
     std::map<unsigned int, ColumnPtr> &
-    readFromBlueFile( const std::string toRead );
+    readFromBlueConfig( const std::string inputFile,
+                        const int bbpDataTypes,
+                        const bbp::Cell_Target& bbpTarget );
 
   private:
 
@@ -167,24 +174,27 @@ namespace nsol
 
   /**
    * Method to get a columns for BBPSDK experiment allocated in memory
-   * @param toRead blue config file to read
+   * @param inputFile blue config file to read
    * @return map with columns
    */
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
   std::map<unsigned int, ColumnPtr> &
   BBPSDKReaderTemplated
-  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueFile(
-    const std::string toRead )
+  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
+    const std::string inputFile,
+    const int bbpDataTypes =
+      bbp::MICROCIRCUIT | bbp::AFFERENT_SYNAPSES | bbp::EFFERENT_SYNAPSES ,
+    const bbp::Cell_Target& bbpTarget = bbp::Cell_Target( ))
   {
 
     // A bbpsdk experiment is opened
     bbp::Experiment experiment;
-    std::cerr << toRead << ": Opening experiment " << std::endl;
-    experiment.open(toRead);
-    std::cerr << toRead << ": DONE " << std::endl;
+    std::cerr << inputFile << ": Opening experiment " << std::endl;
+    experiment.open(inputFile);
+    std::cerr << inputFile << ": DONE " << std::endl;
 
     if (!experiment.is_open()) {
-      std::cerr << toRead << ": Experiment could not be opened"
+      std::cerr << inputFile << ": Experiment could not be opened"
                 << std::endl;
     }
 
@@ -196,15 +206,16 @@ namespace nsol
     bbp::Microcircuit & mcp = experiment.microcircuit();
     bbp::Cell_Target target;
 
-    mcp.load(target,
-             bbp::MICROCIRCUIT |
-             bbp::AFFERENT_SYNAPSES |
-             bbp::EFFERENT_SYNAPSES);
+    mcp.load( bbpTarget, bbpDataTypes );
+// target,
+//              bbp::MICROCIRCUIT |
+//              bbp::AFFERENT_SYNAPSES |
+//              bbp::EFFERENT_SYNAPSES);
 
     const bbp::Neurons &neuronsExpe =
       experiment.microcircuit().neurons();
 
-    std::cerr << toRead << ": Exporting " << neuronsExpe.size()
+    std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
               << " neurons. " << std::endl;
 
     // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
@@ -470,7 +481,7 @@ namespace nsol
   std::map<unsigned int, ColumnPtr> &
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromDirectory(
-    const std::string toRead)
+    const std::string inputFile)
   {
     SwcReader r;
     bool findCsv = false;
@@ -481,8 +492,8 @@ namespace nsol
 
     DIR *pDIR;
     struct dirent *entry;
-    if ((pDIR = opendir(toRead.c_str()))) {
-      std::string dir(toRead.c_str());
+    if ((pDIR = opendir(inputFile.c_str()))) {
+      std::string dir(inputFile.c_str());
 
       while ((entry = readdir(pDIR))) {
         std::string str(entry->d_name);
