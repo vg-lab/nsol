@@ -28,37 +28,37 @@ int main( int argc, char *argv[] )
     MiniColumns miniColumns = columns[0]->miniColumns();
 
     cout << "Number of neuron: "
-	 << miniColumns[9]->numberOfNeurons(false, Neuron::INTER)
-	 << endl;
+         << miniColumns[9]->numberOfNeurons(false, Neuron::INTER)
+         << endl;
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];
 
     // cout << "soma surface: " << neuron->morphology( )->soma().surface() << endl;
 
     for (vmml::matrix<4,4,float>::const_iterator it =
-	   neuron->transform().begin();
-	 it != neuron->transform().end(); it++)
+           neuron->transform().begin();
+         it != neuron->transform().end(); ++it)
       cout << *it << endl;
 
 
     NeuritePtr n = neuron->morphology()->neurites()[0];
 
     std::cout << "soma center: "
-	      << neuron->transform() *
+              << neuron->transform() *
       Vec4f(neuron->morphology()->soma()->center(),1)
-	      << std::endl;
+              << std::endl;
 
     std::cout << "soma first point: "
-	      << neuron->morphology()->soma()->nodes()[0]->point()
-	      << std::endl;
+              << neuron->morphology()->soma()->nodes()[0]->point()
+              << std::endl;
 
     std::cout << "first segment point: "
-	      << n->firstSection()->firstSegment()->begin()->point()
-	      << std::endl;
+              << n->firstSection()->firstSegment()->begin()->point()
+              << std::endl;
 
     std::cout << "Soma radius: "
-	      << neuron->morphology()->soma()->maxRadius()
-	      << std::endl;
+              << neuron->morphology()->soma()->maxRadius()
+              << std::endl;
 
     // std::cout << "NumBranchs: "
     //           << neuron->numNeuriteBranches()
@@ -84,8 +84,8 @@ int main( int argc, char *argv[] )
     //           << std::endl;
 
     std::cout << "Neuron type: "
-	      << int( neuron->neuronType( ))
-	      << std::endl;
+              << int( neuron->neuronType( ))
+              << std::endl;
 
     return 0;
   }
