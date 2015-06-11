@@ -21,6 +21,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   NsolTypes.h
   Section.h
   Segment.h
+  SimulationData.h
   Soma.h
   Spine.h
   Stats/AxonStats.h
@@ -62,6 +63,7 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Node.cpp
   Section.cpp
   Segment.cpp
+  SimulationData.cpp
   Soma.cpp
   Stats/AxonStats.cpp
   Stats/AxonCachedStats.cpp
