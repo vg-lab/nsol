@@ -33,3 +33,6 @@ target_link_libraries(miniColumnStats ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(factory factory.cpp)
 target_link_libraries(factory ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(simulationDataStats simulationDataStats.cpp)
+target_link_libraries(simulationDataStats ${NSOL_LINK_LIBRARIES} nsol)

@@ -4,7 +4,7 @@
  * @author  Juan Guerrero <j.guerrerom@alumnos.urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
-            Do not distribute without further notice.
+ *          Do not distribute without further notice.
  */
 
 #include <limits.h>
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
    */
   SimulationData::MultiIndexByTimestamp::iterator
     wantedRecord1 =
-        simData.find(2.0f, "Calcio", 1);
+      simData.find(2.0f, "Calcio", 1);
   /* Checking by record value */
   BOOST_CHECK_EQUAL(wantedRecord1->value, 33);
 
