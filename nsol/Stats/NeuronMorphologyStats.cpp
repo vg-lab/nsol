@@ -14,7 +14,7 @@
 namespace nsol
 {
 
-#define __NMS NeuronMorphologyStats::TNeuronMorphologyStat
+#define __NMS NeuronMorphologyStats/*::TNeuronMorphologyStat*/
 
   NeuriteStats::TNeuriteStat
   toNeuriteStat( NeuronMorphologyStats::TNeuronMorphologyStat stat )
@@ -26,26 +26,26 @@ namespace nsol
       case __NMS::AXON_VOLUME:
       case __NMS::NEURITIC_VOLUME:
       case __NMS::VOLUME:
-        return NeuriteStats::TNeuriteStat::VOLUME;
+        return NeuriteStats::/*TNeuriteStat::*/VOLUME;
         break;
       // Surface
       case __NMS::DENDRITIC_SURFACE:
       case __NMS::AXON_SURFACE:
       case __NMS::NEURITIC_SURFACE:
       case __NMS::SURFACE:
-        return NeuriteStats::TNeuriteStat::SURFACE;
+        return NeuriteStats::/*TNeuriteStat::*/SURFACE;
         break;
       // Length
       case __NMS::DENDRITIC_LENGTH:
       case __NMS::AXON_LENGTH:
       case __NMS::NEURITIC_LENGTH:
-        return NeuriteStats::TNeuriteStat::LENGTH;
+        return NeuriteStats::/*TNeuriteStat::*/LENGTH;
         break;
       // Bifurcations
       case __NMS::DENDRITIC_BIFURCATIONS:
       case __NMS::AXON_BIFURCATIONS:
       case __NMS::NEURITIC_BIFURCATIONS:
-        return NeuriteStats::TNeuriteStat::BIFURCATIONS;
+        return NeuriteStats::/*TNeuriteStat::*/BIFURCATIONS;
         break;
 
     case __NMS::SOMA_SURFACE:
@@ -56,7 +56,7 @@ namespace nsol
         "no know converstion from TNeuronMorphologyStat to TNeuriteStat");
     }
 
-    return NeuriteStats::TNeuriteStat::SURFACE;
+    return NeuriteStats::/*TNeuriteStat::*/SURFACE;
   }
 
   NeuronMorphologyStats * NeuronMorphologyStats::stats( void )
@@ -125,7 +125,7 @@ namespace nsol
 
     if ( stat == SURFACE )
     {
-      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+      NSOL_DEBUG_CHECK( agg == /*TAggregation::*/TOTAL,
                         "invalid aggregation" );
       return
         this->getStat( NEURITIC_SURFACE ) +
@@ -134,7 +134,7 @@ namespace nsol
 
     if ( stat == VOLUME )
     {
-      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+      NSOL_DEBUG_CHECK( agg == /*TAggregation::*/TOTAL,
                         "invalid aggregation" );
       return
         this->getStat( NEURITIC_VOLUME ) +
@@ -145,14 +145,14 @@ namespace nsol
     // Computation for soma based
     if ( stat == SOMA_SURFACE )
     {
-      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+      NSOL_DEBUG_CHECK( agg == /*TAggregation::*/TOTAL,
                         "soma stats aggregation invalid" );
       NSOL_DEBUG_CHECK( _soma->stats( ), "soma without stats" );
-      return _soma->stats( )->getStat( SomaStats::TSomaStat::SURFACE );
+      return _soma->stats( )->getStat( SomaStats::/*TSomaStat::*/SURFACE );
     }
     if ( stat == SOMA_VOLUME )
     {
-      NSOL_DEBUG_CHECK( agg == TAggregation::TOTAL,
+      NSOL_DEBUG_CHECK( agg == /*TAggregation::*/TOTAL,
                         "soma stats aggregation invalid" );
       NSOL_DEBUG_CHECK( _soma->stats( ), "soma without stats" );
       return _soma->stats( )->getStat( SomaStats::VOLUME );
@@ -162,17 +162,17 @@ namespace nsol
     float value = 0.0f;
     float mean;
 
-    if ( agg == TAggregation::STD_DEV )
-      return sqrt( this->getStat( stat, TAggregation::VARIANCE ));
+    if ( agg == /*TAggregation::*/STD_DEV )
+      return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
 
-    if ( agg == TAggregation::MIN )
+    if ( agg == /*TAggregation::*/MIN )
       value = std::numeric_limits< float >::max( );
 
-    if ( agg == TAggregation::MAX )
+    if ( agg == /*TAggregation::*/MAX )
       value = std::numeric_limits< float >::min( );
 
-    if ( agg == TAggregation::VARIANCE )
-      mean = this->getStat( stat,  TAggregation::MEAN );
+    if ( agg == /*TAggregation::*/VARIANCE )
+      mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
 
     NSOL_CONST_FOREACH( neurite, _neurites )
@@ -185,13 +185,13 @@ namespace nsol
 
         float tmpValue =
           ( * neurite )->stats( )->getStat(
-            toNeuriteStat( stat ), TAggregation::TOTAL  );
+            toNeuriteStat( stat ), /*TAggregation::*/TOTAL  );
 
-        if ( agg == TAggregation::VARIANCE )
+        if ( agg == /*TAggregation::*/VARIANCE )
           value += ( mean - tmpValue ) * ( mean - tmpValue );
-        else if ( agg == TAggregation::MIN )
+        else if ( agg == /*TAggregation::*/MIN )
           value = std::min( value, tmpValue );
-        else if ( agg == TAggregation::MAX )
+        else if ( agg == /*TAggregation::*/MAX )
           value = std::max( value, tmpValue );
         else
           value += tmpValue;
@@ -201,14 +201,14 @@ namespace nsol
 
     switch ( agg )
     {
-    case TAggregation::TOTAL:
-    case TAggregation::MIN:
-    case TAggregation::MAX:
+    case /*TAggregation::*/TOTAL:
+    case /*TAggregation::*/MIN:
+    case /*TAggregation::*/MAX:
       return value;
-    case TAggregation::MEAN:
-    case TAggregation::VARIANCE:
+    case /*TAggregation::*/MEAN:
+    case /*TAggregation::*/VARIANCE:
       return ( _neurites.size( ) == 0 ? 0 : value / _neurites.size( ));
-    case TAggregation::STD_DEV:
+    case /*TAggregation::*/STD_DEV:
       // Shouldn't get here
       break;
     }

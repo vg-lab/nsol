@@ -32,26 +32,26 @@ namespace nsol
 
   private:    
 
-    static Vector<NodePtr> _vectorize ( SectionPtr polyline
+    static NsolVector<NodePtr> _vectorize ( SectionPtr polyline
                               , NodePtr begin
                               , NodePtr end );
     
-    static SectionPtr _simplifyRW ( Vector<NodePtr> polyline
+    static SectionPtr _simplifyRW ( NsolVector<NodePtr> polyline
                           , float tolerance
                           , unsigned int begin
                           , unsigned int end );
 
-    static SectionPtr _simplifyRadial ( Vector<NodePtr> polyline
+    static SectionPtr _simplifyRadial ( NsolVector<NodePtr> polyline
                           , float tolerance
                           , unsigned int begin
                           , unsigned int end );
 
-    static SectionPtr _simplifyDP ( Vector<NodePtr> polyline
+    static SectionPtr _simplifyDP ( NsolVector<NodePtr> polyline
                           , float tolerance
                           , unsigned int begin
                           , unsigned int end );
 
-    static float _average ( Vector<ScalarLabeledNodePtr> polyline
+    static float _average ( NsolVector<ScalarLabeledNodePtr> polyline
                      , unsigned int begin
                      , unsigned int end );
 

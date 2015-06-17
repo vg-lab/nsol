@@ -16,44 +16,53 @@
 
 #include <iostream>
 
-#include <vmmlib/vector.hpp>
-#include <vmmlib/matrix.hpp>
+#include <vmmlib/vmmlib.hpp>
+/* #include <vmmlib/matrix.hpp> */
 
 #include <nsol/defines.h>
+
+// This pragma should be removed. Added to macosx clang building
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+
+// Visual Studio Warning disable.
+#pragma warning( disable : 4250 )
 
 namespace nsol
 {
 
 #if __GNUC__ == 4
 #if  __GNUC_MINOR__ > 6
-  //! Vector container template alias (gcc 4.7 min required)
+  //! NsolVector container template alias (gcc 4.7 min required)
   template<typename T>
-  using Vector = std::vector<T>;
+  using NsolVector = std::vector<T>;
 
-  //! List container template alias (gcc 4.7 min required)
+  //! NsolList container template alias (gcc 4.7 min required)
   template<typename T>
-  using List = std::list<T>;
+  using NsolList = std::list<T>;
 #else
-  //! Vector container redefinition for gcc 4.6 and previous
-#define Vector std::vector
-  //! List container redefinition for gcc 4.6 and previous
-#define List std::list
+  //! NsolVector container redefinition for gcc 4.6 and previous
+#define NsolVector std::vector
+  //! NsolList container redefinition for gcc 4.6 and previous
+#define NsolList std::list
 
 #endif
 #endif
 
 #ifdef _WINDOWS
 
-#define Vector std::vector
-//#define List std::list
+#define NsolVector std::vector
+#define NsolList std::list
 
 #endif
 
+  
+  typedef ::vmml::vector<3, float> Vec3f;
+  typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
+  typedef ::vmml::vector<4, float> Vec4f;
 
-  typedef vmml::vector<3, float> Vec3f;
-  typedef vmml::matrix<4, 4, float> Matrix4_4f;
-  typedef vmml::vector<4, float> Vec4f;
+  static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
 
+  
   class Axon;
   class Column;
   class Dendrite;
@@ -176,12 +185,12 @@ namespace nsol
   {
     switch( agg )
     {
-    case TAggregation::TOTAL:
-    case TAggregation::MEAN:
-    case TAggregation::VARIANCE:
-    case TAggregation::STD_DEV:
-    case TAggregation::MIN:
-    case TAggregation::MAX:
+    case /*TAggregation::*/TOTAL:
+    case /*TAggregation::*/MEAN:
+    case /*TAggregation::*/VARIANCE:
+    case /*TAggregation::*/STD_DEV:
+    case /*TAggregation::*/MIN:
+    case /*TAggregation::*/MAX:
       return true;
       break;
     default:

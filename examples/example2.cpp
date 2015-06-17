@@ -61,10 +61,8 @@ int main ( void )
   {
     MiniColumnPtr mc2 ( new MiniColumn );
 
-    // needed in release mode to avoid warning in MSVC
-#ifdef WIN32
-    mc2;
-#endif
+    // needed in release mode to avoid warning 
+    ((void)( mc2 ));
 
     assert( c->removeMiniColumn( mc2 ) == false );
     assert( c->miniColumns( ).size( ) == 1);
@@ -88,7 +86,7 @@ int main ( void )
   MiniColumns miniCols = c->miniColumns( );
 
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
-        mcIt != miniCols.end( ); mcIt++ )
+        mcIt != miniCols.end( ); ++mcIt )
   {
     for ( unsigned short l = 1 ; l < 7 ; l++ )
     {

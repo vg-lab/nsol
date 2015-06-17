@@ -68,7 +68,11 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Soma.cpp
   Utils/Simplification/ScalarLabeledNode.cpp
   Utils/Simplification/SimplifySection.cpp
+  Stats/AxonStats.cpp
+  Stats/AxonCachedStats.cpp
   Stats/ColumnStats.cpp
+  Stats/DendriteStats.cpp
+  Stats/DendriteCachedStats.cpp
   Stats/MiniColumnStats.cpp
   Stats/NeuronMorphologyStats.cpp
   Stats/NeuronMorphologyCachedStats.cpp

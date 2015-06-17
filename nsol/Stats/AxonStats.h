@@ -32,12 +32,7 @@ namespace nsol
   public:
 
     NSOL_API
-    AxonStats( void )
-      : Neurite( Neurite::AXON )
-    {
-      // std::cout << "AxonStats constructor " <<  _neuriteType 
-      //           << " " << Neurite::AXON << std::endl;
-    }
+    AxonStats( void );
 
 
     // NSOL_API

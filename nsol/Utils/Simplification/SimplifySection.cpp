@@ -22,13 +22,13 @@ namespace nsol
    *  It must be done outside this function.
    */
   SectionPtr SimplifySection::_simplifyRadial ( 
-                                      Vector<NodePtr> polyline
+                                      NsolVector<NodePtr> polyline
                                     , float tolerance
                                     , unsigned int begin
                                     , unsigned int end ) 
   {
     // This structure will store the simplified section
-    Vector<NodePtr> vaux = Vector<NodePtr>( );
+    NsolVector<NodePtr> vaux;
     SectionPtr simple = ( SectionPtr ) new Section;
     SegmentPtr segaux;
     unsigned int pivot = begin;
@@ -78,13 +78,13 @@ namespace nsol
    *  the attributes from the original Section are NOT copied,
    *  It must be done outside this function.
    */
-  SectionPtr SimplifySection::_simplifyRW ( Vector<NodePtr> polyline
+  SectionPtr SimplifySection::_simplifyRW ( NsolVector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end ) 
   {
     // This structure will store the simplified section
-    Vector<NodePtr> vaux = Vector<NodePtr> ( );
+    NsolVector<NodePtr> vaux;
     SectionPtr simple = ( SectionPtr ) new Section;
     SegmentPtr segaux;
     unsigned int iniSeg, endSeg, aux, i;
@@ -151,7 +151,7 @@ namespace nsol
    *  It must be done outside this function. This is the 
    *  non-recursive algorithm version.
    */
-  SectionPtr SimplifySection::_simplifyDP ( Vector<NodePtr> polyline
+  SectionPtr SimplifySection::_simplifyDP ( NsolVector<NodePtr> polyline
                                   , float tolerance
                                   , unsigned int begin
                                   , unsigned int end )
@@ -162,11 +162,11 @@ namespace nsol
     if ( tolerance > 0 )
     {
       // This structure will store the simplified section
-      Vector<NodePtr> vaux = Vector<NodePtr>( );      
+      NsolVector<NodePtr> vaux;
 
       unsigned int len = polyline.size( ) - 1;
       // Vector of boolean that indicates which nodes won't be simplified.
-      Vector<bool> markers ( len, false ); 
+      NsolVector<bool> markers ( len, false ); 
 
       int first = begin;
       int index = begin;
@@ -176,8 +176,8 @@ namespace nsol
       float maxDist, dist;
 
       // Stacks used in order to avoid recursion
-      List<int>* firstStack  = new List<int> ( );
-      List<int>* lastStack   = new List<int> ( );
+      NsolList<int>* firstStack  = new NsolList<int> ( );
+      NsolList<int>* lastStack   = new NsolList<int> ( );
 
       // Both first and last nodes are never simplified.
       markers[ begin ] = markers[ end ] = true;
@@ -284,9 +284,9 @@ namespace nsol
     // Queue used in order to breadth traverse the neuron
     std::deque<SectionPtr> q_sections;
     // Vector used to store every simplified section
-    nsol::Vector<SectionPtr> q_simples;
+    nsol::NsolVector<SectionPtr> q_simples;
     // Vector used to store every section which is parent (has children)
-    nsol::Vector<SectionPtr> q_parents;
+    nsol::NsolVector<SectionPtr> q_parents;
     // Queue used to store the position of the parents in the q_parents queue
     std::deque<int> q_index;
 
@@ -337,7 +337,7 @@ namespace nsol
         q_sections.pop_front( );
 
 
-        nsol::Vector<NodePtr> vaux = _vectorize( section
+        nsol::NsolVector<NodePtr> vaux = _vectorize( section
                                                 , nullptr
                                                 , nullptr );
 
@@ -426,12 +426,12 @@ namespace nsol
    *  This method vectorizes a Section. In order to vectorize the entire
    *  Section, 'begin' and 'end' should point to null.
    */ 
-  Vector<NodePtr> SimplifySection::_vectorize ( SectionPtr polyline 
+  NsolVector<NodePtr> SimplifySection::_vectorize ( SectionPtr polyline 
                                         , NodePtr begin = nullptr
                                         , NodePtr end = nullptr ) 
   {
     SegmentPtr segment = polyline->firstSegment( );
-    Vector<NodePtr> vaux = Vector<NodePtr>( );
+    NsolVector<NodePtr> vaux;
 
     if ( begin )
     {
@@ -458,7 +458,7 @@ namespace nsol
    *  This method calculates the average relevance of the nodes between
    *  'begin' and 'end'
    */
-  float SimplifySection::_average ( Vector<ScalarLabeledNodePtr> vaux
+  float SimplifySection::_average ( NsolVector<ScalarLabeledNodePtr> vaux
                             , unsigned int begin
                             , unsigned int end )
   {

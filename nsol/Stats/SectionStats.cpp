@@ -18,24 +18,24 @@ namespace nsol
   {
     switch( stat )
     {
-    case SectionStats::TSectionStat::SURFACE:
-      return SegmentStats::TSegmentStat::SURFACE;
+    case SectionStats::/*TSectionStat::*/SURFACE:
+      return SegmentStats::/*TSegmentStat::*/SURFACE;
       break;
 
-    case SectionStats::TSectionStat::VOLUME:
-      return SegmentStats::TSegmentStat::VOLUME;
+    case SectionStats::/*TSectionStat::*/VOLUME:
+      return SegmentStats::/*TSegmentStat::*/VOLUME;
       break;
 
-    case SectionStats::TSectionStat::LENGTH:
-      return SegmentStats::TSegmentStat::LENGTH;
+    case SectionStats::/*TSectionStat::*/LENGTH:
+      return SegmentStats::/*TSegmentStat::*/LENGTH;
       break;
 
-    case SectionStats::TSectionStat::SECTION_NUM_STATS:
+    case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
     default:
       NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
     }
 
-    return SegmentStats::TSegmentStat::SURFACE;
+    return SegmentStats::/*TSegmentStat::*/SURFACE;
   }
 
 
@@ -48,17 +48,17 @@ namespace nsol
     float mean;
     int numSegments = 0;
 
-    if ( agg == TAggregation::STD_DEV )
-      return sqrt( this->getStat( stat, TAggregation::VARIANCE ));
+    if ( agg == /*TAggregation::*/STD_DEV )
+      return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
 
-    if ( agg == TAggregation::MIN )
+    if ( agg == /*TAggregation::*/MIN )
       value = std::numeric_limits< float >::max( );
 
-    if ( agg == TAggregation::MAX )
+    if ( agg == /*TAggregation::*/MAX )
       value = std::numeric_limits< float >::min( );
 
-    if ( agg == TAggregation::VARIANCE )
-      mean = this->getStat( stat,  TAggregation::MEAN );
+    if ( agg == /*TAggregation::*/VARIANCE )
+      mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
     if ( _firstSegment )
     {
@@ -69,17 +69,17 @@ namespace nsol
         NSOL_DEBUG_CHECK( segment->stats( ),
                           "segment doesn't have stats" );
 
-        if ( agg == TAggregation::VARIANCE )
+        if ( agg == /*TAggregation::*/VARIANCE )
         {
           float tmpValue =
             segment->stats( )->getStat( toSegmentStat( stat ));
           value += ( mean - tmpValue ) * ( mean - tmpValue );
         }
-        else if ( agg == TAggregation::MIN )
+        else if ( agg == /*TAggregation::*/MIN )
           value =
             std::min( value,
                       segment->stats( )->getStat( toSegmentStat( stat )));
-        else if ( agg == TAggregation::MAX )
+        else if ( agg == /*TAggregation::*/MAX )
           value =
             std::max( value,
                       segment->stats( )->getStat( toSegmentStat( stat )));
@@ -93,14 +93,14 @@ namespace nsol
 
       switch ( agg )
       {
-      case TAggregation::TOTAL:
-      case TAggregation::MIN:
-      case TAggregation::MAX:
+      case /*TAggregation::*/TOTAL:
+      case /*TAggregation::*/MIN:
+      case /*TAggregation::*/MAX:
         return value;
-      case TAggregation::MEAN:
-      case TAggregation::VARIANCE:
+      case /*TAggregation::*/MEAN:
+      case /*TAggregation::*/VARIANCE:
         return value / numSegments;
-      case TAggregation::STD_DEV:
+      case /*TAggregation::*/STD_DEV:
         break;
       }
       NSOL_THROW( "aggregation op not valid" )

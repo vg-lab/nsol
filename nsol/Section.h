@@ -36,7 +36,7 @@ namespace nsol
     Section( NeuritePtr initNeurite
       , SectionPtr initSection
       , Sections initChilds
-      , List<NodePtr>* list );
+      , NsolList<NodePtr>* list );
 
     /**
      * Default destructor

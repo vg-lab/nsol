@@ -9,6 +9,7 @@
 #ifndef __NSOL_SECTION_STATS__
 #define __NSOL_SECTION_STATS__
 
+
 #include "../Section.h"
 
 namespace nsol
@@ -49,7 +50,7 @@ namespace nsol
 
     NSOL_API
     virtual float getStat( TSectionStat stat,
-                           TAggregation agg = TAggregation::TOTAL ) const;
+                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
   protected:

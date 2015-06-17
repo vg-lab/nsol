@@ -23,7 +23,7 @@ namespace nsol
   Section::Section( NeuritePtr initNeurite = nullptr
              , SectionPtr initParent = nullptr
              , Sections initChilds = Sections()
-             , List<NodePtr>* list = new List<NodePtr>() )
+             , NsolList<NodePtr>* list = new NsolList<NodePtr>() )
     : _neurite ( initNeurite )
     , _parent ( initParent )
     , _children ( initChilds )
@@ -33,7 +33,7 @@ namespace nsol
 
     if (! list->empty( ) )
     {
-      List<NodePtr>::iterator it = list->begin( );
+      NsolList<NodePtr>::iterator it = list->begin( );
 
       while ( *it != list->back( ) )
       {

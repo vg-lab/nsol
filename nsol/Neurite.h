@@ -109,8 +109,10 @@ namespace nsol {
 
   protected:
 
+    NSOL_API
     void _addBifurcationCount( unsigned int numBifurcations );
 
+    NSOL_API
     void _addBranchCount( unsigned int numBranches );
 
     TNeuriteType _neuriteType;
