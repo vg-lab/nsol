@@ -1,6 +1,6 @@
 /**
  * @file    SimulationData.cpp
- * @brief   Test for class nsol::SimulationData
+ * @brief   Unit test for class nsol::SimulationData
  * @author  Juan Guerrero <j.guerrerom@alumnos.urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
@@ -53,25 +53,25 @@ BOOST_AUTO_TEST_CASE( simulation_data_insert )
   BOOST_CHECK(simData1.numberOfRecords() != simData2.numberOfRecords());
   BOOST_CHECK_EQUAL(simData2.numberOfRecords(), simData3.numberOfRecords());
 
-  SimulationData::MultiIndexByTimestamp::iterator
+  SimulationData::iterator
   wantedRecord =
     simData1.find(1.0f, "Plasticidad", 2);
 
   /* Looking for the value of an inserted record */
-  BOOST_CHECK_EQUAL(wantedRecord->value, 22);
+  BOOST_CHECK_EQUAL((*wantedRecord).value, 22);
 
   r2.value = 44;
 
   simData1.insert(r2);
 
-  SimulationData::MultiIndexByTimestamp::iterator
+  SimulationData::iterator
     replacedRecord =
       simData1.find(1.0f, "Plasticidad", 2);
 
   /* Looking for the replaced value of a specific record */
-  BOOST_CHECK_EQUAL(replacedRecord->value, 44);
+  BOOST_CHECK_EQUAL((*replacedRecord).value, 44);
   /* It is not necessary to find twice */
-  BOOST_CHECK_EQUAL(wantedRecord->value, 44);
+  BOOST_CHECK_EQUAL((*wantedRecord).value, 44);
 }
 
 BOOST_AUTO_TEST_CASE( simulation_data_erase )
@@ -140,24 +140,24 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for a record by its timestamp, label and nsobject
    */
-  SimulationData::MultiIndexByTimestamp::iterator
+  SimulationData::iterator
     wantedRecord1 =
       simData.find(2.0f, "Calcio", 1);
   /* Checking by record value */
-  BOOST_CHECK_EQUAL(wantedRecord1->value, 33);
+  BOOST_CHECK_EQUAL((*wantedRecord1).value, 33);
 
   /**
    * Looking for records by their timestamps and labels
    */
-  std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-            SimulationData::MultiIndexByTimestamp::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord2 =
       simData.find(2.0f, "Calcio");
   /* Checking by record values */
   int wantedValue2 = 33;
   while ( wantedRecord2.first != wantedRecord2.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord2.first)->value, wantedValue2);
+    BOOST_CHECK_EQUAL((*wantedRecord2.first).value, wantedValue2);
     ++wantedRecord2.first;
     wantedValue2 += 11;
   }
@@ -165,15 +165,15 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for records by their labels and nsobjects
    */
-  std::pair<SimulationData::MultiIndexByLabel::iterator,
-            SimulationData::MultiIndexByLabel::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord3 =
       simData.find("Voltaje", 5);
   /* Checking by record values */
   int wantedValue3 = 11;
   while ( wantedRecord3.first != wantedRecord3.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord3.first)->value, wantedValue3);
+    BOOST_CHECK_EQUAL((*wantedRecord3.first).value, wantedValue3);
     ++wantedRecord3.first;
     wantedValue3 += 44;
   }
@@ -181,15 +181,15 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for records by their timestamps and nsobjects
    */
-  std::pair<SimulationData::MultiIndexByNsobject::iterator,
-            SimulationData::MultiIndexByNsobject::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord4 =
       simData.find(2.0f, 1);
   /* Checking by record values */
   int wantedValue4 = 33;
   while ( wantedRecord4.first != wantedRecord4.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord4.first)->value, wantedValue4);
+    BOOST_CHECK_EQUAL((*wantedRecord4.first).value, wantedValue4);
     ++wantedRecord4.first;
     wantedValue4 += 33;
   }
@@ -197,8 +197,8 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for records by their timestamps
    */
-  std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-            SimulationData::MultiIndexByTimestamp::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord5 =
       simData.find(2.0f);
   /* Checking by record values */
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   int wantedValues5_index = 0;
   while ( wantedRecord5.first != wantedRecord5.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord5.first)->value,
+    BOOST_CHECK_EQUAL((*wantedRecord5.first).value,
                       wantedValues5[wantedValues5_index]);
     ++wantedRecord5.first;
     wantedValues5_index++;
@@ -215,15 +215,15 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for records by their labels
    */
-  std::pair<SimulationData::MultiIndexByLabel::iterator,
-            SimulationData::MultiIndexByLabel::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord6 =
       simData.find("Voltaje");
   /* Checking by record values */
   int wantedValue6 = 11;
   while ( wantedRecord6.first != wantedRecord6.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord6.first)->value, wantedValue6);
+    BOOST_CHECK_EQUAL((*wantedRecord6.first).value, wantedValue6);
     ++wantedRecord6.first;
     wantedValue6 += 44;
   }
@@ -231,15 +231,15 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   /**
    * Looking for records by their nsobjects
    */
-  std::pair<SimulationData::MultiIndexByNsobject::iterator,
-            SimulationData::MultiIndexByNsobject::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
     wantedRecord7 =
       simData.find(1);
   /* Checking by record values */
   int wantedValue7 = 33;
   while ( wantedRecord7.first != wantedRecord7.second)
   {
-    BOOST_CHECK_EQUAL((wantedRecord7.first)->value, wantedValue7);
+    BOOST_CHECK_EQUAL((*wantedRecord7.first).value, wantedValue7);
     ++wantedRecord7.first;
     wantedValue7 += 33;
   }

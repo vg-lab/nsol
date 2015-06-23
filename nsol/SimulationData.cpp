@@ -11,6 +11,195 @@
 namespace nsol
 {
 
+  /**
+   * class iterator. method implementations.
+   */
+
+  SimulationData::iterator::iterator( void )
+  {
+  }
+
+  SimulationData::iterator::iterator
+  ( const iterator& extIterator )
+  {
+    *this = extIterator;
+  }
+
+  SimulationData::iterator::~iterator( void )
+  {
+  }
+
+//  SimulationData::iterator::iterator
+//  ( SimulationData::MultiIndexByTimestamp::iterator itByTimestamp )
+//  {
+//    _usedIterator = IT_TIMESTAMP;
+//    _itByTimestamp = itByTimestamp;
+//  }
+//
+//  SimulationData::iterator::iterator
+//  ( SimulationData::MultiIndexByLabel::iterator itByLabel )
+//  {
+//    _usedIterator = IT_LABEL;
+//    _itByLabel = itByLabel;
+//  }
+//
+//  SimulationData::iterator::iterator
+//  ( SimulationData::MultiIndexByNsobject::iterator itByNsobject )
+//  {
+//    _usedIterator = IT_OBJECT;
+//    _itByNsobject = itByNsobject;
+//  }
+
+  SimulationData::MultiIndexByTimestamp::iterator
+  SimulationData::iterator::getItByTimestamp() const
+  {
+  return _itByTimestamp;
+  }
+
+  SimulationData::MultiIndexByLabel::iterator
+  SimulationData::iterator::getItByLabel() const
+  {
+    return _itByLabel;
+  }
+
+  SimulationData::MultiIndexByNsobject::iterator
+  SimulationData::iterator::getItByNsobject() const
+  {
+  return _itByNsobject;
+  }
+
+  SimulationData::iterator::TMultiIndexIterator
+  SimulationData::iterator::getUsedIterator() const
+  {
+  return _usedIterator;
+  }
+
+  void SimulationData::iterator::setItByTimestamp(
+      const MultiIndexByTimestamp::iterator& itByTimestamp)
+  {
+    _itByTimestamp = itByTimestamp;
+    _usedIterator = IT_TIMESTAMP;
+  }
+
+  void SimulationData::iterator::setItByLabel(
+      const MultiIndexByLabel::iterator& itByLabel)
+  {
+    _itByLabel = itByLabel;
+    _usedIterator = IT_LABEL;
+  }
+
+  void SimulationData::iterator::setItByNsobject(
+      const MultiIndexByNsobject::iterator& itByNsobject)
+  {
+    _itByNsobject = itByNsobject;
+    _usedIterator = IT_OBJECT;
+  }
+
+  SimulationData::iterator& SimulationData::iterator::operator++()
+  {
+    switch(_usedIterator)
+    {
+      case IT_TIMESTAMP:
+        ++_itByTimestamp;
+      break;
+      case IT_LABEL:
+        ++_itByLabel;
+      break;
+      case IT_OBJECT:
+        ++_itByNsobject;
+      break;
+      default:
+        // Lanzar excepción
+      break;
+    }
+    return *this;
+  }
+
+  void SimulationData::iterator::operator=
+  ( const SimulationData::iterator& extIterator )
+  {
+    _usedIterator = extIterator.getUsedIterator();
+    _itByTimestamp = extIterator.getItByTimestamp();
+    _itByLabel = extIterator.getItByLabel();
+    _itByNsobject = extIterator.getItByNsobject();
+  }
+
+  bool SimulationData::iterator::operator==
+  ( const SimulationData::iterator& extIterator ) const
+  {
+    if(_usedIterator != extIterator.getUsedIterator())
+    {
+      //Se devolvería algún tipo de excepción?
+      return false;
+    }
+    switch(_usedIterator)
+    {
+      case IT_TIMESTAMP:
+        return _itByTimestamp == extIterator.getItByTimestamp();
+      break;
+      case IT_LABEL:
+        return _itByLabel == extIterator.getItByLabel();
+      break;
+      case IT_OBJECT:
+        return _itByNsobject == extIterator.getItByNsobject();
+      break;
+      default:
+        // Que devolver aquí?
+        return false;
+      break;
+    }
+  }
+
+  bool SimulationData::iterator::operator!=
+  ( const SimulationData::iterator& extIterator ) const
+  {
+    if(_usedIterator != extIterator.getUsedIterator())
+    {
+      //Se devolvería algún tipo de excepción?
+      return true;
+    }
+    switch(_usedIterator)
+    {
+      case IT_TIMESTAMP:
+        return _itByTimestamp != extIterator.getItByTimestamp();
+      break;
+      case IT_LABEL:
+        return _itByLabel != extIterator.getItByLabel();
+      break;
+      case IT_OBJECT:
+        return _itByNsobject != extIterator.getItByNsobject();
+      break;
+      default:
+        // Que devolver aquí?
+        return true;
+      break;
+    }
+  }
+
+  const SimulationData::Record& SimulationData::iterator::operator*() const
+  {
+    switch(_usedIterator)
+    {
+      case IT_TIMESTAMP:
+        return *_itByTimestamp;
+      break;
+      case IT_LABEL:
+        return *_itByLabel;
+      break;
+      case IT_OBJECT:
+        return *_itByNsobject;
+      break;
+      default:
+        // Lanzar excepción
+        return *_itByTimestamp;
+      break;
+    }
+  }
+
+  /**
+   * class SimulationData. method implementations.
+   */
+
   SimulationData::SimulationData( void )
   {
   }
@@ -19,12 +208,12 @@ namespace nsol
   {
   }
 
-  std::size_t SimulationData::numberOfRecords()
+  std::size_t SimulationData::numberOfRecords() const
   {
     return _multiIndexByTimestamp.size();
   }
 
-  void SimulationData::insert( Record record )
+  void SimulationData::insert( Record& record )
   {
     /**
      * Lo ideal aquí sería usar el find nuestro pero para ello
@@ -86,6 +275,15 @@ namespace nsol
     }
   }
 
+  /*
+  void SimulationData::remove( const Record& record )
+  {
+    _multiIndexByTimestamp.remove(record);
+    _multiIndexByLabel.remove(record);
+    _multiIndexByNsobject.remove(record);
+  }
+  */
+
   void SimulationData::clear( void )
   {
     _multiIndexByTimestamp.clear();
@@ -93,7 +291,7 @@ namespace nsol
     _multiIndexByNsobject.clear();
   }
 
-  SimulationData::MultiIndexByTimestamp::iterator
+  SimulationData::iterator
   SimulationData::find( float timestamp,
                         std::string label,
                         int nsobject ) const
@@ -102,13 +300,15 @@ namespace nsol
       _multiIndexByTimestamp.find(boost::make_tuple(timestamp,
                                                     label,
                                                     nsobject));
+    SimulationData::iterator toReturn;
+    toReturn.setItByTimestamp(recordToFind);
 
-    //Que pasa si no encuentra el elemento?
-    return recordToFind;
+    //Devolver excepción si no encuentra el elemento?
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-            SimulationData::MultiIndexByTimestamp::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( float timestamp, std::string label ) const
   {
     std::pair<SimulationData::MultiIndexByTimestamp::iterator,
@@ -116,12 +316,21 @@ namespace nsol
     recordsToFind =
       _multiIndexByTimestamp.equal_range(boost::make_tuple(timestamp,
                                                            label));
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByTimestamp(recordsToFind.first);
 
-    return recordsToFind;
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByTimestamp(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByLabel::iterator,
-            SimulationData::MultiIndexByLabel::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( std::string label, int nsobject ) const
   {
     std::pair<SimulationData::MultiIndexByLabel::iterator,
@@ -130,11 +339,21 @@ namespace nsol
       _multiIndexByLabel.equal_range(boost::make_tuple(label,
                                                        nsobject));
 
-    return recordsToFind;
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByLabel(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByLabel(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByNsobject::iterator,
-            SimulationData::MultiIndexByNsobject::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( float timestamp, int nsobject ) const
   {
     std::pair<SimulationData::MultiIndexByNsobject::iterator,
@@ -143,11 +362,21 @@ namespace nsol
       _multiIndexByNsobject.equal_range(boost::make_tuple(nsobject,
                                                           timestamp));
 
-    return recordsToFind;
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByNsobject(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByNsobject(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-            SimulationData::MultiIndexByTimestamp::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( float timestamp ) const
   {
     std::pair<SimulationData::MultiIndexByTimestamp::iterator,
@@ -155,11 +384,21 @@ namespace nsol
     recordsToFind =
       _multiIndexByTimestamp.equal_range(timestamp);
 
-    return recordsToFind;
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByTimestamp(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByTimestamp(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByLabel::iterator,
-            SimulationData::MultiIndexByLabel::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( std::string label ) const
   {
     std::pair<SimulationData::MultiIndexByLabel::iterator,
@@ -167,11 +406,21 @@ namespace nsol
     recordsToFind =
       _multiIndexByLabel.equal_range(label);
 
-    return recordsToFind;
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByLabel(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByLabel(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
-  std::pair<SimulationData::MultiIndexByNsobject::iterator,
-            SimulationData::MultiIndexByNsobject::iterator>
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
   SimulationData::find( int nsobject ) const
   {
     std::pair<SimulationData::MultiIndexByNsobject::iterator,
@@ -179,10 +428,19 @@ namespace nsol
     recordsToFind =
       _multiIndexByNsobject.equal_range(nsobject);
 
-    return recordsToFind;
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByNsobject(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByNsobject(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
   }
 
 } // namespace nsol
-
 
 

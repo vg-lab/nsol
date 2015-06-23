@@ -25,15 +25,13 @@
 namespace nsol
 {
 
-  //using boost::multi_index_container;
-  //using namespace boost::multi_index;
-
   //!  Interface to simulation data.
     /*!
       This class contains simulation data: timestamps, label,
       nsol objects and values.
     */
-  class SimulationData {
+  class SimulationData
+  {
 
   public:
 
@@ -42,7 +40,6 @@ namespace nsol
      */
     struct Record
     {
-
       float timestamp;
       std::string label;
       int nsobject;
@@ -52,25 +49,25 @@ namespace nsol
       //Necesario?
       Record();
 
-      Record(float timestamp_,
-             std::string label_,
-             int nsobject_,
-             int value_)
-      : timestamp(timestamp_)
-      , label(label_)
-      , nsobject(nsobject_)
-      , value(value_)
+      Record( float timestamp_,
+              std::string label_,
+              int nsobject_,
+              int value_ )
+      : timestamp( timestamp_ )
+      , label( label_ )
+      , nsobject( nsobject_ )
+      , value( value_ )
       {}
 
-      friend std::ostream& operator<<(std::ostream& os,const Record& e)
+      friend std::ostream& operator<<( std::ostream& os, const Record& e )
       {
-      //os<<"<"<<e.timestamp<<", "<<e.label<<", "<< e.nsobject <<std::endl;
-      os<<"<"<<e.timestamp<<", "<<e.label<<", "<<e.nsobject<<">"
+        os<<"<"<<e.timestamp<<", "<<e.label<<", "<<e.nsobject<<">"
           <<" = "<<e.value;
       return os;
       }
-
     };
+
+  private:
 
     /**
      * Record multi-index indexed by a composite key with three elements.
@@ -126,6 +123,76 @@ namespace nsol
       >
     > MultiIndexByNsobject;
 
+  public:
+
+    /**
+     * Record iterator.
+     */
+    class iterator
+    {
+    public:
+      /**
+       * Iterator type:
+       *  - multi index by timestamp iterator
+       *  - multi index by label iterator
+       *  - multi index by nsobject iterator
+       */
+      enum TMultiIndexIterator
+      {
+        IT_TIMESTAMP = 0,
+        IT_LABEL,
+        IT_OBJECT
+      };
+
+      /**
+       * Constructors & destructor.
+       */
+      iterator( void );
+      iterator( const iterator& extIterator );
+      //iterator( MultiIndexByTimestamp::iterator itByTimestamp );
+      //iterator( MultiIndexByLabel::iterator itByLabel );
+      //iterator( MultiIndexByNsobject::iterator itByNsobject );
+
+      ~iterator( void );
+
+      /**
+       * Getters.
+       */
+      MultiIndexByTimestamp::iterator getItByTimestamp() const;
+      MultiIndexByLabel::iterator getItByLabel() const;
+      MultiIndexByNsobject::iterator getItByNsobject() const;
+      TMultiIndexIterator getUsedIterator() const;
+      
+      /**
+       * Setters.
+       */
+      void setItByTimestamp
+      ( const MultiIndexByTimestamp::iterator& itByTimestamp );
+      void setItByLabel
+      ( const MultiIndexByLabel::iterator& itByLabel );
+      void setItByNsobject
+      ( const MultiIndexByNsobject::iterator& itByNsobject );
+
+      /**
+       * Operators.
+       * url: http://www.cplusplus.com/reference/iterator/iterator/.
+       */
+      iterator& operator++();
+      void operator=( const iterator& extIterator );
+      bool operator==( const iterator& extIterator ) const;
+      bool operator!=( const iterator& extIterator ) const;
+      const Record& operator*() const;
+
+    private:
+      /**
+       * Attributes.
+       */
+      MultiIndexByTimestamp::iterator _itByTimestamp;
+      MultiIndexByLabel::iterator _itByLabel;
+      MultiIndexByNsobject::iterator _itByNsobject;
+      TMultiIndexIterator _usedIterator;
+    };
+
     /**
      * Default consructor.
      */
@@ -139,13 +206,13 @@ namespace nsol
     /**
      * This method returns the number of records.
      */
-    std::size_t numberOfRecords();
+    std::size_t numberOfRecords() const;
 
     /**
      * If the record does not exist, it will be added to the collection.
      * If the record exist, this will be overwritten.
      */
-    void insert( Record record );
+    void insert( Record& record );
 
     /**
      * Erase a record by its timestamp, label and nsobject.
@@ -153,6 +220,11 @@ namespace nsol
     void erase( float timestamp,
                 std::string label,
                 int nsobject );
+
+    /**
+     * Remove a specific record.
+     */
+    //void remove ( const Record& record );
 
     /**
      * Erase all records from the collection.
@@ -165,12 +237,7 @@ namespace nsol
      *  - label
      *  - nsobject
      */
-    /**
-     * Devolver Record* puede ser una buena solución para esconder
-     * lo de los iteradores (o quizá no, quizá no sea posible
-     * hacer un casting a Record*).
-     */
-    MultiIndexByTimestamp::iterator
+    iterator
     find( float timestamp, std::string label, int nsobject ) const;
 
     /**
@@ -178,7 +245,7 @@ namespace nsol
      *  - timestamp
      *  - label
      */
-    std::pair<MultiIndexByTimestamp::iterator, MultiIndexByTimestamp::iterator>
+    std::pair<iterator, iterator>
     find( float timestamp, std::string label ) const;
 
     /**
@@ -186,7 +253,7 @@ namespace nsol
      *  - label
      *  - nsobject
      */
-    std::pair<MultiIndexByLabel::iterator, MultiIndexByLabel::iterator>
+    std::pair<iterator, iterator>
     find( std::string label, int nsobject ) const;
 
     /**
@@ -194,28 +261,28 @@ namespace nsol
      *  - timestamp
      *  - nsobject
      */
-    std::pair<MultiIndexByNsobject::iterator, MultiIndexByNsobject::iterator>
+    std::pair<iterator, iterator>
     find( float timestamp, int nsobject ) const;
 
     /**
      * This method looks for records filtered by:
      *  - timestamp
      */
-    std::pair<MultiIndexByTimestamp::iterator, MultiIndexByTimestamp::iterator>
+    std::pair<iterator, iterator>
     find( float timestamp ) const;
 
     /**
      * TThis method looks for records filtered by:
      *  - label
      */
-    std::pair<MultiIndexByLabel::iterator, MultiIndexByLabel::iterator>
+    std::pair<iterator, iterator>
     find( std::string label ) const;
 
     /**
      * This method looks for records filtered by:
      *  - nsobject
      */
-    std::pair<MultiIndexByNsobject::iterator, MultiIndexByNsobject::iterator>
+    std::pair<iterator, iterator>
     find( int nsobject ) const;
 
     /**

@@ -1,6 +1,6 @@
 /**
  * @file    simulationDataStats.cpp
- * @brief   Test for class nsol::SimulationData
+ * @brief   Stress test for class nsol::SimulationData
  * @author  Juan Guerrero <j.guerrerom@alumnos.urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
@@ -66,12 +66,8 @@ int main ( /*int argc, char ** argv*/ )
                                  randomNsobject,
                                  r);
 
-    std::cout << *randomRecord << std::endl;
-
     simData.insert(*randomRecord);
   }
-
-  std::cout << std::endl;
 
   std::cout << "simData size: " << simData.numberOfRecords() << std::endl;
 
@@ -100,7 +96,7 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin1 =
       std::chrono::high_resolution_clock::now();
-    //SimulationData::MultiIndexByTimestamp::iterator
+    //SimulationData::iterator
       //wantedRecord1 =
         simData.find(randomTimestamp,
                      randomLabel,
@@ -120,8 +116,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin2 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-      //        SimulationData::MultiIndexByTimestamp::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord2 =
         simData.find(randomTimestamp,
                      randomLabel);
@@ -140,8 +136,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin3 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByLabel::iterator,
-      //        SimulationData::MultiIndexByLabel::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord3 =
         simData.find(randomLabel,
                      randomNsobject);
@@ -160,8 +156,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin4 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByNsobject::iterator,
-      //        SimulationData::MultiIndexByNsobject::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord4 =
         simData.find(randomTimestamp,
                      randomNsobject);
@@ -180,8 +176,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin5 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByTimestamp::iterator,
-      //        SimulationData::MultiIndexByTimestamp::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord5 =
         simData.find(randomTimestamp);
     std::chrono::high_resolution_clock::time_point tEnd5 =
@@ -199,8 +195,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin6 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByLabel::iterator,
-      //        SimulationData::MultiIndexByLabel::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord6 =
         simData.find(randomLabel);
     std::chrono::high_resolution_clock::time_point tEnd6 =
@@ -218,8 +214,8 @@ int main ( /*int argc, char ** argv*/ )
      */
     std::chrono::high_resolution_clock::time_point tBegin7 =
       std::chrono::high_resolution_clock::now();
-    //std::pair<SimulationData::MultiIndexByNsobject::iterator,
-      //        SimulationData::MultiIndexByNsobject::iterator>
+    //std::pair<SimulationData::iterator,
+      //        SimulationData::iterator>
       //wantedRecord7 =
         simData.find(randomNsobject);
     std::chrono::high_resolution_clock::time_point tEnd7 =
