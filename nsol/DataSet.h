@@ -22,6 +22,7 @@ namespace nsol
   public:
     DataSet( void );
 
+#ifdef NSOL_WITH_BBPSDK
     template < class NODE = Node,
                class SEGMENT = Segment,
                class SECTION = Section,
@@ -50,6 +51,7 @@ namespace nsol
         _columns.push_back( column->second );
 
     }
+#endif
 
     void close( void );
 
