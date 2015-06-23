@@ -64,9 +64,9 @@ namespace nsol
     _firstSection = section;
   }
 
-  Sections * Neurite::sections( void )
+  Sections Neurite::sections( void ) const
   {
-    Sections * sections_ = new Sections;
+    Sections sections_; // = new Sections;
     std::stack<SectionPtr> sectionsToProcess;
     sectionsToProcess.push( _firstSection );
 
@@ -74,7 +74,7 @@ namespace nsol
     {
       SectionPtr section  = sectionsToProcess.top( );
       sectionsToProcess.pop( );
-      sections_->push_back( section );
+      sections_.push_back( section );
 
       for ( auto childrenIt = section->children( ).begin( );
            childrenIt != section->children( ).end( ); childrenIt++ )

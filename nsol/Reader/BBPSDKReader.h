@@ -118,6 +118,60 @@ namespace nsol
                         const int bbpDataTypes,
                         const bbp::Cell_Target& bbpTarget );
 
+    void deleteAll( std::map<unsigned int, ColumnPtr>& columns )
+    {
+      std::set< NeuronMorphologyPtr > morphologies;
+
+      NSOL_FOREACH( col, columns )
+      {
+        NSOL_FOREACH( miniCol, col->second->miniColumns( ))
+        {
+          NSOL_FOREACH( neuron, ( *miniCol )->neurons( ))
+          {
+            morphologies.insert(( *neuron )->morphology( ));
+            delete *neuron;
+          }
+          delete *miniCol;
+        }
+        delete col->second;
+      }
+
+      std::set< NodePtr > nodes;
+
+      NSOL_FOREACH( morphology, morphologies )
+      {
+        NSOL_FOREACH( neurite, ( *morphology )->neurites( ))
+        {
+          Sections sections = ( *neurite )->sections( );
+          NSOL_FOREACH( section, sections )
+          {
+            SegmentPtr segment = ( *section )->firstSegment( );
+            while ( segment )
+            {
+              SegmentPtr tmpSegment = segment;
+              segment = segment->next( );
+              nodes.insert( tmpSegment->begin( ));
+              nodes.insert( tmpSegment->end( ));
+              delete tmpSegment;
+            }
+            delete *section;
+          }
+//          delete sections;
+          delete *neurite;
+        }
+        delete ( *morphology )->soma( );
+        delete *morphology;
+      }
+
+
+      NSOL_FOREACH( node, nodes )
+      {
+        delete *node;
+      }
+      return;
+    }
+
+
   private:
 
     // Types of SWC nodes
@@ -472,6 +526,9 @@ namespace nsol
 
       } // morphology not previously loaded
     }
+
+    // close experiment and free its resources
+    experiment.close( );
 
     return columnMap;
 
