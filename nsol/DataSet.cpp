@@ -1,3 +1,4 @@
+#include <set>
 #include "DataSet.h"
 
 namespace nsol
