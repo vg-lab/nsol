@@ -88,7 +88,7 @@ namespace nsol {
     virtual void firstSection( SectionPtr section );
 
     NSOL_API
-    Sections * sections( void );
+    Sections sections( void ) const;
 
     //TODO: this methods should disappear
     NSOL_API

@@ -86,6 +86,7 @@ int main( int argc, char *argv[] )
     std::cout << "Neuron type: "
               << int( neuron->neuronType( ))
               << std::endl;
+    r.deleteAll( columns );
 
     return 0;
   }

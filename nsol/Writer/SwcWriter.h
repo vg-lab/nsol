@@ -4,7 +4,7 @@
  * @author  Ricardo Suarez <ricardo.suarez@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
- * Do not distribute without further notice.
+            Do not distribute without further notice.
  */
 #ifndef __NSOL_SWC_WRITER__
 #define __NSOL_SWC_WRITER__
