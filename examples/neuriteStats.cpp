@@ -45,10 +45,10 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
       //     ( ! cached->dirty( nsol::NeuriteCachedStats::SURFACE )
       //       ? "Clean" : "Dirty" );
 
-      nsol::Sections * sections = ( * it )->sections( );
+      nsol::Sections sections = ( * it )->sections( );
       std::cout << "[ ";
-      for ( auto sectionsIt = sections->begin( );
-            sectionsIt != sections->end( ); sectionsIt++ )
+      for ( auto sectionsIt = sections.begin( );
+            sectionsIt != sections.end( ); sectionsIt++ )
       {
         // cached =
         //   NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * sectionsIt )->stats( ));
@@ -62,7 +62,7 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
         std::cout << ( * sectionsIt )->stats( )->getStat(
 	  nsol::SectionStats::/*TSectionStat::*/SURFACE ) << " ";
       }
-      delete sections;
+//      delete sections;
 
       std::cout << "]";
     }
@@ -100,10 +100,10 @@ void PrintCachedSurfaceState( nsol::NeuronPtr n )
         std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
                        ? "C" : "D" );
 
-      nsol::Sections * sections = ( * it )->sections( );
+      nsol::Sections sections = ( * it )->sections( );
       std::cout << " [ ";
-      for ( auto sectionsIt = sections->begin( );
-            sectionsIt != sections->end( ); sectionsIt++ )
+      for ( auto sectionsIt = sections.begin( );
+            sectionsIt != sections.end( ); sectionsIt++ )
       {
         cached =
           NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * sectionsIt )->stats( ));
@@ -113,7 +113,7 @@ void PrintCachedSurfaceState( nsol::NeuronPtr n )
             ( ! cached->dirty( nsol::SectionCachedStats::SURFACE )
               ? "C " : "D " );
       }
-      delete sections;
+//      delete sections;
 
       std::cout << "]";
     }
