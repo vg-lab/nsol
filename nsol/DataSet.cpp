@@ -56,6 +56,8 @@ namespace nsol
     NSOL_FOREACH( node, nodes )
       delete *node;
 
+    _columns.clear( );
+
     return;
   }
 
