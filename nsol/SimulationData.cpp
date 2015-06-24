@@ -441,6 +441,60 @@ namespace nsol
     return toReturn;
   }
 
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
+  SimulationData::findByRange( float lowerTimestamp,
+                               float upperTimestamp ) const
+  {
+    std::pair<SimulationData::MultiIndexByTimestamp::iterator,
+              SimulationData::MultiIndexByTimestamp::iterator>
+    recordsToFind =
+      std::make_pair(_multiIndexByTimestamp.lower_bound(lowerTimestamp),
+                     _multiIndexByTimestamp.upper_bound(upperTimestamp));
+
+    SimulationData::iterator toReturnFirst;
+    toReturnFirst.setItByTimestamp(recordsToFind.first);
+
+    SimulationData::iterator toReturnSecond;
+    toReturnSecond.setItByTimestamp(recordsToFind.second);
+
+    std::pair<SimulationData::iterator,
+              SimulationData::iterator>
+    toReturn(toReturnFirst, toReturnSecond);
+
+    return toReturn;
+  }
+
+  std::set<float> SimulationData::getTimestamps() const
+  {
+    std::set<float> toReturn;
+
+    for( SimulationData::MultiIndexByTimestamp::iterator
+         it = _multiIndexByTimestamp.begin();
+         it != _multiIndexByTimestamp.end();
+         ++it )
+    {
+      toReturn.insert(it->timestamp);
+    }
+
+    return toReturn;
+  }
+
+  std::set<std::string> SimulationData::getLabels() const
+  {
+    std::set<std::string> toReturn;
+
+    for( SimulationData::MultiIndexByLabel::iterator
+         it = _multiIndexByLabel.begin();
+         it != _multiIndexByLabel.end();
+         ++it )
+    {
+      toReturn.insert(it->label);
+    }
+
+    return toReturn;
+  }
+
 } // namespace nsol
 
 

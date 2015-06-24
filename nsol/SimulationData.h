@@ -22,6 +22,10 @@
 #include <string>
 #include <vector>
 
+/* upper and lower
+ * http://www.boost.org/doc/libs/1_36_0/libs/multi_index/doc/reference/ord_indices.html
+ */
+
 namespace nsol
 {
 
@@ -286,14 +290,24 @@ namespace nsol
     find( int nsobject ) const;
 
     /**
+     * This method looks for records filtered by:
+     *  - timestamp
+     * These records must have its timestamps between a
+     * lower bound and an upper bound.
+     */
+    std::pair<iterator, iterator>
+    findByRange( float lowerTimestamp,
+                 float upperTimestamp ) const;
+
+    /**
      * Get all timestamp values.
      */
-    //std::set<float> getTimestamps();
+    std::set<float> getTimestamps() const;
 
     /**
      * Get all label values.
      */
-    //std::set<std::string> getLabels();
+    std::set<std::string> getLabels() const;
 
     /**
      * Get all nsol objects.

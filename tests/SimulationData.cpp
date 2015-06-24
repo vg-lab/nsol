@@ -245,3 +245,119 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   }
 }
 
+BOOST_AUTO_TEST_CASE( simulation_data_findByRange )
+{
+  SimulationData simData;
+
+  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
+  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
+  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  SimulationData::Record r4(3.0f, "Calcio", 3, 44);
+  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
+  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
+
+  simData.insert(r1);
+  simData.insert(r2);
+  simData.insert(r3);
+  simData.insert(r4);
+  simData.insert(r5);
+  simData.insert(r6);
+
+  /**
+   * Looking for records by their timestamps delimited by
+   * a lower bound and an upper bound.
+   */
+  std::pair<SimulationData::iterator,
+            SimulationData::iterator>
+    wantedRecord1 =
+      simData.findByRange(2.0f, 4.0f);
+  /* Checking by record values */
+  int wantedValue1 = 33;
+  int numberOfElements = 0;
+  while ( wantedRecord1.first != wantedRecord1.second)
+  {
+    BOOST_CHECK_EQUAL((*wantedRecord1.first).value, wantedValue1);
+    ++wantedRecord1.first;
+    wantedValue1 += 11;
+    ++numberOfElements;
+  }
+  BOOST_CHECK_EQUAL(numberOfElements, 3);
+}
+
+BOOST_AUTO_TEST_CASE( simulation_data_getTimestamps )
+{
+  SimulationData simData;
+
+  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
+  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
+  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  SimulationData::Record r4(2.0f, "Calcio", 3, 44);
+  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
+  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
+  SimulationData::Record r7(5.0f, "Voltaje", 2, 77);
+
+  simData.insert(r1);
+  simData.insert(r2);
+  simData.insert(r3);
+  simData.insert(r4);
+  simData.insert(r5);
+  simData.insert(r6);
+  simData.insert(r7);
+
+  std::set<float> timestampSet =
+    simData.getTimestamps();
+
+  float wantedValues [5] = {0.0f, 1.0f, 2.0f, 4.0f, 5.0f};
+
+  int index = 0;
+
+  for( std::set<float>::iterator
+      it = timestampSet.begin();
+      it != timestampSet.end();
+      ++it)
+  {
+    BOOST_CHECK_EQUAL(*it, wantedValues[index]);
+    index++;
+  }
+}
+
+BOOST_AUTO_TEST_CASE( simulation_data_getLabels )
+{
+  SimulationData simData;
+
+  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
+  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
+  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  SimulationData::Record r4(2.0f, "Calcio", 3, 44);
+  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
+  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
+  SimulationData::Record r7(5.0f, "Voltaje", 2, 77);
+
+  simData.insert(r1);
+  simData.insert(r2);
+  simData.insert(r3);
+  simData.insert(r4);
+  simData.insert(r5);
+  simData.insert(r6);
+  simData.insert(r7);
+
+  std::set<std::string> labelSet =
+    simData.getLabels();
+
+  std::vector<std::string> wantedValues;
+
+  wantedValues.push_back("Calcio");
+  wantedValues.push_back("Plasticidad");
+  wantedValues.push_back("Voltaje");
+
+  int index = 0;
+
+  for(std::set<std::string>::iterator
+      it = labelSet.begin();
+      it != labelSet.end();
+      ++it)
+  {
+    BOOST_CHECK_EQUAL(*it, wantedValues.at(index));
+    index++;
+  }
+}
