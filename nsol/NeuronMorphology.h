@@ -110,7 +110,7 @@ namespace nsol
     void addParentNeuron( NeuronPtr neuron );
 
     NSOL_API
-    void initRelevance( float relevance );
+    void initRelevance( const float relevance );
 
   protected:
 

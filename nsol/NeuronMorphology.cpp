@@ -122,38 +122,47 @@ namespace nsol
       _parentNeurons.push_back( neuron );
   }
 
-  void NeuronMorphology::initRelevance( float relevance )
+  /*
+   * Method that initializes every node with the relevance received
+   */
+  void NeuronMorphology::initRelevance( const float relevance )
   {
     for ( Neurites::const_iterator it = _neurites.begin( );
           it != _neurites.end( ); ++it )
     {
       NeuritePtr naux = *it;
+      Sections * saux = naux->sections();
 
-      for ( Sections::const_iterator it2 = naux->sections( )->begin( );
-            it2 != naux->sections( )->end( ); ++it2 )
+      for ( Sections::const_iterator it2 = saux->begin();
+            it2 != saux->end(); ++it2 )
       {
         SectionPtr section = *it2;
-        SegmentPtr segaux = section->firstSegment( );
+        SegmentPtr segment = section->firstSegment();
 
-        while ( segaux != nullptr )
+        while ( segment != nullptr )
         {
-          NodePtr node = segaux->begin( );
+          ScalarLabeledNodePtr snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, segment->begin() );
 
-          ScalarLabeledNodePtr sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, node );
-          sNode->relevance( relevance );
-
-          if ( segaux == section->lastSegment( ) )
+          if ( snode == nullptr )
           {
-            node = segaux->end( );
-            sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, node );
-            sNode->relevance( relevance );
+            NSOL_THROW( "Warning: Unknown type of Node. Cannot cast" );
+            return;
           }
 
-          segaux->next( );
-        }
-      }
-    }
-  }
+          snode->relevance( relevance );
+
+          if ( segment->next() == nullptr )
+          {
+            snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, segment->end() );
+            snode->relevance( relevance );
+          }
+
+          segment = segment->next();          
+        } // while  
+      } // for #2     
+    } // for #1
+
+  } // initRelevance
 
   SomaPtr NeuronMorphology::soma( void )
   {

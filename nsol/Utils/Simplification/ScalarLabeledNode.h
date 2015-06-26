@@ -22,9 +22,9 @@ namespace nsol
 
     NSOL_API
     ScalarLabeledNode( const Vec3f & initPoint = Vec3f(0,0,0) 
-	  			, const int &initId = 0 
-	  			, const float &initRadius = 0.0f
-					, const float &initRelevance = 0.0f );
+	  			, const int & initId = 0 
+	  			, const float & initRadius = 0.0f
+					, const float & initRelevance = 0.0f );
 
     NSOL_API  
     virtual ~ScalarLabeledNode( void );

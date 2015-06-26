@@ -443,11 +443,11 @@ namespace nsol
 
     begin = end;
 
-    vaux.push_back( dynamic_cast<NodePtr> ( segment->begin( ) ) );
+    vaux.push_back( segment->begin( ) );
 
 	  while ( segment ) 
 	  {
-	    vaux.push_back( dynamic_cast<NodePtr> ( segment->end( ) ) );
+	    vaux.push_back( segment->end( ) );
 	    segment = segment->next( );
 	  }
 
