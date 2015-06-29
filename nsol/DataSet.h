@@ -37,15 +37,14 @@ namespace nsol
                          const int bbpDataTypes = bbp::MICROCIRCUIT |
                          bbp::AFFERENT_SYNAPSES |
                          bbp::EFFERENT_SYNAPSES,
-                         const bbp::Cell_Target& bbpTarget =
-                         bbp::Cell_Target( ))
+                         const std::string& targetLabel = std::string( "" ))
     {
       BBPSDKReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       auto columnsMap = reader.readFromBlueConfig( blueconfig,
                                                    bbpDataTypes,
-                                                   bbpTarget );
+                                                   targetLabel );
 
       NSOL_FOREACH( column, columnsMap )
         _columns.push_back( column->second );
