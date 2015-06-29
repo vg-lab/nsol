@@ -1,0 +1,2 @@
+# -*- mode: cmake -*-
+git_subproject(vmmlib https://github.com/Eyescale/vmmlib.git eb372a2)
