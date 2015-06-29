@@ -127,6 +127,23 @@ namespace nsol
    */
   void NeuronMorphology::initRelevance( const float relevance )
   {
+    // Iterate over the Soma
+    for ( Nodes::iterator it =
+             _soma->nodes( ).begin( );
+             it != _soma->nodes( ).end( ); ++it)
+    {
+      ScalarLabeledNodePtr snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, *it );
+
+      if ( snode == nullptr )
+      {
+        NSOL_THROW( "Warning: Unknown type of Node. Cannot cast" );
+        return;
+      }
+
+      snode->relevance( relevance );
+    } // for
+
+    // Iterate over the neurites
     for ( Neurites::const_iterator it = _neurites.begin( );
           it != _neurites.end( ); ++it )
     {

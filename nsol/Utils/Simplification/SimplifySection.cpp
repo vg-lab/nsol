@@ -18,7 +18,7 @@ namespace nsol
   /*
    *  This method simplifies a Section previously vectorized
    *  using the Radial algorithm. Returns SectionPtr, the 
-   *  attributes from the original Section are NOT copied,
+   *  attributes from the original Section are NOT Copyrighted,
    *  It must be done outside this function.
    */
   SectionPtr SimplifySection::_simplifyRadial ( 
@@ -388,7 +388,7 @@ namespace nsol
           {
             q_sections.push_back( *it2 );
             q_index.push_back( ( q_parents.size( ) - 1 ) );
-          } // 
+          }
         }
 
         // Store its neurite
