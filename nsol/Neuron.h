@@ -15,6 +15,7 @@
 #include "Soma.h"
 #include "Neurite.h"
 #include "Dendrite.h"
+#include "Object.h"
 #include "Container/Dendrites.h"
 #include "Container/Neurites.h"
 
@@ -26,7 +27,7 @@ namespace nsol
 
     TODO: extend long description
   */
-  class Neuron
+  class Neuron : public Object
   {
 
   public:

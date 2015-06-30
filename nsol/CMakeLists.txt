@@ -19,6 +19,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   NeuronMorphology.h
   Node.h
   NsolTypes.h
+  Object.h
   Section.h
   Segment.h
   SimulationData.h
@@ -61,6 +62,7 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Neuron.cpp
   NeuronMorphology.cpp
   Node.cpp
+  Object.cpp
   Section.cpp
   Segment.cpp
   SimulationData.cpp

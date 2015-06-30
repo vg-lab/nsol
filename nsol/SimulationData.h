@@ -6,8 +6,8 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef SIMULATIONDATA_H_
-#define SIMULATIONDATA_H_
+#ifndef __NSOL_SIMULATIONDATA__
+#define __NSOL_SIMULATIONDATA__
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/composite_key.hpp>
@@ -22,16 +22,14 @@
 #include <string>
 #include <vector>
 
-/* upper and lower
- * http://www.boost.org/doc/libs/1_36_0/libs/multi_index/doc/reference/ord_indices.html
- */
+#include "Object.h"
 
 namespace nsol
 {
 
   //!  Interface to simulation data.
     /*!
-      This class contains simulation data: timestamps, label,
+      This class contains simulation data: timestamps, labels,
       nsol objects and values.
     */
   class SimulationData
@@ -46,26 +44,26 @@ namespace nsol
     {
       float timestamp;
       std::string label;
-      int nsobject;
+      ObjectPtr object;
 
       int value;
 
-      //Necesario?
+      //Is it necessary?
       Record();
 
       Record( float timestamp_,
               std::string label_,
-              int nsobject_,
+              ObjectPtr object_,
               int value_ )
       : timestamp( timestamp_ )
       , label( label_ )
-      , nsobject( nsobject_ )
+      , object( object_ )
       , value( value_ )
       {}
 
       friend std::ostream& operator<<( std::ostream& os, const Record& e )
       {
-        os<<"<"<<e.timestamp<<", "<<e.label<<", "<<e.nsobject<<">"
+        os<<"<"<<e.timestamp<<", "<<e.label<<", "<<e.object<<">"
           <<" = "<<e.value;
       return os;
       }
@@ -85,7 +83,7 @@ namespace nsol
             Record,
             boost::multi_index::member<Record,float,&Record::timestamp>,
             boost::multi_index::member<Record,std::string,&Record::label>,
-            boost::multi_index::member<Record,int,&Record::nsobject>
+            boost::multi_index::member<Record,ObjectPtr,&Record::object>
           >
         >
       >
@@ -102,7 +100,7 @@ namespace nsol
           boost::multi_index::composite_key<
             Record,
             boost::multi_index::member<Record,std::string,&Record::label>,
-            boost::multi_index::member<Record,int,&Record::nsobject>,
+            boost::multi_index::member<Record,ObjectPtr,&Record::object>,
             boost::multi_index::member<Record,float,&Record::timestamp>
           >
         >
@@ -111,7 +109,7 @@ namespace nsol
 
     /**
      * Record multi-index indexed by a composite key with three elements.
-     * First key: nsobject.
+     * First key: object.
      */
     typedef boost::multi_index::multi_index_container<
       Record,
@@ -119,13 +117,13 @@ namespace nsol
         boost::multi_index::ordered_unique<
           boost::multi_index::composite_key<
             Record,
-            boost::multi_index::member<Record,int,&Record::nsobject>,
+            boost::multi_index::member<Record,ObjectPtr,&Record::object>,
             boost::multi_index::member<Record,float,&Record::timestamp>,
             boost::multi_index::member<Record,std::string,&Record::label>
           >
         >
       >
-    > MultiIndexByNsobject;
+    > MultiIndexByObject;
 
   public:
 
@@ -139,7 +137,7 @@ namespace nsol
        * Iterator type:
        *  - multi index by timestamp iterator
        *  - multi index by label iterator
-       *  - multi index by nsobject iterator
+       *  - multi index by nsol object iterator
        */
       enum TMultiIndexIterator
       {
@@ -153,9 +151,6 @@ namespace nsol
        */
       iterator( void );
       iterator( const iterator& extIterator );
-      //iterator( MultiIndexByTimestamp::iterator itByTimestamp );
-      //iterator( MultiIndexByLabel::iterator itByLabel );
-      //iterator( MultiIndexByNsobject::iterator itByNsobject );
 
       ~iterator( void );
 
@@ -164,7 +159,7 @@ namespace nsol
        */
       MultiIndexByTimestamp::iterator getItByTimestamp() const;
       MultiIndexByLabel::iterator getItByLabel() const;
-      MultiIndexByNsobject::iterator getItByNsobject() const;
+      MultiIndexByObject::iterator getItByObject() const;
       TMultiIndexIterator getUsedIterator() const;
       
       /**
@@ -174,12 +169,11 @@ namespace nsol
       ( const MultiIndexByTimestamp::iterator& itByTimestamp );
       void setItByLabel
       ( const MultiIndexByLabel::iterator& itByLabel );
-      void setItByNsobject
-      ( const MultiIndexByNsobject::iterator& itByNsobject );
+      void setItByObject
+      ( const MultiIndexByObject::iterator& itByObject );
 
       /**
        * Operators.
-       * url: http://www.cplusplus.com/reference/iterator/iterator/.
        */
       iterator& operator++();
       void operator=( const iterator& extIterator );
@@ -193,7 +187,7 @@ namespace nsol
        */
       MultiIndexByTimestamp::iterator _itByTimestamp;
       MultiIndexByLabel::iterator _itByLabel;
-      MultiIndexByNsobject::iterator _itByNsobject;
+      MultiIndexByObject::iterator _itByObject;
       TMultiIndexIterator _usedIterator;
     };
 
@@ -219,11 +213,11 @@ namespace nsol
     void insert( Record& record );
 
     /**
-     * Erase a record by its timestamp, label and nsobject.
+     * Erase a record by its timestamp, label and nsol object.
      */
     void erase( float timestamp,
                 std::string label,
-                int nsobject );
+                ObjectPtr object );
 
     /**
      * Remove a specific record.
@@ -236,13 +230,23 @@ namespace nsol
     void clear( void );
 
     /**
+     * SimulationData iterator to first record.
+     */
+    iterator begin();
+
+    /**
+     * SimulationData iterator to last record.
+     */
+    iterator end();
+
+    /**
      * This method looks for a record filtered by:
      *  - timestamp
      *  - label
-     *  - nsobject
+     *  - nsol object
      */
     iterator
-    find( float timestamp, std::string label, int nsobject ) const;
+    find( float timestamp, std::string label, ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
@@ -255,18 +259,18 @@ namespace nsol
     /**
      * This method looks for records filtered by:
      *  - label
-     *  - nsobject
+     *  - nsol object
      */
     std::pair<iterator, iterator>
-    find( std::string label, int nsobject ) const;
+    find( std::string label, ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
      *  - timestamp
-     *  - nsobject
+     *  - nsol object
      */
     std::pair<iterator, iterator>
-    find( float timestamp, int nsobject ) const;
+    find( float timestamp, ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
@@ -284,10 +288,10 @@ namespace nsol
 
     /**
      * This method looks for records filtered by:
-     *  - nsobject
+     *  - nsol object
      */
     std::pair<iterator, iterator>
-    find( int nsobject ) const;
+    find( ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
@@ -312,7 +316,7 @@ namespace nsol
     /**
      * Get all nsol objects.
      */
-    //std::set<int> getNsobjects();
+    //std::set<ObjectPtr> getObjects();
 
     /**
      * Get all records.
@@ -328,7 +332,7 @@ namespace nsol
 
     MultiIndexByTimestamp _multiIndexByTimestamp;
     MultiIndexByLabel _multiIndexByLabel;
-    MultiIndexByNsobject _multiIndexByNsobject;
+    MultiIndexByObject _multiIndexByObject;
 
   };
 

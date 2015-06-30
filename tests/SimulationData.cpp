@@ -30,9 +30,14 @@ BOOST_AUTO_TEST_CASE( simulation_data_insert )
   SimulationData simData2;
   SimulationData simData3;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 3, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n1, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
 
   simData1.insert(r1);
   simData1.insert(r2);
@@ -55,7 +60,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_insert )
 
   SimulationData::iterator
   wantedRecord =
-    simData1.find(1.0f, "Plasticidad", 2);
+    simData1.find(1.0f, "Plasticity", n2);
 
   /* Looking for the value of an inserted record */
   BOOST_CHECK_EQUAL((*wantedRecord).value, 22);
@@ -66,7 +71,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_insert )
 
   SimulationData::iterator
     replacedRecord =
-      simData1.find(1.0f, "Plasticidad", 2);
+      simData1.find(1.0f, "Plasticity", n2);
 
   /* Looking for the replaced value of a specific record */
   BOOST_CHECK_EQUAL((*replacedRecord).value, 44);
@@ -78,21 +83,26 @@ BOOST_AUTO_TEST_CASE( simulation_data_erase )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 3, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n1, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
 
   simData.insert(r1);
   simData.insert(r2);
   simData.insert(r3);
 
   /* Trying to erase a record that does not exist */
-  simData.erase(2.0f, "Calcio", 5);
+  simData.erase(2.0f, "Voltage", n1);
 
   /* Checking size before erasing */
   BOOST_CHECK_EQUAL(simData.numberOfRecords(), 3);
 
-  simData.erase(2.0f, "Calcio", 1);
+  simData.erase(2.0f, "Calcium", n1);
 
   /* Checking size after erasing */
   BOOST_CHECK_EQUAL(simData.numberOfRecords(), 2);
@@ -102,9 +112,14 @@ BOOST_AUTO_TEST_CASE( simulation_data_clear )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 3, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n1, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
 
   simData.insert(r1);
   simData.insert(r2);
@@ -119,16 +134,53 @@ BOOST_AUTO_TEST_CASE( simulation_data_clear )
   BOOST_CHECK_EQUAL(simData.numberOfRecords(), 0);
 }
 
+BOOST_AUTO_TEST_CASE( simulation_data_begin_end )
+{
+  SimulationData simData;
+
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n1, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
+
+  simData.insert(r1);
+  simData.insert(r2);
+  simData.insert(r3);
+
+  int wantedValue = 11;
+  for( SimulationData::iterator
+       it = simData.begin();
+       it != simData.end();
+       ++it )
+  {
+    BOOST_CHECK_EQUAL((*it).value, wantedValue);
+    wantedValue += 11;
+  }
+}
+
 BOOST_AUTO_TEST_CASE( simulation_data_find )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
-  SimulationData::Record r4(2.0f, "Calcio", 3, 44);
-  SimulationData::Record r5(2.0f, "Voltaje", 5, 55);
-  SimulationData::Record r6(2.0f, "Plasticidad", 1, 66);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n3 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n4 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n4, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
+  SimulationData::Record r4(2.0f, "Calcium", n3, 44);
+  SimulationData::Record r5(2.0f, "Voltage", n4, 55);
+  SimulationData::Record r6(2.0f, "Plasticity", n1, 66);
 
   simData.insert(r1);
   simData.insert(r2);
@@ -142,7 +194,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
    */
   SimulationData::iterator
     wantedRecord1 =
-      simData.find(2.0f, "Calcio", 1);
+      simData.find(2.0f, "Calcium", n1);
   /* Checking by record value */
   BOOST_CHECK_EQUAL((*wantedRecord1).value, 33);
 
@@ -152,7 +204,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   std::pair<SimulationData::iterator,
             SimulationData::iterator>
     wantedRecord2 =
-      simData.find(2.0f, "Calcio");
+      simData.find(2.0f, "Calcium");
   /* Checking by record values */
   int wantedValue2 = 33;
   while ( wantedRecord2.first != wantedRecord2.second)
@@ -168,7 +220,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   std::pair<SimulationData::iterator,
             SimulationData::iterator>
     wantedRecord3 =
-      simData.find("Voltaje", 5);
+      simData.find("Voltage", n4);
   /* Checking by record values */
   int wantedValue3 = 11;
   while ( wantedRecord3.first != wantedRecord3.second)
@@ -184,7 +236,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   std::pair<SimulationData::iterator,
             SimulationData::iterator>
     wantedRecord4 =
-      simData.find(2.0f, 1);
+      simData.find(2.0f, n1);
   /* Checking by record values */
   int wantedValue4 = 33;
   while ( wantedRecord4.first != wantedRecord4.second)
@@ -218,7 +270,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   std::pair<SimulationData::iterator,
             SimulationData::iterator>
     wantedRecord6 =
-      simData.find("Voltaje");
+      simData.find("Voltage");
   /* Checking by record values */
   int wantedValue6 = 11;
   while ( wantedRecord6.first != wantedRecord6.second)
@@ -234,7 +286,7 @@ BOOST_AUTO_TEST_CASE( simulation_data_find )
   std::pair<SimulationData::iterator,
             SimulationData::iterator>
     wantedRecord7 =
-      simData.find(1);
+      simData.find(n1);
   /* Checking by record values */
   int wantedValue7 = 33;
   while ( wantedRecord7.first != wantedRecord7.second)
@@ -249,12 +301,21 @@ BOOST_AUTO_TEST_CASE( simulation_data_findByRange )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
-  SimulationData::Record r4(3.0f, "Calcio", 3, 44);
-  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
-  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n3 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n4 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n4, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
+  SimulationData::Record r4(3.0f, "Calcium", n3, 44);
+  SimulationData::Record r5(4.0f, "Voltage", n4, 55);
+  SimulationData::Record r6(5.0f, "Plasticity", n1, 66);
 
   simData.insert(r1);
   simData.insert(r2);
@@ -288,13 +349,22 @@ BOOST_AUTO_TEST_CASE( simulation_data_getTimestamps )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
-  SimulationData::Record r4(2.0f, "Calcio", 3, 44);
-  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
-  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
-  SimulationData::Record r7(5.0f, "Voltaje", 2, 77);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n3 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n4 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n4, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
+  SimulationData::Record r4(2.0f, "Calcium", n3, 44);
+  SimulationData::Record r5(4.0f, "Voltage", n4, 55);
+  SimulationData::Record r6(5.0f, "Plasticity", n1, 66);
+  SimulationData::Record r7(5.0f, "Voltage", n2, 77);
 
   simData.insert(r1);
   simData.insert(r2);
@@ -325,13 +395,22 @@ BOOST_AUTO_TEST_CASE( simulation_data_getLabels )
 {
   SimulationData simData;
 
-  SimulationData::Record r1(0.0f, "Voltaje", 5, 11);
-  SimulationData::Record r2(1.0f, "Plasticidad", 2, 22);
-  SimulationData::Record r3(2.0f, "Calcio", 1, 33);
-  SimulationData::Record r4(2.0f, "Calcio", 3, 44);
-  SimulationData::Record r5(4.0f, "Voltaje", 5, 55);
-  SimulationData::Record r6(5.0f, "Plasticidad", 1, 66);
-  SimulationData::Record r7(5.0f, "Voltaje", 2, 77);
+  NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n3 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  NeuronPtr n4 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
+  SimulationData::Record r1(0.0f, "Voltage", n4, 11);
+  SimulationData::Record r2(1.0f, "Plasticity", n2, 22);
+  SimulationData::Record r3(2.0f, "Calcium", n1, 33);
+  SimulationData::Record r4(2.0f, "Calcium", n3, 44);
+  SimulationData::Record r5(4.0f, "Voltage", n4, 55);
+  SimulationData::Record r6(5.0f, "Plasticity", n1, 66);
+  SimulationData::Record r7(5.0f, "Voltage", n2, 77);
 
   simData.insert(r1);
   simData.insert(r2);
@@ -346,9 +425,9 @@ BOOST_AUTO_TEST_CASE( simulation_data_getLabels )
 
   std::vector<std::string> wantedValues;
 
-  wantedValues.push_back("Calcio");
-  wantedValues.push_back("Plasticidad");
-  wantedValues.push_back("Voltaje");
+  wantedValues.push_back("Calcium");
+  wantedValues.push_back("Plasticity");
+  wantedValues.push_back("Voltage");
 
   int index = 0;
 
