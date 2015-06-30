@@ -46,6 +46,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Stats/SomaStats.h
   Synapse.h
   Writer/ScalarWriter.h
+  Reader/ScalarReader.h
   # templated classes at last
   Writer/SwcWriter.h
   Factory.h
