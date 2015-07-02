@@ -116,7 +116,61 @@ namespace nsol
     std::map<unsigned int, ColumnPtr> &
     readFromBlueConfig( const std::string inputFile,
                         const int bbpDataTypes,
-                        const bbp::Cell_Target& bbpTarget );
+                        const std::string& targetLabel );
+
+    void deleteAll( std::map<unsigned int, ColumnPtr>& columns )
+    {
+      std::set< NeuronMorphologyPtr > morphologies;
+
+      NSOL_FOREACH( col, columns )
+      {
+        NSOL_FOREACH( miniCol, col->second->miniColumns( ))
+        {
+          NSOL_FOREACH( neuron, ( *miniCol )->neurons( ))
+          {
+            morphologies.insert(( *neuron )->morphology( ));
+            delete *neuron;
+          }
+          delete *miniCol;
+        }
+        delete col->second;
+      }
+
+      std::set< NodePtr > nodes;
+
+      NSOL_FOREACH( morphology, morphologies )
+      {
+        NSOL_FOREACH( neurite, ( *morphology )->neurites( ))
+        {
+          Sections sections = ( *neurite )->sections( );
+          NSOL_FOREACH( section, sections )
+          {
+            SegmentPtr segment = ( *section )->firstSegment( );
+            while ( segment )
+            {
+              SegmentPtr tmpSegment = segment;
+              segment = segment->next( );
+              nodes.insert( tmpSegment->begin( ));
+              nodes.insert( tmpSegment->end( ));
+              delete tmpSegment;
+            }
+            delete *section;
+          }
+//          delete sections;
+          delete *neurite;
+        }
+        delete ( *morphology )->soma( );
+        delete *morphology;
+      }
+
+
+      NSOL_FOREACH( node, nodes )
+      {
+        delete *node;
+      }
+      return;
+    }
+
 
   private:
 
@@ -184,7 +238,7 @@ namespace nsol
     const std::string inputFile,
     const int bbpDataTypes =
       bbp::MICROCIRCUIT | bbp::AFFERENT_SYNAPSES | bbp::EFFERENT_SYNAPSES ,
-    const bbp::Cell_Target& bbpTarget = bbp::Cell_Target( ))
+    const std::string& targetLabel = std::string( "" ))
   {
 
     // A bbpsdk experiment is opened
@@ -203,10 +257,16 @@ namespace nsol
     std::map< unsigned int, MiniColumnPtr > miniColumnMap;
 
     // The microcircuit of the experiment loads the data
-    bbp::Microcircuit & mcp = experiment.microcircuit();
-    bbp::Cell_Target target;
+    const bbp::Cell_Target& target =
+      ( targetLabel == "" ) ? bbp::Cell_Target( ) :
+      experiment.cell_target( targetLabel );
 
-    mcp.load( bbpTarget, bbpDataTypes );
+    bbp::Microcircuit & mcp = experiment.microcircuit();
+    //bbp::Cell_Target target;
+
+//    mcp.load( bbpTarget, bbpDataTypes );
+    mcp.load( target, bbpDataTypes );
+
 // target,
 //              bbp::MICROCIRCUIT |
 //              bbp::AFFERENT_SYNAPSES |
@@ -472,6 +532,9 @@ namespace nsol
 
       } // morphology not previously loaded
     }
+
+    // close experiment and free its resources
+    experiment.close( );
 
     return columnMap;
 

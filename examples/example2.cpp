@@ -86,7 +86,7 @@ int main ( void )
   MiniColumns miniCols = c->miniColumns( );
 
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
-        mcIt != miniCols.end( ); mcIt++ )
+        mcIt != miniCols.end( ); ++mcIt )
   {
     for ( unsigned short l = 1 ; l < 7 ; l++ )
     {

@@ -5,3 +5,9 @@ doc/latex
 *Makefile*
 *.orig
 CMake/common
+.ciscript
+ci.*
+jambs*
+CMakeCache.txt
+CMakeFiles/*
+

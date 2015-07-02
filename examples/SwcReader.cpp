@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
   Neurites neurites = n->neurites();
 
-  for (Neurites::iterator it = neurites.begin(); it != neurites.end(); it++)
+  for (Neurites::iterator it = neurites.begin(); it != neurites.end(); ++it)
   {
 //    cout << "Neurite of type : "
 //         << (((*it)->neuriteType() == Neurite::AXON) ? "axon" : "");
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
   }
 
-  for (Neurites::iterator it = neurites.begin(); it != neurites.end(); it++)
+  for (Neurites::iterator it = neurites.begin(); it != neurites.end(); ++it)
   {
     NeuritePtr neurite = (*it);
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 //           << " children: ";
 
       for (Sections::iterator itSect = section->children().begin();
-          itSect != section->children().end(); itSect++)
+          itSect != section->children().end(); ++itSect)
       {
         SectionPtr child = (*itSect);
 //        cout << child << " ";
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     }
 
     // while (section) {
-    //   cout << "Section " << section << " parent " << section->parent() 
+    //   cout << "Section " << section << " parent " << section->parent()
     // 	   << " children: ";
     //   for (Sections::iterator itSect = section->children().begin();
     // 	   itSect != section->children().end(); itSect++) {
@@ -156,9 +156,9 @@ int main(int argc, char *argv[])
   // std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
   // std::cout << "Axon lenght:" << n->axonLength() << std::endl;
   // std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()- << std::endl;
-  // std::cout << "Mean radius first section:" 
-  //           << SectionStats::meanRadius( 
-  //             n->dendrites()->begin()[0]->firstSection() ) 
+  // std::cout << "Mean radius first section:"
+  //           << SectionStats::meanRadius(
+  //             n->dendrites()->begin()[0]->firstSection() )
   //           << std::endl;
 
 
