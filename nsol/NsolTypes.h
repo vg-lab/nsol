@@ -2,7 +2,7 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 #ifndef __NSOL_TYPES__
@@ -55,14 +55,14 @@ namespace nsol
 
 #endif
 
-  
+
   typedef ::vmml::vector<3, float> Vec3f;
   typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
   typedef ::vmml::vector<4, float> Vec4f;
 
   static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
 
-  
+
   class Axon;
   class Column;
   class Dendrite;
@@ -198,7 +198,16 @@ namespace nsol
   }
 
 
+  enum LoadFlags
+  {
+    MORPHOLOGY      =   0x00000001,
+    CIRCUIT         =   0x00000002,
+    SIMULATION_DATA =   0x00000004,
+  };
+
+
 } // namespace nsol
+
 
 
 #ifndef M_2PI
