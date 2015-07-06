@@ -14,8 +14,8 @@ int main( int argc, char *argv[] )
   if ( argc < 2 )
     std::cerr << "Error: blueconfig file parameter needed." << std::endl;
 
-  std::map<unsigned int, ColumnPtr> columns =
-    r.readExperiment(argv[1], 0);
+  Columns columns;
+  r.readFromBlueConfig( columns, argv[1] );
 
   if (!columns.empty())
   {

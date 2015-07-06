@@ -31,8 +31,8 @@ int main ( int argc, char ** argv )
   }
 
   nsol::BBPSDKReaderStats readerWithStats;
-  std::map<unsigned int, nsol::ColumnPtr> columnsWithStats =
-    readerWithStats.readExperiment( argv[1] );
+  nsol::Columns columnsWithStats;
+  readerWithStats.readFromBlueConfig( columnsWithStats, argv[1] );
 
   nsol::MiniColumnPtr miniColumnWithStats =
     columnsWithStats[0]->miniColumns( )[0];
@@ -41,8 +41,8 @@ int main ( int argc, char ** argv )
   // return 0;
 
   nsol::BBPSDKReaderCachedStats readerWithCachedStats;
-  std::map<unsigned int, nsol::ColumnPtr> columnsWithCachedStats =
-    readerWithCachedStats.readExperiment( argv[1] );
+  nsol:: Columns columnsWithCachedStats;
+  readerWithCachedStats.readFromBlueConfig( columnsWithCachedStats, argv[1] );
 
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];
