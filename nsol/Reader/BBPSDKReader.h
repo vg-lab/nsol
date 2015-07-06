@@ -23,6 +23,7 @@
 #include "../NsolTypes.h"
 #include "../Dendrite.h"
 #include "../NeuronMorphology.h"
+#include "../SimulationData.h"
 #include "SwcReader.h"
 
 #include <BBP/BBP.h>
@@ -753,7 +754,109 @@ namespace nsol
     return columnMap;
   }
 
+  /*
 
+   // BBPSDKReader for SimulationData.
+
+  template < BBPSDK_LOADER_TEMPLATE_CLASSES >
+  SimulationData&
+  BBPSDKReaderTemplated
+  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
+    const std::string inputFile,
+    const int loadFlags,
+    const std::string& targetLabel = std::string( "" ),
+    const std::string& reportCategory = std::string( "voltage" ),
+    const float lowerTimestamp,
+    const float upperTimestamp,
+    const float timestep)
+  {
+    // SimulationData object is initialized.
+    SimulationData simData;
+
+    // BBP Experiment is opened with a BlueConfig file.
+    bbp::Experiment experiment;
+    //std::cerr << inputFile << ": Opening experiment " << std::endl;
+    experiment.open(inputFile);
+    //std::cerr << inputFile << ": DONE " << std::endl;
+
+    if (!experiment.is_open()) {
+      //std::cerr << inputFile << ": Experiment could not be opened"
+      //<< std::endl;
+
+      //simData is returned empty.
+      return simData;
+    }
+
+    // Get the specification of a simulation recording of a compartment voltage
+    // (or another report category) variable report.
+    bbp::Reports_Specification::const_iterator reportSpecIterator =
+      experiment.reports().find( reportCategory );
+    if( reportSpecIterator == experiment.reports().end())
+    {
+      //std::cerr << "No \"voltage\" report found" << std::endl;
+
+      //simData is returned empty.
+      return simData;
+    }
+
+    // Get the specific target.
+    const bbp::Cell_Target& circuit_target =
+      ( targetLabel == "" ) ? bbp::Cell_Target( )
+                            : experiment.cell_target( targetLabel );
+
+    // Create a report reader that reads from the report file referenced
+    // in this report specification
+    bbp::CompartmentReportReader reader( *reportSpecIterator, circuit_target );
+
+    // The microcircuit of the experiment loads the data
+    bbp::Microcircuit& microcircuit = experiment.microcircuit();
+    microcircuit.load(circuit_target, loadFlags);
+
+    // For each timestamp and neuron a SimulationData::Record is created
+    // saving neuron voltage.
+    for (float ts = lowerTimestamp;
+               ts <= upperTimestamp;
+               ts += timestep)
+    {
+      // A specific frame is loaded in the microcircuit.
+      bbp::CompartmentReportFrame frame;
+
+      if( !reader.loadFrame( timestamp, frame ))
+      {
+        //std::cerr << "Could not load frame at " << timestamp << "ms"
+        //<< std::endl;
+
+        // If there is no info in that frame, this loop continues.
+        continue;
+      }
+
+      microcircuit.update(frame);
+
+      // For each neuron, voltage is saved in SimulationData object.
+      const bbp::Neurons &neuronsExpe =
+        microcircuit.neurons();
+
+      // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
+      //      it != neuronsExpe.end(); ++it)
+      NSOL_FOREACH( it, neuronsExpe )
+      {
+        // We have to build a nsol Neuron using a BBPSDK Neuron.
+        NeuronPtr nsolNeuron (*it);
+
+        SimulationData::Record record(ts,
+                                      reportCategory,
+                                      nsolNeuron,
+                                      it->voltage());
+
+        // SimulationData is filled.
+        simData.insert(record);
+      }
+    }
+
+    return simData;
+  }
+
+  */
 
 } // namespace nsol
 
