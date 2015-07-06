@@ -1,9 +1,9 @@
 /**
- * @file    NsolTypes.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+ *          Do not distribute without further notice.
  */
 #ifndef __NSOL_TYPES__
 #define __NSOL_TYPES__
@@ -16,46 +16,52 @@
 
 #include <iostream>
 
-#include <vmmlib/vector.hpp>
-#include <vmmlib/matrix.hpp>
+#include <vmmlib/vmmlib.hpp>
 
 #include <nsol/defines.h>
 
-/* #include <boost/geometry/geometries/point.hpp> */
+// This pragma should be removed. Added to macosx clang building
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+
+// Visual Studio Warning disable.
+#pragma warning( disable : 4250 )
 
 namespace nsol
 {
 
 #if __GNUC__ == 4
 #if  __GNUC_MINOR__ > 6
-  //! Vector container template alias (gcc 4.7 min required)
+  //! NsolVector container template alias (gcc 4.7 min required)
   template<typename T>
-  using Vector = std::vector<T>;
+  using NsolVector = std::vector<T>;
 
-  //! List container template alias (gcc 4.7 min required)
+  //! NsolList container template alias (gcc 4.7 min required)
   template<typename T>
-  using List = std::list<T>;
+  using NsolList = std::list<T>;
 #else
-  //! Vector container redefinition for gcc 4.6 and previous
-#define Vector std::vector
-  //! List container redefinition for gcc 4.6 and previous
-#define List std::list
+  //! NsolVector container redefinition for gcc 4.6 and previous
+#define NsolVector std::vector
+  //! NsolList container redefinition for gcc 4.6 and previous
+#define NsolList std::list
 
 #endif
 #endif
 
 #ifdef _WINDOWS
-	
-#define Vector std::vector  
-//#define List std::list
 
-#endif  
+#define NsolVector std::vector
+#define NsolList std::list
 
+#endif
 
-  typedef vmml::vector<3, float> Vec3f;
-  typedef vmml::matrix<4, 4, float> Matrix4_4f;
-  typedef vmml::vector<4, float> Vec4f;
+  
+  typedef ::vmml::vector<3, float> Vec3f;
+  typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
+  typedef ::vmml::vector<4, float> Vec4f;
 
+  static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
+
+  
   class Axon;
   class Column;
   class Dendrite;
@@ -64,8 +70,11 @@ namespace nsol
   class Neuron;
   class NeuronMorphology;
   class Node;
+  class NodeCached;
   class Section;
   class Segment;
+  class Soma;
+  class SegmentCachedStats;
   class Synapse;
   class SynapseNeuriteToNeurite;
   class SynapseNeuriteToSoma;
@@ -84,11 +93,20 @@ namespace nsol
   typedef std::shared_ptr<Node> NodePtr;
   typedef std::shared_ptr<Section> SectionPtr;
   typedef std::shared_ptr<Segment> SegmentPtr;
+  typedef std::shared_ptr< Soma > SomaPtr;
   typedef std::shared_ptr<Synapse> SynapsePtr;
   typedef std::shared_ptr<SynapseNeuriteToNeurite> SynapseNeuriteToNeuritePtr;
   typedef std::shared_ptr<SynapseNeuriteToSoma> SynapseNeuriteToSomaPtr;
   typedef std::shared_ptr<SynapseSomaToSoma> SynapseSomaToSomaPtr;
   typedef std::shared_ptr<Circuit> CircuitPtr;
+  typedef std::shared_ptr< NodeCached > NodeCachedPtr;
+  typedef std::shared_ptr< SegmentCachedStats > SegmentCachedStatsPtr;
+
+
+#define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE __ )   \
+  std::enable_shared_from_this< __TYPE __>
+
+#define NSOL_THIS_POINTER shared_from_this( )
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   std::dynamic_pointer_cast< __TYPE__ >( __SOURCE__ )
@@ -97,8 +115,8 @@ namespace nsol
   ( void ) __PTR_TO_NSOL_OBJ__
 
 
-  
 #else
+
   typedef Axon * AxonPtr;
   typedef Column * ColumnPtr;
   typedef Dendrite * DendritePtr;
@@ -114,6 +132,18 @@ namespace nsol
   typedef SynapseNeuriteToSoma * SynapseNeuriteToSomaPtr;
   typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
   typedef Circuit * CircuitPtr;
+  typedef Soma * SomaPtr;
+
+
+  typedef NodeCached * NodeCachedPtr;
+  typedef SegmentCachedStats * SegmentCachedStatsPtr;
+
+
+//  typedef CachedSection * CachedSectionPtr;
+
+#define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE__ )
+
+#define NSOL_THIS_POINTER this
 
 #define NSOL_DYNAMIC_CAST(__TYPE__, __SOURCE__)\
   dynamic_cast< __TYPE__ * >( __SOURCE__ )
@@ -121,13 +151,63 @@ namespace nsol
 #define NSOL_DELETE_PTR( __PTR_TO_NSOL_OBJ__ ) \
   {                                            \
   delete __PTR_TO_NSOL_OBJ__;		       \
-  __PTR_TO_NSOL_OBJ__ = nullptr;               \
   }
 
 
-#endif
+#endif // NSOL_WITH_SHARED_PTR
 
-}
+
+#define NSOL_CONST_FOREACH( __ITERATOR__, __CONTAINER__ )         \
+  for ( auto __ITERATOR__ = (__CONTAINER__).cbegin( );            \
+        __ITERATOR__ != (__CONTAINER__).cend( );                  \
+        __ITERATOR__++ )
+
+#define NSOL_FOREACH( __ITERATOR__, __CONTAINER__ )               \
+  for ( auto __ITERATOR__ = (__CONTAINER__).begin( );             \
+        __ITERATOR__ != (__CONTAINER__).end( );                   \
+        __ITERATOR__++ )
+
+#define NSOL_CONST_REVERSE_FOREACH( __ITERATOR__, __CONTAINER__ ) \
+  for ( auto __ITERATOR__ = (__CONTAINER__).crbegin( );           \
+        __ITERATOR__ != (__CONTAINER__).crend( );                 \
+        __ITERATOR__++ )
+
+#define NSOL_REVERSE_FOREACH( __ITERATOR__, __CONTAINER__ )       \
+  for ( auto __ITERATOR__ = (__CONTAINER__).rbegin( );            \
+        __ITERATOR__ != (__CONTAINER__).rend( );                  \
+        __ITERATOR__++ )
+
+
+  typedef enum
+  {
+    TOTAL = 0,
+    MEAN,
+    VARIANCE,
+    STD_DEV,
+    MIN,
+    MAX
+  } TAggregation;
+
+  static inline bool validAggregation( TAggregation agg )
+  {
+    switch( agg )
+    {
+    case /*TAggregation::*/TOTAL:
+    case /*TAggregation::*/MEAN:
+    case /*TAggregation::*/VARIANCE:
+    case /*TAggregation::*/STD_DEV:
+    case /*TAggregation::*/MIN:
+    case /*TAggregation::*/MAX:
+      return true;
+      break;
+    default:
+      break;
+    };
+    return false;
+  }
+
+
+} // namespace nsol
 
 
 #ifndef M_2PI

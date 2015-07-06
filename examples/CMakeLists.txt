@@ -1,5 +1,3 @@
-
-
 #include_directories(${CMAKE_BINARY_DIR})
 
 
@@ -11,8 +9,7 @@ if (BBPSDK_FOUND)
 
   add_executable(BBPSDKLoader BBPSDKLoader.cpp)
   target_link_libraries(BBPSDKLoader ${NSOL_LINK_LIBRARIES} nsol)
-#    ${BBPSDK_LIBRARIES} ${Boost_LIBRARIES})
-#  add_definitions(-DWITH_BBPSDK)
+ add_definitions(-DWITH_BBPSDK)
 
 endif()
 
@@ -20,6 +17,22 @@ add_executable(example1 example1.cpp)
 target_link_libraries(example1 ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(example2 example2.cpp)
-target_link_libraries(example2 ${NSOL_LINK_LIBRARIES} nsol) 
+target_link_libraries(example2 ${NSOL_LINK_LIBRARIES} nsol)
 
+add_executable(sectionStats sectionStats.cpp)
+target_link_libraries(sectionStats ${NSOL_LINK_LIBRARIES} nsol)
 
+add_executable(neuriteStats neuriteStats.cpp)
+target_link_libraries(neuriteStats ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(neuronStats neuronStats.cpp)
+target_link_libraries(neuronStats ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(miniColumnStats miniColumnStats.cpp)
+target_link_libraries(miniColumnStats ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(factory factory.cpp)
+target_link_libraries(factory ${NSOL_LINK_LIBRARIES} nsol)
+
+add_executable(dataset dataset.cpp)
+target_link_libraries(dataset ${NSOL_LINK_LIBRARIES} nsol)

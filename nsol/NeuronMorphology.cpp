@@ -3,269 +3,237 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
 
-#include "NeuronMorphology.h" 
+#include "NeuronMorphology.h"
 
 namespace nsol
 {
 
-  /*NeuronMorphology::NeuronMorphology( void )
-  {
-  }*/
-
   NeuronMorphology::NeuronMorphology(
-		   const NeuronMorphology::TNeuronType initType )
-    :_type( initType )
+    SomaPtr soma_,
+    const NeuronMorphology::TNeuronType type_ )
+    : _soma( soma_ )
+    , _type( type_ )
   {
   }
 
   NeuronMorphology::~NeuronMorphology( void )
   {
-    // for (Neurites::iterator it = _neurites.begin( );
-    // 	 it != _neurites.end( ); ++it)
-    //   delete *it;
-    
-//    _neurites.clear( );
   }
 
-  NeuritePtr 
-  NeuronMorphology::addNeurite( Neurite::TNeuriteType neuriteType )
+  NeuritePtr
+  NeuronMorphology::addNeurite( NeuritePtr neurite_ )
   {
-    if ( neuriteType == Neurite::DENDRITE )
-      _neurites.push_back( DendritePtr( new Dendrite( )));
-    else if ( neuriteType == Neurite::AXON )
-      _neurites.push_back( AxonPtr( new Axon( )));
-    else
-      return nullptr;
-    
-    return _neurites.back( );
+    NSOL_DEBUG_CHECK( neurite_, "neurite is null" );
+    _neurites.push_back( neurite_ );
+    return neurite_;
+
   }
 
+  // unsigned int NeuronMorphology::numNeurites( void ) const
+  // {
+  //   return ( unsigned int ) _neurites.size( );
+  // }
 
-  DendritePtr 
-  NeuronMorphology::addDendrite( Dendrite::TDendriteType dendriteType )
-  {
-	if ( dendriteType == Dendrite::APICAL )
-	        _type = PYRAMIDAL;
+  // unsigned int NeuronMorphology::numDendrites( void ) const
+  // {
+  //   unsigned int nd = 0;
 
-    DendritePtr dend( new Dendrite( dendriteType ));
-    _neurites.push_back( dend );
-    return dend;
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if ( NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nd++;
 
-  AxonPtr NeuronMorphology::addAxon( void )
-  {
-    AxonPtr axon( new Axon( ));
-    _neurites.push_back( axon );
-    return axon;
-  }
+  //   return nd;
+  // }
 
-  
-  unsigned int NeuronMorphology::numNeurites( void ) const
-  {
-    return ( unsigned int ) _neurites.size( );
-  }
+  // unsigned int NeuronMorphology::numNeuriteBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-  unsigned int NeuronMorphology::numDendrites( void ) const
-  {
-    unsigned int nd = 0;
-    
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if ( NSOL_DYNAMIC_CAST( Dendrite, *it )) 
-	nd++;
-    
-    return nd;
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     nb += (*it)->numBranches( );
 
-  unsigned int NeuronMorphology::numNeuriteBranches( void ) const
-  {
-    unsigned int nb = 0;
-    
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      nb += (*it)->numBranches( );
-    
-    return nb;
-  }
-  
-  unsigned int NeuronMorphology::numDendriteBranches( void ) const
-  {
-    unsigned int nb = 0;
-    
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	nb += (*it)->numBranches( );
-    
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numAxonBranches( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numDendriteBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
-	nb += (*it)->numBranches( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nb += (*it)->numBranches( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numNeuriteBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numAxonBranches( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if  (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       nb += (*it)->numBranches( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numDendriteBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numNeuriteBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     nb += (*it)->numBifurcations( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  unsigned int NeuronMorphology::numAxonBifurcations( void ) const
-  {
-    unsigned int nb = 0;
+  // unsigned int NeuronMorphology::numDendriteBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if  (NSOL_DYNAMIC_CAST( Axon, *it ))
-	nb += (*it)->numBifurcations( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       nb += (*it)->numBifurcations( );
 
-    return nb;
-  }
+  //   return nb;
+  // }
 
-  float NeuronMorphology::volume( void ) const
-  {
-    return this->neuritesVolume( ) + _soma.volume( );
-  }
+  // unsigned int NeuronMorphology::numAxonBifurcations( void ) const
+  // {
+  //   unsigned int nb = 0;
 
-  float NeuronMorphology::neuritesVolume( void ) const
-  {
-    return this->dendritesVolume( ) + this->axonVolume( );
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if  (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       nb += (*it)->numBifurcations( );
 
-  float NeuronMorphology::dendritesVolume( void ) const
-  {
-    float tmpVolume = 0.0f;
+  //   return nb;
+  // }
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-    {
-      if ( NSOL_DYNAMIC_CAST( Dendrite, *it ) ) // std::dynamic_pointer_cast< Dendrite >( ( *it ))) // (*it)->asDendrite( ))
-	tmpVolume += (*it)->volume( );
-    }
-    return tmpVolume;
-  }
+  // float NeuronMorphology::volume( void ) const
+  // {
+  //   return this->neuritesVolume( ) + _soma.volume( );
+  // }
 
-  float NeuronMorphology::axonVolume( void ) const
-  {
-    float tmpVolume = 0.0f;
+  // float NeuronMorphology::neuritesVolume( void ) const
+  // {
+  //   return this->dendritesVolume( ) + this->axonVolume( );
+  // }
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	tmpVolume += (*it)->volume( );
+  // float NeuronMorphology::dendritesVolume( void ) const
+  // {
+  //   float tmpVolume = 0.0f;
 
-    return tmpVolume;
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //   {
+  //     if ( NSOL_DYNAMIC_CAST( Dendrite, *it ) )
+  //       tmpVolume += (*it)->volume( );
+  //   }
+  //   return tmpVolume;
+  // }
 
-  float NeuronMorphology::surface( void ) const
-  {
-    return this->neuritesSurface( ) + _soma.surface( );
-  }
+  // float NeuronMorphology::axonVolume( void ) const
+  // {
+  //   float tmpVolume = 0.0f;
 
-  float NeuronMorphology::neuritesSurface( void ) const
-  {
-    return this->dendritesSurface( ) + this->axonSurface( );
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       tmpVolume += (*it)->volume( );
 
-  float NeuronMorphology::dendritesSurface( void ) const
-  {
-    float tmpSurface = 0.0f;
+  //   return tmpVolume;
+  // }
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	tmpSurface += (*it)->surface( );
+  // float NeuronMorphology::surface( void ) const
+  // {
+  //   return this->neuritesSurface( ) + _soma.surface( );
+  // }
 
-    return tmpSurface;
-  }
+  // float NeuronMorphology::neuritesSurface( void ) const
+  // {
+  //   return this->dendritesSurface( ) + this->axonSurface( );
+  // }
 
-  float NeuronMorphology::axonSurface( void ) const
-  {
-    float tmpSurface = 0.0f;
+  // float NeuronMorphology::dendritesSurface( void ) const
+  // {
+  //   float tmpSurface = 0.0f;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	tmpSurface += (*it)->surface( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       tmpSurface += (*it)->surface( );
 
-    return tmpSurface;
-  }
+  //   return tmpSurface;
+  // }
 
-  float NeuronMorphology::length( void ) const
-  {
-    return this->neuritesLength( );
-  }
+  // float NeuronMorphology::axonSurface( void ) const
+  // {
+  //   float tmpSurface = 0.0f;
 
-  float NeuronMorphology::neuritesLength( void ) const
-  {
-    return this->dendritesLength( ) + this->axonLength( );
-  }
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       tmpSurface += (*it)->surface( );
 
-  float NeuronMorphology::dendritesLength( void ) const
-  {
-    float tmpLength = 0;
+  //   return tmpSurface;
+  // }
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
-	tmpLength += (*it)->length( );
+  // float NeuronMorphology::length( void ) const
+  // {
+  //   return this->neuritesLength( );
+  // }
 
-    return tmpLength;
-  }
+  // float NeuronMorphology::neuritesLength( void ) const
+  // {
+  //   return this->dendritesLength( ) + this->axonLength( );
+  // }
 
-  float NeuronMorphology::axonLength( void ) const
-  {
-    float tmpLength = 0.0f;
+  // float NeuronMorphology::dendritesLength( void ) const
+  // {
+  //   float tmpLength = 0;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
-      if (NSOL_DYNAMIC_CAST( Axon, *it ))
-	tmpLength += (*it)->length( );
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+  //       tmpLength += (*it)->length( );
 
-    return tmpLength;
-  }
+  //   return tmpLength;
+  // }
+
+  // float NeuronMorphology::axonLength( void ) const
+  // {
+  //   float tmpLength = 0.0f;
+
+  //   for (Neurites::const_iterator it = _neurites.begin( );
+  //        it != _neurites.end( ); ++it)
+  //     if (NSOL_DYNAMIC_CAST( Axon, *it ))
+  //       tmpLength += (*it)->length( );
+
+  //   return tmpLength;
+  // }
 
   Dendrites * NeuronMorphology::dendrites( void ) const
   {
     Dendrites * tmpDendrites = new Dendrites;
 
-    for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+    NSOL_CONST_FOREACH( it, _neurites )
     {
 
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
 
       if ( dend )
-	tmpDendrites->push_back( dend );
+        tmpDendrites->push_back( dend );
     }
     return tmpDendrites;
   }
@@ -276,12 +244,12 @@ namespace nsol
     Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
-      if ( dend && 
-	   ( dend->dendriteType( ) == Dendrite::BASAL ))
-	tmpDendrites->push_back( dend );
+      if ( dend &&
+           ( dend->dendriteType( ) == Dendrite::BASAL ))
+        tmpDendrites->push_back( dend );
     }
 
     return tmpDendrites;
@@ -292,12 +260,12 @@ namespace nsol
     Dendrites * tmpDendrites = new Dendrites;
 
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST ( Dendrite, *it );
-      if ( dend && 
-	   ( dend->dendriteType( ) == Dendrite::APICAL ))
-	tmpDendrites->push_back( dend );
+      if ( dend &&
+           ( dend->dendriteType( ) == Dendrite::APICAL ))
+        tmpDendrites->push_back( dend );
     }
 
     return tmpDendrites;
@@ -306,11 +274,11 @@ namespace nsol
   DendritePtr NeuronMorphology::apicalDendrite( void ) const
   {
     for (Neurites::const_iterator it = _neurites.begin( );
-	 it != _neurites.end( ); ++it)
+         it != _neurites.end( ); ++it)
     {
       DendritePtr dend = NSOL_DYNAMIC_CAST( Dendrite, *it );
-      if ( dend && 
-	   ( dend->dendriteType( ) == Dendrite::APICAL ))
+      if ( dend &&
+           ( dend->dendriteType( ) == Dendrite::APICAL ))
         return dend;
     }
 
@@ -322,21 +290,43 @@ namespace nsol
     return _neurites;
   }
 
-  Soma & NeuronMorphology::soma( void )
+  const Neurites & NeuronMorphology::neurites( void ) const
+  {
+    return _neurites;
+  }
+
+  Neurons & NeuronMorphology::parentNeurons( void )
+  {
+    return _parentNeurons;
+  }
+
+  const Neurons & NeuronMorphology::parentNeurons( void ) const
+  {
+    return _parentNeurons;
+  }
+
+  void NeuronMorphology::addParentNeuron( NeuronPtr neuron )
+  {
+    Neurons::iterator neuronIt =
+      std::find ( _parentNeurons.begin( ),
+                  _parentNeurons.end( ),
+                  neuron );
+
+    if ( neuronIt != _parentNeurons.end( ))
+      _parentNeurons.push_back( neuron );
+
+
+  }
+
+  SomaPtr NeuronMorphology::soma( void )
   {
     return _soma;
   }
 
   NeuronMorphology::TNeuronType & NeuronMorphology::neuronType( void )
-    {
-      // if (this->apicalDendrites()->size() == 0)
-      //   assert( PYRAMIDAL == _type);
-      // else
-      //   assert( INTER == _type);
-
-      return _type;
-
-    };
+  {
+    return _type;
+  };
 
 
 } // namespace nsol

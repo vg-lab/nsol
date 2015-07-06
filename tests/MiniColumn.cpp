@@ -2,8 +2,8 @@
  * @file    MiniColumn.cpp
  * @brief   Test for class nsol::MiniColumn
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date    
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. 
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
             Do not distribute without further notice.
  */
 
@@ -16,47 +16,36 @@
 
 
 
-void CheckNullMorphologicalValues( nsol::MiniColumnPtr mc )
-{
-
-
-  BOOST_CHECK_EQUAL( mc->meanSomaVolume( ), 0 );
-  BOOST_CHECK_EQUAL( mc->meanSomaSurface( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->meanDendriteVolume( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->meanDendriteSurface( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->maxSomaVolume( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->maxSomaSurface( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->maxDendriteVolume( ), 0.0f );
-  BOOST_CHECK_EQUAL( mc->maxDendriteSurface( ), 0.0f );
-
-
-}
 
 void CheckNoNeurons( nsol::MiniColumnPtr mc )
 {
 
   BOOST_CHECK_EQUAL( mc->numberOfNeurons(), 0 );
   BOOST_CHECK_EQUAL( mc->numberOfNeurons( false ), 0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true, nsol::NeuronMorphology::PYRAMIDAL ),
-		     0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ),
-		     0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true, nsol::NeuronMorphology::INTER_NEURON ),
-		     0 );
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON ),
-		     0 );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true,
+                                          nsol::NeuronMorphology::PYRAMIDAL ),
+                     0 );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false,
+                                          nsol::NeuronMorphology::PYRAMIDAL ),
+                     0 );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( true,
+                                          nsol::NeuronMorphology::INTERNEURON ),
+                     0 );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false,
+                                          nsol::NeuronMorphology::INTERNEURON ),
+                     0 );
 }
 
 
 
 
-BOOST_AUTO_TEST_CASE( emptyMiniColumn ) 
+BOOST_AUTO_TEST_CASE( emptyMiniColumn )
 {
 
   // Create minicolumn
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
 
-  // Check id equal to 0 
+  // Check id equal to 0
   #define MINICOL_ID 115
 
 
@@ -66,9 +55,8 @@ BOOST_AUTO_TEST_CASE( emptyMiniColumn )
 
   BOOST_CHECK_EQUAL( mc->id( ), MINICOL_ID );
 
-  // Check morphological values are computed 
+  // Check morphological values are computed
   // to 0 without errors
-  CheckNullMorphologicalValues( mc );
   CheckNoNeurons( mc );
 
   // Free dynamic memory
@@ -77,13 +65,14 @@ BOOST_AUTO_TEST_CASE( emptyMiniColumn )
 }
 
 
-BOOST_AUTO_TEST_CASE( addNeuron) 
+BOOST_AUTO_TEST_CASE( addNeuron)
 {
   // Create a minicolumn
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
 
   // Create a neuron
-  nsol::NeuronPtr n ( new nsol::Neuron ( ));
+  nsol::NeuronPtr n (
+    new nsol::Neuron ( new nsol::NeuronMorphology ( new nsol::Soma )));
 
   // Add the neuron to the minicol
   mc->addNeuron( n );
@@ -94,33 +83,29 @@ BOOST_AUTO_TEST_CASE( addNeuron)
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 1);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
 
-  // Check morphological values are still computed 
-  // to 0 without errors
-  CheckNullMorphologicalValues( mc );
-
   // Free dynamic memory
   NSOL_DELETE_PTR( mc )
 
 }
 
 
-BOOST_AUTO_TEST_CASE( removeNeuron) 
+BOOST_AUTO_TEST_CASE( removeNeuron)
 {
-  
+
   // Create a minicolumn
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
 
   // Create two neurons
-  nsol::NeuronPtr n1 ( new nsol::Neuron );
-  nsol::NeuronPtr n2 ( new nsol::Neuron );
-  
+  nsol::NeuronPtr n1 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+  nsol::NeuronPtr n2 (
+    new nsol::Neuron ( new nsol::NeuronMorphology( new nsol::Soma )));
+
   // Add one of them to the column
   mc->addNeuron( n1 );
 
-  // Try to remove the one not added 
-
-
-       	 //BOOST_CHECK_EQUAL( mc->removeNeuron( n2 ), false );
+  // Try to remove the one not added
+  BOOST_CHECK_EQUAL( mc->removeNeuron( n2 ), false );
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 1);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
 
@@ -131,9 +116,8 @@ BOOST_AUTO_TEST_CASE( removeNeuron)
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 0);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
 
-  // Check morphological values are still computed 
+  // Check morphological values are still computed
   // to 0 without errors
-  CheckNullMorphologicalValues( mc );
   CheckNoNeurons( mc );
 
   // Free dynamic memory
@@ -149,13 +133,15 @@ BOOST_AUTO_TEST_CASE( clearNeurons )
 {
   // Create a minicolumn
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
-  
+
   #define NUM_NEURONS 100
 
   // Create and add some neurons
-  for ( int i = 0; i < NUM_NEURONS; i++ ) 
-    mc->addNeuron( nsol::NeuronPtr( new nsol::Neuron ));
-  
+  for ( int i = 0; i < NUM_NEURONS; i++ )
+    mc->addNeuron(
+      nsol::NeuronPtr(
+        new nsol::Neuron( new nsol::NeuronMorphology( new nsol::Soma ))));
+
   // Clear neurons
   mc->clearNeurons( );
 
@@ -163,14 +149,13 @@ BOOST_AUTO_TEST_CASE( clearNeurons )
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), 0);
   BOOST_CHECK_EQUAL( mc->neurons( ).size( ), mc->numberOfNeurons( ));
 
-  // Check morphological values are still computed 
+  // Check morphological values are still computed
   // to 0 without errors
-  CheckNullMorphologicalValues( mc );
   CheckNoNeurons( mc );
 
   // Free dymanic memory used
-  for ( auto neuronIt = mc->neurons( ).begin( ); 
-	neuronIt != mc->neurons( ).end( ); neuronIt++ ) 
+  for ( auto neuronIt = mc->neurons( ).begin( );
+        neuronIt != mc->neurons( ).end( ); neuronIt++ )
     NSOL_DELETE_PTR( ( * neuronIt ));
 
   NSOL_DELETE_PTR( mc )
@@ -215,7 +200,9 @@ BOOST_AUTO_TEST_CASE( operators )
 
   for ( int i = 0 ; i < NUM_NEURONS ; i++ )
   {
-    mc->addNeuron( nsol::NeuronPtr( new nsol::Neuron ));
+    mc->addNeuron(
+      nsol::NeuronPtr( new nsol::Neuron(
+                         new nsol::NeuronMorphology( new nsol::Soma ))));
   }
 
   BOOST_CHECK_EQUAL( *mc == *mc2, false );
@@ -227,7 +214,7 @@ BOOST_AUTO_TEST_CASE( operators )
   BOOST_CHECK_EQUAL( *mc == *mc2, true );
   BOOST_CHECK_EQUAL( *mc != *mc2, false );
 
-  
+
   // Test copy constructor
   nsol::MiniColumn mc4( mc3 );
 
@@ -240,8 +227,8 @@ BOOST_AUTO_TEST_CASE( operators )
   BOOST_CHECK_EQUAL( *mc != mc5, false );
 
   // Free dymanic memory used
-  for ( auto neuronIt = mc->neurons( ).begin( ); 
-	neuronIt != mc->neurons( ).end( ); neuronIt++ ) 
+  for ( auto neuronIt = mc->neurons( ).begin( );
+	neuronIt != mc->neurons( ).end( ); neuronIt++ )
     NSOL_DELETE_PTR( ( * neuronIt ));
 
   NSOL_DELETE_PTR( mc )
@@ -261,56 +248,62 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
 
   // Create a minicolumn
   nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
-  
+
   unsigned int gid = 0;
-  
+
+
   for ( int l = 1 ; l < 7 ; l++ )
   {
     for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
     {
-      mc->addNeuron( 
-	nsol::NeuronPtr( 
-	  new nsol::Neuron( true, l, gid++, 
-			    nsol::Matrix4_4f::IDENTITY, 
-			    mc, nsol::NeuronMorphology::PYRAMIDAL )));
+      mc->addNeuron(
+        nsol::NeuronPtr(
+          new nsol::Neuron(
+            new nsol::NeuronMorphology( new nsol::Soma,
+                                        nsol::NeuronMorphology::PYRAMIDAL ),
+            l, gid++,
+            nsol::Matrix4_4f::IDENTITY,
+            mc )));
     }
     for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
     {
-      mc->addNeuron( 
-	nsol::NeuronPtr( 
-	  new nsol::Neuron( true, l, gid++, 
-			    nsol::Matrix4_4f::IDENTITY, 
-			    mc, nsol::NeuronMorphology::INTER_NEURON )));
+      mc->addNeuron(
+        nsol::NeuronPtr(
+          new nsol::Neuron(
+            new nsol::NeuronMorphology( new nsol::Soma,
+                                        nsol::NeuronMorphology::INTERNEURON),
+            l, gid++,
+            nsol::Matrix4_4f::IDENTITY,
+            mc )));
     }
   }
 
-
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( ), gid );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( ), 
-	     6 * ( NUM_NEURONS_PYR_PER_LAYER + 
-		   NUM_NEURONS_INT_PER_LAYER ) );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL ),
-	     6 * NUM_NEURONS_PYR_PER_LAYER );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON ),
-	     6 * NUM_NEURONS_INT_PER_LAYER );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::PYRAMIDAL, 2 ),
-	     NUM_NEURONS_PYR_PER_LAYER );//
-  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false, nsol::NeuronMorphology::INTER_NEURON , 2 ),
-  	     NUM_NEURONS_INT_PER_LAYER );
-  
-  // Check morphological values are still computed 
-  // to 0 without errors
-  CheckNullMorphologicalValues( mc );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( ), gid );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( ),
+                     6 * ( NUM_NEURONS_PYR_PER_LAYER +
+                           NUM_NEURONS_INT_PER_LAYER ) );
+  BOOST_CHECK_EQUAL( mc->numberOfNeurons( false,
+                                          nsol::NeuronMorphology::PYRAMIDAL ),
+                     6 * NUM_NEURONS_PYR_PER_LAYER );
+  BOOST_CHECK_EQUAL(
+    mc->numberOfNeurons( false,
+                         nsol::NeuronMorphology::INTERNEURON ),
+    6 * NUM_NEURONS_INT_PER_LAYER );
+  BOOST_CHECK_EQUAL(
+    mc->numberOfNeurons( false,
+                         nsol::NeuronMorphology::PYRAMIDAL, 2 ),
+    NUM_NEURONS_PYR_PER_LAYER );
+  BOOST_CHECK_EQUAL(
+    mc->numberOfNeurons( false,
+                         nsol::NeuronMorphology::INTERNEURON, 2 ),
+    NUM_NEURONS_INT_PER_LAYER );
 
   // Free dymanic memory used
-  for ( auto neuronIt = mc->neurons( ).begin( ); 
-	neuronIt != mc->neurons( ).end( ); neuronIt++ ) 
+  for ( auto neuronIt = mc->neurons( ).begin( );
+        neuronIt != mc->neurons( ).end( ); neuronIt++ )
     NSOL_DELETE_PTR( ( * neuronIt ));
 
   NSOL_DELETE_PTR( mc )
 
-  
+
 }
-
-
-

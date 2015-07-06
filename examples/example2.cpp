@@ -7,43 +7,19 @@
 using namespace nsol;
 using namespace std;
 
-int main ( void ) 
+int main ( void )
 {
 
   ColumnPtr c ( new Column );
   c->id( ) = 0;
 
   std::cout << "Testing empty column" << std::endl;
-
-  //<<<<<
-  std::cout << " " << std::endl;
-  std::cout << "Volume of Soma: "<<  c->meanSomaVolume( ) << " == 0"<< std::endl;//
-  std::cout << "Surface of Soma: "<<  c->meanSomaSurface( ) << " == 0.0f"<<std::endl;//
-  std::cout << "Volume of Dendrita: "<<  c->meanDendriteVolume( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Surface of Dendrita: "<<  c->meanDendriteSurface( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Max. Volume of Soma: "<<  c->maxSomaVolume( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Max. surface of Soma: "<<  c->maxSomaSurface( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Max. Volume of Dendrita: "<<  c->maxDendriteVolume( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Max. Surface of Dendrita: "<<  c->maxDendriteSurface( ) << " == 0.0f"<< std::endl;//
-  std::cout << "Number of neurons: "<<  c->numberOfNeurons() << " == 0"<< std::endl;//
-  std::cout << " " << std::endl;
-
-  //>>>>>
-
-  assert( c->meanSomaVolume( ) == 0 );
-  assert( c->meanSomaSurface( ) == 0.0f );
-  assert( c->meanDendriteVolume( ) == 0.0f );
-  assert( c->meanDendriteSurface( ) == 0.0f );
-  assert( c->maxSomaVolume( ) == 0.0f );
-  assert( c->maxSomaSurface( ) == 0.0f );
-  assert( c->maxDendriteVolume( ) == 0.0f );
-  assert( c->maxDendriteSurface( ) == 0.0f );
   assert( c->numberOfNeurons() == 0 );
   assert( c->numberOfNeurons( false ) == 0 );
   assert( c->numberOfNeurons( true, NeuronMorphology::PYRAMIDAL ) == 0 );
   assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, NeuronMorphology::INTER_NEURON ) == 0 );
-  assert( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::INTERNEURON ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTERNEURON ) == 0 );
 
 
   std::cout << "Add mini column" << std::endl;
@@ -68,28 +44,26 @@ int main ( void )
   assert( c->miniColumns( ).size( ) == 1);
   assert( c->miniColumns( ).size( ) == c->numberOfMiniColumns( ));
 
-  assert( c->meanSomaVolume( ) == 0 );
-  assert( c->meanSomaSurface( ) == 0.0f );
-  assert( c->meanDendriteVolume( ) == 0.0f );
-  assert( c->meanDendriteSurface( ) == 0.0f );
-  assert( c->maxSomaVolume( ) == 0.0f );
-  assert( c->maxSomaSurface( ) == 0.0f );
-  assert( c->maxDendriteVolume( ) == 0.0f );
-  assert( c->maxDendriteSurface( ) == 0.0f );
+  // assert( c->meanSomaVolume( ) == 0 );
+  // assert( c->meanSomaSurface( ) == 0.0f );
+  // assert( c->meanDendriteVolume( ) == 0.0f );
+  // assert( c->meanDendriteSurface( ) == 0.0f );
+  // assert( c->maxSomaVolume( ) == 0.0f );
+  // assert( c->maxSomaSurface( ) == 0.0f );
+  // assert( c->maxDendriteVolume( ) == 0.0f );
+  // assert( c->maxDendriteSurface( ) == 0.0f );
   assert( c->numberOfNeurons() == 0 );
   assert( c->numberOfNeurons( false ) == 0 );
   assert( c->numberOfNeurons( true, NeuronMorphology::PYRAMIDAL ) == 0 );
   assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, NeuronMorphology::INTER_NEURON ) == 0 );
-  assert( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ) == 0 );
+  assert( c->numberOfNeurons( true, NeuronMorphology::INTERNEURON ) == 0 );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTERNEURON ) == 0 );
 
   {
     MiniColumnPtr mc2 ( new MiniColumn );
-    
-    // needed in release mode to avoid warning in MSVC
-#ifdef WIN32
-    mc2;
-#endif
+
+    // needed in release mode to avoid warning 
+    ((void)( mc2 ));
 
     assert( c->removeMiniColumn( mc2 ) == false );
 
@@ -119,9 +93,9 @@ int main ( void )
   assert( c->miniColumns( ).size( ) == c->numberOfMiniColumns( ));
 
 
-  #define NUM_MINICOLS 20
-  #define NUM_NEURONS_PYR_PER_LAYER 10
-  #define NUM_NEURONS_INT_PER_LAYER 8
+#define NUM_MINICOLS 20
+#define NUM_NEURONS_PYR_PER_LAYER 10
+#define NUM_NEURONS_INT_PER_LAYER 8
   unsigned int gid = 0;
   for ( unsigned short i = 0 ; i < NUM_MINICOLS ; i++ )
   {
@@ -130,55 +104,58 @@ int main ( void )
 
 
   //<<<<
-      std::cout << " " << std::endl;
-  	std::cout << "Mini columns size: "<<  c->miniColumns( ).size( ) << std::endl;
-  	std::cout << " " << std::endl;
+  std::cout << " " << std::endl;
+  std::cout << "Mini columns size: "<<  c->miniColumns( ).size( ) << std::endl;
+  std::cout << " " << std::endl;
    //>>>>
 
   MiniColumns miniCols = c->miniColumns( );
-  
+
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
-	mcIt != miniCols.end( ); mcIt++ )
+        mcIt != miniCols.end( ); ++mcIt )
   {
     for ( unsigned short l = 1 ; l < 7 ; l++ )
     {
       for ( unsigned short j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
       {
-	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
-						     Matrix4_4f::IDENTITY, 
-						     *mcIt)));//, NeuronMorphology::PYRAMIDAL )));
+        ( *mcIt )->addNeuron(
+          NeuronPtr( new Neuron(
+                       new nsol::NeuronMorphology(
+                         new nsol::Soma,
+                         NeuronMorphology::PYRAMIDAL ),
+            l, gid++,
+            Matrix4_4f::IDENTITY,
+            *mcIt )));
       }
       for ( unsigned short j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
       {
-	( *mcIt )->addNeuron( NeuronPtr( new Neuron( true, l, gid++, 
-						     Matrix4_4f::IDENTITY, 
-						     *mcIt)));//, NeuronMorphology::INTER_NEURON )));
+        ( *mcIt )->addNeuron(
+          NeuronPtr( new Neuron(
+                       nsol::NeuronMorphologyPtr (
+                         new nsol::NeuronMorphology(
+                           new nsol::Soma,
+                           NeuronMorphology::INTERNEURON )),
+                       l, gid++,
+                       Matrix4_4f::IDENTITY,
+                       *mcIt )));
       }
     }
   }
 
   assert( c->numberOfNeurons( ) == gid );
-  assert( c->numberOfNeurons( ) == 
-	  NUM_MINICOLS * 6 * ( NUM_NEURONS_PYR_PER_LAYER + 
-			       NUM_NEURONS_INT_PER_LAYER ) );
+  assert( c->numberOfNeurons( ) ==
+          NUM_MINICOLS * 6 * ( NUM_NEURONS_PYR_PER_LAYER +
+                               NUM_NEURONS_INT_PER_LAYER ) );
   assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL ) ==
-	  NUM_MINICOLS * 6 * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON ) ==
-	  NUM_MINICOLS * 6 * NUM_NEURONS_INT_PER_LAYER );
+          NUM_MINICOLS * 6 * NUM_NEURONS_PYR_PER_LAYER );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTERNEURON ) ==
+          NUM_MINICOLS * 6 * NUM_NEURONS_INT_PER_LAYER );
   assert( c->numberOfNeurons( false, NeuronMorphology::PYRAMIDAL, 2 ) ==
-	  NUM_MINICOLS * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, NeuronMorphology::INTER_NEURON , 2 ) ==
-	  NUM_MINICOLS * NUM_NEURONS_INT_PER_LAYER );
+          NUM_MINICOLS * NUM_NEURONS_PYR_PER_LAYER );
+  assert( c->numberOfNeurons( false, NeuronMorphology::INTERNEURON , 2 ) ==
+          NUM_MINICOLS * NUM_NEURONS_INT_PER_LAYER );
 
 
-  assert( c->meanSomaVolume( ) == 0 );
-  assert( c->meanSomaSurface( ) == 0.0f );
-  assert( c->meanDendriteVolume( ) == 0.0f );
-  assert( c->meanDendriteSurface( ) == 0.0f );
-  assert( c->maxSomaVolume( ) == 0.0f );
-  assert( c->maxSomaSurface( ) == 0.0f );
-  assert( c->maxDendriteVolume( ) == 0.0f );
-  assert( c->maxDendriteSurface( ) == 0.0f );
 
 
 }

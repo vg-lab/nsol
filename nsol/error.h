@@ -28,7 +28,6 @@
     throw std::runtime_error( msg );                             \
   }
 
-
 #define NSOL_CHECK_THROW( cond, errorMsg )                       \
     {                                                            \
       if ( ! (cond) ) NSOL_THROW( errorMsg );                    \

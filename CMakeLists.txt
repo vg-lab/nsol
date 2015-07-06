@@ -9,17 +9,21 @@
 cmake_minimum_required(VERSION 2.8)
 project(nsol)
 
-# Disable in source building 
+# Disable in source building
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
   message(FATAL "no in source building allowed.")
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
   ${CMAKE_SOURCE_DIR}/CMake/common)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif(NOT CMAKE_BUILD_TYPE)
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+  add_definitions(-DDEBUG)
+endif()
 
 include(GitExternal)
 
@@ -39,12 +43,12 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 option(WITH_BBPSDK "WITH_BBPSDK" ON)
 
 include(Common)
-include(FindPackages) 
+include(FindPackages)
 
-# library subdirectory 
+# library subdirectory
 add_subdirectory(nsol)
 
-# tests subdirectory 
+# tests subdirectory
 add_subdirectory(tests)
 
 # examples subdirectory
@@ -52,8 +56,3 @@ add_subdirectory(examples)
 
 include(CPackConfig)
 include(DoxygenRule)
-
-
-
-
-

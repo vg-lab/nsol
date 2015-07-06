@@ -3,7 +3,8 @@
  * @brief
  * @author  Ricardo Suarez <ricardo.suarez@urjc.es>
  * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved. Do not distribute without further notice.
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+            Do not distribute without further notice.
  */
 #ifndef __NSOL_SWC_WRITER__
 #define __NSOL_SWC_WRITER__
@@ -37,10 +38,8 @@ namespace nsol
     typedef struct
     {
       unsigned int id;
-      unsigned int type;
       Vec3f xyz;
       float radius;
-      int parent;
     } TSwcLine;
 
     void writeFile(const char *fileName, NeuronMorphologyPtr morphology)
@@ -48,7 +47,7 @@ namespace nsol
       return this->writeFile(std::string(fileName), morphology);
     }
 
-    void writeFile(const std::string fileName, NeuronMorphologyPtr morphology)
+    void writeFile(const std::string& fileName, NeuronMorphologyPtr morphology)
     {
 
       if (!morphology)
@@ -67,8 +66,9 @@ namespace nsol
       outFile << "#File exporter" << std::endl;
 
       //Writing soma
-      for (Vector<NodePtr>::iterator it = morphology->soma().nodes().begin();
-      it != morphology->soma().nodes().end(); ++it)
+      for (NsolVector<NodePtr>::iterator it =
+             morphology->soma()->nodes().begin();
+           it != morphology->soma()->nodes().end(); ++it)
       {
         outFile << " "
                 << (*it)->id()
@@ -94,7 +94,7 @@ namespace nsol
 
       //Writing neurites
       for (Neurites::iterator it = neurites.begin();
-	   it != neurites.end(); ++it)
+           it != neurites.end(); ++it)
       {
         if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
         {
@@ -125,20 +125,20 @@ namespace nsol
           while(segment)
           {
 
-        	  nodePtrMap[segment->end()->id()] = segment->end();
-        	  nodeParentId[segment->end()->id()] = parent;
+                  nodePtrMap[segment->end()->id()] = segment->end();
+                  nodeParentId[segment->end()->id()] = parent;
 
             parent = segment->end()->id();
             segment = segment->next();
           }
 
-          if (lS->childs().size() > 0)
-            for (unsigned int i = 0; i < lS->childs().size(); ++i)
-              sPS.push(lS->childs()[i]);
+          if (lS->children().size() > 0)
+            for (unsigned int i = 0; i < lS->children().size(); ++i)
+              sPS.push(lS->children()[i]);
         }
 
-        for (std::map<unsigned int, NodePtr>::iterator nodeIt = 
-	       nodePtrMap.begin(); nodeIt != nodePtrMap.end(); nodeIt++)
+        for (std::map<unsigned int, NodePtr>::iterator nodeIt =
+               nodePtrMap.begin(); nodeIt != nodePtrMap.end(); ++nodeIt)
         {
 
           outFile << " "
