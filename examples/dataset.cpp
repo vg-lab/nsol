@@ -13,7 +13,7 @@ int main ( int argc, char ** argv )
   nsol::DataSet ds;
 
   std::cout << "Opening dataset " << argv[ 1 ] << std::endl;
-  ds.openBlueConfig( argv[ 1 ], bbp::MICROCIRCUIT );
+  ds.openBlueConfig( argv[ 1 ] );
 
   std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
 
