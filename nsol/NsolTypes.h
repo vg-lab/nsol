@@ -75,6 +75,12 @@ namespace nsol
   class Segment;
   class Soma;
 
+  class Circuit;
+  class Synapse;
+  class SynapseNeuriteToNeurite;
+  class SynapseNeuriteToSoma;
+  class SynapseSomaToSoma;
+
   class NodeCached;
   class SegmentCachedStats;
 
@@ -91,6 +97,12 @@ namespace nsol
   typedef std::shared_ptr< Section > SectionPtr;
   typedef std::shared_ptr< Segment > SegmentPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
+
+  typedef std::shared_ptr< Circuit > CircuitPtr;
+  typedef std::shared_ptr< Synapse > SynapsePtr;
+  typedef std::shared_ptr< SynapseNeuriteToNeurite > SynapseNeuriteToNeuritePtr;
+  typedef std::shared_ptr< SynapseNeuriteToSoma > SynapseNeuriteToSomaPtr;
+  typedef std::shared_ptr< SynapseSomaToSoma > SynapseSomaToSomaPtr;
 
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
   typedef std::shared_ptr< SegmentCachedStats > SegmentCachedStatsPtr;
@@ -124,6 +136,11 @@ namespace nsol
   typedef Segment * SegmentPtr;
   typedef Soma * SomaPtr;
 
+  typedef Circuit * CircuitPtr;
+  typedef Synapse * SynapsePtr;
+  typedef SynapseNeuriteToNeurite * SynapseNeuriteToNeuritePtr;
+  typedef SynapseNeuriteToSoma * SynapseNeuriteToSomaPtr;
+  typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
 
   typedef NodeCached * NodeCachedPtr;
   typedef SegmentCachedStats * SegmentCachedStatsPtr;
