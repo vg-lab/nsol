@@ -2,6 +2,7 @@ source_group(\\ FILES CMakeLists.txt)
 
 set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Axon.h
+  Circuit.h
   Column.h
   Container/Columns.h
   Container/Dendrites.h
@@ -11,6 +12,11 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Container/Nodes.h
   Container/Sections.h
   Container/Segments.h
+  Container/Circuits.h
+  Container/Synapses.h
+  Container/SynapsesNeuriteToNeurite.h
+  Container/SynapsesNeuriteToSoma.h
+  Container/SynapsesSomaToSoma.h
   DataSet.h
   Dendrite.h
   error.h
@@ -43,6 +49,9 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Stats/SegmentCachedStats.h
   Stats/SomaStats.h
   Synapse.h
+  SynapseNeuriteToNeurite.h
+  SynapseNeuriteToSoma.h
+  SynapseSomaToSoma.h
   # templated classes at last
   Writer/SwcWriter.h
   Factory.h
@@ -54,6 +63,7 @@ set(NSOL_HEADERS )
 
 set(NSOL_SOURCES ${COMMON_SOURCES}
   Axon.cpp
+  Circuit.cpp
   Column.cpp
   DataSet.cpp
   Dendrite.cpp
@@ -81,6 +91,10 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Stats/SegmentStats.cpp
   Stats/SegmentCachedStats.cpp
   Stats/SomaStats.cpp
+  Synapse.cpp
+  SynapseNeuriteToNeurite.cpp
+  SynapseNeuriteToSoma.cpp
+  SynapseSomaToSoma.cpp
   )
 
 if (BBPSDK_FOUND)
