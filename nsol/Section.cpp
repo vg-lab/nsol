@@ -192,25 +192,37 @@ namespace nsol
     return 0;
   }
 
-  unsigned int Section::numNodes( void )
+  float Section::adjustTolerance( float tolerance ) const
   {
-    unsigned int cont = 0;
-    SegmentPtr saux = this->_firstSegment;
+    float cont = 0;
+    float averageAux = 0;
 
-    while ( saux )
+    SegmentPtr segment = _firstSegment;
+    while( segment )
     {
+      ScalarLabeledNodePtr begin = NSOL_DYNAMIC_CAST( ScalarLabeledNode
+                                            , segment->begin() );
+      ScalarLabeledNodePtr end = NSOL_DYNAMIC_CAST( ScalarLabeledNode
+                                            , segment->end() );
+
+      segment = segment->next();
+      averageAux += ( ( begin->relevance() + end->relevance() ) / 2 );
       cont++;
+    }
 
-      if ( saux != this->_lastSegment )
-        saux = saux->next( );
-      else {
-        cont++;
-        break;
-      }
-    } // while
+    if ( ( averageAux >= 0.8f ) )
+      return ( tolerance - ( tolerance * 0.3 ) );
 
-    return cont;
-  }
+    else if ( ( averageAux == 0.0f ) )
+      return tolerance;
+
+    else if ( ( averageAux <= 0.2f ) )
+      return ( tolerance + ( tolerance * 0.5 ) );
+
+    else
+      return ( tolerance + ( tolerance * ( ( 1 - averageAux ) / 2 ) ) );
+    
+  } // adjustTolerance
 
 } // namespace nsol
 

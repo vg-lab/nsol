@@ -88,7 +88,8 @@ namespace nsol
           SegmentPtr segment = lS->firstSegment();
           while( segment )
           {
-            ScalarLabeledNodePtr sAux = NSOL_DYNAMIC_CAST( ScalarLabeledNode, segment->end() );
+            ScalarLabeledNodePtr sAux = NSOL_DYNAMIC_CAST( ScalarLabeledNode
+                                                  , segment->end() );
 
             nodePtrMap[ segment->end()->id() ] = sAux;
 
@@ -103,7 +104,8 @@ namespace nsol
         for (std::map<unsigned int, NodePtr>::iterator nodeIt =
                nodePtrMap.begin(); nodeIt != nodePtrMap.end(); ++nodeIt)
         {
-          ScalarLabeledNodePtr sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, (*nodeIt).second );
+          ScalarLabeledNodePtr sNode = NSOL_DYNAMIC_CAST( ScalarLabeledNode
+                                                , (*nodeIt).second );
 
           outFile << " "
                   << sNode->id()

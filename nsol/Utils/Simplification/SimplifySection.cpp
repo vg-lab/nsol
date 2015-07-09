@@ -16,10 +16,13 @@
 namespace nsol
 {
   /*
-   *  This method simplifies a Section previously vectorized
-   *  using the Radial algorithm. Returns SectionPtr, the 
-   *  attributes from the original Section are NOT Copyrighted,
+   *  Simplifies a Section previously vectorized
+   *  using the Radial algorithm. The attributes
+   *  from the original Section are NOT copied,
    *  It must be done outside this function.
+   *  @params section vecorized to be simplified, tolerance
+   *           and the begin and end of the section
+   *  @return new section pointer
    */
   SectionPtr SimplifySection::_simplifyRadial ( 
                                       NsolVector<NodePtr> polyline
@@ -74,9 +77,12 @@ namespace nsol
 
   /*
    *  This method simplifies a Section previously vectorized
-   *  using the Reumann-Witkam algorithm. Returns SectionPtr,  
-   *  the attributes from the original Section are NOT copied,
+   *  using the Reumann-Witkam algorithm.  
+   *  The attributes from the original Section are NOT copied,
    *  It must be done outside this function.
+   *  @params section vecorized to be simplified, tolerance
+   *           and the begin and end of the section
+   *  @return new section pointer
    */
   SectionPtr SimplifySection::_simplifyRW ( NsolVector<NodePtr> polyline
                                   , float tolerance
@@ -146,10 +152,13 @@ namespace nsol
 
   /*
    *  This method simplifies a Section previously vectorized
-   *  using the Douglas-Peucker algorithm. Returns SectionPtr,  
-   *  the attributes from the original Section are NOT copied,
+   *  using the Douglas-Peucker algorithm.  
+   *  The attributes from the original Section are NOT copied,
    *  It must be done outside this function. This is the 
    *  non-recursive algorithm version.
+   *  @params section vecorized to be simplified, tolerance
+   *           and the begin and end of the section
+   *  @return new section pointer
    */
   SectionPtr SimplifySection::_simplifyDP ( NsolVector<NodePtr> polyline
                                   , float tolerance
@@ -268,8 +277,10 @@ namespace nsol
   } // simplifyDP
 
   /*
-   * This method simplifies a neuron received as param and returns a new one.
-   * Nodes are shared though. Algorithm must be a number between 1 and 3. 
+   *  This method simplifies a neuron received as param and returns a new one.
+   *  Nodes are shared though. Algorithm must be a number between 1 and 3. 
+   *  @params neuron morphology to be simplified, algorithm desired and the tolerance
+   *  @return new neuron morpholgy pointer
    */
   NeuronMorphologyPtr SimplifySection::simplifyNeuron( NeuronMorphologyPtr neuron
                                               , int algorithm
@@ -310,7 +321,7 @@ namespace nsol
         case Neurite::DENDRITE:
         {
           DendritePtr dendrite = NSOL_DYNAMIC_CAST( Dendrite, naux );
-          naux = ( NeuritePtr ) new Dendrite( dendrite->dendriteType( ));
+          naux = ( NeuritePtr ) new Dendrite( dendrite->dendriteType( ) );
           break;
         }
         case Neurite::AXON:
@@ -341,12 +352,16 @@ namespace nsol
                                                 , nullptr
                                                 , nullptr );
 
+        std::cout << "Tolerance: " << tolerance << std::endl;
+        float newTolerance = section->adjustTolerance( tolerance );
+        std::cout << "New Tolerance: " << newTolerance << std::endl;
+
         switch ( algorithm )
         {
           case 1:
           {
             simple = _simplifyRadial( vaux
-                                , tolerance
+                                , newTolerance
                                 , 0
                                 , ( vaux.size( ) - 1 ) );
             break;
@@ -354,7 +369,7 @@ namespace nsol
           case 2:
           {
             simple = _simplifyRW( vaux
-                            , tolerance
+                            , newTolerance
                             , 0
                             , ( vaux.size( ) - 1 ) );
             break;
@@ -362,7 +377,7 @@ namespace nsol
           case 3:
           {
             simple = _simplifyDP( vaux
-                          , tolerance
+                          , newTolerance
                           , 0
                           , ( vaux.size( ) - 1 ) );
             break;
@@ -374,8 +389,8 @@ namespace nsol
           }
         } // switch
 
-        // Check if I have children, if so, I add myself to parent's list
-        // And add to q_index my position in parent's list, 
+        // Check if I have children, if so, I add myself to parents' list
+        // and to q_index my position in parents' list, 
         // that way my children know where I am.
         if ( !section->children( ).empty( ) )
         {
@@ -394,7 +409,7 @@ namespace nsol
         // Store its neurite
         simple->neurite( naux );
           
-        // If it has parent, look for it in the parent's list using q_index
+        // If it has parent, look for it in the parents' list using q_index
         if ( section->parent( ) != nullptr )
         {
           simple->parent( q_parents[ q_index.front( ) ] );
@@ -425,6 +440,9 @@ namespace nsol
   /*
    *  This method vectorizes a Section. In order to vectorize the entire
    *  Section, 'begin' and 'end' should point to null.
+   *  @params section to be vectorized, and the begin and the end
+   *          of the section
+   *  @return vector of nodes
    */ 
   NsolVector<NodePtr> SimplifySection::_vectorize ( SectionPtr polyline 
                                         , NodePtr begin = nullptr
@@ -528,16 +546,16 @@ namespace nsol
    */ 
   float SimplifySection::_distance( NodePtr p1, NodePtr p2 )
   {
-    float xSqr = (double)(p1->point( ).x( ) - p2->point( ).x( )) * 
-                 (p1->point( ).x( ) - p2->point( ).x( ));
-    float ySqr = (double)(p1->point( ).y( ) - p2->point( ).y( )) *
-                 (p1->point( ).y( ) - p2->point( ).y( ));
-    float zSqr = (double)(p1->point( ).z( ) - p2->point( ).z( )) *
-                 (p1->point( ).z( ) - p2->point( ).z( ));
+    float xSqr = ( double )( p1->point().x() - p2->point().x() ) * 
+                 ( p1->point().x() - p2->point().x() );
+    float ySqr = ( double )( p1->point().y() - p2->point().y() ) *
+                 ( p1->point().y() - p2->point().y() );
+    float zSqr = ( double )( p1->point().z() - p2->point().z() ) *
+                 ( p1->point().z() - p2->point().z() );
 
-    float mySqr = (double) xSqr + ySqr + zSqr;
+    float mySqr = ( double ) xSqr + ySqr + zSqr;
 
-    return sqrt(mySqr);
+    return sqrt( mySqr );
 
   } // _distance
 

@@ -15,6 +15,7 @@
 #include "Segment.h"
 #include "Container/Sections.h"
 #include "Container/Segments.h"
+#include "Utils/Simplification/ScalarLabeledNode.h"
 
 namespace nsol
 {
@@ -139,9 +140,14 @@ namespace nsol
     NSOL_API
     unsigned int fuseSection( void );
 
-
+    /**
+     * Modifies tolerance calculating the average of the relevance 
+     * of every node
+     * @param tolerance to be adjusted
+     * @return tolerance modified
+     */
     NSOL_API
-    unsigned int numNodes( void );
+    float adjustTolerance( float tolerance ) const;
 
   protected:
 

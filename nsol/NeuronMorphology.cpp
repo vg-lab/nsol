@@ -9,6 +9,8 @@
 
 #include "NeuronMorphology.h"
 
+#include <cstdlib>
+
 namespace nsol
 {
 
@@ -144,8 +146,8 @@ namespace nsol
     } // for
 
     // Iterate over the neurites
-    for ( Neurites::const_iterator it = _neurites.begin( );
-          it != _neurites.end( ); ++it )
+    for ( Neurites::const_iterator it = _neurites.begin();
+          it != _neurites.end(); ++it )
     {
       NeuritePtr naux = *it;
       Sections * saux = naux->sections();
@@ -158,7 +160,8 @@ namespace nsol
 
         while ( segment != nullptr )
         {
-          ScalarLabeledNodePtr snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, segment->begin() );
+          ScalarLabeledNodePtr snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode
+                                                  , segment->begin() );
 
           if ( snode == nullptr )
           {
@@ -166,12 +169,12 @@ namespace nsol
             return;
           }
 
-          snode->relevance( relevance );
+          snode->relevance( ( ( double )rand() / ( RAND_MAX ) ) );
 
           if ( segment->next() == nullptr )
           {
             snode = NSOL_DYNAMIC_CAST( ScalarLabeledNode, segment->end() );
-            snode->relevance( relevance );
+            snode->relevance( ( ( double )rand() / ( RAND_MAX ) ) );
           }
 
           segment = segment->next();          
