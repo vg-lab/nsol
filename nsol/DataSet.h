@@ -34,6 +34,7 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
+    NSOL_API
     void openBlueConfig( const std::string& blueconfig,
                          const int loadFlags = MORPHOLOGY,
                          const std::string& targetLabel = std::string( "" ))
@@ -52,8 +53,10 @@ namespace nsol
     }
 #endif
 
+    NSOL_API
     void close( void );
 
+    NSOL_API
     Columns& columns( void );
 
     template < class NODE = Node,
@@ -64,6 +67,7 @@ namespace nsol
                class SOMA = Soma,
                class NEURONMORPHOLOGY = NeuronMorphology,
                class NEURON = Neuron >
+    NSOL_API
     void addNeuron( const std::string& swc, unsigned int columnId_,
         unsigned int miniColumnId_/*,
         Matrix4_4f transform_, unsigned int gid_
