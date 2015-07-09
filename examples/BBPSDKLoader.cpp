@@ -14,8 +14,8 @@ int main( int argc, char *argv[] )
   if ( argc < 2 )
     std::cerr << "Error: blueconfig file parameter needed." << std::endl;
 
-  std::map<unsigned int, ColumnPtr> columns =
-    r.readExperiment(argv[1], 0);
+  Columns columns;
+  r.readFromBlueConfig( columns, argv[1] );
 
   if (!columns.empty())
   {
@@ -86,6 +86,7 @@ int main( int argc, char *argv[] )
     std::cout << "Neuron type: "
               << int( neuron->neuronType( ))
               << std::endl;
+    r.deleteAll( columns );
 
     return 0;
   }

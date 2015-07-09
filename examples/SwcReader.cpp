@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     }
 
     // while (section) {
-    //   cout << "Section " << section << " parent " << section->parent() 
+    //   cout << "Section " << section << " parent " << section->parent()
     // 	   << " children: ";
     //   for (Sections::iterator itSect = section->children().begin();
     // 	   itSect != section->children().end(); itSect++) {
@@ -156,9 +156,9 @@ int main(int argc, char *argv[])
   // std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
   // std::cout << "Axon lenght:" << n->axonLength() << std::endl;
   // std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()- << std::endl;
-  // std::cout << "Mean radius first section:" 
-  //           << SectionStats::meanRadius( 
-  //             n->dendrites()->begin()[0]->firstSection() ) 
+  // std::cout << "Mean radius first section:"
+  //           << SectionStats::meanRadius(
+  //             n->dendrites()->begin()[0]->firstSection() )
   //           << std::endl;
 
 

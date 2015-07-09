@@ -12,6 +12,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Container/Nodes.h
   Container/Sections.h
   Container/Segments.h
+  DataSet.h
   Dendrite.h
   error.h
   MiniColumn.h
@@ -59,6 +60,7 @@ set(NSOL_HEADERS )
 set(NSOL_SOURCES ${COMMON_SOURCES}
   Axon.cpp
   Column.cpp
+  DataSet.cpp
   Dendrite.cpp
   MiniColumn.cpp
   Neurite.cpp
