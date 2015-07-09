@@ -11,6 +11,7 @@
 
 #include <nsol/api.h>
 #include "NsolTypes.h"
+#include "Neuron.h"
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
@@ -24,6 +25,7 @@ namespace nsol
     DataSet( void );
 
 #ifdef NSOL_WITH_BBPSDK
+
     template < class NODE = Node,
                class SEGMENT = Segment,
                class SECTION = Section,
@@ -34,7 +36,6 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-    NSOL_API
     void openBlueConfig( const std::string& blueconfig,
                          const int loadFlags = MORPHOLOGY,
                          const std::string& targetLabel = std::string( "" ))
@@ -66,42 +67,56 @@ namespace nsol
                class AXON = Axon,
                class SOMA = Soma,
                class NEURONMORPHOLOGY = NeuronMorphology,
-               class NEURON = Neuron >
-    NSOL_API
-    void addNeuron( const std::string& swc, unsigned int columnId_,
-        unsigned int miniColumnId_/*,
-        Matrix4_4f transform_, unsigned int gid_
-        unsigned int layer_*/ )
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void addNeuron( const std::string& swc, const unsigned int gid_,
+        const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
+        const unsigned int layer_ = 0,
+        const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+        const Neuron::TNeuronType type_ = Neuron::PYRAMIDAL )
     {
       SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
-      NeuronPtr neuron = swcReader.readNeuron( swc );
+      NEURONMORPHOLOGY* neuronMorphology =
+          ( NEURONMORPHOLOGY* )swcReader.readFile( swc );
 
-      /*
-       * neuron->gid( gid_ );
-       * neuron->layer( layer_ );
-       * neuron->transform( transform_ );
-       *
-       */
-
-      if ( _columns.size( ) <= columnId_ )
+      if( neuronMorphology )
       {
-        for ( unsigned int i = _columns.size() ; i < columnId_ + 1; i++ )
-        {
-          _columns.push_back( new Column( ));
-        }
-      }
 
-      MiniColumns miniColumns = _columns[ columnId_ ]->miniColumns( );
-      if ( miniColumns.size( ) <= miniColumnId_ )
-      {
-        for ( unsigned int i = miniColumns.size() ; i < miniColumnId_ + 1; i++ )
+        COLUMN* column = nullptr;
+        NSOL_FOREACH( col, _columns )
         {
-          miniColumns.push_back( new MiniColumn( ));
+          if (( *col )->id( ) == columnId_ )
+          {
+            column = *col;
+          }
         }
-      }
+        if( !column )
+        {
+          column = new COLUMN( columnId_ );
+          _columns.push_back( column );
+        }
 
-      miniColumns[ miniColumnId_ ]->addNeuron( neuron );
+        MINICOLUMN* miniColumn = nullptr;
+        NSOL_FOREACH( miniCol, column->miniColumns() )
+        {
+          if(( *miniCol )->id( ) == miniColumnId_ )
+          {
+            miniColumn = *miniCol;
+          }
+        }
+        if( !miniColumn )
+        {
+          miniColumn = new MINICOLUMN( column );
+          column->addMiniColumn( miniColumn );
+        }
+
+        NEURON* neuron = new NEURON( neuronMorphology, layer_, gid_, transform_,
+                    nullptr, type_ );
+        neuron->miniColumn( miniColumn );
+        miniColumn->addNeuron( neuron );
+      }
     }
 
   protected:
