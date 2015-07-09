@@ -150,10 +150,10 @@ namespace nsol
           it != _neurites.end(); ++it )
     {
       NeuritePtr naux = *it;
-      Sections * saux = naux->sections();
+      Sections saux = naux->sections();
 
-      for ( Sections::const_iterator it2 = saux->begin();
-            it2 != saux->end(); ++it2 )
+      for ( Sections::const_iterator it2 = saux.begin();
+            it2 != saux.end(); ++it2 )
       {
         SectionPtr section = *it2;
         SegmentPtr segment = section->firstSegment();
