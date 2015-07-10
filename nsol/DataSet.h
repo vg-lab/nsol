@@ -10,6 +10,7 @@
 #define __NSOL_DATASET__
 
 #include <nsol/api.h>
+#include "error.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
 #include "Container/Columns.h"
