@@ -1,5 +1,6 @@
 #include <set>
 #include "DataSet.h"
+#include "error.h"
 
 namespace nsol
 {
@@ -69,10 +70,9 @@ namespace nsol
   }
 
 
+#ifdef NSOL_WITH_QT5CORE
   void DataSet::loadScene( const std::string& xmlSceneFile )
   {
-
-#ifdef NSOL_WITH_QT5CORE
     QFile qFile ( xmlSceneFile.c_str( ));
 
     if ( ! qFile.exists( ))
@@ -255,7 +255,10 @@ namespace nsol
     }
 
 #else
-    NSOL_TRHOW( "No QT foun needed to read XML files" );
+  void DataSet::loadScene( const std::string&  )
+  {
+
+    NSOL_TRHOW( "No QT found needed to read XML files" );
 #endif
   }
 
