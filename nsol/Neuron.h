@@ -37,7 +37,7 @@ namespace nsol
       INTER
     } TNeuronType;
 
-    
+
     NSOL_API
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
             const unsigned short layer = 0,
@@ -47,7 +47,7 @@ namespace nsol
             const TNeuronType type = PYRAMIDAL );
 
     NSOL_API
-    ~Neuron( void );
+    virtual ~Neuron( void );
 
     NSOL_API
     bool hasMorphology() const;
