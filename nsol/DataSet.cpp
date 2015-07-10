@@ -6,6 +6,7 @@ namespace nsol
 
   DataSet::DataSet( void )
   {
+
   }
 
   void DataSet::close( void )
