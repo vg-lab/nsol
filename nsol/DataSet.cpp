@@ -258,7 +258,7 @@ namespace nsol
   void DataSet::loadScene( const std::string&  )
   {
 
-    NSOL_TRHOW( "No QT found needed to read XML files" );
+    NSOL_THROW( "No QT found needed to read XML files" );
 #endif
   }
 
