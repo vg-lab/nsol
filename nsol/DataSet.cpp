@@ -6,7 +6,7 @@ namespace nsol
 
   DataSet::DataSet( void )
   {
-    _columns.clear( );
+
   }
 
   void DataSet::close( void )

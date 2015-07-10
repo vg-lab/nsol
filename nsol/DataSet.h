@@ -78,8 +78,7 @@ namespace nsol
     {
       SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
-      NEURONMORPHOLOGY* neuronMorphology =
-          ( NEURONMORPHOLOGY* )swcReader.readFile( swc );
+      NeuronMorphologyPtr neuronMorphology = swcReader.readFile( swc );
 
       if( neuronMorphology )
       {
