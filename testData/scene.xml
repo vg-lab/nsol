@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scene version="0.1">
+
+  <morphology>
+
+    <columns>
+      <column id="0"/>
+      <column id="1"/>
+    </columns>
+
+    <minicolumns>
+      <minicolumn id="0" column="0" />
+      <minicolumn id="1" column="0" />
+    </minicolumns>
+
+    <neurons>
+      <neuron gid="0" minicolumn="0">
+      </neuron>
+      <neuron gid="1" minicolumn="0">
+      </neuron >
+      <neuron gid="2" minicolumn="1">
+      </neuron>
+    </neurons>
+
+    <neuronmorphologies>
+      <neuronmorphology neurons="0,1" swc="ExampleNeuron.swc" />
+      <neuronmorphology neurons="3" swc="ExampleNeuron.swc" />
+    </neuronmorphologies>
+
+  </morphology>
+
+</scene>

@@ -16,6 +16,12 @@
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
 
+#ifdef NSOL_WITH_QT5CORE
+#include <QXmlStreamReader>
+#include <QFile>
+#endif
+
+
 namespace nsol
 {
 
@@ -117,6 +123,10 @@ namespace nsol
         miniColumn->addNeuron( neuron );
       }
     }
+
+
+    NSOL_API
+    void loadScene( const std::string& xmlSceneFile );
 
   protected:
 
