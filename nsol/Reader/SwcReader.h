@@ -58,10 +58,14 @@ namespace nsol
 
   public:
 
-    NeuronPtr readNeuron( const char *fileName );
-    NeuronPtr readNeuron( const std::string fileName );
-    NeuronMorphologyPtr readFile( const char *fileName );
-    NeuronMorphologyPtr readFile( const std::string fileName );
+    NeuronPtr readNeuron( const char *fileName,
+        bool reposition_ = true );
+    NeuronPtr readNeuron( const std::string fileName,
+        bool reposition_ = true );
+    NeuronMorphologyPtr readMorphology( const char *fileName,
+        bool reposition_ = true );
+    NeuronMorphologyPtr readMorphology( const std::string fileName,
+        bool reposition_ = true );
 
 
   protected:
@@ -100,10 +104,14 @@ namespace nsol
     void _ReadDendrite( DendritePtr d,
                         std::map<unsigned int, TSwcLine> & lines,
                         unsigned int initId,
-                        NodePtr nodeSomaPtr );
+                        NodePtr nodeSomaPtr,
+                        NsolVector<NodePtr>* nodes_ = nullptr,
+                        bool reposition_ = false );
 
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> & lines,
-                   unsigned int initId, NodePtr nodeSomaPtr);
+                   unsigned int initId, NodePtr nodeSomaPtr,
+                   NsolVector<NodePtr>* nodes_ = nullptr,
+                   bool reposition_ = false );
 
 
   }; // class SwcReaderTemplated
@@ -147,9 +155,9 @@ namespace nsol
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronPtr
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
-    const char *fileName )
+    const char *fileName, bool reposition_ )
   {
-    return this->readNeuron(std::string(fileName));
+    return this->readNeuron(std::string(fileName), reposition_ );
   }
 
 
@@ -157,9 +165,10 @@ namespace nsol
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronPtr
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
-    const std::string fileName)
+    const std::string fileName, bool reposition_ )
   {
-    NeuronMorphologyPtr nm = this->readFile( std::string( fileName ));
+    NeuronMorphologyPtr nm = this->readMorphology( std::string( fileName ),
+        reposition_ );
 
     if ( nm )
     {
@@ -175,20 +184,19 @@ namespace nsol
 
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readFile(
-    const char * fileName )
+  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
+    const char * fileName, bool reposition_ )
   {
-    return this->readFile(std::string(fileName));
+    return this->readMorphology(std::string(fileName), reposition_ );
   }
 
 
 
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readFile(
-    const std::string fileName )
+  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
+    const std::string fileName, bool reposition_ )
   {
-
     std::ifstream inFile;
     inFile.open(fileName, std::ios::in);
 
@@ -203,6 +211,7 @@ namespace nsol
     std::string line;
     std::getline(inFile, line);
 
+    NsolVector<NodePtr> nodes;
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
 
     std::map<unsigned int, TSwcLine> lines;
@@ -245,6 +254,9 @@ namespace nsol
         NodePtr node(
           new NODE(it->second.xyz, it->second.id, it->second.radius) );
 
+        if ( reposition_ )
+          nodes.push_back( node );
+
         neuronMorphology->soma( )->addNode(node);
 
         nodeSomaPtr[it->second.id] = node;
@@ -274,7 +286,8 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology( neuronMorphology );
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent]);
+                      nodeSomaPtr[lines[somaChildren[i]].parent],
+                      &nodes, reposition_ );
 
         break;
       }
@@ -284,7 +297,8 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology(neuronMorphology);
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent]);
+                      nodeSomaPtr[lines[somaChildren[i]].parent],
+                      &nodes, reposition_ );
 
         break;
 
@@ -294,7 +308,8 @@ namespace nsol
         neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
         _ReadAxon(nP, lines, somaChildren[i],
-                  nodeSomaPtr[lines[somaChildren[i]].parent]);
+                  nodeSomaPtr[lines[somaChildren[i]].parent],
+                  &nodes, reposition_ );
 
         break;
       }
@@ -308,6 +323,20 @@ namespace nsol
 
     inFile.close( );
 
+
+    if ( reposition_ )
+    {
+      Vec3f center = neuronMorphology->soma( )->center( );
+
+      NSOL_FOREACH( node, nodes )
+      {
+        (*node)->point( (*node)->point( ) - center );
+      }
+
+      neuronMorphology->soma( )->center( Vec3f( 0.0f, 0.0f, 0.0f ));
+
+    }
+
     return neuronMorphology;
 
   }
@@ -318,7 +347,9 @@ namespace nsol
     DendritePtr d,
     std::map<unsigned int, TSwcLine> & lines,
     unsigned int initId,
-    NodePtr nodeSomaPtr )
+    NodePtr nodeSomaPtr,
+    NsolVector<NodePtr>* nodes_,
+    bool reposition_ )
   {
 
     std::stack<TReadDendritesStackElem> ids;
@@ -382,7 +413,10 @@ namespace nsol
         id = lines[id].children[0];
 
         //Segment end node
-        sg->end(NodePtr(new NODE(lines[id].xyz, id, lines[id].radius)));
+        NodePtr node  = new NODE( lines[id].xyz, id, lines[id].radius );
+        if ( reposition_ )
+          nodes_->push_back( node );
+        sg->end( node );
 
 
         nP = sg->end( );
@@ -414,7 +448,9 @@ namespace nsol
     std::map<unsigned int,
     TSwcLine> &lines,
     unsigned int initId,
-    NodePtr nodeSomaPtr)
+    NodePtr nodeSomaPtr,
+    NsolVector<NodePtr>* nodes_,
+    bool reposition_ )
   {
 
     std::stack<TReadAxonStackElem> ids;
@@ -475,9 +511,10 @@ namespace nsol
         id = lines[id].children[0];
 
         //Segment end node
-        sg->end(NodePtr( new NODE(lines[id].xyz, id,
-                                  lines[id].radius)));
-
+        NodePtr node = new NODE(lines[id].xyz, id, lines[id].radius);
+        if ( reposition_ )
+          nodes_->push_back( node );
+        sg->end( node );
 
         nP = sg->end( );
 
