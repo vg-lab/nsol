@@ -61,6 +61,13 @@ namespace nsol
     const float & maxRadius( void ) const;
 
     /**
+     * Method to set the center of the soma
+     * @param center of the soma
+     */
+    NSOL_API
+    void center( Vec3f center_ );
+
+    /**
      * Method to add a node to the soma
      * @param node pointer to the node to add
      */

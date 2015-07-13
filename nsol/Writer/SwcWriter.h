@@ -42,12 +42,12 @@ namespace nsol
       float radius;
     } TSwcLine;
 
-    void writeFile(const char *fileName, NeuronMorphologyPtr morphology)
+    void writeMorphology(const char *fileName, NeuronMorphologyPtr morphology)
     {
-      return this->writeFile(std::string(fileName), morphology);
+      return this->writeMorphology(std::string(fileName), morphology);
     }
 
-    void writeFile(const std::string& fileName, NeuronMorphologyPtr morphology)
+    void writeMorphology(const std::string& fileName, NeuronMorphologyPtr morphology)
     {
 
       if (!morphology)

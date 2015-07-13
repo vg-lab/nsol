@@ -739,7 +739,7 @@ namespace nsol
                 std::cerr << "Loading morphology file "
                      << csvLine.morphoLabel << ".swc"
                           << std::endl;
-                NeuronMorphologyPtr m = r.readFile(
+                NeuronMorphologyPtr m = r.readMorphology(
                   dir + csvLine.morphoLabel + ".swc");
 
                 if (!m)
