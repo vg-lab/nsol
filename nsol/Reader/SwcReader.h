@@ -105,13 +105,13 @@ namespace nsol
                         std::map<unsigned int, TSwcLine> & lines,
                         unsigned int initId,
                         NodePtr nodeSomaPtr,
-                        bool reposition_ = false,
-                        NsolVector<NodePtr>& nodes_ = nullptr );
+                        NsolVector<NodePtr>* nodes_ = nullptr,
+                        bool reposition_ = false );
 
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> & lines,
                    unsigned int initId, NodePtr nodeSomaPtr,
-                   bool reposition_ = false,
-                   NsolVector<NodePtr>& nodes_ = nullptr );
+                   NsolVector<NodePtr>* nodes_ = nullptr,
+                   bool reposition_ = false );
 
 
   }; // class SwcReaderTemplated
@@ -286,8 +286,8 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology( neuronMorphology );
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent], reposition_,
-                      nodes );
+                      nodeSomaPtr[lines[somaChildren[i]].parent],
+                      &nodes, reposition_ );
 
         break;
       }
@@ -297,8 +297,8 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology(neuronMorphology);
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent], reposition_,
-                      nodes );
+                      nodeSomaPtr[lines[somaChildren[i]].parent],
+                      &nodes, reposition_ );
 
         break;
 
@@ -308,8 +308,8 @@ namespace nsol
         neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
         _ReadAxon(nP, lines, somaChildren[i],
-                  nodeSomaPtr[lines[somaChildren[i]].parent], reposition_,
-                  nodes );
+                  nodeSomaPtr[lines[somaChildren[i]].parent],
+                  &nodes, reposition_ );
 
         break;
       }
@@ -348,8 +348,8 @@ namespace nsol
     std::map<unsigned int, TSwcLine> & lines,
     unsigned int initId,
     NodePtr nodeSomaPtr,
-    bool reposition_,
-    NsolVector<NodePtr>& nodes_ )
+    NsolVector<NodePtr>* nodes_,
+    bool reposition_ )
   {
 
     std::stack<TReadDendritesStackElem> ids;
@@ -415,7 +415,7 @@ namespace nsol
         //Segment end node
         NodePtr node  = new NODE( lines[id].xyz, id, lines[id].radius );
         if ( reposition_ )
-          nodes_.push_back( node );
+          nodes_->push_back( node );
         sg->end( node );
 
 
@@ -449,8 +449,8 @@ namespace nsol
     TSwcLine> &lines,
     unsigned int initId,
     NodePtr nodeSomaPtr,
-    bool reposition_,
-    NsolVector<NodePtr>& nodes_ )
+    NsolVector<NodePtr>* nodes_,
+    bool reposition_ )
   {
 
     std::stack<TReadAxonStackElem> ids;
@@ -513,7 +513,7 @@ namespace nsol
         //Segment end node
         NodePtr node = new NODE(lines[id].xyz, id, lines[id].radius);
         if ( reposition_ )
-          nodes_.push_back( node );
+          nodes_->push_back( node );
         sg->end( node );
 
         nP = sg->end( );
