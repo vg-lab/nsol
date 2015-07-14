@@ -17,9 +17,9 @@
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
 
-#include <QXmlStreamReader>
-
 #ifdef NSOL_WITH_QT5CORE
+#include <QStringList>
+#include <QString>
 #include <QXmlStreamReader>
 #include <QFile>
 #include <map>
@@ -88,7 +88,7 @@ namespace nsol
     {
       SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
-      NeuronMorphologyPtr neuronMorphology = swcReader.readFile( swc );
+      NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
 
       if( neuronMorphology )
       {
@@ -143,189 +143,223 @@ namespace nsol
     void loadScene( const std::string& xmlSceneFile )
     {
       QFile qFile ( xmlSceneFile.c_str( ));
-
       if ( ! qFile.exists( ))
-	NSOL_THROW( "Scene file not found" );
+        NSOL_THROW( "Scene file not found" );
 
       qFile.open( QIODevice::ReadOnly | QIODevice::Text );
 
       if ( ! qFile.isOpen( ))
-	NSOL_THROW( "Scene file not readable" );
+        NSOL_THROW( "Scene file not readable" );
 
       QXmlStreamReader xml( & qFile );
 
       if ( xml.hasError( ) )
-	NSOL_THROW( "Scene XML file has errors" );
+        NSOL_THROW( "Scene XML file has errors" );
 
       xml.readNextStartElement( );
 
       std::string version;
 
-      std::map< unsigned int, ColumnPtr > columnsMap;
       std::map< unsigned int, NeuronPtr > neuronsMap;
 
 
       if ( xml.name( ) == "scene" )
       {
-	QXmlStreamAttributes attributes = xml.attributes( );
+        QXmlStreamAttributes attributes = xml.attributes( );
 
-	if( attributes.hasAttribute( "version" ))
-	  version = attributes.value( "version" ).toString( ).toStdString( );
-	else
-	  NSOL_THROW( "No version number present" );
+        if( attributes.hasAttribute( "version" ))
+          version = attributes.value( "version" ).toString( ).toStdString( );
+        else
+          NSOL_THROW( "No version number present" );
       }
       else
-	NSOL_THROW( "Expected <scene> root element" );
+        NSOL_THROW( "Expected <scene> root element" );
 
       while( !xml.atEnd( ) &&  !xml.hasError( ))
       {
-	xml.readNext( );
+        xml.readNext( );
 
-	if ( xml.atEnd( ))
-	  continue;
+        if ( xml.atEnd( ))
+          continue;
 
-	if ( xml.tokenType( ) != QXmlStreamReader::StartElement )
-	  continue;
+        if ( xml.tokenType( ) != QXmlStreamReader::StartElement )
+          continue;
 
-	if ( xml.name( ) == "morphology" )
-	{
+        if ( xml.name( ) == "morphology" )
+        {
+          while( !xml.atEnd( ) &&  !xml.hasError( ))
+          {
+            xml.readNext( );
 
-	  std::cout << "morphology" << std::endl;
+            if ( xml.atEnd( ) ||
+               xml.tokenType( ) != QXmlStreamReader::StartElement )
+            continue;
 
-	  while( !xml.atEnd( ) &&  !xml.hasError( ))
-	  {
-	    xml.readNext( );
+            if ( !xml.atEnd( ) && xml.name( ) == "column" )
+            {
+              QXmlStreamAttributes attributes = xml.attributes( );
+              if( attributes.hasAttribute( "id" ))
+              {
+                //Creating column
+                unsigned int colId = attributes.value( "id" ).toUInt( );
+                ColumnPtr column = ( ColumnPtr )new COLUMN( colId );
+                _columns.push_back( column );
 
-	    if ( xml.atEnd( ) ||
-		     xml.tokenType( ) != QXmlStreamReader::StartElement )
-		  continue;
+                //Looking for minicolumns in column
+                while( !xml.atEnd( ) && !xml.hasError( ) &&
+                       !( xml.name( ) == "column" &&
+                       xml.tokenType( ) == QXmlStreamReader::EndElement ))
+                {
+                  xml.readNext( );
+                  if ( xml.atEnd( ) ||
+                       xml.tokenType( ) != QXmlStreamReader::StartElement )
+                    continue;
 
-	    if ( !xml.atEnd( ) && xml.name( ) == "columns" )
-	    {
-	      std::cout << "columns" << std::endl;
+                  if ( !xml.atEnd( ) && xml.name( ) == "minicolumn" )
+                  {
+                    attributes = xml.attributes( );
+                    if ( attributes.hasAttribute( "id" ) )
+                    {
+                      //Creating minicolumn
+                      unsigned int miniColId = attributes.value( "id" ).toUInt( );
+                      MiniColumnPtr miniColumn =
+                          ( MiniColumnPtr )new MINICOLUMN( column, miniColId );
+                      column->addMiniColumn( miniColumn );
 
-	      while( !xml.atEnd( ) && !xml.hasError( ) &&
-		     !( xml.name( ) == "columns" &&
-		      xml.tokenType( ) == QXmlStreamReader::EndElement ))
-	      {
-		xml.readNext( );
-		if ( xml.atEnd( ) ||
-		     xml.tokenType( ) != QXmlStreamReader::StartElement )
-		  continue;
+                      //Looking for neuronos in minicolumn
+                      while( !xml.atEnd( ) && !xml.hasError( ) &&
+                             !( xml.name( ) == "minicolumn" &&
+                             xml.tokenType( ) == QXmlStreamReader::EndElement ))
+                      {
+                        xml.readNext( );
+                        if ( xml.atEnd( ) ||
+                             xml.tokenType( ) != QXmlStreamReader::StartElement )
+                          continue;
 
-		if ( !xml.atEnd( ) && xml.name( ) == "column" )
-		{
+                        if ( !xml.atEnd( ) && xml.name( ) == "neuron" )
+                        {
+                          attributes = xml.attributes( );
+                          if ( attributes.hasAttribute( "gid" ))
+                          {
+                            //Creating neuron
+                            unsigned int gid =
+                                attributes.value( "gid" ).toUInt( );
+                            unsigned int layer = 1;
+                            nsol::Neuron::TNeuronType type =
+                                nsol::Neuron::PYRAMIDAL;
+                            Matrix4_4f transform = Matrix4_4f::IDENTITY;
 
-		  QXmlStreamAttributes attributes = xml.attributes( );
-		  if( attributes.hasAttribute( "id" ))
-		  {
-		    unsigned int id = attributes.value( "id" ).toUInt( );
-		    ColumnPtr column = ( ColumnPtr )new COLUMN( id );
-		    _columns.push_back( column );
-		    columnsMap.insert(
-			std::pair<unsigned int, ColumnPtr>( id, column ));
-		  }
-		}
-	      }
-	    }
+                            if ( attributes.hasAttribute( "layer" ))
+                                layer = attributes.value( "layer" ).toUInt( );
 
-	    if ( !xml.atEnd( ) && xml.name( ) == "minicolumns" )
-	    {
-	      std::cout << "minicolumns" << std::endl;
+                            if ( attributes.hasAttribute( "type" ) )
+                            {
+                              std::string typeString(
+                                  attributes.value( "type" ).toString( ).toStdString( ));
 
-	      while( !xml.atEnd( ) &&  !xml.hasError( ) &&
-		     !( xml.name( ) == "minicolumns" &&
-		xml.tokenType( ) == QXmlStreamReader::EndElement ))
-	      {
-		xml.readNext( );
-		if ( xml.atEnd( ) ||
-		     xml.tokenType( ) != QXmlStreamReader::StartElement )
-		  continue;
+                              if ( typeString.compare( "INTERNEURON" ))
+                              {
+                                type = nsol::Neuron::INTER;
+                              }
+                              else if( typeString.compare( "PYRAMIDAL" ))
+                              {
+                                type = nsol::Neuron::PYRAMIDAL;
+                              }
+                            }
+                            // Looking for transform in neuron
+                            while( !xml.atEnd( ) && !xml.hasError( ) &&
+                                   !( xml.name( ) == "neuron" &&
+                                   xml.tokenType( ) ==
+                                       QXmlStreamReader::EndElement ))
+                            {
+                              xml.readNext( );
+                              if ( xml.atEnd( ) ||
+                                   xml.tokenType( ) !=
+                                       QXmlStreamReader::StartElement )
+                                continue;
 
-		if ( !xml.atEnd( ) && xml.name( ) == "minicolumn" )
-		{
-		  QXmlStreamAttributes attributes = xml.attributes( );
-		  if( attributes.hasAttribute( "column" ))
-		  {
-		    unsigned int columnId = attributes.value( "column" ).toUInt( );
-		    ColumnPtr column = ( ColumnPtr )columnsMap.find( columnId );
-		    if ( attributes.hasAttribute( "id" ) &&
-			 column != (ColumnPtr)columnsMap.end( ))
-		    {
-			unsigned int id = attributes.value( "id" ).toUInt( );
-			MiniColumnPtr miniColumn = ( MiniColumnPtr )new MINICOLUMN( column );
-			column->addMiniColumn( miniColumn );
-		    }
-		  }
-		}
-	      }
-	    }
-	    if ( !xml.atEnd( ) && xml.name( ) == "neurons" )
-	    {
-	      std::cout << "neurons" << std::endl;
+                              if ( !xml.atEnd( ) && xml.name( ) == "transform" )
+                              {
+                                QStringList mL =
+                                    xml.readElementText( ).remove(' ').
+                                    remove('\n').remove('\t').split(",");
+                                if ( mL.size( ) == 16 )
+                                {
+                                  for ( unsigned int i = 0; i < 4; i ++ )
+                                    for ( unsigned int j = 0; j < 4; j ++ )
+                                      transform.at( i, j ) = mL[ i * 4 + j].toFloat( );
+                                }
+                              }
+                            }
+                            NeuronPtr neuron = ( NeuronPtr )
+                                new NEURON( nullptr, layer, gid,
+                                            transform, miniColumn,
+                                            type );
+                            miniColumn->addNeuron( neuron );
+                            neuronsMap.insert(
+                                std::pair< unsigned int, NeuronPtr>( gid,
+                                                                     neuron ));
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
 
-	      while( !xml.atEnd( ) &&  !xml.hasError( ) &&
-		     !( xml.name( ) == "neurons" &&
-		     xml.tokenType( ) == QXmlStreamReader::EndElement ))
-	      {
-		xml.readNext( );
-		if ( xml.atEnd( ) ||
-		     xml.tokenType( ) != QXmlStreamReader::StartElement )
-		  continue;
+            if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphologies" )
+            {
+              while( !xml.atEnd( ) &&  !xml.hasError( ))
+              {
+                xml.readNext( );
+                if ( xml.atEnd( ) ||
+                    xml.tokenType( ) != QXmlStreamReader::StartElement )
+                  continue;
 
-		if ( !xml.atEnd( ) && xml.name( ) == "neuron" )
-		{
-		  std::cout << "Create neuron";
-		  QXmlStreamAttributes attributes = xml.attributes( );
-		  if( attributes.hasAttribute( "gid" ))
-		    std::cout << " gid: "
-			<< attributes.value( "gid" ).toString( ).toStdString( );
-		  if( attributes.hasAttribute( "minicolumn" ))
-		    std::cout << " minicolumn: "
-			<< attributes.value( "minicolumn" ).toString( ).toStdString( );
-		    std::cout << std::endl;
+                if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphology" )
+                {
+                  QXmlStreamAttributes attributes = xml.attributes( );
+                  if( attributes.hasAttribute( "neurons" ) &&
+                      attributes.hasAttribute( "swc" ) )
+                  {
+                    std::string swc =
+                        attributes.value( "swc" ).toString( ).toStdString( );
 
-		}
-	      }
-	    }
+                    SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+                        SOMA, NEURONMORPHOLOGY, NEURON > swcReader;
+                     NeuronMorphologyPtr neuronMorphology =
+                         swcReader.readMorphology( swc );
+                     if ( neuronMorphology )
+                     {
+                       QStringList neurons =
+                           attributes.value("neurons").toString( ).split(',');
+                       NSOL_FOREACH( n, neurons )
+                       {
+                         std::map<unsigned int, NeuronPtr>::iterator neuronFind =
+                             neuronsMap.find(( *n ).toUInt( ));
+                         if( neuronFind != neuronsMap.end( ))
+                         {
+                           NeuronPtr neuron = neuronFind->second;
+                           neuron->morphology( neuronMorphology );
+                         }
+                       }
+                     }
 
-	    if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphologies" )
-	    {
-	      std::cout << "neuronmorphologies" << std::endl;
-
-	      while( !xml.atEnd( ) &&  !xml.hasError( ))
-	      {
-		xml.readNext( );
-		if ( xml.atEnd( ) ||
-		    xml.tokenType( ) != QXmlStreamReader::StartElement )
-		  continue;
-
-		if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphology" )
-		{
-		  std::cout << "Create neuron morphology";
-		  QXmlStreamAttributes attributes = xml.attributes( );
-		  if( attributes.hasAttribute( "neurons" ))
-		    std::cout << " neurons: "
-			<< attributes.value( "neurons" ).toString( ).toStdString( );
-		  if( attributes.hasAttribute( "swc" ))
-		    std::cout << " swc: "
-			<< attributes.value( "swc" ).toString( ).toStdString( );
-		    std::cout << std::endl;
-
-
-		}
-	      }
-	    }
-	  }
-	}
-	else if ( xml.name( ) == "ciruit" )
-	{
-	    //TODO
-	}
-	else
-	  NSOL_THROW ( std::string( "Element <" ) +
-	               xml.name( ).toString( ).toStdString( ) +
-	               std::string( "> not expected" ) );
+                  }
+                }
+              }
+            }
+          }
+        }
+        else if ( xml.name( ) == "ciruit" )
+        {
+          //TODO
+        }
+        else
+          NSOL_THROW ( std::string( "Element <" ) +
+              xml.name( ).toString( ).toStdString( ) +
+              std::string( "> not expected" ) );
       }
     }
 
