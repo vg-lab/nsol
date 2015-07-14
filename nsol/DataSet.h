@@ -17,9 +17,12 @@
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
 
+#include <QXmlStreamReader>
+
 #ifdef NSOL_WITH_QT5CORE
 #include <QXmlStreamReader>
 #include <QFile>
+#include <map>
 #endif
 
 
@@ -114,7 +117,7 @@ namespace nsol
         }
         if( !miniColumn )
         {
-          miniColumn = new MINICOLUMN( column );
+          miniColumn = new MINICOLUMN( miniColumnId_ );
           column->addMiniColumn( miniColumn );
         }
 
@@ -123,12 +126,210 @@ namespace nsol
         neuron->miniColumn( miniColumn );
         miniColumn->addNeuron( neuron );
       }
+
     }
 
+#ifdef NSOL_WITH_QT5CORE
+    template < class NODE = Node,
+	       class SEGMENT = Segment,
+	       class SECTION = Section,
+	       class DENDRITE = Dendrite,
+	       class AXON = Axon,
+	       class SOMA = Soma,
+	       class NEURONMORPHOLOGY = NeuronMorphology,
+	       class NEURON = Neuron,
+	       class MINICOLUMN = MiniColumn,
+	       class COLUMN = Column >
+    void loadScene( const std::string& xmlSceneFile )
+    {
+      QFile qFile ( xmlSceneFile.c_str( ));
 
-    NSOL_API
-    void loadScene( const std::string& xmlSceneFile );
+      if ( ! qFile.exists( ))
+	NSOL_THROW( "Scene file not found" );
 
+      qFile.open( QIODevice::ReadOnly | QIODevice::Text );
+
+      if ( ! qFile.isOpen( ))
+	NSOL_THROW( "Scene file not readable" );
+
+      QXmlStreamReader xml( & qFile );
+
+      if ( xml.hasError( ) )
+	NSOL_THROW( "Scene XML file has errors" );
+
+      xml.readNextStartElement( );
+
+      std::string version;
+
+      std::map< unsigned int, ColumnPtr > columnsMap;
+      std::map< unsigned int, NeuronPtr > neuronsMap;
+
+
+      if ( xml.name( ) == "scene" )
+      {
+	QXmlStreamAttributes attributes = xml.attributes( );
+
+	if( attributes.hasAttribute( "version" ))
+	  version = attributes.value( "version" ).toString( ).toStdString( );
+	else
+	  NSOL_THROW( "No version number present" );
+      }
+      else
+	NSOL_THROW( "Expected <scene> root element" );
+
+      while( !xml.atEnd( ) &&  !xml.hasError( ))
+      {
+	xml.readNext( );
+
+	if ( xml.atEnd( ))
+	  continue;
+
+	if ( xml.tokenType( ) != QXmlStreamReader::StartElement )
+	  continue;
+
+	if ( xml.name( ) == "morphology" )
+	{
+
+	  std::cout << "morphology" << std::endl;
+
+	  while( !xml.atEnd( ) &&  !xml.hasError( ))
+	  {
+	    xml.readNext( );
+
+	    if ( xml.atEnd( ) ||
+		     xml.tokenType( ) != QXmlStreamReader::StartElement )
+		  continue;
+
+	    if ( !xml.atEnd( ) && xml.name( ) == "columns" )
+	    {
+	      std::cout << "columns" << std::endl;
+
+	      while( !xml.atEnd( ) && !xml.hasError( ) &&
+		     !( xml.name( ) == "columns" &&
+		      xml.tokenType( ) == QXmlStreamReader::EndElement ))
+	      {
+		xml.readNext( );
+		if ( xml.atEnd( ) ||
+		     xml.tokenType( ) != QXmlStreamReader::StartElement )
+		  continue;
+
+		if ( !xml.atEnd( ) && xml.name( ) == "column" )
+		{
+
+		  QXmlStreamAttributes attributes = xml.attributes( );
+		  if( attributes.hasAttribute( "id" ))
+		  {
+		    unsigned int id = attributes.value( "id" ).toUInt( );
+		    ColumnPtr column = ( ColumnPtr )new COLUMN( id );
+		    _columns.push_back( column );
+		    columnsMap.insert(
+			std::pair<unsigned int, ColumnPtr>( id, column ));
+		  }
+		}
+	      }
+	    }
+
+	    if ( !xml.atEnd( ) && xml.name( ) == "minicolumns" )
+	    {
+	      std::cout << "minicolumns" << std::endl;
+
+	      while( !xml.atEnd( ) &&  !xml.hasError( ) &&
+		     !( xml.name( ) == "minicolumns" &&
+		xml.tokenType( ) == QXmlStreamReader::EndElement ))
+	      {
+		xml.readNext( );
+		if ( xml.atEnd( ) ||
+		     xml.tokenType( ) != QXmlStreamReader::StartElement )
+		  continue;
+
+		if ( !xml.atEnd( ) && xml.name( ) == "minicolumn" )
+		{
+		  QXmlStreamAttributes attributes = xml.attributes( );
+		  if( attributes.hasAttribute( "column" ))
+		  {
+		    unsigned int columnId = attributes.value( "column" ).toUInt( );
+		    ColumnPtr column = ( ColumnPtr )columnsMap.find( columnId );
+		    if ( attributes.hasAttribute( "id" ) &&
+			 column != (ColumnPtr)columnsMap.end( ))
+		    {
+			unsigned int id = attributes.value( "id" ).toUInt( );
+			MiniColumnPtr miniColumn = ( MiniColumnPtr )new MINICOLUMN( column );
+			column->addMiniColumn( miniColumn );
+		    }
+		  }
+		}
+	      }
+	    }
+	    if ( !xml.atEnd( ) && xml.name( ) == "neurons" )
+	    {
+	      std::cout << "neurons" << std::endl;
+
+	      while( !xml.atEnd( ) &&  !xml.hasError( ) &&
+		     !( xml.name( ) == "neurons" &&
+		     xml.tokenType( ) == QXmlStreamReader::EndElement ))
+	      {
+		xml.readNext( );
+		if ( xml.atEnd( ) ||
+		     xml.tokenType( ) != QXmlStreamReader::StartElement )
+		  continue;
+
+		if ( !xml.atEnd( ) && xml.name( ) == "neuron" )
+		{
+		  std::cout << "Create neuron";
+		  QXmlStreamAttributes attributes = xml.attributes( );
+		  if( attributes.hasAttribute( "gid" ))
+		    std::cout << " gid: "
+			<< attributes.value( "gid" ).toString( ).toStdString( );
+		  if( attributes.hasAttribute( "minicolumn" ))
+		    std::cout << " minicolumn: "
+			<< attributes.value( "minicolumn" ).toString( ).toStdString( );
+		    std::cout << std::endl;
+
+		}
+	      }
+	    }
+
+	    if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphologies" )
+	    {
+	      std::cout << "neuronmorphologies" << std::endl;
+
+	      while( !xml.atEnd( ) &&  !xml.hasError( ))
+	      {
+		xml.readNext( );
+		if ( xml.atEnd( ) ||
+		    xml.tokenType( ) != QXmlStreamReader::StartElement )
+		  continue;
+
+		if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphology" )
+		{
+		  std::cout << "Create neuron morphology";
+		  QXmlStreamAttributes attributes = xml.attributes( );
+		  if( attributes.hasAttribute( "neurons" ))
+		    std::cout << " neurons: "
+			<< attributes.value( "neurons" ).toString( ).toStdString( );
+		  if( attributes.hasAttribute( "swc" ))
+		    std::cout << " swc: "
+			<< attributes.value( "swc" ).toString( ).toStdString( );
+		    std::cout << std::endl;
+
+
+		}
+	      }
+	    }
+	  }
+	}
+	else if ( xml.name( ) == "ciruit" )
+	{
+	    //TODO
+	}
+	else
+	  NSOL_THROW ( std::string( "Element <" ) +
+	               xml.name( ).toString( ).toStdString( ) +
+	               std::string( "> not expected" ) );
+      }
+    }
+
+#endif
   protected:
 
     Columns _columns;
