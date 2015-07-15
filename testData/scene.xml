@@ -6,45 +6,45 @@
 
     <columns>
       <column id="0">
-      
+
         <minicolumn id="0">
           <neuron gid="0" layer="2">
           </neuron>
           <neuron gid="1" layer="3" type="INTERNEURON">
             <transform>
-              1, 0, 0.0, 0.0, 
+              1, 0, 0.0, 0.0,
               0.0, 1, 0.0, 0.0,
               0.0, 0.0, 1.0, 0.0,
               0.0, 0.0, 0.0, 1.0
             </transform>
-          </neuron>  
+          </neuron>
         </minicolumn>
-             
+
         <minicolumn id="1">
           <neuron gid="2" type="PYRAMIDAL">
-          <transform>              
-              1.0, 0.0, 0.0, 0.0, 
+          <transform>
+              1.0, 0.0, 0.0, 0.0,
               0.0, 1.0, 0.0, 0.0,
               0.0, 0.0, 1.0, 0.0,
               10.0, 20.0, 30.0, 1
             </transform>
           </neuron>
         </minicolumn>
-        
+
       </column>
-   
+
       <column id="1">
         <minicolumn id="0">
           <neuron gid="3" type="PYRAMIDAL">
           </neuron>
         </minicolumn>
       </column>
-      
+
     </columns>
 
     <neuronmorphologies>
-      <neuronmorphology neurons="0,1" swc="ExampleNeuron.swc" />
-      <neuronmorphology neurons="3" swc="ExampleNeuron.swc" />
+      <neuronmorphology neurons="0,1" swc="@NSOL_TESTDATA_SRC_DIR@/ExampleNeuron.swc" />
+      <neuronmorphology neurons="2,3" swc="@NSOL_TESTDATA_SRC_DIR@/ExampleNeuron.swc" />
     </neuronmorphologies>
 
   </morphology>
