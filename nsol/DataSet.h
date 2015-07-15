@@ -117,7 +117,7 @@ namespace nsol
         }
         if( !miniColumn )
         {
-          miniColumn = new MINICOLUMN( miniColumnId_ );
+          miniColumn = ( MiniColumnPtr )new MINICOLUMN( column, miniColumnId_ );
           column->addMiniColumn( miniColumn );
         }
 
