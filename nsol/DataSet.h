@@ -10,11 +10,21 @@
 #define __NSOL_DATASET__
 
 #include <nsol/api.h>
+#include "error.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
+
+#ifdef NSOL_WITH_QT5CORE
+#include <QStringList>
+#include <QString>
+#include <QXmlStreamReader>
+#include <QFile>
+#include <map>
+#endif
+
 
 namespace nsol
 {
@@ -78,7 +88,7 @@ namespace nsol
     {
       SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
-      NeuronMorphologyPtr neuronMorphology = swcReader.readFile( swc );
+      NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
 
       if( neuronMorphology )
       {
@@ -107,7 +117,7 @@ namespace nsol
         }
         if( !miniColumn )
         {
-          miniColumn = new MINICOLUMN( column );
+          miniColumn = ( MiniColumnPtr )new MINICOLUMN( column, miniColumnId_ );
           column->addMiniColumn( miniColumn );
         }
 
@@ -116,8 +126,244 @@ namespace nsol
         neuron->miniColumn( miniColumn );
         miniColumn->addNeuron( neuron );
       }
+
     }
 
+#ifdef NSOL_WITH_QT5CORE
+    template < class NODE = Node,
+	       class SEGMENT = Segment,
+	       class SECTION = Section,
+	       class DENDRITE = Dendrite,
+	       class AXON = Axon,
+	       class SOMA = Soma,
+	       class NEURONMORPHOLOGY = NeuronMorphology,
+	       class NEURON = Neuron,
+	       class MINICOLUMN = MiniColumn,
+	       class COLUMN = Column >
+    void loadScene( const std::string& xmlSceneFile )
+    {
+      QFile qFile ( xmlSceneFile.c_str( ));
+      if ( ! qFile.exists( ))
+        NSOL_THROW( "Scene file not found" );
+
+      qFile.open( QIODevice::ReadOnly | QIODevice::Text );
+
+      if ( ! qFile.isOpen( ))
+        NSOL_THROW( "Scene file not readable" );
+
+      QXmlStreamReader xml( & qFile );
+
+      if ( xml.hasError( ) )
+        NSOL_THROW( "Scene XML file has errors" );
+
+      xml.readNextStartElement( );
+
+      std::string version;
+
+      std::map< unsigned int, NeuronPtr > neuronsMap;
+
+
+      if ( xml.name( ) == "scene" )
+      {
+        QXmlStreamAttributes attributes = xml.attributes( );
+
+        if( attributes.hasAttribute( "version" ))
+          version = attributes.value( "version" ).toString( ).toStdString( );
+        else
+          NSOL_THROW( "No version number present" );
+      }
+      else
+        NSOL_THROW( "Expected <scene> root element" );
+
+      while( !xml.atEnd( ) &&  !xml.hasError( ))
+      {
+        xml.readNext( );
+
+        if ( xml.atEnd( ))
+          continue;
+
+        if ( xml.tokenType( ) != QXmlStreamReader::StartElement )
+          continue;
+
+        if ( xml.name( ) == "morphology" )
+        {
+          while( !xml.atEnd( ) &&  !xml.hasError( ))
+          {
+            xml.readNext( );
+
+            if ( xml.atEnd( ) ||
+               xml.tokenType( ) != QXmlStreamReader::StartElement )
+            continue;
+
+            if ( !xml.atEnd( ) && xml.name( ) == "column" )
+            {
+              QXmlStreamAttributes attributes = xml.attributes( );
+              if( attributes.hasAttribute( "id" ))
+              {
+                //Creating column
+                unsigned int colId = attributes.value( "id" ).toUInt( );
+                ColumnPtr column = ( ColumnPtr )new COLUMN( colId );
+                _columns.push_back( column );
+
+                //Looking for minicolumns in column
+                while( !xml.atEnd( ) && !xml.hasError( ) &&
+                       !( xml.name( ) == "column" &&
+                       xml.tokenType( ) == QXmlStreamReader::EndElement ))
+                {
+                  xml.readNext( );
+                  if ( xml.atEnd( ) ||
+                       xml.tokenType( ) != QXmlStreamReader::StartElement )
+                    continue;
+
+                  if ( !xml.atEnd( ) && xml.name( ) == "minicolumn" )
+                  {
+                    attributes = xml.attributes( );
+                    if ( attributes.hasAttribute( "id" ) )
+                    {
+                      //Creating minicolumn
+                      unsigned int miniColId = attributes.value( "id" ).toUInt( );
+                      MiniColumnPtr miniColumn =
+                          ( MiniColumnPtr )new MINICOLUMN( column, miniColId );
+                      column->addMiniColumn( miniColumn );
+
+                      //Looking for neuronos in minicolumn
+                      while( !xml.atEnd( ) && !xml.hasError( ) &&
+                             !( xml.name( ) == "minicolumn" &&
+                             xml.tokenType( ) == QXmlStreamReader::EndElement ))
+                      {
+                        xml.readNext( );
+                        if ( xml.atEnd( ) ||
+                             xml.tokenType( ) != QXmlStreamReader::StartElement )
+                          continue;
+
+                        if ( !xml.atEnd( ) && xml.name( ) == "neuron" )
+                        {
+                          attributes = xml.attributes( );
+                          if ( attributes.hasAttribute( "gid" ))
+                          {
+                            //Creating neuron
+                            unsigned int gid =
+                                attributes.value( "gid" ).toUInt( );
+                            unsigned int layer = 1;
+                            nsol::Neuron::TNeuronType type =
+                                nsol::Neuron::PYRAMIDAL;
+                            Matrix4_4f transform = Matrix4_4f::IDENTITY;
+
+                            if ( attributes.hasAttribute( "layer" ))
+                                layer = attributes.value( "layer" ).toUInt( );
+
+                            if ( attributes.hasAttribute( "type" ) )
+                            {
+                              std::string typeString(
+                                  attributes.value( "type" ).toString( ).toStdString( ));
+
+                              if ( typeString.compare( "INTERNEURON" ))
+                              {
+                                type = nsol::Neuron::INTER;
+                              }
+                              else if( typeString.compare( "PYRAMIDAL" ))
+                              {
+                                type = nsol::Neuron::PYRAMIDAL;
+                              }
+                            }
+                            // Looking for transform in neuron
+                            while( !xml.atEnd( ) && !xml.hasError( ) &&
+                                   !( xml.name( ) == "neuron" &&
+                                   xml.tokenType( ) ==
+                                       QXmlStreamReader::EndElement ))
+                            {
+                              xml.readNext( );
+                              if ( xml.atEnd( ) ||
+                                   xml.tokenType( ) !=
+                                       QXmlStreamReader::StartElement )
+                                continue;
+
+                              if ( !xml.atEnd( ) && xml.name( ) == "transform" )
+                              {
+                                QStringList mL =
+                                    xml.readElementText( ).remove(' ').
+                                    remove('\n').remove('\t').split(",");
+                                if ( mL.size( ) == 16 )
+                                {
+                                  for ( unsigned int i = 0; i < 4; i ++ )
+                                    for ( unsigned int j = 0; j < 4; j ++ )
+                                      transform.at( i, j ) = mL[ i * 4 + j].toFloat( );
+                                }
+                              }
+                            }
+                            NeuronPtr neuron = ( NeuronPtr )
+                                new NEURON( nullptr, layer, gid,
+                                            transform, miniColumn,
+                                            type );
+                            miniColumn->addNeuron( neuron );
+                            neuronsMap.insert(
+                                std::pair< unsigned int, NeuronPtr>( gid,
+                                                                     neuron ));
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphologies" )
+            {
+              while( !xml.atEnd( ) &&  !xml.hasError( ))
+              {
+                xml.readNext( );
+                if ( xml.atEnd( ) ||
+                    xml.tokenType( ) != QXmlStreamReader::StartElement )
+                  continue;
+
+                if ( !xml.atEnd( ) && xml.name( ) == "neuronmorphology" )
+                {
+                  QXmlStreamAttributes attributes = xml.attributes( );
+                  if( attributes.hasAttribute( "neurons" ) &&
+                      attributes.hasAttribute( "swc" ) )
+                  {
+                    std::string swc =
+                        attributes.value( "swc" ).toString( ).toStdString( );
+
+                    SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+                        SOMA, NEURONMORPHOLOGY, NEURON > swcReader;
+                     NeuronMorphologyPtr neuronMorphology =
+                         swcReader.readMorphology( swc );
+                     if ( neuronMorphology )
+                     {
+                       QStringList neurons =
+                           attributes.value("neurons").toString( ).split(',');
+                       NSOL_FOREACH( n, neurons )
+                       {
+                         std::map<unsigned int, NeuronPtr>::iterator neuronFind =
+                             neuronsMap.find(( *n ).toUInt( ));
+                         if( neuronFind != neuronsMap.end( ))
+                         {
+                           NeuronPtr neuron = neuronFind->second;
+                           neuron->morphology( neuronMorphology );
+                         }
+                       }
+                     }
+
+                  }
+                }
+              }
+            }
+          }
+        }
+        else if ( xml.name( ) == "ciruit" )
+        {
+          //TODO
+        }
+        else
+          NSOL_THROW ( std::string( "Element <" ) +
+              xml.name( ).toString( ).toStdString( ) +
+              std::string( "> not expected" ) );
+      }
+    }
+
+#endif
   protected:
 
     Columns _columns;

@@ -1,5 +1,7 @@
 #include <set>
 #include "DataSet.h"
+#include "error.h"
+
 
 namespace nsol
 {
@@ -19,7 +21,8 @@ namespace nsol
       {
         NSOL_FOREACH( neuron, ( *miniCol )->neurons( ))
         {
-          morphologies.insert(( *neuron )->morphology( ));
+          if ( (*neuron )->morphology( ) )
+            morphologies.insert(( *neuron )->morphology( ));
           delete *neuron;
         }
         delete *miniCol;
@@ -67,7 +70,6 @@ namespace nsol
   {
     return _columns;
   }
-
 
 
 } // namespace nsol
