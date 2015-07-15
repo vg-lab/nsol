@@ -3,5 +3,5 @@ set(NSOL_BINARY_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 configure_file(
   scene.xml.in
-  ${NSOL_BINARY_BIN_DIR}
+  ${NSOL_BINARY_BIN_DIR}/scene.xml
   @ONLY )
