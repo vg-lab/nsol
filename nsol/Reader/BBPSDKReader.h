@@ -23,6 +23,7 @@
 #include "../NsolTypes.h"
 #include "../Dendrite.h"
 #include "../NeuronMorphology.h"
+#include "../Synapse.h"
 #include "../Circuit.h"
 
 #include "SwcReader.h"
@@ -119,6 +120,23 @@ namespace nsol
                         const std::string inputFile,
                         const int loadFlags,
                         const std::string& targetLabel );
+
+    /**
+     * Method to get a circuit of neurons for BBPSDK experiment
+     * allocated in memory
+     * @param inputFile blue config file to read
+     * @param loadFlags Structures to be loaded. By default
+     *                     nsol::CIRCUIT
+     * @param bbpTarget BBPSDK target to be used.
+     *                  By default a new one is created
+     * @param id_circuit to id of the circuit.
+     * @return a circuit of neurons
+     */
+    Circuit&
+    readFromBlueConfig( const std::string inputFile,
+    					const int loadFlags,
+    					const std::string& targetLabel,
+    					const unsigned short id_circuit);
 
     void deleteAll( Columns& columns )
     {
@@ -584,8 +602,7 @@ namespace nsol
 	  std::vector< NeuronPtr > 				       neuronVector;
 	  std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
 
-	  // REVIEW: Detect which flags must be passed to the bbpsdk loader
-	  // - CIRCUIT, MORPHOLOGY, SIMULATION_DATA
+	  // Detect which flags must be passed to the bbpsdk loader
 	  int bbpDataTypes = 0;
 	  if( loadFlags | CIRCUIT)
 		  bbpDataTypes |= (bbp::MICROCIRCUIT      | bbp::SYNAPSES|
@@ -624,12 +641,12 @@ namespace nsol
 		  const bbp::Synapses &synapsesExpe = neuronIt->efferent_synapses();
 		  NSOL_FOREACH( synapseIt, synapsesExpe )// her efferent synapses
 		  {
-			  SynapsePtr efferent_synapse (new nsol::Synapse());
+			  nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
 
 			  NeuronPtr  preSynNeuron(new NEURON( )); //presynaptic  neuron
 			  neuronVector.push_back( preSynNeuron );
-			  std::cerr << "Presynaptic Neuron " << synapseIt._synapse.
-					  	    presynaptic_neuron().label() << " with morphology "
+			  std::cerr << "Presynaptic Neuron " << synapseIt->
+					  	    presynaptic_neuron()->label() << " with morphology "
 			  << synapseIt._synapse.presynaptic_neuron().morphology().label()
 			  << std::endl;
 
