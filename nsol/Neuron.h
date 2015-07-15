@@ -33,6 +33,7 @@ namespace nsol
 
     //! Type of dendrite
     typedef enum {
+      UNDEFINED = -1,
       PYRAMIDAL = 0,
       INTER
     } TNeuronType;

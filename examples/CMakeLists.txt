@@ -4,13 +4,10 @@
 add_executable(SwcReader SwcReader.cpp)
 target_link_libraries(SwcReader ${NSOL_LINK_LIBRARIES} nsol)
 
-
 if (BBPSDK_FOUND)
-
   add_executable(BBPSDKLoader BBPSDKLoader.cpp)
   target_link_libraries(BBPSDKLoader ${NSOL_LINK_LIBRARIES} nsol)
  add_definitions(-DWITH_BBPSDK)
-
 endif()
 
 add_executable(example1 example1.cpp)
@@ -36,3 +33,11 @@ target_link_libraries(factory ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(dataset dataset.cpp)
 target_link_libraries(dataset ${NSOL_LINK_LIBRARIES} nsol)
+
+if (QT5CORE_FOUND)
+  add_executable(scene scene.cpp)
+  target_link_libraries(scene
+    ${NSOL_LINK_LIBRARIES}
+    nsol
+ )
+endif( )
