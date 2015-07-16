@@ -119,6 +119,13 @@ namespace nsol
                         const int bbpDataTypes,
                         const std::string& targetLabel );
 
+    SimulationData&
+    readSimulationDataFromBlueConfig(
+      const std::string inputFile,
+      const int loadFlags,
+      const std::string& targetLabel,
+      const std::string& reportCategory);
+
     void deleteAll( std::map<unsigned int, ColumnPtr>& columns )
     {
       std::set< NeuronMorphologyPtr > morphologies;
@@ -186,7 +193,7 @@ namespace nsol
 
   protected:
     std::map<unsigned int, ColumnPtr> columnMap;
-
+    SimulationData simulationData;
 
   };
 
@@ -253,7 +260,8 @@ namespace nsol
                 << std::endl;
     }
 
-    std::vector< NeuronPtr > neuronVector;
+    //std::vector< NeuronPtr > neuronVector;
+    std::map<bbp::Neuron*, NeuronPtr> neuronMap;
     std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
     std::map< unsigned int, MiniColumnPtr > miniColumnMap;
 
@@ -287,7 +295,10 @@ namespace nsol
                << it->morphology().label() << std::endl;
 
       NeuronPtr neuron (new NEURON( )); //New neuron
-      neuronVector.push_back( neuron );
+      //neuronVector.push_back( neuron );
+      neuronMap.insert
+            (std::pair<bbp::Neuron*, NeuronPtr>
+            (it, neuron));
 
       bool miniColumnExist;
 
@@ -754,25 +765,17 @@ namespace nsol
     return columnMap;
   }
 
-  /*
-
    // BBPSDKReader for SimulationData.
 
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
   SimulationData&
   BBPSDKReaderTemplated
-  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
+  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readSimulationDataFromBlueConfig(
     const std::string inputFile,
     const int loadFlags,
     const std::string& targetLabel = std::string( "" ),
-    const std::string& reportCategory = std::string( "voltage" ),
-    const float lowerTimestamp,
-    const float upperTimestamp,
-    const float timestep)
+    const std::string& reportCategory = std::string( "voltage" ))
   {
-    // SimulationData object is initialized.
-    SimulationData simData;
-
     // BBP Experiment is opened with a BlueConfig file.
     bbp::Experiment experiment;
     //std::cerr << inputFile << ": Opening experiment " << std::endl;
@@ -783,8 +786,8 @@ namespace nsol
       //std::cerr << inputFile << ": Experiment could not be opened"
       //<< std::endl;
 
-      //simData is returned empty.
-      return simData;
+      //simulationData is returned empty.
+      return simulationData;
     }
 
     // Get the specification of a simulation recording of a compartment voltage
@@ -795,8 +798,8 @@ namespace nsol
     {
       //std::cerr << "No \"voltage\" report found" << std::endl;
 
-      //simData is returned empty.
-      return simData;
+      //simulationData is returned empty.
+      return simulationData;
     }
 
     // Get the specific target.
@@ -814,14 +817,14 @@ namespace nsol
 
     // For each timestamp and neuron a SimulationData::Record is created
     // saving neuron voltage.
-    for (float ts = lowerTimestamp;
-               ts <= upperTimestamp;
-               ts += timestep)
+    for (float currentTimestamp = reader.getStartTime();
+               currentTimestamp <= reader.getEndTime();
+               currentTimestamp += reader.getTimestep())
     {
       // A specific frame is loaded in the microcircuit.
       bbp::CompartmentReportFrame frame;
 
-      if( !reader.loadFrame( timestamp, frame ))
+      if( !reader.loadFrame( currentTimestamp, frame ))
       {
         //std::cerr << "Could not load frame at " << timestamp << "ms"
         //<< std::endl;
@@ -841,22 +844,21 @@ namespace nsol
       NSOL_FOREACH( it, neuronsExpe )
       {
         // We have to build a nsol Neuron using a BBPSDK Neuron.
-        NeuronPtr nsolNeuron (*it);
+        NeuronPtr nsolNeuron =
+          neuronMap[it];
 
-        SimulationData::Record record(ts,
+        SimulationData::Record record(currentTimestamp,
                                       reportCategory,
                                       nsolNeuron,
                                       it->voltage());
 
         // SimulationData is filled.
-        simData.insert(record);
+        simulationData.insert(record);
       }
     }
 
-    return simData;
+    return simulationData;
   }
-
-  */
 
 } // namespace nsol
 
