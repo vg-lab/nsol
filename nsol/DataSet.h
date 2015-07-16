@@ -247,7 +247,7 @@ namespace nsol
                                 attributes.value( "gid" ).toUInt( );
                             unsigned int layer = 1;
                             nsol::Neuron::TNeuronType type =
-                                nsol::Neuron::PYRAMIDAL;
+                                nsol::Neuron::UNDEFINED;
                             Matrix4_4f transform = Matrix4_4f::IDENTITY;
 
                             if ( attributes.hasAttribute( "layer" ))
@@ -258,13 +258,19 @@ namespace nsol
                               std::string typeString(
                                   attributes.value( "type" ).toString( ).toStdString( ));
 
-                              if ( typeString.compare( "INTERNEURON" ))
+                              if ( typeString == "INTERNEURON" )
                               {
                                 type = nsol::Neuron::INTER;
                               }
-                              else if( typeString.compare( "PYRAMIDAL" ))
+                              else if( typeString == "PYRAMIDAL" )
                               {
                                 type = nsol::Neuron::PYRAMIDAL;
+                              }
+                              else
+                              {
+                                NSOL_LOG( std::string( "Neuron " ) +
+                                    std::to_string( gid ) +
+                                    std::string( " undefined type." ));
                               }
                             }
                             // Looking for transform in neuron
