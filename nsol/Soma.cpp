@@ -41,6 +41,11 @@ namespace nsol
     return _maxRadius;
   }
 
+  void Soma::center( Vec3f center_ )
+  {
+    _center = center_;
+  }
+
   void Soma::addNode( NodePtr node )
   {
     _nodes.push_back(node);

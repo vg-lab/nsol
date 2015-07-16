@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
   cout << "Reading file " << argv[1] << endl;
 
-  NeuronMorphologyPtr n = r.readFile(argv[1]);
+  NeuronMorphologyPtr n = r.readMorphology(argv[1]);
 
   if (!n)
     return -1;
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   cout << "Filename to export: ";
   cin >> filename;
 
-  w.writeFile(filename, n);
+  w.writeMorphology(filename, n);
 
 //  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
 
