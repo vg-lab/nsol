@@ -258,11 +258,11 @@ namespace nsol
                               std::string typeString(
                                   attributes.value( "type" ).toString( ).toStdString( ));
 
-                              if ( typeString.compare( "INTERNEURON" ))
+                              if ( typeString == "INTERNEURON" )
                               {
                                 type = nsol::Neuron::INTER;
                               }
-                              else if( typeString.compare( "PYRAMIDAL" ))
+                              else if( typeString == "PYRAMIDAL" )
                               {
                                 type = nsol::Neuron::PYRAMIDAL;
                               }
