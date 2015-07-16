@@ -15,7 +15,8 @@ int main( int argc, char *argv[] )
     std::cerr << "Error: blueconfig file parameter needed." << std::endl;
 
   Columns columns;
-  r.readFromBlueConfig( columns, argv[1] );
+  Circuit circuit;
+  r.readFromBlueConfig( columns, circuit, argv[1] );
 
   if (!columns.empty())
   {
