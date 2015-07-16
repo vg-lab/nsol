@@ -75,25 +75,25 @@ namespace nsol
 
   public:
 
-    const std::map<unsigned int, ColumnPtr> &
-    readExperiment(const char *inputFile,
-                   unsigned int directory = 0)
-    {
-      if (directory)
-        return this->readFromDirectory(std::string(inputFile));
-      else
-        return this->readFromBlueConfig(std::string(inputFile));
-    }
+    // const std::map<unsigned int, ColumnPtr> &
+    // readExperiment(const char *inputFile,
+    //                unsigned int directory = 0)
+    // {
+    //   if (directory)
+    //     return this->readFromDirectory(std::string(inputFile));
+    //   else
+    //     return this->readFromBlueConfig(std::string(inputFile));
+    // }
 
-    const std::map<unsigned int, ColumnPtr> &
-    readExperiment( const std::string inputFile,
-                    unsigned int directory = 0)
-    {
-      if (directory)
-        return this->readFromDirectory(inputFile);
-      else
-        return this->readFromBlueConfig(inputFile);
-    }
+    // const std::map<unsigned int, ColumnPtr> &
+    // readExperiment( const std::string inputFile,
+    //                 unsigned int directory = 0)
+    // {
+    //   if (directory)
+    //     return this->readFromDirectory(inputFile);
+    //   else
+    //     return this->readFromBlueConfig(inputFile);
+    // }
 
 
     /**
@@ -101,38 +101,41 @@ namespace nsol
      * @param directory where the files are allocated
      * @return map with columns
      */
-    std::map<unsigned int, ColumnPtr> & readFromDirectory(
-      const std::string inputFile );
+    void readFromDirectory( Columns& columns,
+                            const std::string inputFile );
 
     /**
      * Method to get a columns for BBPSDK experiment allocated in memory
+     * @param columns output morphology
      * @param inputFile blue config file to read
      * @param bbpTarget BBPSDK target to be used.
      *                  By default a new one is created
-     * @param bbpDataTypes Structures to be loaded. By default
-     *                     bbp::MICROCIRCUIT  | bbp::AFFERENT_SYNAPSES |
-     *                     bbp::EFFERENT_SYNAPSES is used
-     * @return map with columns
+     * @param loadFlags Structures to be loaded. By default
+     *                     nsol::MORPHOLOGY
      */
-    std::map<unsigned int, ColumnPtr> &
-    readFromBlueConfig( const std::string inputFile,
-                        const int bbpDataTypes,
-                        const std::string& targetLabel );
+    void readFromBlueConfig( Columns& columns,
+                             SimulationData& simulationData,
+                             const std::string inputFile,
+                             const int loadFlags,
+                             const std::string& targetLabel,
+                             const std::string& reportCategory );
 
+    /*
     SimulationData&
     readSimulationDataFromBlueConfig(
       const std::string inputFile,
       const int loadFlags,
       const std::string& targetLabel,
       const std::string& reportCategory);
+    */
 
-    void deleteAll( std::map<unsigned int, ColumnPtr>& columns )
+    void deleteAll( Columns& columns )
     {
       std::set< NeuronMorphologyPtr > morphologies;
 
       NSOL_FOREACH( col, columns )
       {
-        NSOL_FOREACH( miniCol, col->second->miniColumns( ))
+        NSOL_FOREACH( miniCol, ( *col )->miniColumns( ))
         {
           NSOL_FOREACH( neuron, ( *miniCol )->neurons( ))
           {
@@ -141,7 +144,7 @@ namespace nsol
           }
           delete *miniCol;
         }
-        delete col->second;
+        delete *col;
       }
 
       std::set< NodePtr > nodes;
@@ -179,7 +182,6 @@ namespace nsol
       return;
     }
 
-
   private:
 
     // Types of SWC nodes
@@ -191,10 +193,8 @@ namespace nsol
       SWC_APICAL = 4
     } TSwcNodeType;
 
-  protected:
-    std::map<unsigned int, ColumnPtr> columnMap;
-    SimulationData simulationData;
-
+  // protected:
+  //   std::map<unsigned int, ColumnPtr> columnMap;
   };
 
 
@@ -240,14 +240,19 @@ namespace nsol
    * @return map with columns
    */
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
-  std::map<unsigned int, ColumnPtr> &
+  void
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
+    Columns& columns,
+    SimulationData& simulationData,
     const std::string inputFile,
-    const int bbpDataTypes =
-      bbp::MICROCIRCUIT | bbp::AFFERENT_SYNAPSES | bbp::EFFERENT_SYNAPSES ,
-    const std::string& targetLabel = std::string( "" ))
+    const int loadFlags = MORPHOLOGY,
+    const std::string& targetLabel = std::string( "" ),
+    const std::string& reportCategory = std::string( "voltage" ) )
   {
+
+    if ( loadFlags == 0 )
+      return;
 
     // A bbpsdk experiment is opened
     bbp::Experiment experiment;
@@ -258,12 +263,23 @@ namespace nsol
     if (!experiment.is_open()) {
       std::cerr << inputFile << ": Experiment could not be opened"
                 << std::endl;
+
+      return;
     }
 
-    //std::vector< NeuronPtr > neuronVector;
+    // Detect which flags must be passed to the bbpsdk loader
+    int bbpDataTypes = 0;
+    if ( loadFlags | MORPHOLOGY )
+       bbpDataTypes |= ( bbp::NEURONS | bbp::MORPHOLOGIES );
+
+    if ( loadFlags | SIMULATION_DATA )
+       bbpDataTypes |= ( bbp::NEURONS );
+
+    // Morphology data structures
+    std::map<unsigned int, ColumnPtr> columnMap;
+    std::map< unsigned int, MiniColumnPtr > miniColumnMap;
     std::map<bbp::Neuron*, NeuronPtr> neuronMap;
     std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
-    std::map< unsigned int, MiniColumnPtr > miniColumnMap;
 
     // The microcircuit of the experiment loads the data
     const bbp::Cell_Target& target =
@@ -545,19 +561,79 @@ namespace nsol
       } // morphology not previously loaded
     }
 
+    // << Treatment Simulation Data >>
+    if(loadFlags | SIMULATION_DATA)
+    {
+    // Create a report reader that reads from the report file referenced
+    // in this report specification
+    // Get the specification of a simulation recording of a compartment voltage
+    // (or another report category) variable report.
+    bbp::Reports_Specification::const_iterator reportSpecIterator =
+      experiment.reports().find( reportCategory );
+      if( reportSpecIterator == experiment.reports().end())
+      {
+        //std::cerr << "No \"voltage\" report found" << std::endl;
+
+        //simulationData is returned empty.
+        return;
+      }
+      // Create a report reader that reads from the report file referenced
+      // in this report specification
+      bbp::CompartmentReportReader reader( *reportSpecIterator, target );
+      // For each timestamp and neuron a SimulationData::Record is created
+      // saving neuron voltage.
+      for (float currentTimestamp = reader.getStartTime();
+                 currentTimestamp <= reader.getEndTime();
+                 currentTimestamp += reader.getTimestep())
+      {
+        // A specific frame is loaded in the microcircuit.
+        bbp::CompartmentReportFrame frame;
+
+        if( !reader.loadFrame( currentTimestamp, frame ))
+        {
+          //std::cerr << "Could not load frame at " << timestamp << "ms"
+          //<< std::endl;
+
+          // If there is no info in that frame, this loop continues.
+          continue;
+        }
+
+        mcp.update(frame);
+
+        // For each neuron, voltage is saved in SimulationData object.
+        NSOL_FOREACH( it, neuronsExpe )
+        {
+          SimulationData::Record record(currentTimestamp,
+                                        reportCategory,
+                                        neuronMap[it],
+                                        it->voltage());
+
+          // SimulationData is filled.
+          simulationData.insert(record);
+        }
+      }
+    } //simulation data
+
     // close experiment and free its resources
     experiment.close( );
 
-    return columnMap;
+    NSOL_FOREACH( column, columnMap )
+      columns.push_back( column->second );
+
+    return;
 
   }
 
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
-  std::map<unsigned int, ColumnPtr> &
+  void
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromDirectory(
+    Columns& columns,
     const std::string inputFile)
   {
+
+    std::map<unsigned int, ColumnPtr> columnMap;
+
     SwcReader r;
     bool findCsv = false;
 
@@ -733,7 +809,7 @@ namespace nsol
                 std::cerr << "Loading morphology file "
                      << csvLine.morphoLabel << ".swc"
                           << std::endl;
-                NeuronMorphologyPtr m = r.readFile(
+                NeuronMorphologyPtr m = r.readMorphology(
                   dir + csvLine.morphoLabel + ".swc");
 
                 if (!m)
@@ -762,11 +838,15 @@ namespace nsol
     if (!findCsv)
       std::cerr << "Neuron file not found." << std::endl;
 
-    return columnMap;
+    NSOL_FOREACH( column, columnMap )
+      columns.push_back( column->second );
+
+    return;
   }
 
-   // BBPSDKReader for SimulationData.
+  /*
 
+   // BBPSDKReader for SimulationData.
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
   SimulationData&
   BBPSDKReaderTemplated
@@ -859,6 +939,8 @@ namespace nsol
 
     return simulationData;
   }
+
+  */
 
 } // namespace nsol
 

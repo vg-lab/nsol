@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scene version="0.1">
+
+  <morphology>
+
+    <columns>
+      <column id="0">
+
+        <minicolumn id="0">
+          <neuron gid="0" layer="2">
+          </neuron>
+          <neuron gid="1" layer="3" type="INTERNEURON">
+            <transform>
+              1.0, 0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0, 40.0,
+              0.0, 0.0, 1.0, 0.0,
+              0.0, 0.0, 0.0, 1.0
+            </transform>
+          </neuron>
+        </minicolumn>
+
+        <minicolumn id="1">
+          <neuron gid="2" type="PYRAMIDAL">
+            <transform>
+              1.0, 0.0, 0.0, 20.0,
+              0.0, 1.0, 0.0, 20.0,
+              0.0, 0.0, 1.0, 0.0,
+              0.0, 0.0, 0.0, 1.0
+            </transform>
+          </neuron>
+        </minicolumn>
+
+      </column>
+
+      <column id="1">
+        <minicolumn id="0">
+          <neuron gid="3" type="PYRAMIDAL">
+            <transform>
+              1.0, 0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0, 0.0,
+              0.0, 0.0, 1.0, 30.0,
+              0.0, 0.0, 0.0, 1.0
+            </transform>
+          </neuron>
+        </minicolumn>
+      </column>
+
+    </columns>
+
+    <neuronmorphologies>
+      <neuronmorphology neurons="0,1" swc="@NSOL_TESTDATA_SRC_DIR@/ExampleNeuron.swc" />
+      <neuronmorphology neurons="2,3" swc="@NSOL_TESTDATA_SRC_DIR@/ExampleNeuron.swc" />
+    </neuronmorphologies>
+
+  </morphology>
+
+</scene>
