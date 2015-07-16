@@ -116,9 +116,9 @@ namespace nsol
     void readFromBlueConfig( Columns& columns,
                              SimulationData& simulationData,
                              const std::string inputFile,
-                             const int loadFlags,
-                             const std::string& targetLabel,
-                             const std::string& reportCategory );
+                             const int loadFlags = MORPHOLOGY,
+                             const std::string& targetLabel = std::string( "" ),
+                             const std::string& reportCategory = std::string( "voltage" ) );
 
     /*
     SimulationData&
@@ -246,9 +246,9 @@ namespace nsol
     Columns& columns,
     SimulationData& simulationData,
     const std::string inputFile,
-    const int loadFlags = MORPHOLOGY,
-    const std::string& targetLabel = std::string( "" ),
-    const std::string& reportCategory = std::string( "voltage" ) )
+    const int loadFlags,
+    const std::string& targetLabel,
+    const std::string& reportCategory )
   {
 
     if ( loadFlags == 0 )
@@ -278,7 +278,7 @@ namespace nsol
     // Morphology data structures
     std::map<unsigned int, ColumnPtr> columnMap;
     std::map< unsigned int, MiniColumnPtr > miniColumnMap;
-    std::map<bbp::Neuron*, NeuronPtr> neuronMap;
+    std::map< const bbp::Neuron*, NeuronPtr > neuronMap;
     std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
 
     // The microcircuit of the experiment loads the data
@@ -303,18 +303,19 @@ namespace nsol
     std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
               << " neurons. " << std::endl;
 
-    // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
-    //      it != neuronsExpe.end(); ++it)
-    NSOL_FOREACH( it, neuronsExpe )
+    for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
+         it != neuronsExpe.end(); ++it)
+    //NSOL_FOREACH( it, neuronsExpe )
     {
       std::cerr << "Neuron " << it->label() << " with morphology "
                << it->morphology().label() << std::endl;
 
       NeuronPtr neuron (new NEURON( )); //New neuron
+      const bbp::Neuron* bbpNeuron = &(*it);
       //neuronVector.push_back( neuron );
       neuronMap.insert
-            (std::pair<bbp::Neuron*, NeuronPtr>
-            (it, neuron));
+            (std::pair<const bbp::Neuron*, NeuronPtr>
+            (bbpNeuron, neuron));
 
       bool miniColumnExist;
 
@@ -561,6 +562,9 @@ namespace nsol
       } // morphology not previously loaded
     }
 
+    NSOL_FOREACH( column, columnMap )
+      columns.push_back( column->second );
+
     // << Treatment Simulation Data >>
     if(loadFlags | SIMULATION_DATA)
     {
@@ -598,27 +602,35 @@ namespace nsol
           continue;
         }
 
-        mcp.update(frame);
+        mcp.update( frame );
 
+        const bbp::Neuron* bbpNeuron;
         // For each neuron, voltage is saved in SimulationData object.
         NSOL_FOREACH( it, neuronsExpe )
         {
-          SimulationData::Record record(currentTimestamp,
-                                        reportCategory,
-                                        neuronMap[it],
-                                        it->voltage());
+          bbpNeuron = &( *it );
+          std::map< const bbp::Neuron*, NeuronPtr >::iterator nit =
+              neuronMap.find( bbpNeuron );
 
-          // SimulationData is filled.
-          simulationData.insert(record);
+          nsol::NeuronPtr nsolNeuron = nullptr;
+          if ( nit != neuronMap.end( ))
+          {
+            nsolNeuron = nit->second;
+
+            SimulationData::Record record( currentTimestamp,
+                                           reportCategory,
+                                           nsolNeuron,
+                                           it->voltage( ));
+
+            // SimulationData is filled.
+            simulationData.insert( record );
+          }
         }
       }
     } //simulation data
 
     // close experiment and free its resources
     experiment.close( );
-
-    NSOL_FOREACH( column, columnMap )
-      columns.push_back( column->second );
 
     return;
 
