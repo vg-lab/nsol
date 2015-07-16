@@ -54,5 +54,8 @@ add_subdirectory(tests)
 # examples subdirectory
 add_subdirectory(examples)
 
+# examples subdirectory
+add_subdirectory(testData)
+
 include(CPackConfig)
 include(DoxygenRule)
