@@ -129,7 +129,7 @@ namespace nsol
 
     }
 
-#ifdef NSOL_WITH_QT5CORE
+
     template < class NODE = Node,
 	       class SEGMENT = Segment,
 	       class SECTION = Section,
@@ -142,6 +142,7 @@ namespace nsol
 	       class COLUMN = Column >
     void loadScene( const std::string& xmlSceneFile )
     {
+#ifdef NSOL_WITH_QT5CORE
       QFile qFile ( xmlSceneFile.c_str( ));
       if ( ! qFile.exists( ))
         NSOL_THROW( "Scene file not found" );
@@ -361,9 +362,13 @@ namespace nsol
               xml.name( ).toString( ).toStdString( ) +
               std::string( "> not expected" ) );
       }
+#else
+      NSOL_THROW( std::string( "QT5CORE not compile support" ));
+#endif
+
     }
 
-#endif
+
   protected:
 
     Columns _columns;
