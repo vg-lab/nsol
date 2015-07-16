@@ -1206,6 +1206,425 @@ namespace nsol
   }
 
 
+  /**
+   * Method to get morphology, simulation and/or simulation data for BBPSDK
+   * experiment allocated in memory
+   * @param inputFile blue config file to read
+   * @return map with columns
+   */
+  template < BBPSDK_LOADER_TEMPLATE_CLASSES >
+  //  std::map<unsigned int, ColumnPtr> &
+  void
+  BBPSDKReaderTemplated
+  < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
+    Columns& columns, SimulationData& simulationData, Circuit& circuit,
+    const std::string inputFile,
+    const int loadFlags = MORPHOLOGY,
+    const std::string& targetLabel = std::string( "" ),
+    const std::string& reportCategory = std::string( "voltage" ),
+    const unsigned short id_circuit = 0)
+  {
+	  if ( loadFlags == 0 )
+	       return;
+
+	 // A bbpsdk experiment is opened
+	 bbp::Experiment experiment;
+	 std::cerr << inputFile << ": Opening experiment " << std::endl;
+	 experiment.open(inputFile);
+	 std::cerr << inputFile << ": DONE " << std::endl;
+
+	 if (!experiment.is_open()) {
+	   std::cerr << inputFile << ": Experiment could not be opened"
+				 << std::endl;
+	   return;
+	 }
+
+	 // Detect which flags must be passed to the bbpsdk loader
+	 int bbpDataTypes = 0;
+	 if ( loadFlags | MORPHOLOGY )
+		  bbpDataTypes |= ( bbp::NEURONS | bbp::MORPHOLOGIES );
+
+	 if ( loadFlags | SIMULATION_DATA )
+		  bbpDataTypes |= ( bbp::NEURONS);
+
+	 if( loadFlags | CIRCUIT)
+		  bbpDataTypes |= (bbp::MICROCIRCUIT      | bbp::SYNAPSES|
+						   bbp::AFFERENT_SYNAPSES | bbp::EFFERENT_SYNAPSES);
+
+	 // Morphology data structures
+	 //std::vector< NeuronPtr > neuronVector;
+	 std::map<unsigned int, ColumnPtr> columnMap;
+	 std::map< unsigned int, MiniColumnPtr > miniColumnMap;
+	 std::map<bbp::Neuron*, NeuronPtr> neuronMap;
+	 std::map< std::string, NeuronMorphologyPtr > neuronMorphoMap;
+
+	 // The microcircuit of the experiment loads the data
+	 const bbp::Cell_Target& target =
+	   ( targetLabel == "" ) ? bbp::Cell_Target( ) :
+	   experiment.cell_target( targetLabel );
+
+	 bbp::Microcircuit & mcp = experiment.microcircuit();
+	 //bbp::Cell_Target target;
+
+	 //    mcp.load( bbpTarget, bbpDataTypes );
+	 mcp.load( target, bbpDataTypes );
+
+	 const bbp::Neurons &neuronsExpe = experiment.microcircuit().neurons();
+
+	 std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
+			   << " neurons. " << std::endl;
+
+	 NSOL_FOREACH( it, neuronsExpe )
+	 {
+	   std::cerr << "Neuron " << it->label() << " with morphology "
+				<< it->morphology().label() << std::endl;
+
+	   NeuronPtr neuron (new NEURON( )); //New neuron
+	   //neuronVector.push_back( neuron );
+	   neuronMap.insert
+	   (std::pair<bbp::Neuron*, NeuronPtr>
+	   (it, neuron));
+
+	   bool miniColumnExist;
+
+	   // MiniColumn control
+	   if (miniColumnMap.find(it->minicolumn()) != miniColumnMap.end())
+	   {
+		 //MiniColumn exist
+		 neuron->miniColumn(miniColumnMap[it->minicolumn()]);
+		 miniColumnExist = true;
+	   }
+	   else
+	   {
+		 // MiniColumn does not exist
+
+		 miniColumnExist = false;
+		 miniColumnMap[it->minicolumn()] =
+		   MiniColumnPtr( new MINICOLUMN( nullptr,
+										  it->minicolumn()) );
+		 neuron->miniColumn(miniColumnMap[it->minicolumn()]);
+	   }
+
+	   // Column control
+	   if (columnMap.find(it->column()) != columnMap.end())
+		 // Column exist
+		 neuron->miniColumn()->column(columnMap[it->column()]);
+	   else
+	   {
+		 //Column does not exist
+		 columnMap[it->column()] = ColumnPtr(new COLUMN(it->column()));
+		 neuron->miniColumn()->column(columnMap[it->column()]);
+	   }
+
+	   //Add neuron to minicolumn
+	   miniColumnMap[it->minicolumn()]->addNeuron( neuron );
+
+	   //Add minicolumn to column
+	   if (!miniColumnExist)
+		 columnMap[it->column()]->addMiniColumn(
+		   miniColumnMap[it->minicolumn()]);
+
+	   //Morphology previously loaded
+	   if (neuronMorphoMap.find(it->morphology().label()) !=
+		   neuronMorphoMap.end())
+	   {
+		 std::cerr << "Morphology previously loaded" << std::endl;
+
+		 NeuronMorphologyPtr m =
+		   neuronMorphoMap.find(it->morphology().label())->second;
+
+		 neuron->morphology( m );
+		 m->addParentNeuron( neuron );
+
+		 neuron->layer() = it->layer();
+		 neuron->transform() = it->global_transform();
+		 neuron->gid() = it->gid();
+
+		 if ( m->apicalDendrite( ))
+		   neuron->neuronType( ) = Neuron::PYRAMIDAL;
+		 else
+		   neuron->neuronType( ) = Neuron::INTER;
+
+	   }
+	   else
+	   {
+		 std::cerr << "Loading morphology " << it->morphology().label()
+				   << std::endl;
+
+		 NeuronMorphologyPtr m ( new NEURONMORPHOLOGY ( new SOMA ));
+
+		 neuronMorphoMap[it->morphology().label()] = m;
+
+		 neuron->morphology(m);
+		 m->addParentNeuron( neuron );
+
+		 neuron->layer() = it->layer();
+		 neuron->transform() = it->global_transform();
+		 neuron->gid() = it->gid();
+
+		 unsigned int id = 1;
+
+		 //Getting morphology of the neuron
+		 const bbp::Morphology &morphology = it->morphology();
+		 //Getting soma of the morphology
+		 const bbp::Soma &soma = morphology.soma();
+		 //Writing soma
+		 // for (bbp::Soma::const_iterator nodeIt = soma.begin();
+		 //      nodeIt != soma.end(); ++nodeIt)
+		 NSOL_FOREACH( nodeIt, soma )
+		 {
+
+		   m->soma()->addNode(NodePtr(
+							   new NODE( Vec3f( ( * nodeIt)[0],
+												( * nodeIt)[1],
+												( * nodeIt)[2] ),
+										 id, soma.mean_radius( ))));
+
+		   id++;
+		 }
+
+		 const bbp::Sections &somas = morphology.somas();
+		 //Writing neurites
+		 // for (bbp::Sections::const_iterator sectionIt = somas.begin();
+		 //      sectionIt != somas.end(); sectionIt++)
+		 NSOL_FOREACH( sectionIt, somas )
+		 {
+
+		   bbp::Sections children = ( * sectionIt ).children();
+
+		   // for ( bbp::Sections::iterator cit = children.begin( );
+		   //       cit != children.end( ); cit++)
+		   NSOL_FOREACH( cit, children )
+		   {
+			 DendritePtr dendrite = nullptr;
+			 NeuritePtr neurite = nullptr;
+
+			 if ((*cit).type() == bbp::SECTION_AXON)
+			 {
+			   neurite = new AXON( );
+			   m->addNeurite( neurite );
+			 }
+			 else if ((*cit).type() == bbp::SECTION_DENDRITE)
+			 {
+			   dendrite = new DENDRITE( Dendrite::BASAL );
+			   m->addNeurite( dendrite);
+			 }
+			 else if ((*cit).type() == bbp::SECTION_APICAL_DENDRITE)
+			 {
+			   dendrite = new DENDRITE( Dendrite::APICAL );
+			   m->addNeurite( dendrite );
+			 }
+
+			 const bbp::Section * bbpSection = &(*cit);
+			 std::stack<const bbp::Section *> sPS;
+			 sPS.push(bbpSection);
+			 std::stack<SectionPtr> parents;
+			 parents.push(nullptr);
+			 bool first = true;
+			 NodePtr nPre = nullptr;
+			 std::map<unsigned int, NodePtr> nodePtrMap;
+
+			 while (!sPS.empty())
+			 {
+			   const bbp::Section *lS = sPS.top();
+			   sPS.pop();
+			   SectionPtr parentSection = parents.top();
+			   parents.pop();
+
+			   SectionPtr section ( new SECTION );
+			   if ( dendrite )
+			   {
+				 if ( ! dendrite->firstSection( ))
+				   dendrite->firstSection( section );
+
+				 section->neurite( dendrite);
+			   }
+			   else
+			   {
+				 if ( ! neurite->firstSection( ))
+				   neurite->firstSection( section );
+
+				 section->neurite( neurite );
+			   }
+
+			   section->parent( parentSection );
+			   SegmentPtr segment = section->addSegment( new SEGMENT );
+			   segment->parentSection( section );
+
+			   const bbp::Cross_Sections & cross_Sections =
+				 lS->cross_sections();
+
+			   bbp::Cross_Sections::const_iterator crossSectionIt =
+				 cross_Sections.begin();
+
+			   if (first)
+			   {
+				 //TODO: select correct initial soma point
+				 segment->begin(
+				   NodePtr( new NODE( Vec3f(0, 0, 0),
+									  1, 0.0 )));
+				 first = false;
+			   }
+			   else
+				 segment->begin(section->parent()->lastSegment()->end());
+
+			   segment->end(
+				 NodePtr(
+				   new NODE( Vec3f( crossSectionIt->center()[0],
+									crossSectionIt->center()[1],
+									crossSectionIt->center()[2] ),
+							 id, crossSectionIt->radius( ))));
+
+			   nodePtrMap[id] = segment->end();
+
+			   id++;
+
+			   if (parentSection)
+				 parentSection->addChild( section );
+
+			   nPre = segment->end();
+
+			   crossSectionIt++;
+
+			   for ( bbp::Cross_Sections::const_iterator itL =
+					   crossSectionIt; itL != cross_Sections.end();
+					 ++itL )
+			   {
+				 SegmentPtr crossSectionSegment =
+				   section->addSegment( new SEGMENT );
+				 crossSectionSegment->parentSection( section );
+				 crossSectionSegment->begin(nPre);
+
+				 crossSectionSegment->end(
+				   NodePtr( new NODE(
+							  Vec3f(itL->center()[0],
+									itL->center()[1],
+									itL->center()[2]),
+							  id, itL->radius())));
+
+				 nodePtrMap[id] = crossSectionSegment->end();
+
+				 id++;
+
+				 nPre = crossSectionSegment->end();
+			   }
+
+			   // for (bbp::Sections::const_iterator child =
+			   //        lS->children().begin();
+			   //      child != lS->children().end(); ++child)
+			   NSOL_FOREACH( child, lS->children( ))
+			   {
+				 sPS.push( & ( * child ) );
+				 parents.push( section );
+			   }
+
+			 } // while not stack empty
+		   } // for all soma section childs
+		 } // for all soma sections
+
+		 if ( m->apicalDendrite( ))
+		   neuron->neuronType( ) = Neuron::PYRAMIDAL;
+		 else
+		   neuron->neuronType( ) = Neuron::INTER;
+
+	   } // morphology not previously loaded
+	 }// Data neurons
+
+	 // << Treatment Circuit Data >>
+	 if(loadFlags | CIRCUIT)
+	 {
+		 circuit = new Circuit(id_circuit);
+		 // std::set<SynapsePtr>  efferentSynapses;//number of neurons it is the
+		 	 	 	 	 	 	 	 	 	 	  //same that afferent synapses
+		 NSOL_FOREACH( neuronIt, neuronsExpe )
+		 {
+			  const bbp::Synapses &synapsesExpe = neuronIt->efferent_synapses();
+			  NSOL_FOREACH( synapseIt, synapsesExpe )
+			  {
+				  nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
+
+				  // We have to build a nsol Neurons using a BBPSDK Neuron.
+				  NeuronPtr preSynNeuron  =  neuronMap[synapseIt.
+										    _synapse.presynaptic_neuron()];
+				  NeuronPtr postSynNeuron =  neuronMap[synapseIt.
+										    _synapse.postsynaptic_neuron()];
+
+				  efferent_synapse->preSynapticNeuron(preSynNeuron);
+				  efferent_synapse->postSynapticNeuron(postSynNeuron);
+
+				  // TODO: Treatment of synapse type
+
+				 // efferentSynapses.insert(efferent_synapse);
+				  circuit.addConnection(efferent_synapse);
+			  }
+		  }
+	 }//circuit data
+
+	 // << Treatment Simulation Data >>
+	 if(loadFlags | SIMULATION_DATA)
+	 {
+		 // Create a report reader that reads from the report file referenced
+		 // in this report specification
+		 // Get the specification of a simulation recording of a compartment voltage
+		 // (or another report category) variable report.
+		 bbp::Reports_Specification::const_iterator reportSpecIterator =
+		   experiment.reports().find( reportCategory );
+		 if( reportSpecIterator == experiment.reports().end())
+		 {
+		   //std::cerr << "No \"voltage\" report found" << std::endl;
+
+		   //simulationData is returned empty.
+		   return;
+		 }
+		// Create a report reader that reads from the report file referenced
+		// in this report specification
+		 bbp::CompartmentReportReader reader( *reportSpecIterator,
+											   target );
+		// For each timestamp and neuron a SimulationData::Record is created
+		// saving neuron voltage.
+		for (float currentTimestamp = reader.getStartTime();
+				   currentTimestamp <= reader.getEndTime();
+				   currentTimestamp += reader.getTimestep())
+		{
+		  // A specific frame is loaded in the microcircuit.
+		  bbp::CompartmentReportFrame frame;
+
+		  if( !reader.loadFrame( currentTimestamp, frame ))
+		  {
+			//std::cerr << "Could not load frame at " << timestamp << "ms"
+			//<< std::endl;
+
+			// If there is no info in that frame, this loop continues.
+			continue;
+		  }
+
+		  mcp.update(frame);
+
+		  // For each neuron, voltage is saved in SimulationData object.
+		  NSOL_FOREACH( it, neuronsExpe )
+		  {
+			// We have to build a nsol Neuron using a BBPSDK Neuron.
+			NeuronPtr nsolNeuron =  neuronMap[it];
+
+			SimulationData::Record record(currentTimestamp,
+										  reportCategory,
+										  nsolNeuron,
+										  it->voltage());
+
+			// SimulationData is filled.
+			simulationData.insert(record);
+		  }
+		}
+	 }//simulation data
+
+	 // close experiment and free its resources
+	 experiment.close( );
+
+	 NSOL_FOREACH( column, columnMap )
+	   columns.push_back( column->second );
+  }
+
+
   template < BBPSDK_LOADER_TEMPLATE_CLASSES >
   void
   BBPSDKReaderTemplated
