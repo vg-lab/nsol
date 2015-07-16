@@ -270,7 +270,7 @@ namespace nsol
                               {
                                 NSOL_LOG( std::string( "Neuron " ) +
                                     std::to_string( gid ) +
-                                    std::string( " undefined type." );
+                                    std::string( " undefined type." ));
                               }
                             }
                             // Looking for transform in neuron
