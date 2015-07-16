@@ -41,6 +41,7 @@ namespace nsol
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       reader.readFromBlueConfig( _columns,
+    		  	  	  	  	  	  _circuit,
                                  blueconfig,
                                  loadFlags,
                                  targetLabel );
@@ -58,6 +59,7 @@ namespace nsol
   protected:
 
     Columns _columns;
+    Circuit _circuit;
 
   }; // class DataSet
 
