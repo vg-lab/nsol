@@ -363,7 +363,8 @@ namespace nsol
               std::string( "> not expected" ) );
       }
 #else
-      NSOL_THROW( std::string( "QT5CORE not compile support" ));
+      NSOL_THROW( std::string("Can't load ") + xmlSceneFile +
+                  std::string( ". QT5CORE not supported" ));
 #endif
 
     }
