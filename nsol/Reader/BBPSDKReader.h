@@ -564,16 +564,16 @@ namespace nsol
 			  {
 				  nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
 
-				  bbp::Neuron bbpPreSynNeuron;
-				  bbp::Neuron bbpPostSynNeuron;
+				  const bbp::Neuron* bbpPreSynNeuron;
+				  const bbp::Neuron* bbpPostSynNeuron;
 
-				  bbpPreSynNeuron  = synapseIt->presynaptic_neuron();
-				  bbpPostSynNeuron = synapseIt->postsynaptic_neuron();
+				  bbpPreSynNeuron  = &(synapseIt->presynaptic_neuron());
+				  bbpPostSynNeuron = &(synapseIt->postsynaptic_neuron());
 
 				  std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
-				              neuronMap.find( &bbpPreSynNeuron );
+				              neuronMap.find( bbpPreSynNeuron );
 				  std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPost=
-							  neuronMap.find( &bbpPostSynNeuron );
+							  neuronMap.find( bbpPostSynNeuron );
 
 				  nsol::NeuronPtr nsolPreSynNeuron  = nullptr;
 				  nsol::NeuronPtr nsolPostSynNeuron = nullptr;
