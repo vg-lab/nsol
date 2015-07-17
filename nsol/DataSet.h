@@ -54,7 +54,7 @@ namespace nsol
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       reader.readFromBlueConfig( _columns,
-    		  	  	  	  	  	  _circuit,
+    		  	  	  	  	  	 _circuit,
                                  blueconfig,
                                  loadFlags,
                                  targetLabel );
