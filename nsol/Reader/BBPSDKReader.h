@@ -18,6 +18,7 @@
 #include <iostream>
 #include <stack>
 #include <map>
+#include <set>
 #include <dirent.h>
 
 #include "../NsolTypes.h"
@@ -554,46 +555,55 @@ namespace nsol
 	 // << Treatment Circuit Data >>
 	 if(loadFlags | CIRCUIT)
 	 {
-		 //circuit = new Circuit(id_circuit);
+		 std::cout << ": Loading Circuit Data ... " << std::endl;
+		 // circuit = new Circuit(id_circuit);
 		 // std::set<SynapsePtr>  efferentSynapses;//number of neurons it is the
 		 	 	 	 	 	 	 	 	 	 	  //same that afferent synapses
-		 NSOL_FOREACH( neuronIt, neuronsExpe )
+		 for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
+		          it != neuronsExpe.end(); ++it)
 		 {
-			  const bbp::Synapses &synapsesExpe = neuronIt->efferent_synapses();
-			  NSOL_FOREACH( synapseIt, synapsesExpe )
-			  {
-				  nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
+			const bbp::Neuron* bbpNeuron = &(*it);
+			//number of neurons it is the same that afferent synapses
+			const bbp::Synapses &synapsesExpe = bbpNeuron->afferent_synapses();
 
-				  const bbp::Neuron* bbpPreSynNeuron;
-				  const bbp::Neuron* bbpPostSynNeuron;
+			for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
+					  synapseIt != synapsesExpe.end(); ++synapseIt)
+			//NSOL_FOREACH( synapseIt, synapsesExpe )
+			{
 
-				  bbpPreSynNeuron  = &(synapseIt->presynaptic_neuron());
-				  bbpPostSynNeuron = &(synapseIt->postsynaptic_neuron());
 
-				  std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
-				              neuronMap.find( bbpPreSynNeuron );
-				  std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPost=
-							  neuronMap.find( bbpPostSynNeuron );
+			    nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
 
-				  nsol::NeuronPtr nsolPreSynNeuron  = nullptr;
-				  nsol::NeuronPtr nsolPostSynNeuron = nullptr;
+			    const bbp::Synapse bbpSynapse = (*synapseIt);
 
-				  if (( nitPre  != neuronMap.end( ))&&
-				      ( nitPost != neuronMap.end( )))
-			      {
-					  nsolPreSynNeuron  = nitPre->second;
-					  nsolPostSynNeuron = nitPost->second;
+				const bbp::Neuron* bbpPreSynNeuron = &(bbpSynapse.presynaptic_neuron());
+				const bbp::Neuron* bbpPostSynNeuron = &(bbpSynapse.postsynaptic_neuron());
 
-					  // We have to build a nsol Neurons using a BBPSDK Neuron.
-					  efferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
-					  efferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
+				std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
+				            neuronMap.find( bbpPreSynNeuron );
+				std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPost=
+					        neuronMap.find( bbpPostSynNeuron );
 
-					  // TODO: Treatment of synapse type
+				nsol::NeuronPtr nsolPreSynNeuron  = nullptr;
+				nsol::NeuronPtr nsolPostSynNeuron = nullptr;
 
-					  // efferentSynapses.insert(efferent_synapse);
-					  circuit.addConnection(efferent_synapse);
-				  }
-			  }
+				if (( nitPre  != neuronMap.end( ))&&
+				    ( nitPost != neuronMap.end( )))
+			    {
+					// New Synapse
+					nsolPreSynNeuron  = nitPre->second;
+					nsolPostSynNeuron = nitPost->second;
+
+					// We have to build a nsol Neurons using a BBPSDK Neuron.
+					efferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
+					efferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
+
+					// TODO: Treatment of synapse type
+					std::cout << "Adding one Efferent Synapse " << std::endl;
+					// efferentSynapses.insert(efferent_synapse);
+					circuit.addConnection(efferent_synapse);
+				}
+			}
 		  }
 	 }//circuit data
 
