@@ -6,6 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
             Do not distribute without further notice.
  */
+#ifdef NSOL_WITH_BBPSDK
 
 #include <nsol/nsol.h>
 #include <assert.h>
@@ -32,8 +33,7 @@ int main ( int argc, char *argv[] )
 	bbpReader.readFromBlueConfig( columns,
 								  circuit,
 								  argv[1],
-								  LoadFlags::CIRCUIT,
-								  "targetLabel");
+								  LoadFlags::CIRCUIT );
 
 	 cout << " EXECUTING CircuitLoader... " << endl;
 	 cout << endl; cout << endl; cout << endl;
@@ -47,23 +47,27 @@ int main ( int argc, char *argv[] )
 		 cout << "Number of synapses: " << synapses.size() <<endl;
 		 cout << endl;
 
-		 cout << "Synapses of the cirtuit: " << endl;
+		 cout << "Synapses of the circuit: " << endl;
 		 cout << endl;
 
 		 int numberSynapse = 0;
 
-		 for (set<SynapsePtr>::iterator synapseIt = synapses.begin();
-				 synapseIt != synapses.end(); ++synapseIt)
+		 //for (set<SynapsePtr>::iterator synapseIt = synapses.begin();
+		//		 synapseIt != synapses.end(); ++synapseIt)
+		 NSOL_FOREACH( synapseIt, synapses )
 		 {
-			 NeuronPtr preSynNeuron  = synapseIt->preSynapticNeuron();
-			 NeuronPtr postSynNeuron = synapseIt->postSynapticNeuron();
+			  NeuronPtr preSynNeuron  = nullptr;
+			  NeuronPtr postSynNeuron = nullptr;
+
+			  preSynNeuron  = (*synapseIt)->preSynapticNeuron();
+			  postSynNeuron = (*synapseIt)->postSynapticNeuron();
 
 			 cout << " Synapse " << numberSynapse << /*" - " <<
-					   synapseIt->synapseType()   <<*/ " = " << endl;
+					   int(synapseIt->synapseType())<<*/ " = " << endl;
 			 cout << " [Presynaptic Neuron] id: " << preSynNeuron->gid()
-			      << " type: " << preSynNeuron->neuronType()<< endl;
+			      << " type: " << int(preSynNeuron->neuronType())<< endl;
 			 cout << " [Postsynaptic Neuron] id: " << postSynNeuron->gid()
-				  << " type: " << postSynNeuron->neuronType()<< endl;
+				  << " type: " << int(postSynNeuron->neuronType())<< endl;
 			 cout << endl;
 
 			 numberSynapse++;
@@ -77,4 +81,6 @@ int main ( int argc, char *argv[] )
 
 	 cout << "Error: columns is empty. " << endl;
 	 return -1;
-}
+} // namespace nsol
+
+#endif // NSOL_WITH_BBPSDK
