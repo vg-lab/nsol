@@ -557,27 +557,27 @@ namespace nsol
 	 {
 		 std::cout << ": Loading Circuit Data ... " << std::endl;
 		 // circuit = new Circuit(id_circuit);
-		 // std::set<SynapsePtr>  efferentSynapses;//number of neurons it is the
+		 // std::set<SynapsePtr>  afferentSynapses;//number of neurons it is the
 		 	 	 	 	 	 	 	 	 	 	  //same that afferent synapses
 		 for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
 		          it != neuronsExpe.end(); ++it)
 		 {
 			const bbp::Neuron* bbpNeuron = &(*it);
 			//number of neurons it is the same that afferent synapses
-			const bbp::Synapses &synapsesExpe = bbpNeuron->efferent_synapses();
+			const bbp::Synapses &synapsesExpe = bbpNeuron->afferent_synapses();
 
 			for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
 					  synapseIt != synapsesExpe.end(); ++synapseIt)
 			//NSOL_FOREACH( synapseIt, synapsesExpe )
 			{
-
-
-			    nsol::SynapsePtr efferent_synapse (new nsol::Synapse());
+			    nsol::SynapsePtr afferent_synapse (new nsol::Synapse());
 
 			    const bbp::Synapse bbpSynapse = (*synapseIt);
 
-				const bbp::Neuron* bbpPreSynNeuron = &(bbpSynapse.presynaptic_neuron());
-				const bbp::Neuron* bbpPostSynNeuron = &(bbpSynapse.postsynaptic_neuron());
+				const bbp::Neuron* bbpPreSynNeuron =
+						         &(bbpSynapse.presynaptic_neuron());
+				const bbp::Neuron* bbpPostSynNeuron =
+						         &(bbpSynapse.postsynaptic_neuron());
 
 				std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
 				            neuronMap.find( bbpPreSynNeuron );
@@ -595,13 +595,13 @@ namespace nsol
 					nsolPostSynNeuron = nitPost->second;
 
 					// We have to build a nsol Neurons using a BBPSDK Neuron.
-					efferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
-					efferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
+					afferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
+					afferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
 
 					// TODO: Treatment of synapse type
-					std::cout << "Adding one Efferent Synapse " << std::endl;
-					// efferentSynapses.insert(efferent_synapse);
-					circuit.addConnection(efferent_synapse);
+					std::cout << "Adding one Afferent Synapse " << std::endl;
+					// afferentSynapses.insert(afferent_synapse);
+					circuit.addConnection(afferent_synapse);
 				}
 			}
 		  }
@@ -609,7 +609,6 @@ namespace nsol
 
 	 // close experiment and free its resources
 	 experiment.close( );
-
   }
 
 
