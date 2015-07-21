@@ -564,7 +564,7 @@ namespace nsol
 		 {
 			const bbp::Neuron* bbpNeuron = &(*it);
 			//number of neurons it is the same that afferent synapses
-			const bbp::Synapses &synapsesExpe = bbpNeuron->afferent_synapses();
+			const bbp::Synapses &synapsesExpe = bbpNeuron->efferent_synapses();
 
 			for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
 					  synapseIt != synapsesExpe.end(); ++synapseIt)
