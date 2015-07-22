@@ -48,6 +48,17 @@ BOOST_AUTO_TEST_CASE( test_node_with_properties )
 
   BOOST_CHECK_EQUAL( node.properties( ), &node );
 
+  node.properties( )->registerFeature( "label", 3.5f );
+  BOOST_CHECK(
+    node.properties( )->getFeature( "label" ).value< float >( ) ==
+    3.5f );
+
+  node.properties( )->registerFeature( "label2", std::string( "hello" ));
+  BOOST_CHECK(
+    node.properties( )->getFeature( "label2" ).value< std::string >( ) ==
+    std::string( "hello" ));
+
+
 #else
 
   BOOST_CHECK( node.properties( ) == nullptr );
