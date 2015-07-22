@@ -73,6 +73,7 @@ namespace nsol
   class Node;
   class Object;
   class ObjectWithProperties;
+  class Properties;
   class Section;
   class Segment;
   class Soma;
@@ -92,6 +93,7 @@ namespace nsol
   typedef std::shared_ptr< Node > NodePtr;
   typedef std::shared_ptr< Object > ObjectPtr;
   typedef std::shared_ptr< ObjectWithProperties > ObjectWithPropertiesPtr;
+  typedef std::shared_ptr< Properties > PropertiesPtr;
   typedef std::shared_ptr< Section > SectionPtr;
   typedef std::shared_ptr< Segment > SegmentPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
@@ -125,6 +127,7 @@ namespace nsol
   typedef NeuronMorphology* NeuronMorphologyPtr;
   typedef Node* NodePtr;
   typedef Object* ObjectPtr;
+  typedef Properties* PropertiesPtr;
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Segment* SegmentPtr;

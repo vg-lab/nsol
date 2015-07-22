@@ -28,7 +28,7 @@ namespace nsol
     TODO: extend long description
   */
   class Neuron
-    : public Object
+    : public virtual Object
   {
 
   public:
@@ -97,6 +97,12 @@ namespace nsol
      */
     NSOL_API
     TNeuronType & neuronType();
+
+    NSOL_API
+    virtual NeuronPtr asNeuron( void )
+    {
+      return this;
+    }
 
 
   protected:

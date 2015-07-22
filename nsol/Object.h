@@ -25,7 +25,7 @@ namespace nsol
     virtual ~Object( void );
 
     NSOL_API
-    virtual MiniColumnPtr asColumn( void );
+    virtual ColumnPtr asColumn( void );
 
     NSOL_API
     virtual MiniColumnPtr asMiniColumn( void );
@@ -51,8 +51,7 @@ namespace nsol
     NodePtr asNode( void );
 
     NSOL_API
-    virtual ObjectWithPropertiesPtr properties( void );
-
+    virtual ObjectWithProperties* properties( void );
 
   };
 

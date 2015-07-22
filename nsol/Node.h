@@ -18,7 +18,7 @@ namespace nsol
 {
 
   class Node
-    : public Object
+    : public virtual Object
   {
 
   public:
@@ -63,6 +63,12 @@ namespace nsol
 
     NSOL_API
     bool operator != ( Node & other ) const;
+
+    NSOL_API
+    virtual NodePtr asNode( void )
+    {
+      return this;
+    }
 
   protected:
 

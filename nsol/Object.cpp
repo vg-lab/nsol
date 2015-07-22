@@ -11,7 +11,7 @@ namespace nsol
   {
   }
 
-  MiniColumnPtr Object::asColumn( void )
+  ColumnPtr Object::asColumn( void )
   {
     return nullptr;
   }
