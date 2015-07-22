@@ -71,6 +71,8 @@ namespace nsol
   class Neuron;
   class NeuronMorphology;
   class Node;
+  class Object;
+  class ObjectWithProperties;
   class Section;
   class Segment;
   class Soma;
@@ -88,6 +90,8 @@ namespace nsol
   typedef std::shared_ptr< Neuron > NeuronPtr;
   typedef std::shared_ptr< NeuronMorphology > NeuronMorphologyPtr;
   typedef std::shared_ptr< Node > NodePtr;
+  typedef std::shared_ptr< Object > ObjectPtr;
+  typedef std::shared_ptr< ObjectWithProperties > ObjectWithPropertiesPtr;
   typedef std::shared_ptr< Section > SectionPtr;
   typedef std::shared_ptr< Segment > SegmentPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
@@ -112,21 +116,23 @@ namespace nsol
 
 
 #else
-  typedef Axon * AxonPtr;
-  typedef Column * ColumnPtr;
-  typedef Dendrite * DendritePtr;
-  typedef MiniColumn * MiniColumnPtr;
-  typedef Neurite * NeuritePtr;
-  typedef Neuron * NeuronPtr;
-  typedef NeuronMorphology * NeuronMorphologyPtr;
-  typedef Node * NodePtr;
-  typedef Section * SectionPtr;
-  typedef Segment * SegmentPtr;
-  typedef Soma * SomaPtr;
+  typedef Axon* AxonPtr;
+  typedef Column* ColumnPtr;
+  typedef Dendrite* DendritePtr;
+  typedef MiniColumn* MiniColumnPtr;
+  typedef Neurite* NeuritePtr;
+  typedef Neuron* NeuronPtr;
+  typedef NeuronMorphology* NeuronMorphologyPtr;
+  typedef Node* NodePtr;
+  typedef Object* ObjecPtr;
+  typedef ObjectWithProperties* ObjectWithPropertiesPtr;
+  typedef Section* SectionPtr;
+  typedef Segment* SegmentPtr;
+  typedef Soma* SomaPtr;
 
 
-  typedef NodeCached * NodeCachedPtr;
-  typedef SegmentCachedStats * SegmentCachedStatsPtr;
+  typedef NodeCached* NodeCachedPtr;
+  typedef SegmentCachedStats* SegmentCachedStatsPtr;
 
 
 //  typedef CachedSection * CachedSectionPtr;
