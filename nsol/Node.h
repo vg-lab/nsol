@@ -10,6 +10,7 @@
 #define __NSOL_NODE__
 
 #include <nsol/api.h>
+#include "Object.h"
 #include "NsolTypes.h"
 #include "Container/Segments.h"
 
@@ -17,6 +18,7 @@ namespace nsol
 {
 
   class Node
+    : public Object
   {
 
   public:

@@ -12,6 +12,7 @@
 #include <nsol/api.h>
 #include "MiniColumn.h"
 #include "NsolTypes.h"
+#include "Object.h"
 #include "Container/MiniColumns.h"
 
 namespace nsol
@@ -26,6 +27,7 @@ namespace nsol
     for different morphological values computation.
   */
   class Column
+    : public Object
   {
 
   public:

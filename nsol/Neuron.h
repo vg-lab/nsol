@@ -11,6 +11,7 @@
 
 #include <nsol/api.h>
 #include "NsolTypes.h"
+#include "Object.h"
 #include "NeuronMorphology.h"
 #include "Soma.h"
 #include "Neurite.h"
@@ -27,6 +28,7 @@ namespace nsol
     TODO: extend long description
   */
   class Neuron
+    : public Object
   {
 
   public:

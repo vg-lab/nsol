@@ -22,6 +22,7 @@ namespace nsol
   class SectionStats;
 
   class Section
+    : public Object
   {
 
   public:

@@ -19,6 +19,7 @@ namespace nsol
   class SegmentStats;
 
   class Segment
+    : public Object
   {
 
     friend class Section;

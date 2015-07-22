@@ -10,6 +10,7 @@
 #define __NSOL_MINICOLUMN__
 
 #include <nsol/api.h>
+#include "Object.h"
 #include "Neuron.h"
 #include "Container/Neurons.h"
 
@@ -25,6 +26,7 @@ namespace nsol
     for different morphological values computation.
   */
   class MiniColumn
+    : public Object
   {
 
   public:
