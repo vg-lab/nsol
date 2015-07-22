@@ -31,6 +31,7 @@ namespace nsol
    TODO: extend long description
    */
   class NeuronMorphology
+    : public Object
   {
 
   public:

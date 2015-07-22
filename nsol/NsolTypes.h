@@ -124,7 +124,7 @@ namespace nsol
   typedef Neuron* NeuronPtr;
   typedef NeuronMorphology* NeuronMorphologyPtr;
   typedef Node* NodePtr;
-  typedef Object* ObjecPtr;
+  typedef Object* ObjectPtr;
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Segment* SegmentPtr;
