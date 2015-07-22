@@ -12,8 +12,9 @@
 #include "Object.h"
 #include "NsolTypes.h"
 
+#ifdef NSOL_WITH_FIRES
 #include <fires/fires.h>
-
+#endif
 
 namespace nsol
 {
