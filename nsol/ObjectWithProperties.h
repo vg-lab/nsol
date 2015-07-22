@@ -39,27 +39,6 @@ namespace nsol
   };
 
 
-//   class ObjectWithProperties
-//     : public Object
-// #ifdef NSOL_WITH_FIRES
-//     , public Properties
-// #endif
-//   {
-//   public:
-
-//     NSOL_API
-//     ObjectWithProperties( void );
-
-//     NSOL_API
-//     virtual ~ObjectWithProperties( void );
-
-//     // NSOL_API
-//     // virtual Properties* properties( void );
-
-//   };
-
-
-
 } // namespace nsol
 
 

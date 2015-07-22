@@ -185,20 +185,6 @@ namespace nsol
   }; // class Column
 
 
-  // class ColumnObject
-  //   : public Column
-  //   , public Object
-  // {
-  // };
-
-  // class ColumnObjectWithProperties
-  //   : public Column
-  //   , public ObjectWithProperties
-  // {
-  // };
-
-
-
 } // namespace nsol
 
 
