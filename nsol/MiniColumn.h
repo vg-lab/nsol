@@ -26,7 +26,7 @@ namespace nsol
     for different morphological values computation.
   */
   class MiniColumn
-    : public Object
+    : public virtual Object
   {
 
   public:
@@ -179,6 +179,13 @@ namespace nsol
     {
       return nullptr;
     }
+
+    NSOL_API
+    virtual MiniColumnPtr asMiniColumn( void )
+    {
+      return this;
+    }
+
 
   protected:
 

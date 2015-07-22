@@ -31,7 +31,7 @@ namespace nsol
    TODO: extend long description
    */
   class NeuronMorphology
-    : public Object
+    : public virtual Object
   {
 
   public:
@@ -108,6 +108,13 @@ namespace nsol
 
     NSOL_API
     void addParentNeuron( NeuronPtr neuron );
+
+    NSOL_API
+    virtual NeuronMorphologyPtr asNeuronMorphology( void )
+    {
+      return this;
+    }
+
 
   protected:
 

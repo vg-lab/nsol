@@ -22,7 +22,7 @@ namespace nsol
   class SectionStats;
 
   class Section
-    : public Object
+    : public virtual Object
   {
 
   public:
@@ -133,6 +133,12 @@ namespace nsol
 
     NSOL_API
     unsigned int fuseSection( void );
+
+    NSOL_API
+    virtual SectionPtr asSection( void )
+    {
+      return this;
+    }
 
 
   protected:
