@@ -14,11 +14,6 @@
 using namespace nsol;
 
 
-void CheckNullMorphologicalValues( CircuitPtr cir )
-{
-	BOOST_CHECK_EQUAL( cir->numberOfColumns( ), 0 );
-}
-
 void CheckNoCircuits( CircuitPtr cir )
 {
 	BOOST_CHECK_EQUAL( cir->numberOfConnections( ), 0 );
@@ -35,9 +30,7 @@ BOOST_AUTO_TEST_CASE( test_empty_circuit )
 	cir.id( ) = CIR_ID;
 	BOOST_CHECK_EQUAL( cir.id( ), CIR_ID );
 
-	// Check morphological values are computed
-    // to 0 without errors
-	CheckNullMorphologicalValues( &cir );
+	// Check to 0 without errors
 	CheckNoCircuits( &cir );
 }
 
@@ -64,96 +57,12 @@ BOOST_AUTO_TEST_CASE( test_circuit_change_id )
 	BOOST_CHECK_EQUAL( cir.id( ), 1 );
 }
 
-BOOST_AUTO_TEST_CASE( test_circuit_add_column_to_the_morphology )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
-
-	// Create a column
-	nsol::ColumnPtr col( new nsol::Column );
-
-	// Add the column to the morphology of the circuit
-	cir->addColumn( col );
-
-	// Check if added ok
-	BOOST_CHECK_EQUAL( cir->columns( ).size( ), 1);
-	BOOST_CHECK_EQUAL( cir->columns( ).size( ),
-	cir->numberOfColumns( ));
-
-	// Free dynamic memory used
-	NSOL_DELETE_PTR( col );
-	NSOL_DELETE_PTR( cir );
-}
-
-BOOST_AUTO_TEST_CASE( test_circuit_remove_column_of_the_morphology )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
-
-	// Create two columns
-	nsol::ColumnPtr col( new nsol::Column );
-	nsol::ColumnPtr col2( new nsol::Column );
-
-	// Add the column to the morphology of the circuit
-	cir->addColumn( col );
-
-	// Try to remove the one not added
-	BOOST_CHECK_EQUAL( cir->removeColumn( col2 ), false);
-	BOOST_CHECK_EQUAL( cir->columns( ).size( ), 1);
-    BOOST_CHECK_EQUAL( cir->columns( ).size( ),
-	                   cir->numberOfColumns( ));
-
-    // Remove the one added
-    BOOST_CHECK_EQUAL( cir->removeColumn( col ), true);
-	BOOST_CHECK_EQUAL( cir->columns( ).size( ), 0);
-	BOOST_CHECK_EQUAL( cir->columns( ).size( ),
-					   cir->numberOfColumns( ));
-
-	// Free dynamic memory used
-	NSOL_DELETE_PTR( col2 );
-	NSOL_DELETE_PTR( col );
-	NSOL_DELETE_PTR( cir );
-}
-
-BOOST_AUTO_TEST_CASE( test_circuit_clear_columns )
-{
-	// Create a circuit
-	nsol::CircuitPtr cir( new nsol::Circuit );
-
-	#define NUM_COLS 10
-
-	 // Create and add some columns
-	 for ( int i = 0; i < NUM_COLS; i++ )
-	   cir->addColumn( ColumnPtr( new nsol::Column ));
-
-	 // Clear columns
-     cir->clearColumns( );
-
-     // Check number of columns inside of circuit
-     BOOST_CHECK_EQUAL( cir->columns( ).size( ), 0);
-     BOOST_CHECK_EQUAL( cir->columns( ).size( ),
-    		 	 	    cir->numberOfColumns( ));
-
-     // Check morphological values are still computed
-     // to 0 without errors
-     CheckNullMorphologicalValues( cir );
-     CheckNoCircuits( cir );
-
-     // Free dymanic memory used
-     for ( auto colIt = cir->columns( ).begin( );
-    		 colIt != cir->columns( ).end( ); colIt++ )
-    	 NSOL_DELETE_PTR( ( * colIt ));
-
-     NSOL_DELETE_PTR( cir );
-
-}
-
 BOOST_AUTO_TEST_CASE( test_circuit_operators )
 {
 	// Create a circuit
 	nsol::CircuitPtr cir( new nsol::Circuit );
 
-	// Compare empty columns
+	// Compare empty circuits
 	nsol::CircuitPtr cir2( new nsol::Circuit( ));
 	BOOST_CHECK_EQUAL( *cir == *cir2, true );
 	BOOST_CHECK_EQUAL( *cir != *cir2, false );
@@ -168,28 +77,28 @@ BOOST_AUTO_TEST_CASE( test_circuit_operators )
 	BOOST_CHECK_EQUAL( cir3 == *cir2, true );
 	BOOST_CHECK_EQUAL( cir3 != *cir2, false );
 
-	// Add columns and test if equal
+	// Add synapses and test if equal
 	*cir2 = *cir;
 	BOOST_CHECK_EQUAL( *cir == *cir2, true );
 	BOOST_CHECK_EQUAL( *cir != *cir2, false );
 
-	nsol::ColumnPtr col( new nsol::Column );
-	nsol::ColumnPtr col2( new nsol::Column );
+	nsol::SynapsePtr syn (new nsol::Synapse);
+	nsol::SynapsePtr syn2(new nsol::Synapse);
 
-	cir->addColumn( col );
-	cir->addColumn( col2 );
+	cir->addConnection( syn );
+	cir->addConnection( syn2 );
 
 	BOOST_CHECK_EQUAL( *cir == *cir2, false );
 	BOOST_CHECK_EQUAL( *cir != *cir2, true );
 
-	// Test assignment op with columns
+	// Test assignment op with synapses
 	*cir2 = *cir;
 	BOOST_CHECK_EQUAL( *cir == *cir2, true );
 	BOOST_CHECK_EQUAL( *cir != *cir2, false );
 
 	// Free dymanic memory used
-	NSOL_DELETE_PTR( col );
-    NSOL_DELETE_PTR( col2 );
+	NSOL_DELETE_PTR( syn );
+    NSOL_DELETE_PTR( syn2 );
 	NSOL_DELETE_PTR( cir );
 	NSOL_DELETE_PTR( cir2 );
 
@@ -221,11 +130,11 @@ BOOST_AUTO_TEST_CASE( test_circuit_remove_connections )
 		// Create a circuit
 		nsol::CircuitPtr cir( new nsol::Circuit );
 
-		// Create two columns
+		// Create two synapses
 		nsol::SynapsePtr syn( new nsol::Synapse );
 		nsol::SynapsePtr syn2( new nsol::Synapse );
 
-		// Add the column to the morphology of the circuit
+		// Add the synapse to the circuit
 		cir->addConnection( syn );
 
 		// Try to remove the one not added
@@ -266,9 +175,7 @@ BOOST_AUTO_TEST_CASE( test_circuit_clear_connections)
      BOOST_CHECK_EQUAL( cir->connections( ).size( ),
     		 	 	    cir->numberOfConnections( ));
 
-     // Check morphological values are still computed
-     // to 0 without errors
-     CheckNullMorphologicalValues( cir );
+     // Check to 0 without errors
      CheckNoCircuits( cir );
 
      // Free dymanic memory used
