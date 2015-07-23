@@ -7,6 +7,9 @@ target_link_libraries(SwcReader ${NSOL_LINK_LIBRARIES} nsol)
 if (BBPSDK_FOUND)
   add_executable(BBPSDKLoader BBPSDKLoader.cpp)
   target_link_libraries(BBPSDKLoader ${NSOL_LINK_LIBRARIES} nsol)
+  
+  add_executable(CircuitLoader CircuitLoader.cpp)
+  target_link_libraries(CircuitLoader ${NSOL_LINK_LIBRARIES} nsol)
  add_definitions(-DWITH_BBPSDK)
 endif()
 
@@ -30,12 +33,6 @@ target_link_libraries(miniColumnStats ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(factory factory.cpp)
 target_link_libraries(factory ${NSOL_LINK_LIBRARIES} nsol)
-
-if (BBPSDK_FOUND)
-  add_executable(CircuitLoader CircuitLoader.cpp)
-  target_link_libraries(CircuitLoader ${NSOL_LINK_LIBRARIES} nsol)
- add_definitions(-DWITH_BBPSDK)
-endif()
 
 add_executable(dataset dataset.cpp)
 target_link_libraries(dataset ${NSOL_LINK_LIBRARIES} nsol)

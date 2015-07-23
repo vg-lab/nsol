@@ -11,6 +11,9 @@
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
 
+#define TESTING_SYNAPSES
+#define TESTING_PROPERTIES_SYNAPSE
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -537,7 +540,6 @@ namespace nsol
 				 sPS.push( & ( * child ) );
 				 parents.push( section );
 			   }
-
 			 } // while not stack empty
 		   } // for all soma section childs
 		 } // for all soma sections
@@ -563,8 +565,17 @@ namespace nsol
 		          it != neuronsExpe.end(); ++it)
 		 {
 			const bbp::Neuron* bbpNeuron = &(*it);
-			//number of neurons it is the same that afferent synapses
+			// number of neurons it is the same that afferent synapses
 			const bbp::Synapses &synapsesExpe = bbpNeuron->afferent_synapses();
+
+#if 0 TESTING_SYNAPSES
+			    std::cout << "Number of Afferent Synapses " <<
+			    bbpNeuron->afferent_synapses().size() << std::endl;
+			    std::cout << "Number of Efferent Synapses " <<
+			    bbpNeuron->efferent_synapses().size() << std::endl;
+			    std::cout << std::endl;
+			    std::cout << std::endl;
+#endif
 
 			for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
 					  synapseIt != synapsesExpe.end(); ++synapseIt)
@@ -578,6 +589,44 @@ namespace nsol
 						         &(bbpSynapse.presynaptic_neuron());
 				const bbp::Neuron* bbpPostSynNeuron =
 						         &(bbpSynapse.postsynaptic_neuron());
+#if 0 TESTING_PROPERTIES_SYNAPSE
+				std::cout << "Synapse Index " <<
+						bbpSynapse.index() << std::endl;
+			    std::cout << "PreSynaptic Neuron GID " <<
+			    		bbpSynapse.presynaptic_neuron_gid() << std::endl;
+			    std::cout << "PostSynaptic Neuron GID " <<
+			    		bbpSynapse.postsynaptic_neuron_gid() << std::endl;
+			    std::cout << std::endl;
+			    std::cout << std::endl;
+#endif
+#if 0 TESTING_PROPERTIES_SYNAPSE
+			    std::cout << "PreSynaptic Section ID " <<
+			    		bbpSynapse.presynaptic_section_id()<< std::endl;
+			    std::cout << "PostSynaptic Section ID " <<
+			    		bbpSynapse.postsynaptic_section_id()<< std::endl;
+			    std::cout << "PreSynaptic Segment ID " <<
+			    		bbpSynapse.presynaptic_segment_id()<< std::endl;
+			    std::cout << "PostSynaptic Segment ID " <<
+			    		bbpSynapse.postsynaptic_segment_id()<< std::endl;
+			    std::cout << "PreSynaptic Segment Distance " <<
+			    		bbpSynapse.presynaptic_segment_distance() << std::endl;
+			    std::cout << "PostSynaptic Segment Distance " <<
+			    		bbpSynapse.postsynaptic_segment_distance()<< std::endl;
+			    std::cout << std::endl;
+			    std::cout << std::endl;
+#endif
+#if 0 TESTING_PROPERTIES_SYNAPSE
+			    std::cout << "PreSynaptic Position " <<
+			    		bbpSynapse.presynaptic_position()<< std::endl;
+			    std::cout << "PreSynaptic Surface Position " <<
+			    		bbpSynapse.preSynapticSurfacePosition()<< std::endl;
+			    std::cout << "PostSynaptic Position " <<
+			    		bbpSynapse.postsynaptic_position()<< std::endl;
+			    std::cout << "PostSynaptic Surface Position " <<
+			    		bbpSynapse.postSynapticSurfacePosition()<< std::endl;
+			    std::cout << std::endl;
+			    std::cout << std::endl;
+#endif
 
 				std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
 				            neuronMap.find( bbpPreSynNeuron );
