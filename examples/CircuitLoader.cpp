@@ -62,13 +62,13 @@ int main ( int argc, char *argv[] )
 			  preSynNeuron  = (*synapseIt)->preSynapticNeuron();
 			  postSynNeuron = (*synapseIt)->postSynapticNeuron();
 
-			 cout << " Synapse " << numberSynapse << /*" - " <<
-					   int(synapseIt->synapseType())<<*/ " = " << endl;
-			 cout << " [Presynaptic Neuron] id: " << preSynNeuron->gid()
+			   cout << "Number of Synapse " << numberSynapse << /*" - " <<
+			  //	   int(synapseIt->synapseType())<<*/ " = " << endl;
+			   cout << " [Presynaptic Neuron] id: " << preSynNeuron->gid()
 			      << " type: " << int(preSynNeuron->neuronType())<< endl;
-			 cout << " [Postsynaptic Neuron] id: " << postSynNeuron->gid()
-				  << " type: " << int(postSynNeuron->neuronType())<< endl;
-			 cout << endl;
+			   cout << " [Postsynaptic Neuron] id: " << postSynNeuron->gid()
+			    << " type: " << int(postSynNeuron->neuronType())<< endl;
+			   cout << endl;
 
 			 numberSynapse++;
 		 }
