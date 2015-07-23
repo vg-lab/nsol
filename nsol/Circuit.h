@@ -8,11 +8,10 @@
 #ifndef __NSOL_CIRCUIT__
 #define __NSOL_CIRCUIT__
 
+#include <nsol/api.h>
+#include "Container/Synapses.h"
 #include <iostream>
 #include <set>
-//#include <map>
-
-#include <nsol/Container/Columns.h>
 
 
 namespace nsol
@@ -71,53 +70,6 @@ namespace nsol
 		 unsigned short id( void ) const;
 
 		 ///@}
-
-		 /** @name Column related methods */
-		 ///@{
-
-		 /**
-		  * Method to add a column.
-		  * @param column column to add to this circuit
-		  */
-		 NSOL_API
-		 void addColumn( ColumnPtr column );
-
-		 /**
-		  * Method to remove a column.
-		  * @param column pointer to the column to be removed
-		  * @return true if column removed false otherwise
-		  */
-		 NSOL_API
-		 bool removeColumn( ColumnPtr column );
-
-		 /**
-		  * Method to clear columns.
-		  */
-		 NSOL_API
-		 void clearColumns( void );
-
-		 /**
-		  * Method to get columns.
-		  * @return columns of the circuit
-		  */
-		 NSOL_API
-		 Columns & columns( void );
-
-		 /**
-		 * Method to get columns as const.
-		 * @return columns of the circuit
-		 */
-		NSOL_API
-		Columns columns( void ) const;
-
-		/**
-		 * Method to get the number of columns.
-		 * @return numbers of columns
-		 */
-		NSOL_API
-		unsigned int numberOfColumns( void ) const;
-
-		///@}
 
 		/** @name Operators */
 		///@{
@@ -187,9 +139,6 @@ namespace nsol
 
 		  //! Identifier of the circuit
 		  unsigned short _id;
-
-		  //! Container of columns, with all the morphology
-		  Columns _morphology;
 
 		  //! Container with the all connections between neurons
 		  std::set<SynapsePtr> _connections;
