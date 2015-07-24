@@ -22,7 +22,10 @@ namespace nsol
   }
 
 
-  void Log::log( const std::string& msg, TLogLevel level, std::ostream& stream )
+
+  void Log::log( const std::string& msg,
+                 TLogLevel level,
+                 std::ostream& stream )
   {
 
     std::string logLevel( "NSOL_LOG_ERROR" );
