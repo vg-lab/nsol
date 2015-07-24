@@ -23,7 +23,7 @@ namespace nsol
   {
   public:
 
-    static void log( std::string msg,
+    static void log( const std::string& msg,
                      TLogLevel level = NSOL_LOG_VERBOSE,
                      std::ostream& stream = std::cerr );
   };
