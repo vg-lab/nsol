@@ -19,6 +19,7 @@ namespace nsol
   class SegmentStats;
 
   class Segment
+    : public virtual Object
   {
 
     friend class Section;
@@ -63,6 +64,12 @@ namespace nsol
 
     NSOL_API
     virtual SegmentStats * stats( void );
+
+    NSOL_API
+    virtual SegmentPtr asSegment( void )
+    {
+      return this;
+    }
 
   protected:
 
