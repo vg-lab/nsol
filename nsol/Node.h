@@ -10,6 +10,7 @@
 #define __NSOL_NODE__
 
 #include <nsol/api.h>
+#include "Object.h"
 #include "NsolTypes.h"
 #include "Container/Segments.h"
 
@@ -17,6 +18,7 @@ namespace nsol
 {
 
   class Node
+    : public virtual Object
   {
 
   public:
@@ -61,6 +63,12 @@ namespace nsol
 
     NSOL_API
     bool operator != ( Node & other ) const;
+
+    NSOL_API
+    virtual NodePtr asNode( void )
+    {
+      return this;
+    }
 
   protected:
 

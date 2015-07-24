@@ -101,6 +101,27 @@ if(Qt5Core_name)
   endif()
 endif()
 
+#########################################################
+# FIND fires
+#########################################################
+find_package(fires)
+if(FIRES_FOUND)
+  set(fires_name FIRES)
+  set(fires_FOUND TRUE)
+elseif(fires_FOUND)
+  set(fires_name fires)
+  set(FIRES_FOUND TRUE)
+endif()
+if(fires_name)
+  list(APPEND FIND_PACKAGES_DEFINES NSOL_WITH_FIRES)
+  list(APPEND NSOL_DEPENDENT_LIBRARIES fires)
+  set(FIND_PACKAGES_FOUND "${FIND_PACKAGES_FOUND} fires")
+  link_directories(${${fires_name}_LIBRARY_DIRS})
+  if(NOT "${${fires_name}_INCLUDE_DIRS}" MATCHES "-NOTFOUND")
+    include_directories(BEFORE SYSTEM ${${fires_name}_INCLUDE_DIRS})
+  endif()
+endif()
+
 
 # Option of shared pointers
 if (WITH_SHARED_PTR)
