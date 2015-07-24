@@ -35,6 +35,39 @@ BOOST_AUTO_TEST_CASE( test_object_with_properties )
 }
 
 
+BOOST_AUTO_TEST_CASE( test_create_object_with_properties )
+{
+  nsol::ObjectWithProperties owp1;
+
+#ifdef NSOL_WITH_FIRES
+
+  nsol::ObjectPtr o2 = new nsol::Object;
+  nsol::ObjectPtr o3 = o2->create( );
+
+  nsol::ObjectPtr owp4 = new nsol::ObjectWithProperties;
+  nsol::ObjectPtr owp5 = owp4->create( );
+
+  nsol::ObjectWithPropertiesPtr owp6 = owp1.create( );
+
+  BOOST_CHECK( o2->properties( ) == 0 );
+  BOOST_CHECK( o3->properties( ) == 0 );
+  BOOST_CHECK( owp4->properties( ) != 0 );
+  BOOST_CHECK( owp5->properties( ) != 0 );
+  BOOST_CHECK( owp6->properties( ) != 0 );
+
+
+  delete o2;
+  delete o3;
+  delete owp4;
+  delete owp5;
+  delete owp6;
+
+#endif
+
+}
+
+
+
 BOOST_AUTO_TEST_CASE( test_node_with_properties )
 {
 
@@ -64,5 +97,7 @@ BOOST_AUTO_TEST_CASE( test_node_with_properties )
   BOOST_CHECK( node.properties( ) == nullptr );
 
 #endif
+
+
 
 }
