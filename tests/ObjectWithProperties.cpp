@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE( test_object_with_properties )
     owp2->properties( )->getFeature( "label" ).value< int >( ), 3 );
 
 #else
-  BOOST_CHECK( owp1->properties( ) == 0 );
+  BOOST_CHECK( owp1.properties( ) == 0 );
   BOOST_CHECK( owp2->properties( ) == 0 );
 #endif
 
