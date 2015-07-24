@@ -36,7 +36,7 @@ namespace nsol
     NSOL_API
     virtual ObjectWithPropertiesPtr properties( void );
 
-    virtual ObjectWithPropertiesPtr create( void )
+    virtual ObjectPtr create( void )
     {
       return new ObjectWithProperties;
     }

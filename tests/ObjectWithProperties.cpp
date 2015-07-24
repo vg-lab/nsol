@@ -47,7 +47,8 @@ BOOST_AUTO_TEST_CASE( test_create_object_with_properties )
   nsol::ObjectPtr owp4 = new nsol::ObjectWithProperties;
   nsol::ObjectPtr owp5 = owp4->create( );
 
-  nsol::ObjectWithPropertiesPtr owp6 = owp1.create( );
+  nsol::ObjectWithPropertiesPtr owp6 =
+    dynamic_cast< nsol::ObjectWithPropertiesPtr >( owp1.create( ));
 
   BOOST_CHECK( o2->properties( ) == 0 );
   BOOST_CHECK( o3->properties( ) == 0 );
