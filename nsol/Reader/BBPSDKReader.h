@@ -648,7 +648,7 @@ namespace nsol
 					afferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
 
 					// TODO: Treatment of synapse type
-					std::cout << "Adding one Afferent Synapse " << std::endl;
+					//std::cout << "Adding one Afferent Synapse " << std::endl;
 					// afferentSynapses.insert(afferent_synapse);
 					circuit.addConnection(afferent_synapse);
 				}
