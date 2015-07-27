@@ -1,25 +1,56 @@
-/**
- * @file    Object.cpp
- * @brief
- * @author  Juan Guerrero <j.guerrerom@alumnos.urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
- *          Do not distribute without further notice.
- */
-#include <nsol/Object.h>
+#include "Object.h"
 
 namespace nsol
 {
 
   Object::Object( void )
   {
-    // TODO Auto-generated constructor stub
-
   }
 
   Object::~Object( void )
   {
-    // TODO Auto-generated destructor stub
   }
 
-} /* namespace nsol */
+  ColumnPtr Object::asColumn( void )
+  {
+    return nullptr;
+  }
+
+  MiniColumnPtr Object::asMiniColumn( void )
+  {
+    return nullptr;
+  }
+
+  NeuronPtr Object::asNeuron( void )
+  {
+    return nullptr;
+  }
+
+  NeuronMorphologyPtr Object::asNeuronMorphology( void )
+  {
+    return nullptr;
+  }
+
+  SectionPtr Object::asSection( void )
+  {
+    return nullptr;
+  }
+
+  SegmentPtr Object::asSegment( void )
+  {
+    return nullptr;
+  }
+
+  NodePtr Object::asNode( void )
+  {
+    return nullptr;
+  }
+
+  ObjectWithPropertiesPtr Object::properties( void )
+  {
+    return nullptr;
+  }
+
+
+}
+

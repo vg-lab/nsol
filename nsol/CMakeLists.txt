@@ -14,6 +14,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   DataSet.h
   Dendrite.h
   error.h
+  Log.h
   MiniColumn.h
   Neurite.h
   Neuron.h
@@ -21,6 +22,7 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Node.h
   NsolTypes.h
   Object.h
+  ObjectWithProperties.h
   Section.h
   Segment.h
   SimulationData.h
@@ -59,12 +61,14 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   Column.cpp
   DataSet.cpp
   Dendrite.cpp
+  Log.cpp
   MiniColumn.cpp
   Neurite.cpp
   Neuron.cpp
   NeuronMorphology.cpp
   Node.cpp
   Object.cpp
+  ObjectWithProperties.cpp
   Section.cpp
   Segment.cpp
   SimulationData.cpp
@@ -94,6 +98,11 @@ endif()
 if (QT5CORE_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} ${Qt5Core_LIBRARIES})
 endif()
+
+if (FIRES_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} ${FIRES_LIBRARIES})
+endif()
+
 
 common_library(nsol)
 set(NSOL_LINK_LIBRARIES "${NSOL_LINK_LIBRARIES}" PARENT_SCOPE)
