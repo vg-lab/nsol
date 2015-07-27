@@ -8,6 +8,8 @@
  */
 #ifdef NSOL_WITH_BBPSDK
 
+#define TESTING_PRINT_LITERAL
+
 #include <nsol/nsol.h>
 #include <assert.h>
 #include <iostream>
@@ -56,18 +58,84 @@ int main ( int argc, char *argv[] )
 		//		 synapseIt != synapses.end(); ++synapseIt)
 		 NSOL_FOREACH( synapseIt, synapses )
 		 {
-			  NeuronPtr preSynNeuron  = nullptr;
-			  NeuronPtr postSynNeuron = nullptr;
+			 NeuronPtr preSynNeuron  = nullptr;
+			 NeuronPtr postSynNeuron = nullptr;
 
-			  preSynNeuron  = (*synapseIt)->preSynapticNeuron();
-			  postSynNeuron = (*synapseIt)->postSynapticNeuron();
+			 preSynNeuron  = (*synapseIt)->preSynapticNeuron();
+			 postSynNeuron = (*synapseIt)->postSynapticNeuron();
 
-			   cout << "Number of Synapse " << numberSynapse << /*" - " <<
-			  //	   int(synapseIt->synapseType())<<*/ " = " << endl;
-			   cout << " [Presynaptic Neuron] id: " << preSynNeuron->gid()
-			      << " type: " << int(preSynNeuron->neuronType())<< endl;
-			   cout << " [Postsynaptic Neuron] id: " << postSynNeuron->gid()
+			 cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
+#if 1 TESTING_PRINT_LITERAL
+			  switch((*synapseIt)->synapseType())
+			  {
+			  	  case 	Synapse::DENDRODENDRITIC:
+			  		    cout << " - Type: DENDRODENDRITIC" << endl;
+			  		    break;
+			  	  case	Synapse::AXODENDRITIC:
+			  		    cout << " - Type: AXODENDRITIC" << endl;
+			  		    break;
+			  	  case	Synapse::AXOAXONIC:
+			  		    cout << " - Type: AXOAXONIC" << endl;
+			  		    break;
+			  	  case	Synapse::SOMATOSOMAL:
+			  		    cout << " - Type: SOMATOSOMAL" << endl;
+			  		    break;
+			  	  case	Synapse::AXOSOMATIC:
+			  		    cout << " - Type: AXOSOMATIC" << endl;
+			  		    break;
+			  	  case	Synapse::DENDROSOMATIC:
+			  		    cout << " - Type: DENDROSOMATIC" << endl;
+			  		    break;
+			  	  default:
+			  		    cout<< "synapse type not consistent"<< endl;
+			  		    break;
+			  }
+#else
+			 cout << " - Type : " <<  int((*synapseIt)->synapseType())<< endl;
+#endif
+
+			 cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid();
+#if 1 TESTING_PRINT_LITERAL
+		switch(preSynNeuron->neuronType())
+					  {
+					  	  case 	Neuron::UNDEFINED:
+					  		    cout << " type: UNDEFINED " << endl;
+					  		    break;
+					  	  case	Neuron::INTER:
+					  		    cout << " type: INTER " << endl;
+					  		    break;
+					  	  case Neuron::PYRAMIDAL:
+					  		    cout << " type: PYRAMIDAL " << endl;
+								break;
+					  	  default:
+					  		    cout<< "neuron type not consistent"<< endl;
+					  		    break;
+					  }
+#else
+				   << " type: " << int(preSynNeuron->neuronType())<< endl;
+#endif
+
+
+			 cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid();
+#if 1 TESTING_PRINT_LITERAL
+		switch(postSynNeuron->neuronType())
+					  {
+					  	  case 	Neuron::UNDEFINED:
+					  		    cout << " type: UNDEFINED " << endl;
+					  		    break;
+					  	  case	Neuron::INTER:
+					  		    cout << " type: INTER " << endl;
+					  		    break;
+					  	  case Neuron::PYRAMIDAL:
+					  		    cout << " type: PYRAMIDAL " << endl;
+								break;
+					  	  default:
+					  		    cout<< "neuron type not consistent"<< endl;
+					  		    break;
+					  }
+#else
 			    << " type: " << int(postSynNeuron->neuronType())<< endl;
+#endif
 			   cout << endl;
 
 			 numberSynapse++;
