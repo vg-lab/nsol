@@ -12,12 +12,13 @@
 #include <nsol/api.h>
 #include "MiniColumn.h"
 #include "NsolTypes.h"
+#include "Object.h"
+#include "ObjectWithProperties.h"
 #include "Container/MiniColumns.h"
 
 namespace nsol
 {
   class ColumnStats;
-
 
   /*! \class Column
     \brief A class to represent columns.
@@ -26,6 +27,7 @@ namespace nsol
     for different morphological values computation.
   */
   class Column
+    : public virtual Object
   {
 
   public:
@@ -165,6 +167,13 @@ namespace nsol
                      Neuron::PYRAMIDAL,
                      const unsigned int layer = 0 ) const;
 
+
+    NSOL_API
+    virtual ColumnPtr asColumn( void )
+    {
+      return this;
+    }
+
   protected:
 
     //! Identifier of the column
@@ -174,6 +183,8 @@ namespace nsol
     MiniColumns _miniColumns;
 
   }; // class Column
+
+
 } // namespace nsol
 
 

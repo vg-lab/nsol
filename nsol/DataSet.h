@@ -33,6 +33,8 @@ namespace nsol
   class DataSet
   {
   public:
+
+    NSOL_API
     DataSet( void );
 
 #ifdef NSOL_WITH_BBPSDK
