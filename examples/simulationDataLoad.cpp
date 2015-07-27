@@ -34,17 +34,30 @@ int main (int argc, char ** argv)
                                 "voltage" );
 
   std::pair<SimulationData::iterator, SimulationData::iterator>
-    simDataIteratorPair = simulationData.findByRange(23.1, 25.4);
+    simDataIteratorPair = simulationData.findByRange(0.0f, 80.0f);
 
   std::cout << std::endl;
 
   std::cout << "BEGIN simulationDataLoad" << std::endl << std::endl;
 
+  int positiveVoltage = 0;
+  int negativeVoltage = 0;
   while ( simDataIteratorPair.first != simDataIteratorPair.second )
   {
     std::cout << *simDataIteratorPair.first << std::endl << std::endl;
+    if ( (*simDataIteratorPair.first).value < 0 )
+      negativeVoltage++;
+    else
+      positiveVoltage++;
     ++simDataIteratorPair.first;
   }
+
+  std::cout << std::endl;
+
+  std::cout << "Positives: " << positiveVoltage << std::endl;
+  std::cout << "Negatives: " << negativeVoltage << std::endl;
+
+  std::cout << std::endl;
 
   std::cout << "END simulationDataLoad" << std::endl;
 
