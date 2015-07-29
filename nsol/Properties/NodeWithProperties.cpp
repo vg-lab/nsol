@@ -8,7 +8,6 @@
  */
 
 #include "NodeWithProperties.h"
-#include "error.h"
 
 namespace nsol
 {
