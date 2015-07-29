@@ -24,15 +24,6 @@ namespace nsol
   {
   }
 
-  NodeWithPropertiesPtr NodeWithProperties::properties( void )
-  {
-#ifdef NSOL_WITH_FIRES
-    return this;
-#else
-    return nullptr;
-#endif
-  }
-
   NodeWithPropertiesPtr NodeWithProperties::create( void ) const
   {
     return new NodeWithProperties;

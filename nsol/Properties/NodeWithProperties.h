@@ -33,10 +33,6 @@ namespace nsol
 
     NSOL_API
     virtual
-    NodeWithPropertiesPtr properties( void );
-
-    NSOL_API
-    virtual
     NodeWithPropertiesPtr create( void ) const;
 
     NSOL_API
