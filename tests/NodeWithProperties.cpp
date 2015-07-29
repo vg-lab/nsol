@@ -92,10 +92,12 @@ BOOST_AUTO_TEST_CASE( nodeWithProperties_properties )
 BOOST_AUTO_TEST_CASE( nodeWithProperties_create_clone )
 {
   NodeWithProperties node1( POINT, ID, RADIUS );
+#ifdef NSOL_WITH_FIRES
 
   node1.properties( )->registerFeature( "label", 3.5f );
   node1.properties( )->registerFeature( "label2", std::string( "hello" ));
 
+#endif
   NodeWithPropertiesPtr node2 = node1.create( );
 
   BOOST_CHECK_EQUAL( node2->point( ), DEFAULT_POINT );
@@ -108,11 +110,15 @@ BOOST_AUTO_TEST_CASE( nodeWithProperties_create_clone )
   BOOST_CHECK_EQUAL( node3->id( ), ID );
   BOOST_CHECK_EQUAL( node3->radius( ), RADIUS );
 
+#ifdef NSOL_WITH_FIRES
+
   BOOST_CHECK(
       node3->properties( )->getFeature( "label" ).value< float >( ) == 3.5f );
   BOOST_CHECK(
       node3->properties( )->getFeature( "label2" ).value< std::string >( )
         == "hello" );
+
+#endif
 
   delete node2;
   delete node3;
