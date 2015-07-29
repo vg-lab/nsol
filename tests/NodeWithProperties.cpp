@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE( nodeWithProperties_properties )
   std::cout << "Checked" << std::endl;
 #else
 
-  BOOST_CHECK( node.properites( ) == nullptr );
+  BOOST_CHECK( node.properties( ) == nullptr );
 
 
 #endif
