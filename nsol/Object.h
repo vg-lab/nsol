@@ -51,12 +51,16 @@ namespace nsol
     NodePtr asNode( void );
 
     NSOL_API
-    virtual ObjectWithProperties* properties( void );
+    virtual
+    ObjectWithPropertiesPtr properties( void );
 
-    virtual ObjectPtr create( void )
-    {
-      return new Object;
-    }
+    NSOL_API
+    virtual
+    ObjectPtr create( void ) const;
+
+    NSOL_API
+    virtual
+    ObjectPtr clone( void ) const;
 
   };
 

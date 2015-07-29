@@ -22,7 +22,8 @@ set(NSOL_PUBLIC_HEADERS ${COMMON_INCLUDES}
   Node.h
   NsolTypes.h
   Object.h
-  ObjectWithProperties.h
+  Properties/NodeWithProperties.h
+  Properties/ObjectWithProperties.h
   Section.h
   Segment.h
   Soma.h
@@ -67,7 +68,8 @@ set(NSOL_SOURCES ${COMMON_SOURCES}
   NeuronMorphology.cpp
   Node.cpp
   Object.cpp
-  ObjectWithProperties.cpp
+  Properties/NodeWithProperties.cpp
+  Properties/ObjectWithProperties.cpp
   Section.cpp
   Segment.cpp
   Soma.cpp

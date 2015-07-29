@@ -9,8 +9,8 @@
 #define __NSOL_OBJECT_WITH_PROPERTIES__
 
 #include <nsol/api.h>
-#include "Object.h"
-#include "NsolTypes.h"
+#include "../Object.h"
+#include "../NsolTypes.h"
 
 #ifdef NSOL_WITH_FIRES
 #include <fires/fires.h>
@@ -18,7 +18,6 @@
 
 namespace nsol
 {
-
   class ObjectWithProperties
     : public virtual Object
 #ifdef NSOL_WITH_FIRES
@@ -31,15 +30,21 @@ namespace nsol
     ObjectWithProperties( void );
 
     NSOL_API
-    virtual ~ObjectWithProperties( void );
+    virtual
+    ~ObjectWithProperties( void );
 
     NSOL_API
-    virtual ObjectWithPropertiesPtr properties( void );
+    virtual
+    ObjectWithPropertiesPtr properties( void );
 
-    virtual ObjectPtr create( void )
-    {
-      return new ObjectWithProperties;
-    }
+    NSOL_API
+    virtual
+    ObjectWithPropertiesPtr create( void ) const;
+
+    NSOL_API
+    virtual
+    ObjectWithPropertiesPtr clone( void );
+
   };
 
 

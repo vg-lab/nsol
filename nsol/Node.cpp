@@ -90,6 +90,16 @@ namespace nsol
     return ! ( *this == other );
   }
 
+  NodePtr Node::create( void ) const
+  {
+    return new Node;
+  }
+
+  NodePtr Node::clone( void ) const
+  {
+    return new Node( Vec3f( this->point( )), this->id( ), this->radius( ));
+  }
+
 } // namespace nsol
 
 // EOF

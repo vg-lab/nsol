@@ -46,10 +46,19 @@ namespace nsol
     return nullptr;
   }
 
-  ObjectWithPropertiesPtr Object::properties( void )
+  ObjectWithPropertiesPtr Object::properties( void)
   {
     return nullptr;
   }
 
+  ObjectPtr Object::create( void ) const
+  {
+    return new Object;
+  }
+
+  ObjectPtr Object::clone( void ) const
+  {
+    return this->create( );
+  }
 
 }

@@ -65,10 +65,20 @@ namespace nsol
     bool operator != ( Node & other ) const;
 
     NSOL_API
-    virtual NodePtr asNode( void )
+    virtual
+    NodePtr asNode( void )
     {
       return this;
     }
+
+    NSOL_API
+    virtual
+    NodePtr create( void ) const;
+
+    NSOL_API
+    virtual
+    NodePtr clone( void ) const;
+
 
   protected:
 

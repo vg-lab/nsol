@@ -13,7 +13,7 @@
 #include "MiniColumn.h"
 #include "NsolTypes.h"
 #include "Object.h"
-#include "ObjectWithProperties.h"
+#include "Properties/ObjectWithProperties.h"
 #include "Container/MiniColumns.h"
 
 namespace nsol

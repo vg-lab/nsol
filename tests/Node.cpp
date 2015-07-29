@@ -17,6 +17,10 @@ using namespace nsol;
 #define ID 1
 #define RADIUS 5.6f
 
+#define DEFAULT_POINT Vec3f( 0.0f, 0.0f, 0.0f )
+#define DEFAULT_ID 0
+#define DEFAULT_RADIUS 0.0f
+
 BOOST_AUTO_TEST_CASE( node_constructor )
 {
   {
@@ -90,5 +94,23 @@ BOOST_AUTO_TEST_CASE( node_parent_segments )
 {
 
   // TODO
+
+}
+
+BOOST_AUTO_TEST_CASE( node_create_clone )
+{
+  Node node1( POINT, ID, RADIUS );
+
+  NodePtr node2 = node1.create( );
+
+  BOOST_CHECK_EQUAL( node2->point( ), DEFAULT_POINT );
+  BOOST_CHECK_EQUAL( node2->id( ), DEFAULT_ID );
+  BOOST_CHECK_EQUAL( node2->radius( ), DEFAULT_RADIUS );
+
+  NodePtr node3 = node1.clone( );
+
+  BOOST_CHECK_EQUAL( node3->point( ), POINT );
+  BOOST_CHECK_EQUAL( node3->id( ), ID );
+  BOOST_CHECK_EQUAL( node3->radius( ), RADIUS );
 
 }
