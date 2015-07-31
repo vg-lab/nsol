@@ -291,6 +291,10 @@ namespace nsol
 
     // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
     //      it != neuronsExpe.end(); ++it)
+
+    unsigned long neuronCounter = 0;
+    std::cout << "nsol: Loading neurons" << std::endl;
+
     NSOL_FOREACH( it, neuronsExpe )
     {
       // std::cerr << "Neuron " << it->label() << " with morphology "
@@ -542,6 +546,14 @@ namespace nsol
           neuron->neuronType( ) = Neuron::INTER;
 
       } // morphology not previously loaded
+
+
+      std::cout << "\r" "nsol::BBPSDKReader("
+                << 100 * ( neuronCounter + 1 ) / neuronsExpe.size( )
+                << "%) Loading Neuron " << neuronCounter;
+
+      neuronCounter++;
+
     }
 
     // close experiment and free its resources
@@ -549,6 +561,9 @@ namespace nsol
 
     NSOL_FOREACH( column, columnMap )
       columns.push_back( column->second );
+
+
+    std::cout << std::endl;
 
     return;
 
