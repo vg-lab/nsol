@@ -254,9 +254,9 @@ namespace nsol
 
     // A bbpsdk experiment is opened
     bbp::Experiment experiment;
-    std::cerr << inputFile << ": Opening experiment " << std::endl;
+    // std::cerr << inputFile << ": Opening experiment " << std::endl;
     experiment.open(inputFile);
-    std::cerr << inputFile << ": DONE " << std::endl;
+    // std::cerr << inputFile << ": DONE " << std::endl;
 
     if (!experiment.is_open()) {
       std::cerr << inputFile << ": Experiment could not be opened"
@@ -286,15 +286,15 @@ namespace nsol
     const bbp::Neurons &neuronsExpe =
       experiment.microcircuit().neurons();
 
-    std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
-              << " neurons. " << std::endl;
+    // std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
+    //           << " neurons. " << std::endl;
 
     // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
     //      it != neuronsExpe.end(); ++it)
     NSOL_FOREACH( it, neuronsExpe )
     {
-      std::cerr << "Neuron " << it->label() << " with morphology "
-               << it->morphology().label() << std::endl;
+      // std::cerr << "Neuron " << it->label() << " with morphology "
+      //          << it->morphology().label() << std::endl;
 
       NeuronPtr neuron (new NEURON( )); //New neuron
       neuronVector.push_back( neuron );
@@ -342,7 +342,7 @@ namespace nsol
       if (neuronMorphoMap.find(it->morphology().label()) !=
           neuronMorphoMap.end())
       {
-        std::cerr << "Morphology previously loaded" << std::endl;
+        // std::cerr << "Morphology previously loaded" << std::endl;
 
         NeuronMorphologyPtr m =
           neuronMorphoMap.find(it->morphology().label())->second;
@@ -362,8 +362,8 @@ namespace nsol
       }
       else
       {
-        std::cerr << "Loading morphology " << it->morphology().label()
-                  << std::endl;
+        // std::cerr << "Loading morphology " << it->morphology().label()
+        //           << std::endl;
 
         NeuronMorphologyPtr m ( new NEURONMORPHOLOGY ( new SOMA ));
 
@@ -586,7 +586,7 @@ namespace nsol
             && str.substr(found + 1) == "csv") {
 
           findCsv = true;
-          std::cerr << "\nLoading neuron file " << entry->d_name << std::endl;
+          // std::cerr << "\nLoading neuron file " << entry->d_name << std::endl;
 
           std::ifstream inFile;
           inFile.open(dir + entry->d_name, std::ios::in);
