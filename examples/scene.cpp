@@ -1,7 +1,7 @@
 #include <nsol/nsol.h>
 
 
-#ifdef NSOL_WITH_QT5CORE
+#ifdef NSOL_USE_QT5CORE
 
 int main ( int argc, char ** argv )
 {
