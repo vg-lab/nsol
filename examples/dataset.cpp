@@ -1,7 +1,7 @@
 #include <nsol/nsol.h>
 
 
-#ifdef NSOL_WITH_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 int main ( int argc, char ** argv )
 {
   if ( argc < 2 )
