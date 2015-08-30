@@ -6,7 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifdef NSOL_WITH_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
@@ -793,5 +793,5 @@ namespace nsol
 
 } // namespace nsol
 
-#endif // NSOL_WITH_BBPSDK
+#endif // NSOL_USE_BBPSDK
 #endif // __NSOL_BBPSDK_READER__

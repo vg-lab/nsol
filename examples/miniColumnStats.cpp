@@ -9,7 +9,7 @@ void computeMiniColumnStats( nsol::MiniColumnPtr column );
 void printMiniColumnStats( nsol::MiniColumnPtr column );
 
 
-#ifndef NSOL_WITH_BBPSDK
+#ifndef NSOL_USE_BBPSDK
 
 int main ( int /* argc */, char ** /* argv */ )
 {
@@ -227,4 +227,4 @@ void printMiniColumnStats( nsol::MiniColumnPtr miniColumn )
 
 }
 
-#endif // NSOL_WITH_BBPSDK
+#endif // NSOL_USE_BBPSDK

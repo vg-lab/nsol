@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE( test_object_with_properties )
   nsol::ObjectWithProperties owp1;
   nsol::ObjectPtr owp2 = new nsol::ObjectWithProperties;
 
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
 
   BOOST_CHECK_EQUAL( owp1.properties( ), &owp1 );
   BOOST_CHECK_EQUAL( owp2->properties( ), owp2 );
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( test_create_object_with_properties )
 {
   nsol::ObjectWithProperties owp1;
 
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
 
   nsol::ObjectPtr o2 = new nsol::Object;
   nsol::ObjectPtr o3 = o2->create( );
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE( test_node_with_properties )
 
   Node node;
 
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
 
   BOOST_CHECK_EQUAL( node.properties( ), &node );
 

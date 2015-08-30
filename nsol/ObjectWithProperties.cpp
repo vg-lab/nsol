@@ -14,7 +14,7 @@ namespace nsol
 
   ObjectWithPropertiesPtr ObjectWithProperties::properties( void )
   {
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
     return this;
 #else
     Log::log( "No properties available. FiReS not supported.",
