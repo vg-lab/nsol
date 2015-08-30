@@ -46,6 +46,8 @@ include(Common)
 
 common_package(Boost COMPONENTS unit_test_framework)
 common_package(vmmlib REQUIRED)
+list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib)
+
 if (WITH_BBPSDK)
   common_package(BBPSDK)
   if( BBPSDK_FOUND )
