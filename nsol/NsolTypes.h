@@ -82,7 +82,7 @@ namespace nsol
   class SegmentCachedStats;
 
 
-#if (NSOL_WITH_SHARED_PTR == 1)
+#if (NSOL_USE_SHARED_PTR == 1)
   typedef std::shared_ptr< Axon > AxonPtr;
   typedef std::shared_ptr< Column > ColumnPtr;
   typedef std::shared_ptr< Dendrite > DendritePtr;

@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE( test_column_clear_minicolumns )
   #define NUM_MINICOLS 10
 
   // Create and add some minicolumns
-  for ( int i = 0; i < NUM_MINICOLS; i++ )
+  for ( int i = 0; i < NUM_MINICOLS; ++i )
     col->addMiniColumn( MiniColumnPtr( new MiniColumn ( col, i )));
 
   // Clear minicolumns
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE( test_column_operators )
   BOOST_CHECK_EQUAL( *c == *c2, true );
   BOOST_CHECK_EQUAL( *c != *c2, false );
 
-  for ( int i = 0 ; i < NUM_MINICOLS ; i++ )
+  for ( int i = 0 ; i < NUM_MINICOLS ; ++i )
   {
     c->addMiniColumn( MiniColumnPtr( new MiniColumn ( c, i )));
   }
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
   nsol::ColumnPtr c( new nsol::Column );
 
   unsigned int gid = 0;
-  for ( int i = 0 ; i < NUM_MINICOLS ; i++ )
+  for ( int i = 0 ; i < NUM_MINICOLS ; ++i )
   {
     c->addMiniColumn( MiniColumnPtr( new MiniColumn ( c, i )));
   }
@@ -264,11 +264,11 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
   MiniColumns miniCols = c->miniColumns( );
 
   for ( MiniColumns::iterator mcIt = miniCols.begin( );
-        mcIt != miniCols.end( ); mcIt++ )
+        mcIt != miniCols.end( ); ++mcIt )
   {
-    for ( int l = 1 ; l < 7 ; l++ )
+    for ( int l = 1 ; l < 7 ; ++l )
     {
-      for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; j++ )
+      for ( int j = 0 ; j < NUM_NEURONS_PYR_PER_LAYER ; ++j )
       {
         ( *mcIt )->addNeuron(
           NeuronPtr( new Neuron( NeuronMorphologyPtr(
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
                                  Matrix4_4f::IDENTITY,
                                  *mcIt, Neuron::PYRAMIDAL )));
       }
-      for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
+      for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; ++j )
       {
         ( *mcIt )->addNeuron(
           NeuronPtr( new Neuron( NeuronMorphologyPtr(
@@ -308,11 +308,11 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
 
   // Free dymanic memory used
   for ( auto miniColIt = c->miniColumns( ).begin( );
-	miniColIt != c->miniColumns( ).end( ); miniColIt++ )
+	miniColIt != c->miniColumns( ).end( ); ++miniColIt )
   {
 
     for ( auto neuronIt = ( * miniColIt )->neurons( ).begin( );
-	  neuronIt != ( * miniColIt )->neurons( ).end( ); neuronIt++ )
+	  neuronIt != ( * miniColIt )->neurons( ).end( ); ++neuronIt )
       NSOL_DELETE_PTR( ( * neuronIt ));
 
     NSOL_DELETE_PTR( ( * miniColIt ));
