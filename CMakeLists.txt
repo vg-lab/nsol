@@ -62,6 +62,10 @@ if(FIRES_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES fires)
 endif()
 
+if(QT5CORE_FOUND)
+  list(APPEND NSOL_DEPENDENT_LIBRARIES Qt5Core)
+endif()
+
 # library subdirectory
 add_subdirectory(nsol)
 
