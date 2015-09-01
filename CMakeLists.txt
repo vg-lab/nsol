@@ -43,7 +43,28 @@ option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 option(WITH_BBPSDK "WITH_BBPSDK" ON)
 
 include(Common)
-include(FindPackages)
+
+common_package(Boost COMPONENTS unit_test_framework)
+common_package(vmmlib REQUIRED)
+list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib)
+
+if (WITH_BBPSDK)
+  common_package(BBPSDK)
+  if( BBPSDK_FOUND )
+    list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
+  endif( )
+endif()
+common_package(Qt5Core)
+common_package(fires)
+common_package_post()
+
+if(FIRES_FOUND)
+  list(APPEND NSOL_DEPENDENT_LIBRARIES fires)
+endif()
+
+if(QT5CORE_FOUND)
+  list(APPEND NSOL_DEPENDENT_LIBRARIES Qt5Core)
+endif()
 
 # library subdirectory
 add_subdirectory(nsol)
