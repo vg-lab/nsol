@@ -18,7 +18,7 @@
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
 
-#ifdef NSOL_WITH_QT5CORE
+#ifdef NSOL_USE_QT5CORE
 #include <QStringList>
 #include <QString>
 #include <QXmlStreamReader>
@@ -37,7 +37,7 @@ namespace nsol
     NSOL_API
     DataSet( void );
 
-#ifdef NSOL_WITH_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 
     template < class NODE = Node,
                class SEGMENT = Segment,
@@ -146,7 +146,7 @@ namespace nsol
 	       class COLUMN = Column >
     void loadScene( const std::string& xmlSceneFile )
     {
-#ifdef NSOL_WITH_QT5CORE
+#ifdef NSOL_USE_QT5CORE
       QFile qFile ( xmlSceneFile.c_str( ));
       if ( ! qFile.exists( ))
         NSOL_THROW( "Scene file not found" );

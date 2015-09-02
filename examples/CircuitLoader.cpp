@@ -6,7 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
             Do not distribute without further notice.
  */
-#ifdef NSOL_WITH_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 
 #define TESTING_PRINT_LITERAL
 
@@ -151,4 +151,4 @@ int main ( int argc, char *argv[] )
 	 return -1;
 } // namespace nsol
 
-#endif // NSOL_WITH_BBPSDK
+#endif // NSOL_USE_BBPSDK
