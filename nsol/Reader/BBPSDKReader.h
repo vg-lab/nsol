@@ -6,7 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifdef NSOL_WITH_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
@@ -254,9 +254,9 @@ namespace nsol
 
 	 // A bbpsdk experiment is opened
 	 bbp::Experiment experiment;
-	 std::cerr << inputFile << ": Opening experiment " << std::endl;
+	 //std::cerr << inputFile << ": Opening experiment " << std::endl;
 	 experiment.open(inputFile);
-	 std::cerr << inputFile << ": DONE " << std::endl;
+	 //std::cerr << inputFile << ": DONE " << std::endl;
 
 	 if (!experiment.is_open()) {
 	   std::cerr << inputFile << ": Experiment could not be opened"
@@ -292,15 +292,24 @@ namespace nsol
 
 	 const bbp::Neurons &neuronsExpe = experiment.microcircuit().neurons();
 
-	 std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
-			   << " neurons. " << std::endl;
+	 //std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
+	 //		   << " neurons. " << std::endl;
 
+	 unsigned long neuronCounter = 0;
+	 std::cout << "nsol: Loading neurons" << std::endl;
+
+
+	 /**
+	  * In this case we have to use a constant iterator because
+	  * we create a map with a constant bbp::Neuron object pointer as
+	  * a key.
+	  */
 	 for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
 	         it != neuronsExpe.end(); ++it)
 	//NSOL_FOREACH( it, neuronsExpe )
 	{
-	  std::cerr << "Neuron " << it->label() << " with morphology "
-			   << it->morphology().label() << std::endl;
+	  //std::cerr << "Neuron " << it->label() << " with morphology "
+	  //	   << it->morphology().label() << std::endl;
 
 	  NeuronPtr neuron (new NEURON( )); //New neuron
 	  const bbp::Neuron* bbpNeuron = &(*it);
@@ -351,7 +360,7 @@ namespace nsol
 	   if (neuronMorphoMap.find(it->morphology().label()) !=
 		   neuronMorphoMap.end())
 	   {
-		 std::cerr << "Morphology previously loaded" << std::endl;
+		// std::cerr << "Morphology previously loaded" << std::endl;
 
 		 NeuronMorphologyPtr m =
 		   neuronMorphoMap.find(it->morphology().label())->second;
@@ -371,8 +380,8 @@ namespace nsol
 	   }
 	   else
 	   {
-		 std::cerr << "Loading morphology " << it->morphology().label()
-				   << std::endl;
+		// std::cerr << "Loading morphology " << it->morphology().label()
+		//		   << std::endl;
 
 		 NeuronMorphologyPtr m ( new NEURONMORPHOLOGY ( new SOMA ));
 
@@ -549,6 +558,14 @@ namespace nsol
 		 else
 		   neuron->neuronType( ) = Neuron::INTER;
 	   } // morphology not previously loaded
+
+
+	    std::cout << "\r" "nsol::BBPSDKReader("
+				  << 100 * ( neuronCounter + 1 ) / neuronsExpe.size( )
+                  << "%) Loading Neuron " << neuronCounter;
+
+		neuronCounter++;
+
 	 }
 
 	 NSOL_FOREACH( column, columnMap )
@@ -658,6 +675,9 @@ namespace nsol
 
 	 // close experiment and free its resources
 	 experiment.close( );
+
+	 std::cout << std::endl;
+
   }
 
 
@@ -693,7 +713,7 @@ namespace nsol
             && str.substr(found + 1) == "csv") {
 
           findCsv = true;
-          std::cerr << "\nLoading neuron file " << entry->d_name << std::endl;
+          // std::cerr << "\nLoading neuron file " << entry->d_name << std::endl;
 
           std::ifstream inFile;
           inFile.open(dir + entry->d_name, std::ios::in);
@@ -885,5 +905,5 @@ namespace nsol
 
 } // namespace nsol
 
-#endif // NSOL_WITH_BBPSDK
+#endif // NSOL_USE_BBPSDK
 #endif // __NSOL_BBPSDK_READER__

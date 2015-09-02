@@ -5,14 +5,14 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifndef __NSOL_OBJECT_WITH_PROPERTIES__
-#define __NSOL_OBJECT_WITH_PROPERTIES__
+#ifndef __NSOL_OBJECT_USE_PROPERTIES__
+#define __NSOL_OBJECT_USE_PROPERTIES__
 
 #include <nsol/api.h>
 #include "Object.h"
 #include "NsolTypes.h"
 
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
 #include <fires/fires.h>
 #endif
 
@@ -21,7 +21,7 @@ namespace nsol
 
   class ObjectWithProperties
     : public virtual Object
-#ifdef NSOL_WITH_FIRES
+#ifdef NSOL_USE_FIRES
     , public fires::Object
 #endif
   {
