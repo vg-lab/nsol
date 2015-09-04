@@ -362,6 +362,14 @@ namespace nsol
       neuron->transform() = it->global_transform();
       neuron->gid() = it->gid();
 
+
+      if( it->morphology_type( ).is_interneuron( ))
+        neuron->neuronType( ) = Neuron::INTER;
+      else if( it->morphology_type( ).is_pyramidal( ))
+        neuron->neuronType( ) = Neuron::PYRAMIDAL;
+      else
+        neuron->neuronType( ) = Neuron::UNDEFINED;
+
       if ( loadFlags & MORPHOLOGY )
       {
         //Morphology previously loaded
@@ -374,10 +382,6 @@ namespace nsol
           neuron->morphology( m );
           m->addParentNeuron( neuron );
 
-          if ( m->apicalDendrite( ))
-            neuron->neuronType( ) = Neuron::PYRAMIDAL;
-          else
-            neuron->neuronType( ) = Neuron::INTER;
         }
         else
         {
@@ -549,11 +553,6 @@ namespace nsol
               } // while not stack empty
             } // for all soma section childs
           } // for all soma sections
-
-          if ( m->apicalDendrite( ))
-            neuron->neuronType( ) = Neuron::PYRAMIDAL;
-          else
-            neuron->neuronType( ) = Neuron::INTER;
         } // morphology not previously loaded
       }
 
