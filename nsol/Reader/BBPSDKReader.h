@@ -45,7 +45,7 @@ namespace nsol
 
 
 #define BBPSDK_LOADER_TEMPLATE_CLASSES          \
-    class NODE,                                 \
+  class NODE,                                   \
     class SEGMENT,                              \
     class SECTION,                              \
     class DENDRITE,                             \
@@ -57,7 +57,7 @@ namespace nsol
     class COLUMN
 
 #define BBPSDK_LOADER_TEMPLATE_CLASS_NAMES      \
-    NODE,                                       \
+  NODE,                                         \
     SEGMENT,                                    \
     SECTION,                                    \
     DENDRITE,                                   \
@@ -183,8 +183,8 @@ namespace nsol
       SWC_APICAL = 4
     } TSwcNodeType;
 
-  // protected:
-  //   std::map<unsigned int, ColumnPtr> columnMap;
+    // protected:
+    //   std::map<unsigned int, ColumnPtr> columnMap;
 
 
   };
@@ -396,10 +396,10 @@ namespace nsol
           {
 
             m->soma()->addNode(NodePtr(
-                              new NODE( Vec3f( ( * nodeIt)[0],
-                                               ( * nodeIt)[1],
-                                               ( * nodeIt)[2] ),
-                                        id, soma.mean_radius( ))));
+                                 new NODE( Vec3f( ( * nodeIt)[0],
+                                                  ( * nodeIt)[1],
+                                                  ( * nodeIt)[2] ),
+                                           id, soma.mean_radius( ))));
 
             id++;
           }
@@ -473,28 +473,28 @@ namespace nsol
                 segment->parentSection( section );
 
                 const bbp::Cross_Sections & cross_Sections =
-                    lS->cross_sections();
+                  lS->cross_sections();
 
                 bbp::Cross_Sections::const_iterator crossSectionIt =
-                    cross_Sections.begin();
+                  cross_Sections.begin();
 
                 if (first)
                 {
                   //TODO: select correct initial soma point
                   segment->begin(
-                      NodePtr( new NODE( Vec3f(0, 0, 0),
-                                         1, 0.0 )));
+                    NodePtr( new NODE( Vec3f(0, 0, 0),
+                                       1, 0.0 )));
                   first = false;
                 }
                 else
                   segment->begin(section->parent()->lastSegment()->end());
 
                 segment->end(
-                    NodePtr(
-                        new NODE( Vec3f( crossSectionIt->center()[0],
-                                   crossSectionIt->center()[1],
-                                   crossSectionIt->center()[2] ),
-                            id, crossSectionIt->radius( ))));
+                  NodePtr(
+                    new NODE( Vec3f( crossSectionIt->center()[0],
+                                     crossSectionIt->center()[1],
+                                     crossSectionIt->center()[2] ),
+                              id, crossSectionIt->radius( ))));
 
                 nodePtrMap[id] = segment->end();
 
@@ -512,16 +512,16 @@ namespace nsol
                       ++itL )
                 {
                   SegmentPtr crossSectionSegment =
-                      section->addSegment( new SEGMENT );
+                    section->addSegment( new SEGMENT );
                   crossSectionSegment->parentSection( section );
                   crossSectionSegment->begin(nPre);
 
                   crossSectionSegment->end(
-                      NodePtr( new NODE(
-                             Vec3f(itL->center()[0],
-                                   itL->center()[1],
-                                   itL->center()[2]),
-                                   id, itL->radius())));
+                    NodePtr( new NODE(
+                               Vec3f(itL->center()[0],
+                                     itL->center()[1],
+                                     itL->center()[2]),
+                               id, itL->radius())));
 
                   nodePtrMap[id] = crossSectionSegment->end();
 
@@ -685,8 +685,8 @@ namespace nsol
               getline(iss, csvLine.morphoLabel, ',');
 
               std::cerr << "Neuron " << csvLine.label
-                   << " with morphology "
-                   << csvLine.morphoLabel << std::endl;
+                        << " with morphology "
+                        << csvLine.morphoLabel << std::endl;
 
               NeuronPtr neuron ( new NEURON( ));//New neuron
               neuronVector.push_back( neuron );
@@ -748,7 +748,7 @@ namespace nsol
               } else
               {
                 std::cerr << "Loading morphology file "
-                     << csvLine.morphoLabel << ".swc"
+                          << csvLine.morphoLabel << ".swc"
                           << std::endl;
                 NeuronMorphologyPtr m = r.readMorphology(
                   dir + csvLine.morphoLabel + ".swc");
@@ -756,7 +756,7 @@ namespace nsol
                 if (!m)
                 {
                   std::cerr << "\nError opening morphology file "
-                       << csvLine.morphoLabel << std::endl;
+                            << csvLine.morphoLabel << std::endl;
                   continue;
                 }
 
