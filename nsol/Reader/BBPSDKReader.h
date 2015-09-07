@@ -296,6 +296,8 @@ namespace nsol
     //      it != neuronsExpe.end(); ++it)
 
     unsigned long neuronCounter = 0;
+    unsigned int oldPerc = 0;
+
     std::cout << "nsol: Loading neurons" << std::endl;
 
     NSOL_FOREACH( it, neuronsExpe )
@@ -544,9 +546,16 @@ namespace nsol
         } // morphology not previously loaded
       } // loadFlags & MORPHOLOGY
 
-      std::cout << "\r" "nsol::BBPSDKReader("
-                << 100 * ( neuronCounter + 1 ) / neuronsExpe.size( )
-                << "%) Loading Neuron " << neuronCounter;
+      unsigned int perc = 100 * ( neuronCounter + 1 ) / neuronsExpe.size( );
+
+
+      if ( perc > oldPerc )
+      {
+        std::cout << "\r" "nsol::BBPSDKReader("
+                  << perc
+                  << "%) Loading Neuron " << neuronCounter;
+      }
+      oldPerc = perc;
 
       neuronCounter++;
 

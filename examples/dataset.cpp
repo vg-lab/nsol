@@ -6,20 +6,27 @@ int main ( int argc, char ** argv )
 {
   if ( argc < 2 )
   {
-    std::cerr << "Usage: " << argv[ 0 ] << " blueconfig_path " << std::endl;
+    std::cerr << "Usage: " << argv[ 0 ]
+              << " blueconfig_path [target]" << std::endl;
     return -1;
+  }
+
+  std::string target("");
+  if ( argc > 2  )
+  {
+    target = std::string( argv[ 2 ] );
   }
 
   nsol::DataSet ds;
 
   std::cout << "Opening dataset with HIERARCHY " << argv[ 1 ] << std::endl;
-  ds.openBlueConfig( argv[ 1 ], nsol::HIERARCHY );
+  ds.openBlueConfig( argv[ 1 ], nsol::HIERARCHY, target );
   std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
   std::cout << "Closing dataset " << std::endl;
   ds.close( );
 
   std::cout << "Opening dataset with MORPHOLOGY " << argv[ 1 ] << std::endl;
-  ds.openBlueConfig( argv[ 1 ], nsol::MORPHOLOGY );
+  ds.openBlueConfig( argv[ 1 ], nsol::MORPHOLOGY, target );
   std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
   std::cout << "Closing dataset " << std::endl;
   ds.close( );
