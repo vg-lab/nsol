@@ -49,9 +49,13 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
     void openBlueConfig( const std::string& blueconfig,
-                         const int loadFlags = MORPHOLOGY,
-                         const std::string& targetLabel = std::string( "" ))
+                         const int loadFlags = MORPHOLOGY |
+                                               HIERARCHY  |
+                                               SIMULATION_DATA,
+                         const std::string& targetLabel = std::string( "" ),
+                         const std::string& reportCategory = std::string( "" ) )
     {
+     
       BBPSDKReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
@@ -59,7 +63,8 @@ namespace nsol
                                  _simulationData,
                                  blueconfig,
                                  loadFlags,
-                                 targetLabel );
+                                 targetLabel,
+                                 reportCategory );
 
       // NSOL_FOREACH( column, columnsMap )
       //   _columns.push_back( column->second );

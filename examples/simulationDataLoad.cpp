@@ -34,7 +34,7 @@ int main (int argc, char ** argv)
                                 "voltage" );
 
   std::pair<SimulationData::iterator, SimulationData::iterator>
-    simDataIteratorPair = simulationData.findByRange(0.0f, 80.0f);
+    simDataIteratorPair = simulationData.findByRange(0.0f, 1.0f);
 
   std::cout << std::endl;
 

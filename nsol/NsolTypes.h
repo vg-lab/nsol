@@ -209,9 +209,10 @@ namespace nsol
 
   enum LoadFlags
   {
-    MORPHOLOGY      =   0x00000001,
-    CIRCUIT         =   0x00000002,
-    SIMULATION_DATA =   0x00000004,
+    HIERARCHY       =   0x00000001,
+    MORPHOLOGY      =   0x00000002,
+    CIRCUIT         =   0x00000004,
+    SIMULATION_DATA =   0x00000008,
   };
 
 
