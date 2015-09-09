@@ -6,7 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-#ifdef NSOL_USE_BBPSDK
+//#ifdef NSOL_USE_BBPSDK
 
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
@@ -45,8 +45,7 @@ namespace nsol
 
 
 #define BBPSDK_LOADER_TEMPLATE_CLASSES          \
-  class NODE,                                   \
-    class SEGMENT,                              \
+    class NODE,                                 \
     class SECTION,                              \
     class DENDRITE,                             \
     class AXON,                                 \
@@ -57,8 +56,7 @@ namespace nsol
     class COLUMN
 
 #define BBPSDK_LOADER_TEMPLATE_CLASS_NAMES      \
-  NODE,                                         \
-    SEGMENT,                                    \
+    NODE,                                       \
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
@@ -145,14 +143,10 @@ namespace nsol
           Sections sections = ( *neurite )->sections( );
           NSOL_FOREACH( section, sections )
           {
-            SegmentPtr segment = ( *section )->firstSegment( );
-            while ( segment )
+            delete ( *section )->lastNode( );
+            NSOL_FOREACH( node, (*section)->middleNodes( ))
             {
-              SegmentPtr tmpSegment = segment;
-              segment = segment->next( );
-              nodes.insert( tmpSegment->begin( ));
-              nodes.insert( tmpSegment->end( ));
-              delete tmpSegment;
+              delete *node;
             }
             delete *section;
           }
@@ -161,12 +155,6 @@ namespace nsol
         }
         delete ( *morphology )->soma( );
         delete *morphology;
-      }
-
-
-      NSOL_FOREACH( node, nodes )
-      {
-        delete *node;
       }
       return;
     }
@@ -191,7 +179,6 @@ namespace nsol
 
 
   typedef BBPSDKReaderTemplated< Node,
-                                 Segment,
                                  Section,
                                  Dendrite,
                                  Axon,
@@ -202,7 +189,6 @@ namespace nsol
                                  Column > BBPSDKReader;
 
   typedef BBPSDKReaderTemplated< Node,
-                                 SegmentStats,
                                  SectionStats,
                                  DendriteStats,
                                  AxonStats,
@@ -214,7 +200,6 @@ namespace nsol
                                  > BBPSDKReaderStats;
 
   typedef BBPSDKReaderTemplated< NodeCached,
-                                 SegmentCachedStats,
                                  SectionCachedStats,
                                  DendriteCachedStats,
                                  AxonCachedStats,
@@ -798,5 +783,5 @@ namespace nsol
 
 } // namespace nsol
 
-#endif // NSOL_USE_BBPSDK
+//#endif // NSOL_USE_BBPSDK
 #endif // __NSOL_BBPSDK_READER__
