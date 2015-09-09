@@ -15,9 +15,10 @@ namespace nsol
   Section::Section( void )
     : _neurite( nullptr )
     , _parent( nullptr )
-    , _firstSegment( nullptr )
-    , _lastSegment( nullptr )
+    , _firstNode( nullptr )
+    , _lastNode( nullptr )
   {
+    _middleNodes.clear( );
   }
 
   Section::~Section( void )
@@ -53,6 +54,7 @@ namespace nsol
   void Section::parent( SectionPtr newParent )
   {
     _parent = newParent;
+    _firstNode = _parent->lastNode( );
   }
 
   void Section::addChild( SectionPtr section )
@@ -71,99 +73,43 @@ namespace nsol
     return _children;
   }
 
-  SegmentPtr Section::addSegment( SegmentPtr segment )
+
+  Nodes & Section::middleNodes( void )
   {
-
-    NSOL_DEBUG_CHECK( segment, "given segment is null" )
-
-    SegmentPtr s = segment;
-
-    // If this section doesn't have first segment the segment
-    // passed or created is added;
-    if (!_firstSegment)
-    {
-      _firstSegment = _lastSegment = s;
-      s->next( nullptr );
-      s->prev( nullptr );
-    }
-    // In other case segment is concatenated to last segment
-    else
-    {
-      _lastSegment->next( s );
-      s->next( nullptr );
-      s->prev( _lastSegment );
-      _lastSegment = s;
-    }
-
-    return s;
-
+    return _middleNodes;
   }
 
-  SegmentPtr Section::firstSegment( void )
+  const Nodes & Section::middleNodes( void ) const
   {
-    return _firstSegment;
+    return _middleNodes;
   }
 
-  void Section::firstSegment( SegmentPtr firstSegment_ )
+
+  void Section::addNode( NodePtr node )
   {
-    _firstSegment = firstSegment_;
+    if ( _lastNode )
+      _middleNodes.push_back( _lastNode );
+    _lastNode = node;
   }
 
-  SegmentPtr Section::lastSegment( void )
+  NodePtr Section::firstNode( void )
   {
-    return _lastSegment;
+    return _firstNode;
   }
 
-  void Section::lastSegment( SegmentPtr lastSegment_ )
+  void Section::firstNode( NodePtr firstNode_ )
   {
-    _lastSegment = lastSegment_;
+    _firstNode = firstNode_;
+  }
+
+  NodePtr Section::lastNode( void )
+  {
+    return _lastNode;
   }
 
   SectionStats * Section::stats( void )
   {
     return nullptr;
-  }
-
-  unsigned int Section::fuseSection( void )
-  {
-    SegmentPtr sP = _firstSegment;
-
-    while (sP != _lastSegment)
-    {
-      SegmentPtr nP = sP->next( );
-      _removeSegment(sP);
-      sP = nP;
-    }
-
-    _firstSegment->end(_lastSegment->end( ));
-
-    _lastSegment = _firstSegment;
-
-    return 0;
-  }
-
-  unsigned int Section::_removeSegment( SegmentPtr segment )
-  {
-    if ( segment )
-    {
-      if ( segment == _firstSegment )
-      {
-        segment->end( segment->next( )->end( ));
-        segment->next( )->_removeNodes( );
-        NSOL_DELETE_PTR( segment->next( ) );
-      }
-      else
-      {
-        segment->_removeNodes( );
-        segment->prev( )->end(segment->next( )->end( ));
-        NSOL_DELETE_PTR( segment->next( ) );
-        NSOL_DELETE_PTR( segment );
-      }
-
-      return 1;
-    }
-
-    return 0;
   }
 
 } // namespace nsol

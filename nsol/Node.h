@@ -32,12 +32,6 @@ namespace nsol
     virtual ~Node( void );
 
     NSOL_API
-    Segments & parentSegments( void );
-
-    NSOL_API
-    void addParentSegment( SegmentPtr segment_ );
-
-    NSOL_API
     virtual void point( const Vec3f & point_ );
 
     NSOL_API
@@ -75,8 +69,6 @@ namespace nsol
     Vec3f _point;
     float _radius;
     int _id;
-
-    Segments _parentSegments;
 
   };
 
