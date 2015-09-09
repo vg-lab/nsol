@@ -26,17 +26,6 @@ namespace nsol
   {
   }
 
-  Segments & Node::parentSegments( void )
-  {
-    return _parentSegments;
-  }
-
-  void Node::addParentSegment( SegmentPtr segment_ )
-  {
-    NSOL_DEBUG_CHECK( segment_, "adding null parent segment" );
-    _parentSegments.push_back( segment_ );
-  }
-
   void Node::point( const Vec3f & point_ )
   {
     _point = point_;

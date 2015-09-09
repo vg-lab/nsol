@@ -75,12 +75,9 @@ namespace nsol
   class ObjectWithProperties;
   class Properties;
   class Section;
-  class Segment;
   class Soma;
 
   class NodeCached;
-  class SegmentCachedStats;
-
 
 #if (NSOL_USE_SHARED_PTR == 1)
   typedef std::shared_ptr< Axon > AxonPtr;
@@ -95,11 +92,8 @@ namespace nsol
   typedef std::shared_ptr< ObjectWithProperties > ObjectWithPropertiesPtr;
   typedef std::shared_ptr< Properties > PropertiesPtr;
   typedef std::shared_ptr< Section > SectionPtr;
-  typedef std::shared_ptr< Segment > SegmentPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
-
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
-  typedef std::shared_ptr< SegmentCachedStats > SegmentCachedStatsPtr;
 
 
 //  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
@@ -130,12 +124,10 @@ namespace nsol
   typedef Properties* PropertiesPtr;
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
-  typedef Segment* SegmentPtr;
   typedef Soma* SomaPtr;
 
 
   typedef NodeCached* NodeCachedPtr;
-  typedef SegmentCachedStats* SegmentCachedStatsPtr;
 
 
 //  typedef CachedSection * CachedSectionPtr;
