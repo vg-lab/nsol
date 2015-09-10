@@ -43,21 +43,15 @@ namespace nsol
       cached->setAndPropagateDirty( );
   }
 
-  SegmentPtr SectionCachedStats::addSegment( SegmentPtr segment )
+  NodePtr SectionCachedStats::addNode( NodePtr node )
   {
     this->setAndPropagateDirty( );
-    return this->Section::addSegment( segment );
+    return this->Section::addNode( node );
   }
 
-  void SectionCachedStats::firstSegment( SegmentPtr firstSegment_ )
+  void SectionCachedStats::firstNode( NodePtr firstNode_ )
   {
-    return this->Section::firstSegment( firstSegment_ );
-    this->setAndPropagateDirty( );
-  }
-
-  void SectionCachedStats::lastSegment( SegmentPtr lastSegment_ )
-  {
-    this->Section::lastSegment( lastSegment_ );
+    return this->Section::firstNode( firstNode_ );
     this->setAndPropagateDirty( );
   }
 

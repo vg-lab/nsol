@@ -12,11 +12,12 @@
 namespace nsol
 {
 
-  NodeStats::TNodeStat
-  toNodeStat( SectionStats::TSectionStat stat )
-  {
-	  //TODO:
-  }
+  //NodeStats::TNodeStat
+  //toNodeStat( SectionStats::TSectionStat stat )
+  //{
+	  //TODO: calculate Stats to Section: SURFACE, VOLUME,
+	  // LENGHT, SECTION_NUM_STATS
+  //}
 
 
   float SectionStats::getStat( TSectionStat stat, TAggregation agg ) const
@@ -26,7 +27,7 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
-    int numSegments = 0;
+    //int numSegments = 0;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -40,7 +41,7 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    if ( _firstSegment )
+    /*if ( _firstSegment )
     {
       SegmentPtr segment = _firstSegment;
 
@@ -49,18 +50,18 @@ namespace nsol
         NSOL_DEBUG_CHECK( segment->stats( ),
                           "segment doesn't have stats" );
 
-        if ( agg == /*TAggregation::*/VARIANCE )
-        {
+        if ( agg == /*TAggregation::*//*VARIANCE )
+        /*{
           float tmpValue =
             segment->stats( )->getStat( toSegmentStat( stat ));
           value += ( mean - tmpValue ) * ( mean - tmpValue );
         }
-        else if ( agg == /*TAggregation::*/MIN )
+        else if ( agg == /*TAggregation::*//*MIN )
           value =
             std::min( value,
                       segment->stats( )->getStat( toSegmentStat( stat )));
-        else if ( agg == /*TAggregation::*/MAX )
-          value =
+        else if ( agg == /*TAggregation::*//*MAX )
+          /*value =
             std::max( value,
                       segment->stats( )->getStat( toSegmentStat( stat )));
         else
@@ -68,7 +69,7 @@ namespace nsol
 
         segment = segment->next( );
         numSegments++;
-      } // while segments
+      } // while segments*/
 
 
       switch ( agg )
@@ -78,8 +79,8 @@ namespace nsol
       case /*TAggregation::*/MAX:
         return value;
       case /*TAggregation::*/MEAN:
-      case /*TAggregation::*/VARIANCE:
-        return value / numSegments;
+      //case /*TAggregation::*/VARIANCE:
+      //  return value / numSegments;
       case /*TAggregation::*/STD_DEV:
         break;
       }
