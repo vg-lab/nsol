@@ -12,7 +12,6 @@
 #include <nsol/api.h>
 #include "Object.h"
 #include "NsolTypes.h"
-#include "Container/Segments.h"
 
 namespace nsol
 {
