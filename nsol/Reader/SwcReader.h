@@ -11,12 +11,11 @@
 
 
 #include "../Neuron.h"
-#include "../Stats/NodeCached.h"
-#include "../Stats/SegmentCachedStats.h"
-#include "../Stats/SectionCachedStats.h"
-#include "../Stats/DendriteCachedStats.h"
-#include "../Stats/AxonCachedStats.h"
-#include "../Stats/NeuronMorphologyCachedStats.h"
+//#include "../Stats/NodeCached.h"
+//#include "../Stats/SectionCachedStats.h"
+//#include "../Stats/DendriteCachedStats.h"
+//#include "../Stats/AxonCachedStats.h"
+//#include "../Stats/NeuronMorphologyCachedStats.h"
 
 
 #include <iostream>
@@ -32,8 +31,7 @@ namespace nsol
 {
 
 #define SWC_READER_TEMPLATE_CLASSES              \
-  class NODE,                                    \
-    class SEGMENT,                               \
+    class NODE,                                  \
     class SECTION,                               \
     class DENDRITE,                              \
     class AXON,                                  \
@@ -42,8 +40,7 @@ namespace nsol
     class NEURON
 
 #define SWC_READER_TEMPLATE_CLASS_NAMES         \
-  NODE,                                         \
-    SEGMENT,                                    \
+    NODE,                                       \
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
@@ -118,7 +115,6 @@ namespace nsol
 
 
   typedef SwcReaderTemplated< Node,
-                              Segment,
                               Section,
                               Dendrite,
                               Axon,
@@ -126,23 +122,21 @@ namespace nsol
                               NeuronMorphology,
                               Neuron > SwcReader;
 
-  typedef SwcReaderTemplated< Node,
-                              SegmentStats,
-                              SectionStats,
-                              DendriteStats,
-                              AxonStats,
-                              SomaStats,
-                              NeuronMorphologyStats,
-                              Neuron > SwcReaderStats;
-
-  typedef SwcReaderTemplated< NodeCached,
-                              SegmentCachedStats,
-                              SectionCachedStats,
-                              DendriteCachedStats,
-                              AxonCachedStats,
-                              SomaStats,
-                              NeuronMorphologyCachedStats,
-                              Neuron > SwcReaderCachedStats;
+//  typedef SwcReaderTemplated< Node,
+//                              SectionStats,
+//                              DendriteStats,
+//                              AxonStats,
+//                              SomaStats,
+//                              NeuronMorphologyStats,
+//                              Neuron > SwcReaderStats;
+//
+//  typedef SwcReaderTemplated< NodeCached,
+//                              SectionCachedStats,
+//                              DendriteCachedStats,
+//                              AxonCachedStats,
+//                              SomaStats,
+//                              NeuronMorphologyCachedStats,
+//                              Neuron > SwcReaderCachedStats;
 
 
 
@@ -378,49 +372,31 @@ namespace nsol
       s->neurite(d);
       s->parent(parentSection);
 
-      SegmentPtr sgPre = s->addSegment( new SEGMENT );
-      sgPre->parentSection( s );
-
       //Segment begin node
       if (first)
       {
-        sgPre->begin(nodeSomaPtr);
+        s->firstNode(nodeSomaPtr);
         first = false;
       }
-      else
-        sgPre->begin(s->parent( )->lastSegment( )->end( ));
 
       //Segment end node
-      sgPre->end(NodePtr( new NODE(lines[id].xyz, id, lines[id].radius )));
-
+      s->addNode( new NODE(lines[id].xyz, id, lines[id].radius ));
 
       if ( parentSection )
         parentSection->addChild( s );
-
-
-      nP = sgPre->end( );
 
       // While same section create the segments
       while (lines[id].children.size( ) == 1)
       {
 
-        SegmentPtr sg = s->addSegment( new SEGMENT );
-        sg->parentSection(s);
-
-        //Segmenet begin node
-        sg->begin(nP);
-
         id = lines[id].children[0];
 
-        //Segment end node
+
         NodePtr node  = new NODE( lines[id].xyz, id, lines[id].radius );
         if ( reposition_ )
           nodes_->push_back( node );
-        sg->end( node );
 
-
-        nP = sg->end( );
-
+        s->addNode( node );
       }
 
       // New branching point
@@ -477,46 +453,30 @@ namespace nsol
       s->neurite(d);
       s->parent(parentSection);
 
-      SegmentPtr sgPre = s->addSegment( new SEGMENT );
-      sgPre->parentSection( s );
-
       //Segment begin node
       if (first)
       {
-        sgPre->begin(nodeSomaPtr);
+        s->firstNode(nodeSomaPtr);
         first = false;
       }
-      else
-        sgPre->begin(s->parent( )->lastSegment( )->end( ));
 
       //Segment end node
-      sgPre->end(NodePtr( new NODE(lines[id].xyz, id,
-                                   lines[id].radius)));
+      s->addNode( new NODE(lines[id].xyz, id, lines[id].radius));
 
       if (parentSection)
         parentSection->addChild(s);
-
-      nP = sgPre->end( );
 
       // While same section create the segments
       while (lines[id].children.size( ) == 1)
       {
 
-        SegmentPtr sg = s->addSegment( new SEGMENT );
-        sg->parentSection(s);
-
-        //Segmenet begin node
-        sg->begin(nP);
-
         id = lines[id].children[0];
 
-        //Segment end node
         NodePtr node = new NODE(lines[id].xyz, id, lines[id].radius);
         if ( reposition_ )
           nodes_->push_back( node );
-        sg->end( node );
 
-        nP = sg->end( );
+        s->addNode( node );
 
       }
 

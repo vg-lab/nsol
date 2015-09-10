@@ -26,7 +26,6 @@ namespace nsol {
   {
 
     template< class NODE,
-              class SEGMENT,
               class SECTION,
               class DENDRITE,
               class AXON,
