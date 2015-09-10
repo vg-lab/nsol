@@ -9,7 +9,6 @@
 
 #include "NodeCached.h"
 #include "SectionCachedStats.h"
-#include "SegmentCachedStats.h"
 
 namespace nsol
 {
@@ -30,42 +29,23 @@ namespace nsol
   void NodeCached::setAndPropagateDirty( unsigned int id_ )
   {
     this->Cached::setAndPropagateDirty( id_ );
-
-    NSOL_CONST_FOREACH( segIt, _parentSegments )
-    {
-      auto cached = NSOL_DYNAMIC_CAST( Cached, * segIt );
-      if ( cached )
-        cached->setAndPropagateDirty( id_ );
-    }
   }
 
   void NodeCached::setAndPropagateDirty( void )
   {
     this->Cached::setAndPropagateDirty( );
-
-    NSOL_CONST_FOREACH( segIt, _parentSegments )
-    {
-      auto cached = NSOL_DYNAMIC_CAST( Cached, * segIt );
-      if ( cached )
-        cached->setAndPropagateDirty( );
-    }
   }
 
 
   void NodeCached::radius( const float radius_ )
   {
     this->Node::radius( radius_ );
-    setAndPropagateDirty( SegmentCachedStats::SURFACE );
-    setAndPropagateDirty( SegmentCachedStats::VOLUME );
   }
 
 
   void NodeCached::point( const Vec3f & point_ )
   {
     this->Node::point( point_ );
-    setAndPropagateDirty( SegmentCachedStats::SURFACE );
-    setAndPropagateDirty( SegmentCachedStats::VOLUME );
-    setAndPropagateDirty( SegmentCachedStats::LENGTH );
   }
 
 

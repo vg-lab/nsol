@@ -8,34 +8,14 @@
  */
 
 #include "SectionStats.h"
-#include "SegmentStats.h"
 
 namespace nsol
 {
 
-  SegmentStats::TSegmentStat
-  toSegmentStat( SectionStats::TSectionStat stat )
+  NodeStats::TNodeStat
+  toNodeStat( SectionStats::TSectionStat stat )
   {
-    switch( stat )
-    {
-    case SectionStats::/*TSectionStat::*/SURFACE:
-      return SegmentStats::/*TSegmentStat::*/SURFACE;
-      break;
-
-    case SectionStats::/*TSectionStat::*/VOLUME:
-      return SegmentStats::/*TSegmentStat::*/VOLUME;
-      break;
-
-    case SectionStats::/*TSectionStat::*/LENGTH:
-      return SegmentStats::/*TSegmentStat::*/LENGTH;
-      break;
-
-    case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
-    default:
-      NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
-    }
-
-    return SegmentStats::/*TSegmentStat::*/SURFACE;
+	  //TODO:
   }
 
 
