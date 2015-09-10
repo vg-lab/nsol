@@ -53,7 +53,7 @@ int main( int argc, char *argv[] )
               << std::endl;
 
     std::cout << "first segment point: "
-              << n->firstSection()->firstSegment()->begin()->point()
+              << n->firstSection()->firstNode( )->point( )
               << std::endl;
 
     std::cout << "Soma radius: "
