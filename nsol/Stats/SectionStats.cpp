@@ -12,12 +12,30 @@
 namespace nsol
 {
 
-  //NodeStats::TNodeStat
-  //toNodeStat( SectionStats::TSectionStat stat )
-  //{
-	  //TODO: calculate Stats to Section: SURFACE, VOLUME,
-	  // LENGHT, SECTION_NUM_STATS
-  //}
+	SegmentStats::TSegmentStat
+	toSegmentStat( SectionStats::TSectionStat stat )
+	{
+		switch( stat )
+		{
+		case SectionStats::/*TSectionStat::*/SURFACE:
+		  return SegmentStats::/*TSegmentStat::*/SURFACE;
+		  break;
+
+		case SectionStats::/*TSectionStat::*/VOLUME:
+		  return SegmentStats::/*TSegmentStat::*/VOLUME;
+		  break;
+
+		case SectionStats::/*TSectionStat::*/LENGTH:
+		  return SegmentStats::/*TSegmentStat::*/LENGTH;
+		  break;
+
+		case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
+		default:
+		  NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
+		}
+
+		return SegmentStats::/*TSegmentStat::*/SURFACE;
+	}
 
 
   float SectionStats::getStat( TSectionStat stat, TAggregation agg ) const
@@ -27,7 +45,7 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
-    //int numSegments = 0;
+    int numSegments = 0;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -41,36 +59,48 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    /*if ( _firstSegment )
+    NodePtr first, second;
+    for (unsigned int i=0; i<_middleNodes.size(); i++)
     {
-      SegmentPtr segment = _firstSegment;
+    	//Computing pairs of nodes (segments)
+    	if(i == 0)
+    	{
+    		first  = _firstNode;
+    		second = _middleNodes.at(i);
+    	}else
+    	{
+			if(i == _middleNodes.size() - 1)
+			{
+				first  = _middleNodes.at(i);
+				second = _lastNode;
+			}
+			else
+			{
+				first  = second;
+				second = _middleNodes.at(i);
+			}
+    	}
 
-      while ( segment )
-      {
-        NSOL_DEBUG_CHECK( segment->stats( ),
-                          "segment doesn't have stats" );
 
-        if ( agg == /*TAggregation::*//*VARIANCE )
-        /*{
+        if ( agg == /*TAggregation::*/VARIANCE )
+        {
           float tmpValue =
-            segment->stats( )->getStat( toSegmentStat( stat ));
+        		_segmentStats.getStat( toSegmentStat( stat ), first, second );
           value += ( mean - tmpValue ) * ( mean - tmpValue );
         }
-        else if ( agg == /*TAggregation::*//*MIN )
+        else if ( agg == /*TAggregation::*/MIN )
           value =
             std::min( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
-        else if ( agg == /*TAggregation::*//*MAX )
-          /*value =
+            		_segmentStats.getStat( toSegmentStat( stat ), first, second ));
+        else if ( agg == /*TAggregation::*/MAX )
+          value =
             std::max( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
+            		 _segmentStats.getStat( toSegmentStat( stat ), first, second ));
         else
-          value += segment->stats( )->getStat( toSegmentStat( stat ));
+          value += _segmentStats.getStat( toSegmentStat( stat ), first, second );
 
-        segment = segment->next( );
         numSegments++;
-      } // while segments*/
-
+     }
 
       switch ( agg )
       {
@@ -79,8 +109,8 @@ namespace nsol
       case /*TAggregation::*/MAX:
         return value;
       case /*TAggregation::*/MEAN:
-      //case /*TAggregation::*/VARIANCE:
-      //  return value / numSegments;
+      case /*TAggregation::*/VARIANCE:
+        return value / numSegments;
       case /*TAggregation::*/STD_DEV:
         break;
       }
