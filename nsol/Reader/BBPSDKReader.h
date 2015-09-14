@@ -115,8 +115,8 @@ namespace nsol
     void
     readFromBlueConfig( Columns& columns,
                         const std::string inputFile,
-                        const int loadFlags,
-                        const std::string& targetLabel );
+                        const int loadFlags = MORPHOLOGY | HIERARCHY,
+                        const std::string& targetLabel = std::string( "" ));
 
     void deleteAll( Columns& columns )
     {
@@ -238,8 +238,8 @@ namespace nsol
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
     Columns& columns,
     const std::string inputFile,
-    const int loadFlags = MORPHOLOGY | HIERARCHY,
-    const std::string& targetLabel = std::string( "" ) )
+    const int loadFlags,
+    const std::string& targetLabel )
   {
     if ( loadFlags == 0 )
       return;
