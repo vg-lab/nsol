@@ -6,13 +6,12 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-
 #ifndef __NSOL_SEGMENT_STATS__
 #define __NSOL_SEGMENT_STATS__
 
 #include <nsol/api.h>
-#include "NsolTypes.h"
-#include "Node.h"
+#include "../NsolTypes.h"
+#include "../Node.h"
 
 namespace nsol
 {
@@ -36,10 +35,9 @@ namespace nsol
 		SegmentStats * stats( void );
 
 		NSOL_API
-		static virtual float getStat( TSegmentStat stat, const NodePtr begin,
-												  const NodePtr end) const;
-
-
+		static float getStat( TSegmentStat stat,
+									  const NodePtr begin,
+									  const NodePtr end);
 	}; // class SegmentStats
 
 
