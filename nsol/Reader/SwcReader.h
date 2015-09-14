@@ -353,7 +353,6 @@ namespace nsol
 
 
     SectionPtr s = nullptr, parentSection;
-    NodePtr nP = nullptr;
     bool first = true;
 
     while (!ids.empty( ))
@@ -370,7 +369,7 @@ namespace nsol
         d->firstSection(s);  //->addSection( );
 
       s->neurite(d);
-      s->parent(parentSection);
+      s->parent( parentSection );
 
       //Segment begin node
       if (first)
@@ -434,7 +433,6 @@ namespace nsol
     ids.push(tmp);
 
     SectionPtr s = NULL, parentSection;
-    NodePtr nP = nullptr;
     bool first = true;
 
     while (!ids.empty( ))
