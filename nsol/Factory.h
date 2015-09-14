@@ -15,7 +15,6 @@ namespace nsol
 
 #define FACTORY_TEMPLATE_CLASSES                 \
     class NODE,                                  \
-    class SEGMENT,                               \
     class SECTION,                               \
     class DENDRITE,                              \
     class AXON,                                  \
@@ -27,7 +26,6 @@ namespace nsol
 
 #define FACTORY_TEMPLATE_CLASS_NAMES            \
     NODE,                                       \
-    SEGMENT,                                    \
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
@@ -64,7 +62,6 @@ namespace nsol
   } // namespace generic
 
   typedef generic::Factory< Node,
-                            Segment,
                             Section,
                             Dendrite,
                             Axon,
@@ -74,27 +71,27 @@ namespace nsol
                             MiniColumn,
                             Column > Factory;
 
-  typedef generic::Factory< Node,
-                            SegmentStats,
-                            SectionStats,
-                            DendriteStats,
-                            AxonStats,
-                            SomaStats,
-                            NeuronMorphologyStats,
-                            Neuron,
-                            MiniColumnStats,
-                            ColumnStats > FactoryStats;
-
-  typedef generic::Factory< NodeCached,
-                            SegmentCachedStats,
-                            SectionCachedStats,
-                            DendriteCachedStats,
-                            AxonCachedStats,
-                            SomaStats,
-                            NeuronMorphologyCachedStats,
-                            Neuron,
-                            MiniColumnStats,
-                            ColumnStats > FactoryCachedStats;
+//  typedef generic::Factory< Node,
+//                            SegmentStats,
+//                            SectionStats,
+//                            DendriteStats,
+//                            AxonStats,
+//                            SomaStats,
+//                            NeuronMorphologyStats,
+//                            Neuron,
+//                            MiniColumnStats,
+//                            ColumnStats > FactoryStats;
+//
+//  typedef generic::Factory< NodeCached,
+//                            SegmentCachedStats,
+//                            SectionCachedStats,
+//                            DendriteCachedStats,
+//                            AxonCachedStats,
+//                            SomaStats,
+//                            NeuronMorphologyCachedStats,
+//                            Neuron,
+//                            MiniColumnStats,
+//                            ColumnStats > FactoryCachedStats;
 
 
 

@@ -39,7 +39,6 @@ namespace nsol
 #ifdef NSOL_USE_BBPSDK
 
     template < class NODE = Node,
-               class SEGMENT = Segment,
                class SECTION = Section,
                class DENDRITE = Dendrite,
                class AXON = Axon,
@@ -53,7 +52,7 @@ namespace nsol
                          const std::string& targetLabel = std::string( "" ))
     {
      
-      BBPSDKReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+      BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       reader.readFromBlueConfig( _columns,
@@ -74,7 +73,6 @@ namespace nsol
     Columns& columns( void );
 
     template < class NODE = Node,
-               class SEGMENT = Segment,
                class SECTION = Section,
                class DENDRITE = Dendrite,
                class AXON = Axon,
@@ -89,7 +87,7 @@ namespace nsol
         const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
         const Neuron::TNeuronType type_ = Neuron::PYRAMIDAL )
     {
-      SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
+      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
       NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
 
@@ -134,7 +132,6 @@ namespace nsol
 
 
     template < class NODE = Node,
-	       class SEGMENT = Segment,
 	       class SECTION = Section,
 	       class DENDRITE = Dendrite,
 	       class AXON = Axon,
@@ -336,7 +333,7 @@ namespace nsol
                     std::string swc =
                         attributes.value( "swc" ).toString( ).toStdString( );
 
-                    SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+                    SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                         SOMA, NEURONMORPHOLOGY, NEURON > swcReader;
                      NeuronMorphologyPtr neuronMorphology =
                          swcReader.readMorphology( swc );

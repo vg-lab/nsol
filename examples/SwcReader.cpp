@@ -101,13 +101,6 @@ int main(int argc, char *argv[])
       };
 
 //      cout << endl;
-
-      SegmentPtr segment = section->firstSegment();
-      while (segment)
-      {
-//        cout << "Segment" << endl;
-        segment = segment->next();
-      }
     }
 
     // while (section) {
