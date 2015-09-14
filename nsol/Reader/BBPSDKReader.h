@@ -188,27 +188,27 @@ namespace nsol
                                  MiniColumn,
                                  Column > BBPSDKReader;
 
-  typedef BBPSDKReaderTemplated< Node,
-                                 SectionStats,
-                                 DendriteStats,
-                                 AxonStats,
-                                 SomaStats,
-                                 NeuronMorphologyStats,
-                                 Neuron,
-                                 MiniColumnStats,
-                                 ColumnStats
-                                 > BBPSDKReaderStats;
-
-  typedef BBPSDKReaderTemplated< NodeCached,
-                                 SectionCachedStats,
-                                 DendriteCachedStats,
-                                 AxonCachedStats,
-                                 SomaStats,
-                                 NeuronMorphologyCachedStats,
-                                 Neuron,
-                                 MiniColumnStats,
-                                 ColumnStats
-                                 > BBPSDKReaderCachedStats;
+//  typedef BBPSDKReaderTemplated< Node,
+//                                 SectionStats,
+//                                 DendriteStats,
+//                                 AxonStats,
+//                                 SomaStats,
+//                                 NeuronMorphologyStats,
+//                                 Neuron,
+//                                 MiniColumnStats,
+//                                 ColumnStats
+//                                 > BBPSDKReaderStats;
+//
+//  typedef BBPSDKReaderTemplated< NodeCached,
+//                                 SectionCachedStats,
+//                                 DendriteCachedStats,
+//                                 AxonCachedStats,
+//                                 SomaStats,
+//                                 NeuronMorphologyCachedStats,
+//                                 Neuron,
+//                                 MiniColumnStats,
+//                                 ColumnStats
+//                                 > BBPSDKReaderCachedStats;
 
 
   /**
@@ -429,8 +429,6 @@ namespace nsol
               std::stack<SectionPtr> parents;
               parents.push(nullptr);
               bool first = true;
-              NodePtr nPre = nullptr;
-              std::map<unsigned int, NodePtr> nodePtrMap;
 
               while (!sPS.empty())
               {
@@ -456,8 +454,8 @@ namespace nsol
                 }
 
                 section->parent( parentSection );
-                SegmentPtr segment = section->addSegment( new SEGMENT );
-                segment->parentSection( section );
+//                SegmentPtr segment = section->addSegment( new SEGMENT );
+//                segment->parentSection( section );
 
                 const bbp::Cross_Sections & cross_Sections =
                   lS->cross_sections();
@@ -468,29 +466,16 @@ namespace nsol
                 if (first)
                 {
                   //TODO: select correct initial soma point
-                  segment->begin(
-                    NodePtr( new NODE( Vec3f(0, 0, 0),
-                                       1, 0.0 )));
+                  section->firstNode( new NODE(
+                             Vec3f( crossSectionIt->center()[0],
+                                    crossSectionIt->center()[1],
+                                    crossSectionIt->center()[2] ),
+                             id, crossSectionIt->radius( )));
                   first = false;
                 }
-                else
-                  segment->begin(section->parent()->lastSegment()->end());
-
-                segment->end(
-                  NodePtr(
-                    new NODE( Vec3f( crossSectionIt->center()[0],
-                                     crossSectionIt->center()[1],
-                                     crossSectionIt->center()[2] ),
-                              id, crossSectionIt->radius( ))));
-
-                nodePtrMap[id] = segment->end();
-
-                id++;
 
                 if (parentSection)
                   parentSection->addChild( section );
-
-                nPre = segment->end();
 
                 crossSectionIt++;
 
@@ -498,25 +483,11 @@ namespace nsol
                         crossSectionIt; itL != cross_Sections.end();
                       ++itL )
                 {
-                  SegmentPtr crossSectionSegment =
-                    section->addSegment( new SEGMENT );
-                  crossSectionSegment->parentSection( section );
-                  crossSectionSegment->begin(nPre);
-
-                  crossSectionSegment->end(
-                    NodePtr( new NODE(
-                               Vec3f(itL->center()[0],
-                                     itL->center()[1],
-                                     itL->center()[2]),
-                               id, itL->radius())));
-
-                  nodePtrMap[id] = crossSectionSegment->end();
-
-                  id++;
-
-                  nPre = crossSectionSegment->end();
+                  section->addNode( new NODE( Vec3f( itL->center()[0],
+                                                     itL->center()[1],
+                                                     itL->center()[2]),
+                                              id, itL->radius( )));
                 }
-
                 // for (bbp::Sections::const_iterator child =
                 //        lS->children().begin();
                 //      child != lS->children().end(); ++child)
