@@ -6,7 +6,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
-//#ifdef NSOL_USE_BBPSDK
+#ifdef NSOL_USE_BBPSDK
 
 #ifndef __NSOL_BBPSDK_READER__
 #define __NSOL_BBPSDK_READER__
@@ -472,12 +472,13 @@ namespace nsol
                                     crossSectionIt->center()[2] ),
                              id, crossSectionIt->radius( )));
                   first = false;
+                  crossSectionIt ++;
+                  id ++;
                 }
 
                 if (parentSection)
                   parentSection->addChild( section );
 
-                crossSectionIt++;
 
                 for ( bbp::Cross_Sections::const_iterator itL =
                         crossSectionIt; itL != cross_Sections.end();
@@ -487,6 +488,7 @@ namespace nsol
                                                      itL->center()[1],
                                                      itL->center()[2]),
                                               id, itL->radius( )));
+                  id ++;
                 }
                 // for (bbp::Sections::const_iterator child =
                 //        lS->children().begin();
@@ -754,5 +756,5 @@ namespace nsol
 
 } // namespace nsol
 
-//#endif // NSOL_USE_BBPSDK
+#endif // NSOL_USE_BBPSDK
 #endif // __NSOL_BBPSDK_READER__
