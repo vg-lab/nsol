@@ -63,25 +63,32 @@ namespace nsol
 
     if( _firstNode )
     {
+    	int size_middleNodes = _middleNodes.size();
 		NodePtr first, second;
-		for (unsigned int i=0; i<_middleNodes.size(); i++)
+		for ( int i=-1; i< size_middleNodes; i++)
 		{
 			//Computing pairs of nodes (segments)
-			if(i == 0)
+			if( size_middleNodes == 0) 				 // without middle nodes
 			{
 				first  = _firstNode;
-				second = _middleNodes.at(i);
-			}else
-			{
-				if(i == _middleNodes.size() - 1)
+				second = _lastNode;
+			}else {
+				if(i == -1)  						 // first segment
 				{
-					first  = _middleNodes.at(i);
-					second = _lastNode;
-				}
-				else
+					first  = _firstNode;
+					second = _middleNodes.at(i+1);
+				}else
 				{
-					first  = second;
-					second = _middleNodes.at(i);
+					if( i == ( size_middleNodes - 1)) // last segment
+					{
+						first  = second;
+						second = _lastNode;
+					}
+					else							  // middle segments
+					{
+						first  = second;
+						second = _middleNodes.at(i+1);
+					}
 				}
 			}
 
