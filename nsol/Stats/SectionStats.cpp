@@ -63,7 +63,6 @@ namespace nsol
 
     if( _firstNode )
     {
-    	SegmentStats segmentStats;
 		NodePtr first, second;
 		for (unsigned int i=0; i<_middleNodes.size(); i++)
 		{
@@ -90,19 +89,19 @@ namespace nsol
 			if ( agg == /*TAggregation::*/VARIANCE )
 			{
 			  float tmpValue =
-					segmentStats.getStat( toSegmentStat( stat ), first, second );
+					SegmentStats::getStat( toSegmentStat( stat ), first, second );
 			  value += ( mean - tmpValue ) * ( mean - tmpValue );
 			}
 			else if ( agg == /*TAggregation::*/MIN )
 			  value =
 				std::min( value,
-						segmentStats.getStat( toSegmentStat( stat ), first, second ));
+						SegmentStats::getStat( toSegmentStat( stat ), first, second ));
 			else if ( agg == /*TAggregation::*/MAX )
 			  value =
 				std::max( value,
-						 segmentStats.getStat( toSegmentStat( stat ), first, second ));
+						 SegmentStats::getStat( toSegmentStat( stat ), first, second ));
 			else
-			  value += segmentStats.getStat( toSegmentStat( stat ), first, second );
+			  value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
 
 			numSegments++;
 		 }
