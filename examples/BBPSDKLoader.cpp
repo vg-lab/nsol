@@ -29,7 +29,7 @@ int main( int argc, char *argv[] )
     MiniColumns miniColumns = columns[0]->miniColumns();
 
     cout << "Number of neuron: "
-         << miniColumns[9]->numberOfNeurons(false, Neuron::INTER)
+         << miniColumns[9]->numberOfNeurons(false, Neuron::INTERNEURON)
          << endl;
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];

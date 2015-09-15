@@ -10,7 +10,7 @@
         <minicolumn id="0">
           <neuron gid="0" layer="2">
           </neuron>
-          <neuron gid="1" layer="3" type="INTERNEURON">
+          <neuron gid="1" layer="3" morphologicalType="INTERNEURON" functionalType="INHIBITORY">
             <transform>
               1.0, 0.0, 0.0, 0.0,
               0.0, 1.0, 0.0, 40.0,
@@ -21,7 +21,7 @@
         </minicolumn>
 
         <minicolumn id="1">
-          <neuron gid="2" type="PYRAMIDAL">
+          <neuron gid="2" morphologicalType="PYRAMIDAL" functionalType="EXCITATORY">
             <transform>
               1.0, 0.0, 0.0, 20.0,
               0.0, 1.0, 0.0, 20.0,
@@ -35,7 +35,7 @@
 
       <column id="1">
         <minicolumn id="0">
-          <neuron gid="3" type="PYRAMIDAL">
+          <neuron gid="3" morphologicalType="PYRAMIDAL" functionalType="EXCITATORY">
             <transform>
               1.0, 0.0, 0.0, 0.0,
               0.0, 1.0, 0.0, 0.0,
