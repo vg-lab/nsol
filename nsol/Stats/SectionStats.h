@@ -11,7 +11,6 @@
 
 
 #include "../Section.h"
-#include "SegmentStats.h"
 
 namespace nsol
 {
@@ -57,7 +56,7 @@ namespace nsol
   protected:
 
     //! Segment stats
-    SegmentStats _segmentStats;
+    //SegmentStats _segmentStats;
 
 
   }; // class SectionStats

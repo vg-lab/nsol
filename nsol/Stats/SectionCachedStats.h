@@ -82,7 +82,7 @@ namespace nsol
      *         (for compatibility with older nsol versions)
      */
     NSOL_API
-    virtual NodePtr addNode( NodePtr node = nullptr );
+    virtual void addNode( NodePtr node = nullptr );
 
     NSOL_API
     virtual void firstNode( NodePtr firstNode_ );

@@ -1,5 +1,5 @@
 /**
- * @file    SegmentStats.cpp
+ * @file    SegmentStats.h
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
@@ -35,9 +35,9 @@ namespace nsol
 		SegmentStats * stats( void );
 
 		NSOL_API
-		static float getStat( TSegmentStat stat,
-									  const NodePtr begin,
-									  const NodePtr end);
+	    static float getStat( TSegmentStat stat,
+							  const NodePtr begin,
+							  const NodePtr end);
 	}; // class SegmentStats
 
 
