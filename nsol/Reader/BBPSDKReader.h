@@ -337,12 +337,19 @@ namespace nsol
       neuron->gid() = it->gid();
 
 
-      if( it->morphology_type( ).is_interneuron( ))
-        neuron->neuronType( ) = Neuron::INTER;
-      else if( it->morphology_type( ).is_pyramidal( ))
-        neuron->neuronType( ) = Neuron::PYRAMIDAL;
+      if ( it->morphology_type( ).is_interneuron( ))
+        neuron->morphologicalType( ) = Neuron::INTERNEURON;
+      else if ( it->morphology_type( ).is_pyramidal( ))
+        neuron->morphologicalType( ) = Neuron::PYRAMIDAL;
       else
-        neuron->neuronType( ) = Neuron::UNDEFINED;
+        neuron->morphologicalType( ) = Neuron::UNDEFINED;
+
+      if ( it->morphology_type( ).is_inhibitory( ))
+        neuron->functionalType( ) = Neuron::INHIBITORY;
+      else if ( it->morphology_type( ).is_excitatory( ))
+        neuron->functionalType( ) = Neuron::EXCITATORY;
+      else
+        neuron->functionalType( ) = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
       if ( loadFlags & MORPHOLOGY )
       {
