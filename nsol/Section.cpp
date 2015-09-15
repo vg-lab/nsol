@@ -53,8 +53,12 @@ namespace nsol
 
   void Section::parent( SectionPtr newParent )
   {
-    _parent = newParent;
-    _firstNode = _parent->lastNode( );
+    if ( newParent )
+    {
+      _parent = newParent;
+      if( _parent->lastNode() )
+        _firstNode = _parent->lastNode( );
+    }
   }
 
   void Section::addChild( SectionPtr section )
