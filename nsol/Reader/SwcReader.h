@@ -101,12 +101,11 @@ namespace nsol
     void _ReadDendrite( DendritePtr d,
                         std::map<unsigned int, TSwcLine> & lines,
                         unsigned int initId,
-                        NodePtr nodeSomaPtr,
                         NsolVector<NodePtr>* nodes_ = nullptr,
                         bool reposition_ = false );
 
     void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> & lines,
-                   unsigned int initId, NodePtr nodeSomaPtr,
+                   unsigned int initId,
                    NsolVector<NodePtr>* nodes_ = nullptr,
                    bool reposition_ = false );
 
@@ -280,7 +279,6 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology( neuronMorphology );
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent],
                       &nodes, reposition_ );
 
         break;
@@ -291,7 +289,6 @@ namespace nsol
         neuronMorphology->addNeurite( d );
         d->morphology(neuronMorphology);
         _ReadDendrite(d, lines, somaChildren[i],
-                      nodeSomaPtr[lines[somaChildren[i]].parent],
                       &nodes, reposition_ );
 
         break;
@@ -302,7 +299,6 @@ namespace nsol
         neuronMorphology->addNeurite( nP );
         nP->morphology(neuronMorphology);
         _ReadAxon(nP, lines, somaChildren[i],
-                  nodeSomaPtr[lines[somaChildren[i]].parent],
                   &nodes, reposition_ );
 
         break;
@@ -341,7 +337,6 @@ namespace nsol
     DendritePtr d,
     std::map<unsigned int, TSwcLine> & lines,
     unsigned int initId,
-    NodePtr nodeSomaPtr,
     NsolVector<NodePtr>* nodes_,
     bool reposition_ )
   {
@@ -371,27 +366,34 @@ namespace nsol
       s->neurite(d);
       s->parent( parentSection );
 
-      //Segment begin node
+      NodePtr node;
       if (first)
       {
-        s->firstNode(nodeSomaPtr);
+        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        s->firstNode( node );
+
+        if ( reposition_ )
+          nodes_->push_back( node );
         first = false;
       }
+      else
+      {
+        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        s->addNode( node );
 
-      //Segment end node
-      s->addNode( new NODE(lines[id].xyz, id, lines[id].radius ));
+        if ( parentSection )
+          parentSection->addChild( s );
 
-      if ( parentSection )
-        parentSection->addChild( s );
+        if ( reposition_ )
+          nodes_->push_back( node );
+      }
 
       // While same section create the segments
       while (lines[id].children.size( ) == 1)
       {
-
         id = lines[id].children[0];
 
-
-        NodePtr node  = new NODE( lines[id].xyz, id, lines[id].radius );
+        node  = new NODE( lines[id].xyz, id, lines[id].radius );
         if ( reposition_ )
           nodes_->push_back( node );
 
@@ -423,7 +425,6 @@ namespace nsol
     std::map<unsigned int,
     TSwcLine> &lines,
     unsigned int initId,
-    NodePtr nodeSomaPtr,
     NsolVector<NodePtr>* nodes_,
     bool reposition_ )
   {
@@ -451,18 +452,27 @@ namespace nsol
       s->neurite(d);
       s->parent(parentSection);
 
-      //Segment begin node
+      NodePtr node;
       if (first)
       {
-        s->firstNode(nodeSomaPtr);
+        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        s->firstNode( node );
+
+        if ( reposition_ )
+          nodes_->push_back( node );
         first = false;
       }
+      else
+      {
+        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        s->addNode( node );
 
-      //Segment end node
-      s->addNode( new NODE(lines[id].xyz, id, lines[id].radius));
+        if ( parentSection )
+          parentSection->addChild( s );
 
-      if (parentSection)
-        parentSection->addChild(s);
+        if ( reposition_ )
+          nodes_->push_back( node );
+      }
 
       // While same section create the segments
       while (lines[id].children.size( ) == 1)
@@ -470,7 +480,7 @@ namespace nsol
 
         id = lines[id].children[0];
 
-        NodePtr node = new NODE(lines[id].xyz, id, lines[id].radius);
+        node = new NODE(lines[id].xyz, id, lines[id].radius);
         if ( reposition_ )
           nodes_->push_back( node );
 
