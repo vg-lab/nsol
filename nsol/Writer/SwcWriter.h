@@ -114,7 +114,8 @@ namespace nsol
         std::map<unsigned int, NodePtr> nodePtrMap;
         std::map<unsigned int, int> nodeParentId;
 
-
+        nodePtrMap[ fSection->firstNode( )->id( ) ] = fSection->firstNode( );
+        nodeParentId[ fSection->firstNode( )->id( ) ] = 1;
 
         while (!sPS.empty())
         {
