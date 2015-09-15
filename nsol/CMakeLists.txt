@@ -40,6 +40,7 @@ set(NSOL_PUBLIC_HEADERS
   Stats/NodeCached.h
   Stats/SectionStats.h
   Stats/SectionCachedStats.h
+  Stats/SegmentStats.h
   Stats/SomaStats.h
   Synapse.h
   # templated classes at last
@@ -79,6 +80,7 @@ set(NSOL_SOURCES
   Stats/NodeCached.cpp
   Stats/SectionStats.cpp
   Stats/SectionCachedStats.cpp
+  Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
   )
 

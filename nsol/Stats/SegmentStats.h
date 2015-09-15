@@ -35,7 +35,7 @@ namespace nsol
 		SegmentStats * stats( void );
 
 		NSOL_API
-	    static float getStat( TSegmentStat stat,
+    static float getStat( TSegmentStat stat,
 							  const NodePtr begin,
 							  const NodePtr end);
 	}; // class SegmentStats
