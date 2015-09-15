@@ -8,6 +8,8 @@
  */
 
 #include "SectionStats.h"
+#include "SegmentStats.h"
+
 
 namespace nsol
 {
@@ -59,63 +61,67 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    NodePtr first, second;
-    for (unsigned int i=0; i<_middleNodes.size(); i++)
+    if( _firstNode )
     {
-    	//Computing pairs of nodes (segments)
-    	if(i == 0)
-    	{
-    		first  = _firstNode;
-    		second = _middleNodes.at(i);
-    	}else
-    	{
-			if(i == _middleNodes.size() - 1)
+    	SegmentStats segmentStats;
+		NodePtr first, second;
+		for (unsigned int i=0; i<_middleNodes.size(); i++)
+		{
+			//Computing pairs of nodes (segments)
+			if(i == 0)
 			{
-				first  = _middleNodes.at(i);
-				second = _lastNode;
-			}
-			else
-			{
-				first  = second;
+				first  = _firstNode;
 				second = _middleNodes.at(i);
+			}else
+			{
+				if(i == _middleNodes.size() - 1)
+				{
+					first  = _middleNodes.at(i);
+					second = _lastNode;
+				}
+				else
+				{
+					first  = second;
+					second = _middleNodes.at(i);
+				}
 			}
-    	}
 
 
-        if ( agg == /*TAggregation::*/VARIANCE )
-        {
-          float tmpValue =
-        		_segmentStats.getStat( toSegmentStat( stat ), first, second );
-          value += ( mean - tmpValue ) * ( mean - tmpValue );
-        }
-        else if ( agg == /*TAggregation::*/MIN )
-          value =
-            std::min( value,
-            		_segmentStats.getStat( toSegmentStat( stat ), first, second ));
-        else if ( agg == /*TAggregation::*/MAX )
-          value =
-            std::max( value,
-            		 _segmentStats.getStat( toSegmentStat( stat ), first, second ));
-        else
-          value += _segmentStats.getStat( toSegmentStat( stat ), first, second );
+			if ( agg == /*TAggregation::*/VARIANCE )
+			{
+			  float tmpValue =
+					segmentStats.getStat( toSegmentStat( stat ), first, second );
+			  value += ( mean - tmpValue ) * ( mean - tmpValue );
+			}
+			else if ( agg == /*TAggregation::*/MIN )
+			  value =
+				std::min( value,
+						segmentStats.getStat( toSegmentStat( stat ), first, second ));
+			else if ( agg == /*TAggregation::*/MAX )
+			  value =
+				std::max( value,
+						 segmentStats.getStat( toSegmentStat( stat ), first, second ));
+			else
+			  value += segmentStats.getStat( toSegmentStat( stat ), first, second );
 
-        numSegments++;
-     }
+			numSegments++;
+		 }
 
-      switch ( agg )
-      {
-      case /*TAggregation::*/TOTAL:
-      case /*TAggregation::*/MIN:
-      case /*TAggregation::*/MAX:
-        return value;
-      case /*TAggregation::*/MEAN:
-      case /*TAggregation::*/VARIANCE:
-        return value / numSegments;
-      case /*TAggregation::*/STD_DEV:
-        break;
-      }
-      NSOL_THROW( "aggregation op not valid" )
+		  switch ( agg )
+		  {
+		  case /*TAggregation::*/TOTAL:
+		  case /*TAggregation::*/MIN:
+		  case /*TAggregation::*/MAX:
+			return value;
+		  case /*TAggregation::*/MEAN:
+		  case /*TAggregation::*/VARIANCE:
+			return value / numSegments;
+		  case /*TAggregation::*/STD_DEV:
+			break;
+		  }
+		  NSOL_THROW( "aggregation op not valid" )
     }
+
     return 0;
   }
 

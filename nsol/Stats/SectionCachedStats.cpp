@@ -43,10 +43,10 @@ namespace nsol
       cached->setAndPropagateDirty( );
   }
 
-  NodePtr SectionCachedStats::addNode( NodePtr node )
+  void SectionCachedStats::addNode( NodePtr node )
   {
     this->setAndPropagateDirty( );
-    return this->Section::addNode( node );
+    this->Section::addNode( node );
   }
 
   void SectionCachedStats::firstNode( NodePtr firstNode_ )

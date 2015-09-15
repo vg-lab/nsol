@@ -12,6 +12,7 @@
 #include <nsol/api.h>
 
 #include "Cached.h"
+#include "SegmentStats.h"
 
 namespace nsol
 {

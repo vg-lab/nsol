@@ -7,8 +7,8 @@
  *          Do not distribute without further notice.
  */
 
-#include "SegmentStats.h"
 #include "../error.h"
+#include "SegmentStats.h"
 
 namespace nsol
 {
@@ -18,9 +18,9 @@ namespace nsol
     return this;
   }
 
-  float SegmentStats::getStat( TSegmentStat stat,
-							   const NodePtr begin,
-							   const NodePtr end  ) const
+  float SegmentStats::getStat(TSegmentStat stat,
+							  const NodePtr begin,
+							  const NodePtr end)
   {
 	  switch ( stat )
 	      {
