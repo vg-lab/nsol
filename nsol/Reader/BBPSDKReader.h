@@ -472,12 +472,13 @@ namespace nsol
                                     crossSectionIt->center()[2] ),
                              id, crossSectionIt->radius( )));
                   first = false;
+                  crossSectionIt ++;
+                  id ++;
                 }
 
                 if (parentSection)
                   parentSection->addChild( section );
 
-                crossSectionIt++;
 
                 for ( bbp::Cross_Sections::const_iterator itL =
                         crossSectionIt; itL != cross_Sections.end();
@@ -487,6 +488,7 @@ namespace nsol
                                                      itL->center()[1],
                                                      itL->center()[2]),
                                               id, itL->radius( )));
+                  id ++;
                 }
                 // for (bbp::Sections::const_iterator child =
                 //        lS->children().begin();
