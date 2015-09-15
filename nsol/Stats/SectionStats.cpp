@@ -47,7 +47,6 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
-    int numSegments = 0;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -64,34 +63,14 @@ namespace nsol
     if( _firstNode )
     {
     	int size_middleNodes = _middleNodes.size();
-		NodePtr first, second;
-		for ( int i=-1; i< size_middleNodes; i++)
+		NodePtr first = _firstNode;
+		NodePtr second = _lastNode;
+		for ( int i=0; i< size_middleNodes + 1 ; i++)
 		{
-			//Computing pairs of nodes (segments)
-			if( size_middleNodes == 0) 				 // without middle nodes
-			{
-				first  = _firstNode;
-				second = _lastNode;
-			}else {
-				if(i == -1)  						 // first segment
-				{
-					first  = _firstNode;
-					second = _middleNodes.at(i+1);
-				}else
-				{
-					if( i == ( size_middleNodes - 1)) // last segment
-					{
-						first  = second;
-						second = _lastNode;
-					}
-					else							  // middle segments
-					{
-						first  = second;
-						second = _middleNodes.at(i+1);
-					}
-				}
-			}
-
+		  if( i == size_middleNodes )
+		    second = _lastNode;
+		  else
+		    second = _middleNodes[i];
 
 			if ( agg == /*TAggregation::*/VARIANCE )
 			{
@@ -110,7 +89,7 @@ namespace nsol
 			else
 			  value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
 
-			numSegments++;
+			first = second;
 		 }
 
 		  switch ( agg )
@@ -121,7 +100,7 @@ namespace nsol
 			return value;
 		  case /*TAggregation::*/MEAN:
 		  case /*TAggregation::*/VARIANCE:
-			return value / numSegments;
+			return value / ( size_middleNodes + 1 );
 		  case /*TAggregation::*/STD_DEV:
 			break;
 		  }
