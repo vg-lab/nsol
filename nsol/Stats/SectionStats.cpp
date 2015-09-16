@@ -60,37 +60,37 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    if( _firstNode )
+    if( _firstNode && _lastNode )
     {
       unsigned int size_middleNodes = ( unsigned int )_middleNodes.size();
-		NodePtr first = _firstNode;
-		NodePtr second = _lastNode;
-		for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
-		{
-		  if( i == size_middleNodes )
-		    second = _lastNode;
-		  else
-		    second = _middleNodes[i];
+      NodePtr first = _firstNode;
+      NodePtr second = _lastNode;
+      for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
+      {
+        if( i == size_middleNodes )
+          second = _lastNode;
+        else
+          second = _middleNodes[i];
 
-			if ( agg == /*TAggregation::*/VARIANCE )
-			{
-			  float tmpValue =
-					SegmentStats::getStat( toSegmentStat( stat ), first, second );
-			  value += ( mean - tmpValue ) * ( mean - tmpValue );
-			}
-			else if ( agg == /*TAggregation::*/MIN )
-			  value =
-				std::min( value,
-						SegmentStats::getStat( toSegmentStat( stat ), first, second ));
-			else if ( agg == /*TAggregation::*/MAX )
-			  value =
-				std::max( value,
-						 SegmentStats::getStat( toSegmentStat( stat ), first, second ));
-			else
-			  value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
+        if ( agg == /*TAggregation::*/VARIANCE )
+        {
+          float tmpValue =
+            SegmentStats::getStat( toSegmentStat( stat ), first, second );
+          value += ( mean - tmpValue ) * ( mean - tmpValue );
+        }
+        else if ( agg == /*TAggregation::*/MIN )
+          value =
+          std::min( value,
+              SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+        else if ( agg == /*TAggregation::*/MAX )
+          value =
+          std::max( value,
+               SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+        else
+          value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
 
-			first = second;
-		 }
+        first = second;
+      }
 
 		  switch ( agg )
 		  {
