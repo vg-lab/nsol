@@ -180,6 +180,7 @@ int main ( int argc, char ** argv )
 
     nsol::NodePtr node = sectionWithCachedStats->firstNode( );
     sectionWithCachedStats->firstNode( node );
+    //NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
   }
   {
     nsol::SectionPtr sectionWithCachedStats =
@@ -187,6 +188,7 @@ int main ( int argc, char ** argv )
 
     nsol::NodePtr node = sectionWithCachedStats->firstNode( );
     sectionWithCachedStats->firstNode( node );
+    //NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
   }
 
   PrintCachedSurfaceState( neuronWithCachedStats );
