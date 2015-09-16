@@ -178,15 +178,15 @@ int main ( int argc, char ** argv )
     nsol::SectionPtr sectionWithCachedStats =
       neuronWithCachedStats->morphology( )->neurites()[0]->firstSection( );
 
-    nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-    segment->begin( segment->begin( ));
+    nsol::NodePtr node = sectionWithCachedStats->firstNode( );
+    sectionWithCachedStats->firstNode( node );
   }
   {
     nsol::SectionPtr sectionWithCachedStats =
       neuronWithCachedStats->morphology( )->neurites()[1]->firstSection( );
 
-    nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-    segment->begin( segment->begin( ));
+    nsol::NodePtr node = sectionWithCachedStats->firstNode( );
+    sectionWithCachedStats->firstNode( node );
   }
 
   PrintCachedSurfaceState( neuronWithCachedStats );

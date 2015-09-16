@@ -135,9 +135,10 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-  // Now lets pretend to change something on a segment an see if it propagates
-  nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-  segment->begin( segment->begin( ));
+  // Now lets pretend to change something on a node
+  // of a section and see if it propagates
+  nsol::NodePtr node = sectionWithCachedStats->firstNode( );
+  sectionWithCachedStats->firstNode( node );
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
@@ -151,8 +152,12 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-  // Now changind the radius of a node should dirty segment and section
-  segment->end( )->radius( 1.0f );
+  // Now changing the radius of a node should dirty node and section
+  if(sectionWithCachedStats->middleNodes().size() == 0)
+  {
+	  nsol::NodePtr middleNode = sectionWithCachedStats->middleNodes()[0];
+	  middleNode->radius( 1.0f );
+  }
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
