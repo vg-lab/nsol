@@ -13,17 +13,17 @@ target_link_libraries(example1 nsol)
 add_executable(example2 example2.cpp)
 target_link_libraries(example2 nsol)
 
-#add_executable(sectionStats sectionStats.cpp)
-#target_link_libraries(sectionStats nsol)
+add_executable(sectionStats sectionStats.cpp)
+target_link_libraries(sectionStats nsol)
 
-#add_executable(neuriteStats neuriteStats.cpp)
-#target_link_libraries(neuriteStats nsol)
+add_executable(neuriteStats neuriteStats.cpp)
+target_link_libraries(neuriteStats nsol)
 
-#add_executable(neuronStats neuronStats.cpp)
-#target_link_libraries(neuronStats nsol)
+add_executable(neuronStats neuronStats.cpp)
+target_link_libraries(neuronStats nsol)
 
-#add_executable(miniColumnStats miniColumnStats.cpp)
-#target_link_libraries(miniColumnStats nsol)
+add_executable(miniColumnStats miniColumnStats.cpp)
+target_link_libraries(miniColumnStats nsol)
 
 add_executable(factory factory.cpp)
 target_link_libraries(factory nsol)

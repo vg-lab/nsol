@@ -188,27 +188,27 @@ namespace nsol
                                  MiniColumn,
                                  Column > BBPSDKReader;
 
-//  typedef BBPSDKReaderTemplated< Node,
-//                                 SectionStats,
-//                                 DendriteStats,
-//                                 AxonStats,
-//                                 SomaStats,
-//                                 NeuronMorphologyStats,
-//                                 Neuron,
-//                                 MiniColumnStats,
-//                                 ColumnStats
-//                                 > BBPSDKReaderStats;
-//
-//  typedef BBPSDKReaderTemplated< NodeCached,
-//                                 SectionCachedStats,
-//                                 DendriteCachedStats,
-//                                 AxonCachedStats,
-//                                 SomaStats,
-//                                 NeuronMorphologyCachedStats,
-//                                 Neuron,
-//                                 MiniColumnStats,
-//                                 ColumnStats
-//                                 > BBPSDKReaderCachedStats;
+  typedef BBPSDKReaderTemplated< Node,
+                                 SectionStats,
+                                 DendriteStats,
+                                 AxonStats,
+                                 SomaStats,
+                                 NeuronMorphologyStats,
+                                 Neuron,
+                                 MiniColumnStats,
+                                 ColumnStats
+                                 > BBPSDKReaderStats;
+
+  typedef BBPSDKReaderTemplated< NodeCached,
+                                 SectionCachedStats,
+                                 DendriteCachedStats,
+                                 AxonCachedStats,
+                                 SomaStats,
+                                 NeuronMorphologyCachedStats,
+                                 Neuron,
+                                 MiniColumnStats,
+                                 ColumnStats
+                                 > BBPSDKReaderCachedStats;
 
 
   /**
