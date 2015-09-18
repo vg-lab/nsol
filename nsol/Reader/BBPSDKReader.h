@@ -337,9 +337,9 @@ namespace nsol
       neuron->gid() = it->gid();
 
 
-      if( it->morphology_type( ).is_interneuron( ))
+      if( it->morphology( ).type( ).is_interneuron( ))
         neuron->neuronType( ) = Neuron::INTER;
-      else if( it->morphology_type( ).is_pyramidal( ))
+      else if( it->morphology( ).type( ).is_pyramidal( ))
         neuron->neuronType( ) = Neuron::PYRAMIDAL;
       else
         neuron->neuronType( ) = Neuron::UNDEFINED;
