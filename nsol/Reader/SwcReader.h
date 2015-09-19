@@ -11,11 +11,11 @@
 
 
 #include "../Neuron.h"
-//#include "../Stats/NodeCached.h"
-//#include "../Stats/SectionCachedStats.h"
-//#include "../Stats/DendriteCachedStats.h"
-//#include "../Stats/AxonCachedStats.h"
-//#include "../Stats/NeuronMorphologyCachedStats.h"
+#include "../Stats/NodeCached.h"
+#include "../Stats/SectionCachedStats.h"
+#include "../Stats/DendriteCachedStats.h"
+#include "../Stats/AxonCachedStats.h"
+#include "../Stats/NeuronMorphologyCachedStats.h"
 
 
 #include <iostream>
@@ -121,21 +121,21 @@ namespace nsol
                               NeuronMorphology,
                               Neuron > SwcReader;
 
-//  typedef SwcReaderTemplated< Node,
-//                              SectionStats,
-//                              DendriteStats,
-//                              AxonStats,
-//                              SomaStats,
-//                              NeuronMorphologyStats,
-//                              Neuron > SwcReaderStats;
-//
-//  typedef SwcReaderTemplated< NodeCached,
-//                              SectionCachedStats,
-//                              DendriteCachedStats,
-//                              AxonCachedStats,
-//                              SomaStats,
-//                              NeuronMorphologyCachedStats,
-//                              Neuron > SwcReaderCachedStats;
+  typedef SwcReaderTemplated< Node,
+                              SectionStats,
+                              DendriteStats,
+                              AxonStats,
+                              SomaStats,
+                              NeuronMorphologyStats,
+                              Neuron > SwcReaderStats;
+
+  typedef SwcReaderTemplated< NodeCached,
+                              SectionCachedStats,
+                              DendriteCachedStats,
+                              AxonCachedStats,
+                              SomaStats,
+                              NeuronMorphologyCachedStats,
+                              Neuron > SwcReaderCachedStats;
 
 
 

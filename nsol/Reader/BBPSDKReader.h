@@ -188,27 +188,27 @@ namespace nsol
                                  MiniColumn,
                                  Column > BBPSDKReader;
 
-//  typedef BBPSDKReaderTemplated< Node,
-//                                 SectionStats,
-//                                 DendriteStats,
-//                                 AxonStats,
-//                                 SomaStats,
-//                                 NeuronMorphologyStats,
-//                                 Neuron,
-//                                 MiniColumnStats,
-//                                 ColumnStats
-//                                 > BBPSDKReaderStats;
-//
-//  typedef BBPSDKReaderTemplated< NodeCached,
-//                                 SectionCachedStats,
-//                                 DendriteCachedStats,
-//                                 AxonCachedStats,
-//                                 SomaStats,
-//                                 NeuronMorphologyCachedStats,
-//                                 Neuron,
-//                                 MiniColumnStats,
-//                                 ColumnStats
-//                                 > BBPSDKReaderCachedStats;
+  typedef BBPSDKReaderTemplated< Node,
+                                 SectionStats,
+                                 DendriteStats,
+                                 AxonStats,
+                                 SomaStats,
+                                 NeuronMorphologyStats,
+                                 Neuron,
+                                 MiniColumnStats,
+                                 ColumnStats
+                                 > BBPSDKReaderStats;
+
+  typedef BBPSDKReaderTemplated< NodeCached,
+                                 SectionCachedStats,
+                                 DendriteCachedStats,
+                                 AxonCachedStats,
+                                 SomaStats,
+                                 NeuronMorphologyCachedStats,
+                                 Neuron,
+                                 MiniColumnStats,
+                                 ColumnStats
+                                 > BBPSDKReaderCachedStats;
 
 
   /**
@@ -337,16 +337,16 @@ namespace nsol
       neuron->gid() = it->gid();
 
 
-      if ( it->morphology_type( ).is_interneuron( ))
+      if( it->morphology( ).type( ).is_interneuron( ))
         neuron->morphologicalType( ) = Neuron::INTERNEURON;
-      else if ( it->morphology_type( ).is_pyramidal( ))
+      else if( it->morphology( ).type( ).is_pyramidal( ))
         neuron->morphologicalType( ) = Neuron::PYRAMIDAL;
       else
         neuron->morphologicalType( ) = Neuron::UNDEFINED;
 
-      if ( it->morphology_type( ).is_inhibitory( ))
+      if ( it->morphology( ).type( ).is_inhibitory( ))
         neuron->functionalType( ) = Neuron::INHIBITORY;
-      else if ( it->morphology_type( ).is_excitatory( ))
+      else if ( it->morphology( ).type( ).is_excitatory( ))
         neuron->functionalType( ) = Neuron::EXCITATORY;
       else
         neuron->functionalType( ) = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
