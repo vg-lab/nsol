@@ -25,6 +25,8 @@ BOOST_AUTO_TEST_CASE( node_constructor )
     BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
 #ifdef NSOL_USE_NODE_WITH_ID
     BOOST_CHECK_EQUAL( node.id( ), 0 );
+#else
+    BOOST_CHECK_THROW( node.id( ), std::runtime_error );
 #endif
   }
   {
@@ -33,6 +35,8 @@ BOOST_AUTO_TEST_CASE( node_constructor )
     BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
 #ifdef NSOL_USE_NODE_WITH_ID
     BOOST_CHECK_EQUAL( node.id( ), 0 );
+#else
+    BOOST_CHECK_THROW( node.id( ), std::runtime_error );
 #endif
   }
   {
@@ -41,16 +45,20 @@ BOOST_AUTO_TEST_CASE( node_constructor )
     BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
 #ifdef NSOL_USE_NODE_WITH_ID
     BOOST_CHECK_EQUAL( node.id( ), 0 );
+#else
+    BOOST_CHECK_THROW( node.id( ), std::runtime_error );
 #endif
   }
-#ifdef NSOL_USE_NODE_WITH_ID
   {
     Node node( POINT, RADIUS, ID );
     BOOST_CHECK_EQUAL( node.point( ), POINT );
     BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
+#ifdef NSOL_USE_NODE_WITH_ID
     BOOST_CHECK_EQUAL( node.id( ), ID );
-  }
+#else
+    BOOST_CHECK_THROW( node.id( ), std::runtime_error );
 #endif
+  }
 }
 
 
@@ -66,8 +74,10 @@ BOOST_AUTO_TEST_CASE( node_getters_setters )
   BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
 
 #ifdef NSOL_USE_NODE_WITH_ID
-  node.id( ) = ID;
+  node.id( ID );
   BOOST_CHECK_EQUAL( node.id( ), ID );
+#else
+  BOOST_CHECK_THROW( node.id( ), std::runtime_error );
 #endif
 }
 
@@ -75,13 +85,8 @@ BOOST_AUTO_TEST_CASE( node_operators )
 {
 
   Node node1;
-#ifdef NSOL_USE_NODE_WITH_ID
   Node node2( POINT, RADIUS, ID );
   Node node3( POINT, RADIUS, ID );
-#else
-  Node node2( POINT, RADIUS );
-  Node node3( POINT, RADIUS );
-#endif
 
   BOOST_CHECK( node1 == node1 );
   BOOST_CHECK( node2 == node2 );

@@ -14,10 +14,10 @@ namespace nsol
 {
 
 
-  NodeCached::NodeCached( const Vec3f & point_,
-                          const float & radius_
-                          /*const int & id_*/)
-    : Node( point_, radius_ )
+  NodeCached::NodeCached( const Vec3f& point_,
+                          const float& radius_,
+                          const int& id_)
+    : Node( point_, radius_, id_ )
     , Cached( )
   {
   }

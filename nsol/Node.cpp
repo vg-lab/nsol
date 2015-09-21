@@ -13,9 +13,13 @@
 namespace nsol
 {
 
-  Node::Node( const Vec3f & initPoint,
-              const float & initRadius
-              /*const int & initId*/ )
+  Node::Node( const Vec3f& initPoint,
+              const float& initRadius,
+              const int&
+#ifdef NSOL_USE_NODE_WITH_ID
+              initId
+#endif
+              )
     : _point( initPoint )
     , _radius( initRadius )
 #ifdef NSOL_USE_NODE_WITH_ID

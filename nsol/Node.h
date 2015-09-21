@@ -31,8 +31,8 @@ namespace nsol
 
     NSOL_API
     Node( const Vec3f & point = Vec3f(0,0,0),
-          const float & radius = 0.0f
-          /*const int & id = 0*/ );
+          const float & radius = 0.0f,
+          const int & id = 0 );
 
     NSOL_API
     virtual ~Node( void );

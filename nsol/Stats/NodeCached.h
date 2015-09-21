@@ -36,9 +36,9 @@ namespace nsol
      * Default constructor
      */
     NSOL_API
-    NodeCached( const Vec3f & point_ = Vec3f(0,0,0),
-                const float & radius_ = 0.0f
-                /*const int & id_ = 0 */);
+    NodeCached( const Vec3f& point_ = Vec3f(0,0,0),
+                const float& radius_ = 0.0f,
+                const int& id_ = 0 );
 
     /*
      * Default destructor
