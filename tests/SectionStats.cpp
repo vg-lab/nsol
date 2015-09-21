@@ -11,3 +11,22 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+
+
+using namespace nsol;
+
+
+
+BOOST_AUTO_TEST_CASE( section_stats_getStat_volume)
+{
+// TODO:
+	SectionStats section;
+}
+BOOST_AUTO_TEST_CASE( section_stats_getStat_length)
+{
+// TODO:
+}
+BOOST_AUTO_TEST_CASE( section_stats_getStat_section_num_stats)
+{
+// TODO:
+}

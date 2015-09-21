@@ -53,12 +53,6 @@ namespace nsol
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
-  protected:
-
-    //! Segment stats
-    //SegmentStats _segmentStats;
-
-
   }; // class SectionStats
 
 } // namespace nsol
