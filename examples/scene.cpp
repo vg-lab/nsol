@@ -27,7 +27,7 @@ int main ( int argc, char ** argv )
       {
         std::cout << "        Neuron: " << (*neuron)->gid( ) << " Layer: "
                   << (*neuron)->layer( ) << " Type: "
-                  << (int)(*neuron)->neuronType( ) << std::endl;
+                  << (int)(*neuron)->morphologicalType( ) << std::endl;
         std::cout << "            Transform" << std::endl;
         std::cout << "                "
                   << (*neuron)->transform( ).at(0,0) << " "

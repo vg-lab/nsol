@@ -36,11 +36,6 @@ namespace nsol
     return nullptr;
   }
 
-  SegmentPtr Object::asSegment( void )
-  {
-    return nullptr;
-  }
-
   NodePtr Object::asNode( void )
   {
     return nullptr;

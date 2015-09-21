@@ -19,9 +19,8 @@ namespace nsol
 
 
   /** \class NodeCached
-   *  \brief This class allows to propagate changes to parent cached clases
    *
-   *  Using this class with SegmentCachedStats allows to dirty
+   *  Using this class with SectionCachedStats allows to dirty
    *  cached section stats when node's radius or point values change
    *
    *  Example: @include examples/sectionStats.cpp
@@ -49,16 +48,16 @@ namespace nsol
 
     /*
      * Reimplementation of the Cached class method to
-     * progatate dirtiness to parent section for an
+     * propagate dirtiness to parent section for an
      * specific property
-     * param id proterty to propagate dirtiness
+     * @param id property to propagate dirtiness
      */
     NSOL_API
     virtual void setAndPropagateDirty( unsigned int id );
 
     /*
      * Reimplementation of the Cached class method to
-     * progatate dirtiness to parent section for all
+     * propagate dirtiness to parent section for all
      * property
      */
     NSOL_API
@@ -66,18 +65,18 @@ namespace nsol
 
     /*
      * Reimplementation of the Node base class method
-     * that sets a new radius. This method propgates
+     * that sets a new radius. This method propagates
      * dirtiness to parents
-     * param radius new radius to be set
+     * @param radius new radius to be set
      */
     NSOL_API
     virtual void radius( const float radius );
 
     /*
      * Reimplementation of the Node base class method
-     * that sets a new point. This method propgates
+     * that sets a new point. This method propagates
      * dirtiness to parents
-     * param point new point to be set
+     * @param point new point to be set
      */
     NSOL_API
     virtual void point( const Vec3f & point );

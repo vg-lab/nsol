@@ -74,21 +74,18 @@ namespace nsol
     virtual void setAndPropagateDirty( void );
 
     /**
-     * Adds a segment at the end of the section. This method does the same as
-     * Section::addSegment but it also sets diry all stats of parent neurite.
-     * @param segment pointer to the segment to add.
+     * Adds a node at the end of the section. This method does the same as
+     * Section::addNode but it also sets dirty all stats of parent neurite.
+     * @param node pointer to the node to add.
      *        Precondition: pointer is not null.
-     * @return pointer to the segment added
+     * @return pointer to the node added
      *         (for compatibility with older nsol versions)
      */
     NSOL_API
-    virtual SegmentPtr addSegment( SegmentPtr segment = nullptr );
+    virtual void addNode( NodePtr node = nullptr );
 
     NSOL_API
-    virtual void firstSegment( SegmentPtr firstSegment_ );
-
-    NSOL_API
-    virtual void lastSegment( SegmentPtr lastSegment_ );
+    virtual void firstNode( NodePtr firstNode_ );
 
     NSOL_API
     virtual float getStat( TSectionStat stat ) const;

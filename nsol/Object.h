@@ -44,10 +44,6 @@ namespace nsol
 
     NSOL_API
     virtual
-    SegmentPtr asSegment( void );
-
-    NSOL_API
-    virtual
     NodePtr asNode( void );
 
     NSOL_API

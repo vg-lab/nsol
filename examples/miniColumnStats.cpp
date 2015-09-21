@@ -66,7 +66,7 @@ int main ( int argc, char ** argv )
                                             layer )
               <<  " inter: " <<
       miniColumnWithStats->numberOfNeurons( false,
-                                            nsol::Neuron::INTER,
+                                            nsol::Neuron::INTERNEURON,
                                             layer )
               << std::endl;
   }

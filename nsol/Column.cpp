@@ -114,7 +114,7 @@ namespace nsol
   }
 
   unsigned int Column::numberOfNeurons(bool all,
-                                       Neuron::TNeuronType neuronType,
+                                       Neuron::TMorphologicalType neuronType,
                                        unsigned int layer) const
   {
     unsigned int nNeurons = 0;
