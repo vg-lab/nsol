@@ -377,8 +377,11 @@ namespace nsol
           neuron->morphology(m);
           m->addParentNeuron( neuron );
 
-          unsigned int id = 1;
+          NodePtr node;
 
+#ifdef NSOL_USE_NODE_WITH_ID
+          unsigned int id = 1;
+#endif
           //Getting morphology of the neuron
           const bbp::Morphology &morphology = it->morphology();
           //Getting soma of the morphology
@@ -389,13 +392,18 @@ namespace nsol
           NSOL_FOREACH( nodeIt, soma )
           {
 
-            m->soma()->addNode(NodePtr(
-                                 new NODE( Vec3f( ( * nodeIt)[0],
-                                                  ( * nodeIt)[1],
-                                                  ( * nodeIt)[2] ),
-                                           id, soma.mean_radius( ))));
-
+            node = new NODE( Vec3f( ( * nodeIt)[0],
+                                    ( * nodeIt)[1],
+                                    ( * nodeIt)[2] ),
+                             soma.mean_radius( )
+#ifdef NSOL_USE_NODE_WITH_ID
+                             , id
+#endif
+                             );
+            m->soma()->addNode( node );
+#ifdef NSOL_USE_NODE_WITH_ID
             id++;
+#endif
           }
 
           const bbp::Sections &somas = morphology.somas();
@@ -473,14 +481,20 @@ namespace nsol
                 if (first)
                 {
                   //TODO: select correct initial soma point
-                  section->firstNode( new NODE(
-                             Vec3f( crossSectionIt->center()[0],
-                                    crossSectionIt->center()[1],
-                                    crossSectionIt->center()[2] ),
-                             id, crossSectionIt->radius( )));
+                  node = new NODE( Vec3f( crossSectionIt->center()[0],
+                                          crossSectionIt->center()[1],
+                                          crossSectionIt->center()[2] ),
+                                   crossSectionIt->radius( )
+#ifdef NSOL_USE_NODE_WITH_ID
+                                   , id
+#endif
+                                   );
+                  section->firstNode( node );
                   first = false;
                   crossSectionIt ++;
+#ifdef NSOL_USE_NODE_WITH_ID
                   id ++;
+#endif
                 }
 
                 if (parentSection)
@@ -491,11 +505,18 @@ namespace nsol
                         crossSectionIt; itL != cross_Sections.end();
                       ++itL )
                 {
-                  section->addNode( new NODE( Vec3f( itL->center()[0],
-                                                     itL->center()[1],
-                                                     itL->center()[2]),
-                                              id, itL->radius( )));
+                  node  = new NODE( Vec3f( itL->center()[0],
+                                           itL->center()[1],
+                                           itL->center()[2]),
+                                    itL->radius( )
+#ifdef NSOL_USE_NODE_WITH_ID
+                                   , id
+#endif
+                  );
+                  section->addNode( node );
+#ifdef NSOL_USE_NODE_WITH_ID
                   id ++;
+#endif
                 }
                 // for (bbp::Sections::const_iterator child =
                 //        lS->children().begin();

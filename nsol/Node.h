@@ -13,6 +13,13 @@
 #include "Object.h"
 #include "NsolTypes.h"
 
+#ifndef NSOL_USE_NODE_WITH_ID
+#define NSOL_USE_NODE_WITH_ID_IMPL { return 0;}
+#else
+#define NSOL_USE_NODE_WITH_ID_IMPL ;
+#endif
+
+
 namespace nsol
 {
 
@@ -24,8 +31,8 @@ namespace nsol
 
     NSOL_API
     Node( const Vec3f & point = Vec3f(0,0,0),
-          const int & id = 0,
-          const float & radius = 0.0f );
+          const float & radius = 0.0f
+          /*const int & id = 0*/ );
 
     NSOL_API
     virtual ~Node( void );
@@ -44,7 +51,6 @@ namespace nsol
 
     NSOL_API
     int & id( void );
-
     NSOL_API
     int id( void ) const;
 
@@ -67,7 +73,10 @@ namespace nsol
 
     Vec3f _point;
     float _radius;
+
+#ifdef NSOL_USE_NODE_WITH_ID
     int _id;
+#endif
 
   };
 

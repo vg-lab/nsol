@@ -22,27 +22,35 @@ BOOST_AUTO_TEST_CASE( node_constructor )
   {
     Node node;
     BOOST_CHECK_EQUAL( node.point( ), Vec3f( 0.0f, 0.0f, 0.0f ));
-    BOOST_CHECK_EQUAL( node.id( ), 0 );
     BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
+#ifdef NSOL_USE_NODE_WITH_ID
+    BOOST_CHECK_EQUAL( node.id( ), 0 );
+#endif
   }
   {
     Node node( POINT );
     BOOST_CHECK_EQUAL( node.point( ), POINT );
+    BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
+#ifdef NSOL_USE_NODE_WITH_ID
     BOOST_CHECK_EQUAL( node.id( ), 0 );
-    BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
+#endif
   }
   {
-    Node node( POINT, ID );
+    Node node( POINT, RADIUS );
     BOOST_CHECK_EQUAL( node.point( ), POINT );
-    BOOST_CHECK_EQUAL( node.id( ), ID );
-    BOOST_CHECK_EQUAL( node.radius( ), 0.0f );
-  }
-  {
-    Node node( POINT, ID, RADIUS );
-    BOOST_CHECK_EQUAL( node.point( ), POINT );
-    BOOST_CHECK_EQUAL( node.id( ), ID );
     BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
+#ifdef NSOL_USE_NODE_WITH_ID
+    BOOST_CHECK_EQUAL( node.id( ), 0 );
+#endif
   }
+#ifdef NSOL_USE_NODE_WITH_ID
+  {
+    Node node( POINT, RADIUS, ID );
+    BOOST_CHECK_EQUAL( node.point( ), POINT );
+    BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
+    BOOST_CHECK_EQUAL( node.id( ), ID );
+  }
+#endif
 }
 
 
@@ -54,20 +62,26 @@ BOOST_AUTO_TEST_CASE( node_getters_setters )
   node.point( POINT );
   BOOST_CHECK_EQUAL( node.point( ), POINT );
 
-  node.id( ) = ID;
-  BOOST_CHECK_EQUAL( node.id( ), ID );
-
   node.radius( RADIUS );
   BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
 
+#ifdef NSOL_USE_NODE_WITH_ID
+  node.id( ) = ID;
+  BOOST_CHECK_EQUAL( node.id( ), ID );
+#endif
 }
 
 BOOST_AUTO_TEST_CASE( node_operators )
 {
 
   Node node1;
-  Node node2( POINT, ID, RADIUS );
-  Node node3( POINT, ID, RADIUS );
+#ifdef NSOL_USE_NODE_WITH_ID
+  Node node2( POINT, RADIUS, ID );
+  Node node3( POINT, RADIUS, ID );
+#else
+  Node node2( POINT, RADIUS );
+  Node node3( POINT, RADIUS );
+#endif
 
   BOOST_CHECK( node1 == node1 );
   BOOST_CHECK( node2 == node2 );

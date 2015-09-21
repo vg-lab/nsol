@@ -245,8 +245,11 @@ namespace nsol
       if (it->second.type == SWC_SOMA)
       {
         NodePtr node(
-          new NODE(it->second.xyz, it->second.id, it->second.radius) );
-
+          new NODE( it->second.xyz, it->second.radius
+#ifdef NSOL_USE_NODE_WITH_ID
+                    ,  it->second.id
+#endif
+                     ));
         if ( reposition_ )
           nodes.push_back( node );
 
@@ -369,7 +372,11 @@ namespace nsol
       NodePtr node;
       if (first)
       {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        node = new NODE( lines[id].xyz, lines[id].radius
+#ifdef NSOL_USE_NODE_WITH_ID
+                         , id
+#endif
+                        );
         s->firstNode( node );
 
         if ( reposition_ )
@@ -378,7 +385,11 @@ namespace nsol
       }
       else
       {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        node = new NODE( lines[id].xyz, lines[id].radius
+#ifdef NSOL_USE_NODE_WITH_ID
+                         , id
+#endif
+                        );
         s->addNode( node );
 
         if ( parentSection )
@@ -393,7 +404,11 @@ namespace nsol
       {
         id = lines[id].children[0];
 
-        node  = new NODE( lines[id].xyz, id, lines[id].radius );
+        node  = new NODE( lines[id].xyz, lines[id].radius
+#ifdef NSOL_USE_NODE_WITH_ID
+                          , id
+#endif
+                        );
         if ( reposition_ )
           nodes_->push_back( node );
 
@@ -455,7 +470,11 @@ namespace nsol
       NodePtr node;
       if (first)
       {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        node  = new NODE( lines[id].xyz, lines[id].radius
+        #ifdef NSOL_USE_NODE_WITH_ID
+                                  , id
+        #endif
+                           );
         s->firstNode( node );
 
         if ( reposition_ )
@@ -464,7 +483,11 @@ namespace nsol
       }
       else
       {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
+        node  = new NODE( lines[id].xyz, lines[id].radius
+        #ifdef NSOL_USE_NODE_WITH_ID
+                                  , id
+        #endif
+                           );
         s->addNode( node );
 
         if ( parentSection )
@@ -480,7 +503,11 @@ namespace nsol
 
         id = lines[id].children[0];
 
-        node = new NODE(lines[id].xyz, id, lines[id].radius);
+        node  = new NODE( lines[id].xyz, lines[id].radius
+        #ifdef NSOL_USE_NODE_WITH_ID
+                                  , id
+        #endif
+                           );
         if ( reposition_ )
           nodes_->push_back( node );
 
