@@ -39,7 +39,6 @@ namespace nsol
 #ifdef NSOL_USE_BBPSDK
 
     template < class NODE = Node,
-               class SEGMENT = Segment,
                class SECTION = Section,
                class DENDRITE = Dendrite,
                class AXON = Axon,
@@ -53,7 +52,7 @@ namespace nsol
                          const std::string& targetLabel = std::string( "" ))
     {
      
-      BBPSDKReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+      BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       reader.readFromBlueConfig( _columns,
@@ -74,7 +73,6 @@ namespace nsol
     Columns& columns( void );
 
     template < class NODE = Node,
-               class SEGMENT = Segment,
                class SECTION = Section,
                class DENDRITE = Dendrite,
                class AXON = Axon,
@@ -87,9 +85,9 @@ namespace nsol
         const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
         const unsigned int layer_ = 0,
         const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
-        const Neuron::TNeuronType type_ = Neuron::PYRAMIDAL )
+        const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
-      SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON, SOMA,
+      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
           NEURONMORPHOLOGY, NEURON > swcReader;
       NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
 
@@ -134,7 +132,6 @@ namespace nsol
 
 
     template < class NODE = Node,
-	       class SEGMENT = Segment,
 	       class SECTION = Section,
 	       class DENDRITE = Dendrite,
 	       class AXON = Axon,
@@ -249,33 +246,60 @@ namespace nsol
                             unsigned int gid =
                                 attributes.value( "gid" ).toUInt( );
                             unsigned int layer = 1;
-                            nsol::Neuron::TNeuronType type =
+                            nsol::Neuron::TMorphologicalType morphologicalType =
                                 nsol::Neuron::UNDEFINED;
+                            nsol::Neuron::TFunctionalType functionalType =
+                                nsol::Neuron::UNDEFINED_FUNCTIONAL_TYPE;
                             Matrix4_4f transform = Matrix4_4f::IDENTITY;
 
+                            //GET Layer
                             if ( attributes.hasAttribute( "layer" ))
                                 layer = attributes.value( "layer" ).toUInt( );
 
-                            if ( attributes.hasAttribute( "type" ) )
+                            //GET Mophological Type
+                            if ( attributes.hasAttribute( "morphologicalType" ) )
                             {
                               std::string typeString(
-                                  attributes.value( "type" ).toString( ).toStdString( ));
+                                  attributes.value( "morphologicalType" ).toString( ).toStdString( ));
 
                               if ( typeString == "INTERNEURON" )
                               {
-                                type = nsol::Neuron::INTER;
+                                morphologicalType = nsol::Neuron::INTERNEURON;
                               }
                               else if( typeString == "PYRAMIDAL" )
                               {
-                                type = nsol::Neuron::PYRAMIDAL;
+                                morphologicalType = nsol::Neuron::PYRAMIDAL;
                               }
                               else
                               {
                                 NSOL_LOG( std::string( "Neuron " ) +
                                     std::to_string( gid ) +
-                                    std::string( " undefined type." ));
+                                    std::string( " undefined morphological type." ));
                               }
                             }
+
+                            //GET Functional Type
+                            if ( attributes.hasAttribute( "functionalType" ) )
+                            {
+                              std::string typeString(
+                                  attributes.value( "functionalType" ).toString( ).toStdString( ));
+
+                              if ( typeString == "EXCITATORY" )
+                              {
+                                functionalType = nsol::Neuron::EXCITATORY;
+                              }
+                              else if( typeString == "INHIBITORY" )
+                              {
+                                functionalType = nsol::Neuron::INHIBITORY;
+                              }
+                              else
+                              {
+                                NSOL_LOG( std::string( "Neuron " ) +
+                                    std::to_string( gid ) +
+                                    std::string( " undefined functional type." ));
+                              }
+                            }
+
                             // Looking for transform in neuron
                             while( !xml.atEnd( ) && !xml.hasError( ) &&
                                    !( xml.name( ) == "neuron" &&
@@ -304,7 +328,8 @@ namespace nsol
                             NeuronPtr neuron = ( NeuronPtr )
                                 new NEURON( nullptr, layer, gid,
                                             transform, miniColumn,
-                                            type );
+                                            morphologicalType,
+                                            functionalType );
                             miniColumn->addNeuron( neuron );
                             neuronsMap.insert(
                                 std::pair< unsigned int, NeuronPtr>( gid,
@@ -336,7 +361,7 @@ namespace nsol
                     std::string swc =
                         attributes.value( "swc" ).toString( ).toStdString( );
 
-                    SwcReaderTemplated< NODE, SEGMENT, SECTION, DENDRITE, AXON,
+                    SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                         SOMA, NEURONMORPHOLOGY, NEURON > swcReader;
                      NeuronMorphologyPtr neuronMorphology =
                          swcReader.readMorphology( swc );

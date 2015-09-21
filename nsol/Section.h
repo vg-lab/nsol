@@ -12,9 +12,8 @@
 #include <nsol/api.h>
 #include "error.h"
 #include "NsolTypes.h"
-#include "Segment.h"
 #include "Container/Sections.h"
-#include "Container/Segments.h"
+#include "Container/Nodes.h"
 
 namespace nsol
 {
@@ -85,44 +84,44 @@ namespace nsol
     const Sections & children( void ) const;
 
     /**
-     * Adds a segment at the end of the section
-     * @param segment pointer to the segment to add.
+     * Return the middle Nodes
+     * @return container of middle Nodes
+     */
+    NSOL_API
+    Nodes & middleNodes( void );
+
+    NSOL_API
+    const Nodes & middleNodes( void ) const;
+
+    /**
+     * Adds a Node at the end of Section
+     * @param Node pointer to the Node to add.
      *        Precondition: pointer is not null.
-     * @return pointer to the segment added
-     *         (for compatibility with older nsol versions)
      */
     NSOL_API
-    virtual SegmentPtr addSegment( SegmentPtr segment );
+    virtual void addNode( NodePtr node );
 
     /**
-     * Gets the first Segment of the Section.
-     * @return pointer to the firts segment, null in case it doesn't have any
+     * Gets the first Node of the Section.
+     * @return pointer to the first Node, null in case it doesn't have any
      */
     NSOL_API
-    SegmentPtr firstSegment( void );
+    NodePtr firstNode( void );
 
     /**
-     * Sets first Segment of the Section. This method is virtual to allow
+     * Sets first Node of the Section. This method is virtual to allow
      * reimplementation for cached objects and dirty state propagation
-     * @param firstSegment pointer to the the segment.
+     * @param firstNode pointer to the Node.
      */
     NSOL_API
-    virtual void firstSegment( SegmentPtr firstSegment );
+    virtual void firstNode( NodePtr firstNode );
 
     /**
-     * Gets the first Segment of the Section.
-     * @return pointer to the firts segment, null in case it doesn't have any
+     * Gets the last Node of the Section.
+     * @return pointer to the firts Node, null in case it doesn't have any
      */
     NSOL_API
-    SegmentPtr lastSegment( void );
-
-    /**
-     * Sets last Segment of the Section. This method is virtual to allow
-     * reimplementation for cached objects and dirty state propagation
-     * @param lastSegment pointer to the the segment.
-     */
-    NSOL_API
-    virtual void lastSegment( SegmentPtr lastSegment );
+    NodePtr lastNode( void );
 
     /**
      * Returns object as SectionStats
@@ -130,9 +129,6 @@ namespace nsol
      */
     NSOL_API
     virtual SectionStats * stats( void );
-
-    NSOL_API
-    unsigned int fuseSection( void );
 
     NSOL_API
     virtual SectionPtr asSection( void )
@@ -152,14 +148,14 @@ namespace nsol
     //! Container of the childrens sections of this section
     Sections _children;
 
-    //! First segment
-    SegmentPtr _firstSegment;
+    //! First node
+    NodePtr _firstNode;
 
-    //! First segment
-    SegmentPtr _lastSegment;
+    //! Last node
+    NodePtr _lastNode;
 
-  private:
-    unsigned int _removeSegment (SegmentPtr sP);
+    //! Container of the middle nodes of this section
+    Nodes _middleNodes;
 
 
   }; // class Section

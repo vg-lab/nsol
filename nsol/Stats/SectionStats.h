@@ -55,6 +55,9 @@ namespace nsol
 
   protected:
 
+    //! Segment stats
+    //SegmentStats _segmentStats;
+
 
   }; // class SectionStats
 

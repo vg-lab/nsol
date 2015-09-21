@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <iostream>
 #include <map>
+#include <stack>
 
 using namespace nsol;
 using namespace std;
@@ -28,7 +29,7 @@ int main( int argc, char *argv[] )
     MiniColumns miniColumns = columns[0]->miniColumns();
 
     cout << "Number of neuron: "
-         << miniColumns[9]->numberOfNeurons(false, Neuron::INTER)
+         << miniColumns[9]->numberOfNeurons(false, Neuron::INTERNEURON)
          << endl;
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];
@@ -53,12 +54,58 @@ int main( int argc, char *argv[] )
               << std::endl;
 
     std::cout << "first segment point: "
-              << n->firstSection()->firstSegment()->begin()->point()
+              << n->firstSection()->firstNode( )->point( )
               << std::endl;
 
     std::cout << "Soma radius: "
               << neuron->morphology()->soma()->maxRadius()
               << std::endl;
+
+    //neuron morphology check
+
+//    NSOL_FOREACH( neu, columns[0]->miniColumns( )[0]->neurons( ))
+//    {
+//      cout << "Neuron gid: " << ( *neu )->gid( ) << " type: "
+//           << int(( *neu )->neuronType( ))<< endl;
+      int j = 0;
+      NSOL_FOREACH( neurite, columns[0]->miniColumns( )[0]->neurons( )[0]->morphology()->neurites() )
+      {
+        std::cout << "  Neurite " << j << endl;;
+        j++;
+
+        int numSections = 0;
+        int numNodes = 1;
+        std::stack< SectionPtr > sPS;
+        sPS.push( (*neurite)->firstSection( ));
+
+
+        while( ! sPS.empty( ))
+        {
+          SectionPtr section = sPS.top( );
+          sPS.pop( );
+          numSections ++;
+
+          if( section->lastNode( ))
+            numNodes ++;
+          numNodes += section->middleNodes( ).size(  );
+
+          cout << "    Section-> number of nodes: "
+               << section->middleNodes( ).size( ) + 2 << endl;
+          cout << "      First Node: " << section->firstNode( )->id( )
+               << " End Node: " << section->lastNode( )->id( ) << endl;
+
+          if (section->children( ).size( ) > 0 )
+            NSOL_FOREACH( sec, section->children( ))
+            {
+              if( section->lastNode( ) != (*sec)->firstNode( ))
+                cout << "Inconherencia entre nodos" << endl;
+              sPS.push( *sec );
+            }
+        }
+        cout << " Number of sections " << numSections;
+        cout << " number of nodes " << numNodes << endl;
+      }
+//    }
 
     // std::cout << "NumBranchs: "
     //           << neuron->numNeuriteBranches()
@@ -82,10 +129,6 @@ int main( int argc, char *argv[] )
     // std::cout << "Max soma surface column: "
     //           << neuron->miniColumn()->column()->maxSomaSurface()
     //           << std::endl;
-
-    std::cout << "Neuron type: "
-              << int( neuron->neuronType( ))
-              << std::endl;
     r.deleteAll( columns );
 
     return 0;
