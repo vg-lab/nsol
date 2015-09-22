@@ -13,13 +13,6 @@
 #include "Object.h"
 #include "NsolTypes.h"
 
-#ifndef NSOL_USE_NODE_WITH_ID
-#define NSOL_USE_NODE_WITH_ID_IMPL { return 0;}
-#else
-#define NSOL_USE_NODE_WITH_ID_IMPL ;
-#endif
-
-
 namespace nsol
 {
 
