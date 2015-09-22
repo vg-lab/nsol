@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( node_getters_setters )
   BOOST_CHECK_EQUAL( node.radius( ), RADIUS );
 
 #ifdef NSOL_USE_NODE_WITH_ID
-  node.id( ID );
+  node.id( ) = ID;
   BOOST_CHECK_EQUAL( node.id( ), ID );
 #else
   BOOST_CHECK_THROW( node.id( ), std::runtime_error );

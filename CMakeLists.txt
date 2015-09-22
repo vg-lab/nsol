@@ -38,12 +38,17 @@ set(VERSION_ABI 1)
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
 set(COMMON_PROJECT_DOMAIN gmrv.es)
 
+include(Common)
+
 # Option to build with shared pointers or raw pointers
 option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 option(WITH_BBPSDK "WITH_BBPSDK" ON)
-option(NSOL_USE_NODE_WITH_ID "NSOL_USE_NODE_WITH_ID" OFF  )
+option(NSOL_USE_NODE_WITH_ID "NSOL_USE_NODE_WITH_ID" OFF)
 
-include(Common)
+if( NSOL_USE_NODE_WITH_ID )
+  list( APPEND COMMON_PACKAGE_DEFINES "NSOL_USE_NODE_WITH_ID" )
+endif()
+
 
 common_package(Boost COMPONENTS unit_test_framework)
 common_package(vmmlib REQUIRED)

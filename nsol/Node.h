@@ -44,6 +44,7 @@ namespace nsol
 
     NSOL_API
     int & id( void );
+
     NSOL_API
     int id( void ) const;
 
