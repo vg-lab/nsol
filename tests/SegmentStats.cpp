@@ -126,6 +126,10 @@ BOOST_AUTO_TEST_CASE( segment_stats_getStat)
 												LENGTH, begin, end), 3.114f );
 	}
 
+	// Free dynamic memory used
+	NSOL_DELETE_PTR( begin );
+	NSOL_DELETE_PTR( end );
+
 }
 
 // EOF
