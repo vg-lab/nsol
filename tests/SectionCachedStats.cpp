@@ -15,7 +15,7 @@ using namespace nsol;
 
 
 
-BOOST_AUTO_TEST_CASE( section_stats_getStat)
+BOOST_AUTO_TEST_CASE( section_set_and_propagate_dirty)
 {
 	// Create a section
 	SectionCachedStats* section = new SectionCachedStats( );
@@ -26,18 +26,80 @@ BOOST_AUTO_TEST_CASE( section_stats_getStat)
 	section->dirty() = false;
 	BOOST_CHECK_EQUAL( section->dirty( ), false);
 
-	section->setAndPropagateDirty ( 3 );
+	section->setAndPropagateDirty ( );
 	BOOST_CHECK_EQUAL( section->dirty( ), true);
 
-	// Check with parent neurite of this section
+	// Propagate changes to parent neurite of this section with id
 	NeuriteCachedStats* neurite ( new NeuriteCachedStats );
 	section->neurite( neurite );
 
 	neurite->dirty() = false;
+	section->dirty() = false;
 
-	section->setAndPropagateDirty ( 3 );
+	section->setAndPropagateDirty ( 5 );
 	BOOST_CHECK_EQUAL( section->dirty( ), true);
 	BOOST_CHECK_EQUAL( neurite->dirty( ), true);
+
+	// Free dynamic memory used
+	NSOL_DELETE_PTR( neurite );
+	NSOL_DELETE_PTR( section );
+}
+
+
+BOOST_AUTO_TEST_CASE( section_add_nodes)
+{
+	// Create a section
+	SectionCachedStats* section = new SectionCachedStats( );
+
+	BOOST_CHECK_EQUAL( section->dirty( ), true);
+	BOOST_CHECK( section->firsNode( ) == nullptr);
+	BOOST_CHECK_EQUAL( section->middleNodes( ).empty(), true);
+	BOOST_CHECK( section->lastNode( ) == nullptr);
+
+	// Adding nodes to the section and propagating changes
+	// Adding firstNode
+	NodePtr firstNode = new Node();
+
+	section->dirty() = false;
+	BOOST_CHECK_EQUAL( section->dirty( ), false);
+
+	section->firstNode( firstNode );
+	BOOST_CHECK_EQUAL( section->dirty( ), true);
+	BOOST_CHECK( section->firsNode( ) != nullptr);
+	BOOST_CHECK( section->firsNode( ) == firstNode);
+
+	// Adding lastNode
+	NodePtr lastNode = new Node();
+
+	section->dirty() = false;
+	BOOST_CHECK_EQUAL( section->dirty( ), false);
+
+	section->addNode( lastNode );
+	BOOST_CHECK_EQUAL( section->dirty( ), true);
+	BOOST_CHECK( section->lastNode( ) != nullptr);
+	BOOST_CHECK( section->lastNode( ) == lastNode);
+
+	// Free dynamic memory used
+	NSOL_DELETE_PTR( firsNode );
+	NSOL_DELETE_PTR( lastNode );
+	NSOL_DELETE_PTR( section );
+}
+
+
+BOOST_AUTO_TEST_CASE( section_get_stat)
+{
+	// Create a section
+	SectionCachedStats* section = new SectionCachedStats( );
+
+	BOOST_CHECK_EQUAL( section->dirty(SectionStats::VOLUME), true);
+
+	float valueStat = section->getStat(SectionStats::VOLUME);
+
+	BOOST_CHECK_EQUAL( section->dirty(SectionStats::VOLUME), false);
+	BOOST_CHECK_EQUAL( section->getStat(SectionStats::VOLUME), value);
+
+	// Free dynamic memory used
+	NSOL_DELETE_PTR( section );
 }
 
 // EOF
