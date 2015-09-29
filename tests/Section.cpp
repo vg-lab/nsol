@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( section_nodes )
 	    section->addNode( nsol::NodePtr( new nsol::Node ));
 
 	BOOST_CHECK_EQUAL( section->middleNodes().empty(), false );
-	BOOST_CHECK_EQUAL( section->middleNodes().size(), 22 );
+	BOOST_CHECK_EQUAL( section->middleNodes().size(), 20 );
 
 	 // Free dynamic memory used
 	  for ( auto nodeIt = section->middleNodes( ).begin( );

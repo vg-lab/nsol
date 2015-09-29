@@ -14,31 +14,38 @@
 using namespace nsol;
 
 
+  typedef enum
+  {
+    TEST_CACHED_PROPERTY1 = 0,
+    TEST_CACHED_PROPERTY2,
+    TEST_CACHED_PROPERTY3
+  } TCachedValues;
 
-BOOST_AUTO_TEST_CASE( section_set_and_propagate_dirty)
+BOOST_AUTO_TEST_CASE( section_set_and_propagate_dirty )
 {
+
 	// Create a section
 	SectionCachedStats* section = new SectionCachedStats( );
 
-	// Check without parent neurite of this section
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
+	// Cache a value for TEST_CACHED_PROPERTY1
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY1 ), true);
 
-	section->dirty() = false;
-	BOOST_CHECK_EQUAL( section->dirty( ), false);
+	section->cacheValue( TEST_CACHED_PROPERTY1, 3.4f );
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY1 ), false);
 
-	section->setAndPropagateDirty ( );
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
+	section->setAndPropagateDirty ( TEST_CACHED_PROPERTY1 );
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY1 ), true);
 
 	// Propagate changes to parent neurite of this section with id
 	NeuriteCachedStats* neurite ( new NeuriteCachedStats );
 	section->neurite( neurite );
 
-	neurite->dirty() = false;
-	section->dirty() = false;
+	neurite->cacheValue( TEST_CACHED_PROPERTY1, 3.4f );
+	section->cacheValue( TEST_CACHED_PROPERTY1, 3.4f );
 
-	section->setAndPropagateDirty ( 5 );
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
-	BOOST_CHECK_EQUAL( neurite->dirty( ), true);
+	section->setAndPropagateDirty ( TEST_CACHED_PROPERTY1 );
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY1 ), true);
+	BOOST_CHECK_EQUAL( neurite->Cached::dirty( TEST_CACHED_PROPERTY1 ), true);
 
 	// Free dynamic memory used
 	NSOL_DELETE_PTR( neurite );
@@ -51,36 +58,36 @@ BOOST_AUTO_TEST_CASE( section_add_nodes)
 	// Create a section
 	SectionCachedStats* section = new SectionCachedStats( );
 
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
-	BOOST_CHECK( section->firsNode( ) == nullptr);
-	BOOST_CHECK_EQUAL( section->middleNodes( ).empty(), true);
-	BOOST_CHECK( section->lastNode( ) == nullptr);
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY2 ), true);
+	BOOST_CHECK( section->Section::firstNode( ) == nullptr);
+	BOOST_CHECK_EQUAL( section->Section::middleNodes( ).empty(), true);
+	BOOST_CHECK( section->Section::lastNode( ) == nullptr);
 
 	// Adding nodes to the section and propagating changes
 	// Adding firstNode
 	NodePtr firstNode = new Node();
 
-	section->dirty() = false;
-	BOOST_CHECK_EQUAL( section->dirty( ), false);
+	section->cacheValue( TEST_CACHED_PROPERTY2, 3.4f );
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY2 ), false);
 
 	section->firstNode( firstNode );
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
-	BOOST_CHECK( section->firsNode( ) != nullptr);
-	BOOST_CHECK( section->firsNode( ) == firstNode);
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY2 ), false);
+	BOOST_CHECK( section->Section::firstNode( ) != nullptr);
+	BOOST_CHECK( section->Section::firstNode( ) == firstNode);
 
 	// Adding lastNode
 	NodePtr lastNode = new Node();
 
-	section->dirty() = false;
-	BOOST_CHECK_EQUAL( section->dirty( ), false);
+	section->cacheValue( TEST_CACHED_PROPERTY3, 2.0f );
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY3 ), false);
 
 	section->addNode( lastNode );
-	BOOST_CHECK_EQUAL( section->dirty( ), true);
-	BOOST_CHECK( section->lastNode( ) != nullptr);
-	BOOST_CHECK( section->lastNode( ) == lastNode);
+	BOOST_CHECK_EQUAL( section->Cached::dirty( TEST_CACHED_PROPERTY3 ), true);
+	BOOST_CHECK( section->Section::lastNode( ) != nullptr);
+	BOOST_CHECK( section->Section::lastNode( ) == lastNode);
 
 	// Free dynamic memory used
-	NSOL_DELETE_PTR( firsNode );
+	NSOL_DELETE_PTR( firstNode );
 	NSOL_DELETE_PTR( lastNode );
 	NSOL_DELETE_PTR( section );
 }
@@ -91,12 +98,12 @@ BOOST_AUTO_TEST_CASE( section_get_stat)
 	// Create a section
 	SectionCachedStats* section = new SectionCachedStats( );
 
-	BOOST_CHECK_EQUAL( section->dirty(SectionStats::VOLUME), true);
+	BOOST_CHECK_EQUAL( section->Cached::dirty(SectionStats::VOLUME), true);
 
 	float valueStat = section->getStat(SectionStats::VOLUME);
 
-	BOOST_CHECK_EQUAL( section->dirty(SectionStats::VOLUME), false);
-	BOOST_CHECK_EQUAL( section->getStat(SectionStats::VOLUME), value);
+	BOOST_CHECK_EQUAL( section->Cached::dirty(SectionStats::VOLUME), false);
+	BOOST_CHECK_EQUAL( section->getStat(SectionStats::VOLUME), valueStat);
 
 	// Free dynamic memory used
 	NSOL_DELETE_PTR( section );
