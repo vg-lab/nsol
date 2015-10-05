@@ -64,6 +64,9 @@ int main ( int argc, char *argv[] )
 			 preSynNeuron  = (*synapseIt)->preSynapticNeuron();
 			 postSynNeuron = (*synapseIt)->postSynapticNeuron();
 
+			 Vec3f preSynPos  =(*synapseIt)->preSynapticSurfacePosition();
+			 Vec3f postSynPos =(*synapseIt)->postSynapticSurfacePosition();
+
 			 cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
 #if 1 TESTING_PRINT_LITERAL
 			  switch((*synapseIt)->synapseType())
@@ -136,7 +139,9 @@ int main ( int argc, char *argv[] )
 #else
 			    << " type: " << int(postSynNeuron->neuronType())<< endl;
 #endif
-			   cout << endl;
+			    cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;
+			    cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;
+			    cout << endl;
 
 			 numberSynapse++;
 		 }

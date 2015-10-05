@@ -611,6 +611,10 @@ namespace nsol
             &(bbpSynapse.presynaptic_neuron());
           const bbp::Neuron* bbpPostSynNeuron =
             &(bbpSynapse.postsynaptic_neuron());
+
+          Vec3f bbpPreSynPos  = bbpSynapse.preSynapticSurfacePosition();
+          Vec3f bbpPostSynPos = bbpSynapse.postSynapticSurfacePosition();
+
 #if 0 TESTING_PROPERTIES_SYNAPSE
           std::cout << "Synapse Index " <<
             bbpSynapse.index() << std::endl;
@@ -668,6 +672,8 @@ namespace nsol
             // We have to build a nsol Neurons using a BBPSDK Neuron.
             afferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
             afferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
+            afferent_synapse->preSynapticSurfacePosition(bbpPreSynPos);
+            afferent_synapse->postSynapticSurfacePosition(bbpPostSynPos);
 
             // TODO: Treatment of synapse type
             //std::cout << "Adding one Afferent Synapse " << std::endl;
