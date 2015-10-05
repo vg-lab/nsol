@@ -15,6 +15,8 @@ namespace nsol
   Synapse::Synapse( TSynapseType synapseType_ )
     : _preSynapticNeuron( nullptr )
     , _postSynapticNeuron( nullptr )
+    , _preSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
+    , _postSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
     , _synapseType( synapseType_ )
   {
   }
@@ -22,6 +24,8 @@ namespace nsol
   Synapse::Synapse( const Synapse& other )
     :_preSynapticNeuron( other.preSynapticNeuron( ))
     ,_postSynapticNeuron( other.postSynapticNeuron( ))
+    ,_preSynapticSurfacePosition( other.preSynapticSurfacePosition( ))
+    ,_postSynapticSurfacePosition( other.postSynapticSurfacePosition( ))
     ,_synapseType( other.synapseType( ) )
   {
   }
@@ -62,6 +66,26 @@ namespace nsol
     return _postSynapticNeuron;
   }
 
+  void Synapse::preSynapticSurfacePosition( Vec3f presynaptic_surface_position)
+  {
+  		 _preSynapticSurfacePosition = presynaptic_surface_position;
+  }
+
+  Vec3f Synapse::preSynapticSurfacePosition( void ) const
+  {
+	  return _preSynapticSurfacePosition;
+  }
+
+  void Synapse::postSynapticSurfacePosition( Vec3f postsynaptic_surface_position)
+  {
+	  _postSynapticSurfacePosition = postsynaptic_surface_position;
+  }
+
+  Vec3f Synapse::postSynapticSurfacePosition( void ) const
+  {
+	  return _postSynapticSurfacePosition;
+  }
+
   //
   // Operators
   //const
@@ -71,6 +95,8 @@ namespace nsol
     this->synapseType( other.synapseType( ));
     this->preSynapticNeuron( other.preSynapticNeuron( ));
     this->postSynapticNeuron( other.postSynapticNeuron( ));
+    this->preSynapticSurfacePosition( other.preSynapticSurfacePosition( ));
+    this->postSynapticSurfacePosition( other.postSynapticSurfacePosition( ));
 
     return *this;
   }
@@ -79,7 +105,9 @@ namespace nsol
   {
     return ( ( this->synapseType( ) == other.synapseType( ) ) &&
              ( (this->preSynapticNeuron( )) == (other.preSynapticNeuron( ))) &&
-             ( (this->postSynapticNeuron( )) == (other.postSynapticNeuron( ))));
+             ( (this->postSynapticNeuron( )) == (other.postSynapticNeuron( ))) &&
+             ( (this->preSynapticSurfacePosition( )) == (other.preSynapticSurfacePosition())) &&
+             ( (this->postSynapticSurfacePosition( ) == (other.postSynapticSurfacePosition( )))));
   }
 
   bool Synapse::operator != ( const Synapse& other )

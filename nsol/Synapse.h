@@ -59,7 +59,7 @@ namespace nsol
     Synapse( const Synapse& other );
 
     /**
-     * Default destructur
+     * Default destructor
      */
     NSOL_API
     virtual ~Synapse( void );
@@ -71,24 +71,6 @@ namespace nsol
     ///@{
 
     /**
-     * Method to add a presynaptic neuron to the synapse.
-     * @param presynaptic neuron.
-     * @see Neuron
-     * @return pointer to the added presynaptic neuron added
-     */
-    NSOL_API
-    void preSynapticNeuron( const NeuronPtr preSynapticNeuron );
-
-    /**
-     * Method to add a postsynaptic neuron to the synapse.
-     * @param postsynaptic neuron.
-     * @see Neuronreturn _dendriteType
-     * @return pointer to the added postsynaptic neuron added
-     */
-    NSOL_API
-    void postSynapticNeuron( const NeuronPtr postSynapticNeuron );
-
-    /**
      * Method to get the presynaptic neuron.
      * @return pointer to the presynaptic neuron.
      */
@@ -96,11 +78,56 @@ namespace nsol
     NeuronPtr preSynapticNeuron( void ) const;
 
     /**
+     * Method to add a presynaptic neuron to the synapse.
+     * @param presynaptic neuron.
+     * @see Neuron
+     */
+    NSOL_API
+    void preSynapticNeuron( const NeuronPtr preSynapticNeuron );
+
+
+    /**
      * Method to get the postsynaptic neuron.
      * @return pointer to the postsynaptic neuron.
      */
     NSOL_API
     NeuronPtr postSynapticNeuron( void ) const;
+
+    /**
+     * Method to add a postsynaptic neuron to the synapse.
+     * @param postsynaptic neuron.
+     * @see Neuron
+     */
+    NSOL_API
+    void postSynapticNeuron( const NeuronPtr postSynapticNeuron );
+
+	 /**
+	 * Method to get the presynaptic surface position.
+	 * @return presynaptic surface position.
+	 */
+	 NSOL_API
+	 Vec3f preSynapticSurfacePosition( void ) const;
+
+	 /**
+	 * Method to set presynaptic surface position to the synapse.
+	 * @param presynaptic surface position.
+	 */
+	 NSOL_API
+	 void preSynapticSurfacePosition( const Vec3f presynaptic_surface_position);
+
+	 /**
+	 * Method to get the postsynaptic surface position.
+	 * @return postsynaptic surface position.
+	 */
+	 NSOL_API
+	 Vec3f postSynapticSurfacePosition( void ) const;
+
+	 /**
+	 * Method to set postsynaptic surface position to the synapse.
+	 * @param postsynaptic surface position.
+	 */
+	 NSOL_API
+	 void postSynapticSurfacePosition( const Vec3f postsynaptic_surface_position);
 
     /**
      * Method to get the synapse type.
@@ -132,9 +159,17 @@ namespace nsol
 
   protected:
 
+    //! Presynaptic neuron
     NeuronPtr _preSynapticNeuron;
 
+    //! Postsynaptic neuron
     NeuronPtr _postSynapticNeuron;
+
+    //! Presynaptic surface position
+    Vec3f _preSynapticSurfacePosition;
+
+    //! Postsynaptic surface position
+    Vec3f _postSynapticSurfacePosition;
 
     TSynapseType _synapseType;
 
