@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE( test_synapse_operators )
   BOOST_CHECK_EQUAL( *s != *s2, false );
 
   // Change the type and compare
-  s2->synapseType() = Synapse::DENDRODENDRITIC;
+  s2->synapseType( Synapse::DENDRODENDRITIC );
   BOOST_CHECK_EQUAL( *s == *s2, false );
   BOOST_CHECK_EQUAL( *s != *s2, true );
 

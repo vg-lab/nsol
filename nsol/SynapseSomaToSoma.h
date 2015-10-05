@@ -17,48 +17,48 @@
 namespace nsol
 {
 
-	/*! \class SynapseSomaToSoma
-	  \brief A class to represent synapses soma to soma.
+  /*! \class SynapseSomaToSoma
+    \brief A class to represent synapses soma to soma.
 
-	  TODO: extend long description
-	*/
+    TODO: extend long description
+  */
   class SynapseSomaToSoma : public Synapse
   {
 
   public:
 
-	  /** @name Constructors  */
-	  ///@{
+    /** @name Constructors  */
+    ///@{
 
-	  /**
-	  * Default SynapseSomaToSoma class constructor.
-	  * TODO: construct protected objects
-	  */
-	  NSOL_API
-	  SynapseSomaToSoma ( void );
+    /**
+     * Default SynapseSomaToSoma class constructor.
+     * TODO: construct protected objects
+     */
+    NSOL_API
+    SynapseSomaToSoma ( void );
 
-	  /**
-	  * Copy constructor
-	  * @param other synapse somaToSoma to be copied
-	  */
-	  NSOL_API
-	  SynapseSomaToSoma( SynapseSomaToSoma & other );
+    /**
+     * Copy constructor
+     * @param other synapse somaToSoma to be copied
+     */
+    NSOL_API
+    SynapseSomaToSoma( const SynapseSomaToSoma& other );
 
-	  ///@}
+    ///@}
 
-	  /** @name Operators */
-	  ///@{
+    /** @name Operators */
+    ///@{
 
-	  NSOL_API
-	  virtual SynapseSomaToSoma & operator = (Synapse & other);
+    NSOL_API
+    virtual SynapseSomaToSoma& operator = ( const SynapseSomaToSoma& other );
 
-	  NSOL_API
-	  virtual bool operator == (Synapse & other );
+    NSOL_API
+    virtual bool operator == ( const SynapseSomaToSoma& other );
 
-	  NSOL_API
-	  virtual bool operator != (Synapse & other );
+    NSOL_API
+    virtual bool operator != ( const SynapseSomaToSoma& other );
 
-	  ///@}
+    ///@}
 
 
   }; // class SynapseSomaToSoma
