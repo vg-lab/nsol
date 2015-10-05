@@ -16,93 +16,95 @@
 namespace nsol
 {
 
-	/*! \class SynapseNeuriteToNeurite
-	  \brief A class to represent synapses neurite to neurite.
+  /*! \class SynapseNeuriteToNeurite
+    \brief A class to represent synapses neurite to neurite.
 
-	  TODO: extend long description
-	*/
+    TODO: extend long description
+  */
   class SynapseNeuriteToNeurite : public Synapse
   {
 
   public:
 
-	  /** @name Constructors  */
-	  ///@{
+    /** @name Constructors  */
+    ///@{
 
-	  /**
-	  * Default SynapseNeuriteToNeurite class constructor.
-	  * TODO: construct protected objects
-	  */
-	  NSOL_API
-	  SynapseNeuriteToNeurite (TSynapseType synapseType_ = Synapse::AXODENDRITIC);
+    /**
+     * Default SynapseNeuriteToNeurite class constructor.
+     * TODO: construct protected objects
+     */
+    NSOL_API
+    SynapseNeuriteToNeurite ( const TSynapseType synapseType_ =
+                              Synapse::AXODENDRITIC );
 
-	  /**
-	  * Copy constructor
-	  * @param other synapse neutiteToneurite to be copied
-	  */
-	  NSOL_API
-	  SynapseNeuriteToNeurite( SynapseNeuriteToNeurite & other );
+    /**
+     * Copy constructor
+     * @param other synapse neutiteToneurite to be copied
+     */
+    NSOL_API
+    SynapseNeuriteToNeurite( const SynapseNeuriteToNeurite& other );
 
-	  ///@}
-	  /** @name getters and setters methods */
-	  ///@{
+    ///@}
+    /** @name getters and setters methods */
+    ///@{
 
-	  /**
-	  * Method to add a presynaptic segment to the synapse.
-	  * @param presynaptic segment.
-	  * @see Synapse
-	  * @return pointer to the added presynaptic segment added
-	  */
-	  NSOL_API
-	  void preSynapticSegment( SegmentPtr presynaptic_segment);
+    /**
+     * Method to add a presynaptic segment to the synapse.
+     * @param presynaptic segment.
+     * @see Synapse
+     * @return pointer to the added presynaptic segment added
+     */
+    NSOL_API
+    void preSynapticSegment( const SegmentPtr preSynapticSegment);
 
-	  /**
-	  * Method to add a postsynaptic segment to the synapse.
-	  * @param postsynaptic segment.
-	  * @see Synapse
-	  * @return pointer to the added postsynaptic segment added
-	  */
-	  NSOL_API
-	  void postSynapticSegment( SegmentPtr postsynaptic_segment);
+    /**
+     * Method to add a postsynaptic segment to the synapse.
+     * @param postsynaptic segment.
+     * @see Synapse
+     * @return pointer to the added postsynaptic segment added
+     */
+    NSOL_API
+    void postSynapticSegment( const SegmentPtr postSynapticSegment);
 
-	  /**
-	  * Method to get the presynaptic segment.
-	  * @return pointer to the presynaptic segment.
-	  */
-	  NSOL_API
-	  SegmentPtr preSynapticSegment( void ) const;
+    /**
+     * Method to get the presynaptic segment.
+     * @return pointer to the presynaptic segment.
+     */
+    NSOL_API
+    SegmentPtr preSynapticSegment( void ) const;
 
-	  /**
-	  * Method to get the postsynaptic segment.
-	  * @return pointer to the postsynaptic segment.
-	  */
-	  NSOL_API
-	  SegmentPtr postSynapticSegment( void ) const;
+    /**
+     * Method to get the postsynaptic segment.
+     * @return pointer to the postsynaptic segment.
+     */
+    NSOL_API
+    SegmentPtr postSynapticSegment( void ) const;
 
-	  ///@}
+    ///@}
 
-	  /** @name Operators */
-	  ///@{
+    /** @name Operators */
+    ///@{
 
-	  NSOL_API
-	  virtual SynapseNeuriteToNeurite & operator = (Synapse & other);
+    NSOL_API
+    virtual SynapseNeuriteToNeurite& operator =
+    ( const SynapseNeuriteToNeurite& other );
 
-	  NSOL_API
-	  virtual bool operator == (Synapse & other );
+    NSOL_API
+    virtual bool operator == ( const SynapseNeuriteToNeurite& other );
 
-	  NSOL_API
-	  virtual bool operator != (Synapse & other );
+    NSOL_API
+    virtual bool operator != ( const SynapseNeuriteToNeurite& other );
 
-	  ///@}
+    ///@}
 
 
   protected:
 
-	  //! Segment of a presynaptic neuron
-	  SegmentPtr _preSynapticSegment;
+    //! Segment of a presynaptic neuron
+    SegmentPtr _preSynapticSegment;
 
-	  //! Segment of a postsynaptic neuron
-	  SegmentPtr _postSynapticSegment;
+    //! Segment of a postsynaptic neuron
+    SegmentPtr _postSynapticSegment;
 
   }; // class SynapseNeuriteToNeurite
 
