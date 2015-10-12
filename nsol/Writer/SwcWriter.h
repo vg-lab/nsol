@@ -114,23 +114,25 @@ namespace nsol
         std::map<unsigned int, NodePtr> nodePtrMap;
         std::map<unsigned int, int> nodeParentId;
 
+        nodePtrMap[ fSection->firstNode( )->id( ) ] = fSection->firstNode( );
+        nodeParentId[ fSection->firstNode( )->id( ) ] = 1;
+
         while (!sPS.empty())
         {
           SectionPtr lS = sPS.top();
           sPS.pop();
 
-          SegmentPtr segment = lS->firstSegment();
-
-          parent = segment->begin()->id();
-          while(segment)
+          parent = lS->firstNode( )->id();
+          NSOL_FOREACH( node, lS->middleNodes() )
           {
 
-                  nodePtrMap[segment->end()->id()] = segment->end();
-                  nodeParentId[segment->end()->id()] = parent;
+            nodePtrMap[( *node )->id( )] = *node;
+            nodeParentId[( *node )->id( )] = parent;
 
-            parent = segment->end()->id();
-            segment = segment->next();
+            parent = ( *node )->id( );
           }
+          nodePtrMap[ lS->lastNode( )->id( )] = lS->lastNode( );
+          nodeParentId[ lS->lastNode( )->id( ) ] = parent;
 
           if (lS->children().size() > 0)
             for (unsigned int i = 0; i < lS->children().size(); ++i)

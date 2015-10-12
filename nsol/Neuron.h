@@ -33,12 +33,22 @@ namespace nsol
 
   public:
 
-    //! Type of dendrite
-    typedef enum {
-      UNDEFINED = -1,
-      PYRAMIDAL = 0,
-      INTER
-    } TNeuronType;
+    //! Type of neuron based in neuron morphology
+    typedef enum : uint8_t
+    {
+      UNDEFINED = 0,
+      PYRAMIDAL,
+      INTERNEURON
+    } TMorphologicalType;
+
+    //! Type of neuron based in neuron functionality
+    typedef enum : uint8_t
+    {
+      UNDEFINED_FUNCTIONAL_TYPE = 0,
+      INHIBITORY,
+      EXCITATORY
+    } TFunctionalType;
+
 
 
     NSOL_API
@@ -47,7 +57,8 @@ namespace nsol
             const unsigned int gid = 0,
             const Matrix4_4f transform = Matrix4_4f::IDENTITY,
             const MiniColumnPtr miniColumn = nullptr,
-            const TNeuronType type = PYRAMIDAL );
+            const TMorphologicalType morphologicalType = UNDEFINED,
+            const TFunctionalType functionalType = UNDEFINED_FUNCTIONAL_TYPE );
 
     NSOL_API
     virtual ~Neuron( void );
@@ -92,11 +103,46 @@ namespace nsol
     MiniColumnPtr &miniColumn( void );
 
     /**
-     * Method to get the neuron type.
+     * Method to get the neuron type based in morphology.
      * @return neuron type
      */
     NSOL_API
-    TNeuronType & neuronType();
+    TMorphologicalType & morphologicalType();
+
+    /**
+     * Method to get the neuron type based in functionality.
+     * @return neuron type
+     */
+    NSOL_API
+    TFunctionalType & functionalType();
+
+    /**
+     * Method to know if the neuron is pyramidal type.
+     * @return bool
+     */
+    NSOL_API
+    bool isPyramidal( void );
+
+    /**
+     * Method to know if the neuron is internuron type.
+     * @return bool
+     */
+    NSOL_API
+    bool isInterneuron( void );
+
+    /**
+     * Method to know if the neuron is excitatory type.
+     * @return bool
+     */
+    NSOL_API
+    bool isExcitatory( void );
+
+    /**
+     * Method to know if the neuron is inhibitory type.
+     * @return bool
+     */
+    NSOL_API
+    bool isInhibitory( void );
 
     NSOL_API
     virtual NeuronPtr asNeuron( void )
@@ -122,8 +168,11 @@ namespace nsol
     //! Unique id
     unsigned int _gid;
 
-    //! Type of neuron
-    TNeuronType _type;
+    //! Type of neuron based in morphology
+    TMorphologicalType _morphologicalType;
+
+    //! Type of neuron based in functionality
+    TFunctionalType _functionalType;
 
   };
 

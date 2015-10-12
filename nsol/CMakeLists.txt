@@ -11,7 +11,6 @@ set(NSOL_PUBLIC_HEADERS
   Container/Neurons.h
   Container/Nodes.h
   Container/Sections.h
-  Container/Segments.h
   Container/Circuits.h
   Container/Synapses.h
   Container/SynapsesNeuriteToNeurite.h
@@ -30,7 +29,6 @@ set(NSOL_PUBLIC_HEADERS
   Object.h
   ObjectWithProperties.h
   Section.h
-  Segment.h
   Soma.h
   Spine.h
   Stats/AxonStats.h
@@ -49,7 +47,6 @@ set(NSOL_PUBLIC_HEADERS
   Stats/SectionStats.h
   Stats/SectionCachedStats.h
   Stats/SegmentStats.h
-  Stats/SegmentCachedStats.h
   Stats/SomaStats.h
   Synapse.h
   SynapseNeuriteToNeurite.h
@@ -79,7 +76,6 @@ set(NSOL_SOURCES
   Object.cpp
   ObjectWithProperties.cpp
   Section.cpp
-  Segment.cpp
   Soma.cpp
   Stats/AxonStats.cpp
   Stats/AxonCachedStats.cpp
@@ -95,7 +91,6 @@ set(NSOL_SOURCES
   Stats/SectionStats.cpp
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
-  Stats/SegmentCachedStats.cpp
   Stats/SomaStats.cpp
   Synapse.cpp
   SynapseNeuriteToNeurite.cpp

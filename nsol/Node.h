@@ -12,7 +12,6 @@
 #include <nsol/api.h>
 #include "Object.h"
 #include "NsolTypes.h"
-#include "Container/Segments.h"
 
 namespace nsol
 {
@@ -30,12 +29,6 @@ namespace nsol
 
     NSOL_API
     virtual ~Node( void );
-
-    NSOL_API
-    Segments & parentSegments( void );
-
-    NSOL_API
-    void addParentSegment( SegmentPtr segment_ );
 
     NSOL_API
     virtual void point( const Vec3f & point_ );
@@ -75,8 +68,6 @@ namespace nsol
     Vec3f _point;
     float _radius;
     int _id;
-
-    Segments _parentSegments;
 
   };
 

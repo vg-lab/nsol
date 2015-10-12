@@ -52,8 +52,7 @@ namespace nsol
 
 
 #define BBPSDK_LOADER_TEMPLATE_CLASSES          \
-  class NODE,                                   \
-    class SEGMENT,                              \
+    class NODE,                                 \
     class SECTION,                              \
     class DENDRITE,                             \
     class AXON,                                 \
@@ -64,8 +63,7 @@ namespace nsol
     class COLUMN
 
 #define BBPSDK_LOADER_TEMPLATE_CLASS_NAMES      \
-  NODE,                                         \
-    SEGMENT,                                    \
+    NODE,                                       \
     SECTION,                                    \
     DENDRITE,                                   \
     AXON,                                       \
@@ -123,8 +121,8 @@ namespace nsol
     void
     readFromBlueConfig( Columns& columns, Circuit& circuit,
                         const std::string inputFile,
-                        const int loadFlags,
-                        const std::string& targetLabel);
+                        const int loadFlags = MORPHOLOGY | HIERARCHY,
+                        const std::string& targetLabel = std::string( "" ));
 
     void deleteAll( Columns& columns )
     {
@@ -153,14 +151,10 @@ namespace nsol
           Sections sections = ( *neurite )->sections( );
           NSOL_FOREACH( section, sections )
           {
-            SegmentPtr segment = ( *section )->firstSegment( );
-            while ( segment )
+            delete ( *section )->lastNode( );
+            NSOL_FOREACH( node, (*section)->middleNodes( ))
             {
-              SegmentPtr tmpSegment = segment;
-              segment = segment->next( );
-              nodes.insert( tmpSegment->begin( ));
-              nodes.insert( tmpSegment->end( ));
-              delete tmpSegment;
+              delete *node;
             }
             delete *section;
           }
@@ -169,12 +163,6 @@ namespace nsol
         }
         delete ( *morphology )->soma( );
         delete *morphology;
-      }
-
-
-      NSOL_FOREACH( node, nodes )
-      {
-        delete *node;
       }
       return;
     }
@@ -199,7 +187,6 @@ namespace nsol
 
 
   typedef BBPSDKReaderTemplated< Node,
-                                 Segment,
                                  Section,
                                  Dendrite,
                                  Axon,
@@ -210,7 +197,6 @@ namespace nsol
                                  Column > BBPSDKReader;
 
   typedef BBPSDKReaderTemplated< Node,
-                                 SegmentStats,
                                  SectionStats,
                                  DendriteStats,
                                  AxonStats,
@@ -222,7 +208,6 @@ namespace nsol
                                  > BBPSDKReaderStats;
 
   typedef BBPSDKReaderTemplated< NodeCached,
-                                 SegmentCachedStats,
                                  SectionCachedStats,
                                  DendriteCachedStats,
                                  AxonCachedStats,
@@ -246,8 +231,8 @@ namespace nsol
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
     Columns& columns, Circuit& circuit,
     const std::string inputFile,
-    const int loadFlags = MORPHOLOGY | HIERARCHY,
-    const std::string& targetLabel = std::string( "" ))
+    const int loadFlags,
+    const std::string& targetLabel )
   {
     if ( loadFlags == 0 )
       return;
@@ -364,16 +349,23 @@ namespace nsol
       neuron->transform() = it->global_transform();
       neuron->gid() = it->gid();
 
-
-      if( it->morphology_type( ).is_interneuron( ))
-        neuron->neuronType( ) = Neuron::INTER;
-      else if( it->morphology_type( ).is_pyramidal( ))
-        neuron->neuronType( ) = Neuron::PYRAMIDAL;
+      if( it->type( ).is_interneuron( ))
+        neuron->morphologicalType( ) = Neuron::INTERNEURON;
+      else if( it->type( ).is_pyramidal( ))
+        neuron->morphologicalType( ) = Neuron::PYRAMIDAL;
       else
-        neuron->neuronType( ) = Neuron::UNDEFINED;
+        neuron->morphologicalType( ) = Neuron::UNDEFINED;
+
+      if ( it->type( ).is_inhibitory( ))
+        neuron->functionalType( ) = Neuron::INHIBITORY;
+      else if ( it->type( ).is_excitatory( ))
+        neuron->functionalType( ) = Neuron::EXCITATORY;
+      else
+        neuron->functionalType( ) = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
       if ( loadFlags & MORPHOLOGY )
       {
+
         //Morphology previously loaded
         if (neuronMorphoMap.find(it->morphology().label()) !=
             neuronMorphoMap.end())
@@ -456,8 +448,6 @@ namespace nsol
               std::stack<SectionPtr> parents;
               parents.push(nullptr);
               bool first = true;
-              NodePtr nPre = nullptr;
-              std::map<unsigned int, NodePtr> nodePtrMap;
 
               while (!sPS.empty())
               {
@@ -483,8 +473,8 @@ namespace nsol
                 }
 
                 section->parent( parentSection );
-                SegmentPtr segment = section->addSegment( new SEGMENT );
-                segment->parentSection( section );
+//                SegmentPtr segment = section->addSegment( new SEGMENT );
+//                segment->parentSection( section );
 
                 const bbp::Cross_Sections & cross_Sections =
                   lS->cross_sections();
@@ -495,55 +485,30 @@ namespace nsol
                 if (first)
                 {
                   //TODO: select correct initial soma point
-                  segment->begin(
-                    NodePtr( new NODE( Vec3f(0, 0, 0),
-                                       1, 0.0 )));
+                  section->firstNode( new NODE(
+                             Vec3f( crossSectionIt->center()[0],
+                                    crossSectionIt->center()[1],
+                                    crossSectionIt->center()[2] ),
+                             id, crossSectionIt->radius( )));
                   first = false;
+                  crossSectionIt ++;
+                  id ++;
                 }
-                else
-                  segment->begin(section->parent()->lastSegment()->end());
-
-                segment->end(
-                  NodePtr(
-                    new NODE( Vec3f( crossSectionIt->center()[0],
-                                     crossSectionIt->center()[1],
-                                     crossSectionIt->center()[2] ),
-                              id, crossSectionIt->radius( ))));
-
-                nodePtrMap[id] = segment->end();
-
-                id++;
 
                 if (parentSection)
                   parentSection->addChild( section );
 
-                nPre = segment->end();
-
-                crossSectionIt++;
 
                 for ( bbp::Cross_Sections::const_iterator itL =
                         crossSectionIt; itL != cross_Sections.end();
                       ++itL )
                 {
-                  SegmentPtr crossSectionSegment =
-                    section->addSegment( new SEGMENT );
-                  crossSectionSegment->parentSection( section );
-                  crossSectionSegment->begin(nPre);
-
-                  crossSectionSegment->end(
-                    NodePtr( new NODE(
-                               Vec3f(itL->center()[0],
-                                     itL->center()[1],
-                                     itL->center()[2]),
-                               id, itL->radius())));
-
-                  nodePtrMap[id] = crossSectionSegment->end();
-
-                  id++;
-
-                  nPre = crossSectionSegment->end();
+                  section->addNode( new NODE( Vec3f( itL->center()[0],
+                                                     itL->center()[1],
+                                                     itL->center()[2]),
+                                              id, itL->radius( )));
+                  id ++;
                 }
-
                 // for (bbp::Sections::const_iterator child =
                 //        lS->children().begin();
                 //      child != lS->children().end(); ++child)
