@@ -178,15 +178,12 @@ int main ( int argc, char ** argv )
     nsol::SectionPtr sectionWithCachedStats =
       neuronWithCachedStats->morphology( )->neurites()[0]->firstSection( );
 
-    nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-    segment->begin( segment->begin( ));
+    NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
   }
   {
     nsol::SectionPtr sectionWithCachedStats =
       neuronWithCachedStats->morphology( )->neurites()[1]->firstSection( );
-
-    nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-    segment->begin( segment->begin( ));
+    NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
   }
 
   PrintCachedSurfaceState( neuronWithCachedStats );

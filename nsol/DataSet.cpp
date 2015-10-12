@@ -30,24 +30,20 @@ namespace nsol
       delete *col;
     }
 
-    std::set< NodePtr > nodes;
-
     NSOL_FOREACH( morphology, morphologies )
     {
       NSOL_FOREACH( neurite, ( *morphology )->neurites( ))
       {
         Sections sections = ( *neurite )->sections( );
+        delete ( *neurite )->firstSection( )->firstNode( );
         NSOL_FOREACH( section, sections )
         {
-          SegmentPtr segment = ( *section )->firstSegment( );
-          while ( segment )
+          Nodes nodes = ( *section )->middleNodes( );
+          NSOL_FOREACH( node, nodes )
           {
-            SegmentPtr tmpSegment = segment;
-            segment = segment->next( );
-            nodes.insert( tmpSegment->begin( ));
-            nodes.insert( tmpSegment->end( ));
-            delete tmpSegment;
+            delete *node;
           }
+          delete ( *section )->lastNode( );
           delete *section;
         }
         delete *neurite;
@@ -55,10 +51,6 @@ namespace nsol
       delete ( *morphology )->soma( );
       delete *morphology;
     }
-
-
-    NSOL_FOREACH( node, nodes )
-      delete *node;
 
     _columns.clear( );
 

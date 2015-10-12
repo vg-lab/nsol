@@ -26,8 +26,8 @@ int main ( void )
   assert( c->numberOfNeurons( false ) == 0 );
   assert( c->numberOfNeurons( true, Neuron::PYRAMIDAL ) == 0 );
   assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::INTER ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) == 0 );
+  assert( c->numberOfNeurons( true, Neuron::INTERNEURON ) == 0 );
+  assert( c->numberOfNeurons( false, Neuron::INTERNEURON ) == 0 );
 
 
   std::cout << "Add mini column" << std::endl;
@@ -55,8 +55,8 @@ int main ( void )
   assert( c->numberOfNeurons( false ) == 0 );
   assert( c->numberOfNeurons( true, Neuron::PYRAMIDAL ) == 0 );
   assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) == 0 );
-  assert( c->numberOfNeurons( true, Neuron::INTER ) == 0 );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) == 0 );
+  assert( c->numberOfNeurons( true, Neuron::INTERNEURON ) == 0 );
+  assert( c->numberOfNeurons( false, Neuron::INTERNEURON ) == 0 );
 
   {
     MiniColumnPtr mc2 ( new MiniColumn );
@@ -107,7 +107,7 @@ int main ( void )
                          new nsol::NeuronMorphology( new nsol::Soma )),
                        l, gid++,
                        Matrix4_4f::IDENTITY,
-                       *mcIt, Neuron::INTER )));
+                       *mcIt, Neuron::INTERNEURON )));
       }
     }
   }
@@ -118,11 +118,11 @@ int main ( void )
                                NUM_NEURONS_INT_PER_LAYER ) );
   assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL ) ==
           NUM_MINICOLS * 6 * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, Neuron::INTER ) ==
+  assert( c->numberOfNeurons( false, Neuron::INTERNEURON ) ==
           NUM_MINICOLS * 6 * NUM_NEURONS_INT_PER_LAYER );
   assert( c->numberOfNeurons( false, Neuron::PYRAMIDAL, 2 ) ==
           NUM_MINICOLS * NUM_NEURONS_PYR_PER_LAYER );
-  assert( c->numberOfNeurons( false, Neuron::INTER , 2 ) ==
+  assert( c->numberOfNeurons( false, Neuron::INTERNEURON , 2 ) ==
           NUM_MINICOLS * NUM_NEURONS_INT_PER_LAYER );
 
 

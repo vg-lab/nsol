@@ -17,13 +17,16 @@ namespace nsol
                   const unsigned int initGid,
                   const Matrix4_4f initTransform,
                   const MiniColumnPtr initMiniColumn,
-                  const Neuron::TNeuronType initType )
+                  const Neuron::TMorphologicalType initMorphologicalType,
+                  const Neuron::TFunctionalType initFunctionalType )
       : _morphology( initNeuronMorphology )
       , _miniColumn( initMiniColumn )
       , _transform( initTransform )
       , _layer( initLayer )
       , _gid( initGid )
-      , _type( initType )
+      , _morphologicalType( initMorphologicalType )
+      , _functionalType( initFunctionalType )
+
     {
     }
 
@@ -72,10 +75,37 @@ namespace nsol
     return _miniColumn;
   }
 
-  Neuron::TNeuronType & Neuron::neuronType( void )
+  Neuron::TMorphologicalType & Neuron::morphologicalType( void )
   {
-    return _type;
+    return _morphologicalType;
   };
+
+  Neuron::TFunctionalType & Neuron::functionalType( void )
+  {
+    return _functionalType;
+  };
+
+  bool Neuron::isPyramidal( void )
+  {
+    return _morphologicalType == Neuron::PYRAMIDAL;
+  }
+
+  bool Neuron::isInterneuron( void )
+  {
+    return _morphologicalType == Neuron::INTERNEURON;
+  }
+
+  bool Neuron::isExcitatory( void )
+  {
+    return _functionalType == Neuron::EXCITATORY;
+  }
+
+  bool Neuron::isInhibitory( void )
+  {
+    return _functionalType == Neuron::INHIBITORY;
+  }
+
+
 
 
 } // namespace nsol

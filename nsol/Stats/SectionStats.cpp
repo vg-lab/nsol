@@ -10,33 +10,34 @@
 #include "SectionStats.h"
 #include "SegmentStats.h"
 
+
 namespace nsol
 {
 
-  SegmentStats::TSegmentStat
-  toSegmentStat( SectionStats::TSectionStat stat )
-  {
-    switch( stat )
-    {
-    case SectionStats::/*TSectionStat::*/SURFACE:
-      return SegmentStats::/*TSegmentStat::*/SURFACE;
-      break;
+	SegmentStats::TSegmentStat
+	toSegmentStat( SectionStats::TSectionStat stat )
+	{
+		switch( stat )
+		{
+		case SectionStats::/*TSectionStat::*/SURFACE:
+		  return SegmentStats::/*TSegmentStat::*/SURFACE;
+		  break;
 
-    case SectionStats::/*TSectionStat::*/VOLUME:
-      return SegmentStats::/*TSegmentStat::*/VOLUME;
-      break;
+		case SectionStats::/*TSectionStat::*/VOLUME:
+		  return SegmentStats::/*TSegmentStat::*/VOLUME;
+		  break;
 
-    case SectionStats::/*TSectionStat::*/LENGTH:
-      return SegmentStats::/*TSegmentStat::*/LENGTH;
-      break;
+		case SectionStats::/*TSectionStat::*/LENGTH:
+		  return SegmentStats::/*TSegmentStat::*/LENGTH;
+		  break;
 
-    case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
-    default:
-      NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
-    }
+		case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
+		default:
+		  NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
+		}
 
-    return SegmentStats::/*TSegmentStat::*/SURFACE;
-  }
+		return SegmentStats::/*TSegmentStat::*/SURFACE;
+	}
 
 
   float SectionStats::getStat( TSectionStat stat, TAggregation agg ) const
@@ -46,7 +47,6 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
-    int numSegments = 0;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -60,51 +60,53 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    if ( _firstSegment )
+    if( _firstNode && _lastNode )
     {
-      SegmentPtr segment = _firstSegment;
-
-      while ( segment )
+      unsigned int size_middleNodes = ( unsigned int )_middleNodes.size();
+      NodePtr first = _firstNode;
+      NodePtr second = _lastNode;
+      for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
       {
-        NSOL_DEBUG_CHECK( segment->stats( ),
-                          "segment doesn't have stats" );
+        if( i == size_middleNodes )
+          second = _lastNode;
+        else
+          second = _middleNodes[i];
 
         if ( agg == /*TAggregation::*/VARIANCE )
         {
           float tmpValue =
-            segment->stats( )->getStat( toSegmentStat( stat ));
+            SegmentStats::getStat( toSegmentStat( stat ), first, second );
           value += ( mean - tmpValue ) * ( mean - tmpValue );
         }
         else if ( agg == /*TAggregation::*/MIN )
           value =
-            std::min( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
+          std::min( value,
+              SegmentStats::getStat( toSegmentStat( stat ), first, second ));
         else if ( agg == /*TAggregation::*/MAX )
           value =
-            std::max( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
+          std::max( value,
+               SegmentStats::getStat( toSegmentStat( stat ), first, second ));
         else
-          value += segment->stats( )->getStat( toSegmentStat( stat ));
+          value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
 
-        segment = segment->next( );
-        numSegments++;
-      } // while segments
-
-
-      switch ( agg )
-      {
-      case /*TAggregation::*/TOTAL:
-      case /*TAggregation::*/MIN:
-      case /*TAggregation::*/MAX:
-        return value;
-      case /*TAggregation::*/MEAN:
-      case /*TAggregation::*/VARIANCE:
-        return value / numSegments;
-      case /*TAggregation::*/STD_DEV:
-        break;
+        first = second;
       }
-      NSOL_THROW( "aggregation op not valid" )
+
+		  switch ( agg )
+		  {
+		  case /*TAggregation::*/TOTAL:
+		  case /*TAggregation::*/MIN:
+		  case /*TAggregation::*/MAX:
+			return value;
+		  case /*TAggregation::*/MEAN:
+		  case /*TAggregation::*/VARIANCE:
+			return value / ( size_middleNodes + 1 );
+		  case /*TAggregation::*/STD_DEV:
+			break;
+		  }
+		  NSOL_THROW( "aggregation op not valid" )
     }
+
     return 0;
   }
 
