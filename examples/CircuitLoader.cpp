@@ -99,45 +99,91 @@ int main ( int argc, char *argv[] )
 
 			 cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid();
 #if 1 TESTING_PRINT_LITERAL
-		switch(preSynNeuron->neuronType())
+		switch(preSynNeuron->morphologicalType( ))
 					  {
 					  	  case 	Neuron::UNDEFINED:
-					  		    cout << " type: UNDEFINED " << endl;
+					  		    cout << " morphological type: UNDEFINED " << endl;
 					  		    break;
-					  	  case	Neuron::INTER:
-					  		    cout << " type: INTER " << endl;
+					  	  case	Neuron::INTERNEURON:
+					  		    cout << " morphological type: INTERNEURON " << endl;
 					  		    break;
 					  	  case Neuron::PYRAMIDAL:
-					  		    cout << " type: PYRAMIDAL " << endl;
+					  		    cout << " morphological type: PYRAMIDAL " << endl;
 								break;
 					  	  default:
-					  		    cout<< "neuron type not consistent"<< endl;
+					  		    cout<< "neuron morphological type not consistent"<< endl;
 					  		    break;
 					  }
 #else
-				   << " type: " << int(preSynNeuron->neuronType())<< endl;
+				   << " morphological type: " << int(preSynNeuron->morphologicalType( ))
+           << endl;
+#endif
+
+#if 1 TESTING_PRINT_LITERAL
+    switch(preSynNeuron->functionalType( ))
+            {
+                case  Neuron::UNDEFINED_FUNCTIONAL_TYPE:
+                    cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
+                         << endl;
+                    break;
+                case Neuron::INHIBITORY:
+                    cout << " functional type: INHIBITORY " << endl;
+                break;
+                case Neuron::EXCITATORY:
+                    cout << " functional type: EXCITATORY " << endl;
+                break;
+                default:
+                    cout<< "neuron functional type not consistent"<< endl;
+                    break;
+            }
+#else
+           << " functional type: " << int(preSynNeuron->functionalType( ))
+           << endl;
 #endif
 
 
 			 cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid();
 #if 1 TESTING_PRINT_LITERAL
-		switch(postSynNeuron->neuronType())
-					  {
-					  	  case 	Neuron::UNDEFINED:
-					  		    cout << " type: UNDEFINED " << endl;
-					  		    break;
-					  	  case	Neuron::INTER:
-					  		    cout << " type: INTER " << endl;
-					  		    break;
-					  	  case Neuron::PYRAMIDAL:
-					  		    cout << " type: PYRAMIDAL " << endl;
-								break;
-					  	  default:
-					  		    cout<< "neuron type not consistent"<< endl;
-					  		    break;
-					  }
+    switch(postSynNeuron->morphologicalType( ))
+            {
+                case  Neuron::UNDEFINED:
+                    cout << " morphological type: UNDEFINED " << endl;
+                    break;
+                case  Neuron::INTERNEURON:
+                    cout << " morphological type: INTERNEURON " << endl;
+                    break;
+                case Neuron::PYRAMIDAL:
+                    cout << " morphological type: PYRAMIDAL " << endl;
+                break;
+                default:
+                    cout<< "neuron morphological type not consistent"<< endl;
+                    break;
+            }
 #else
-			    << " type: " << int(postSynNeuron->neuronType())<< endl;
+           << " morphological type: " << int(postSynNeuron->morphologicalType( ))
+           << endl;
+#endif
+
+#if 1 TESTING_PRINT_LITERAL
+    switch(postSynNeuron->functionalType( ))
+            {
+                case  Neuron::UNDEFINED_FUNCTIONAL_TYPE:
+                    cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
+                         << endl;
+                    break;
+                case Neuron::INHIBITORY:
+                    cout << " functional type: INHIBITORY " << endl;
+                break;
+                case Neuron::EXCITATORY:
+                    cout << " functional type: EXCITATORY " << endl;
+                break;
+                default:
+                    cout<< "neuron functional type not consistent"<< endl;
+                    break;
+            }
+#else
+           << " functional type: " << int(postSynNeuron->functionalType( ))
+           << endl;
 #endif
 			    cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;
 			    cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;

@@ -122,10 +122,12 @@ namespace nsol
   {
     return ( ( this->id( ) == other.id( ) ) &&
              ( this->synapseType( ) == other.synapseType( ) ) &&
-             ( (this->preSynapticNeuron( )) == (other.preSynapticNeuron( ))) &&
-             ( (this->postSynapticNeuron( )) == (other.postSynapticNeuron( ))) &&
-             ( (this->preSynapticSurfacePosition( )) == (other.preSynapticSurfacePosition())) &&
-             ( (this->postSynapticSurfacePosition( ) == (other.postSynapticSurfacePosition( )))));
+             ( this->preSynapticNeuron( ) == other.preSynapticNeuron( )) &&
+             ( this->postSynapticNeuron( ) == other.postSynapticNeuron( )) &&
+             ( this->preSynapticSurfacePosition( ) ==
+               other.preSynapticSurfacePosition( )) &&
+             ( this->postSynapticSurfacePosition( ) ==
+               other.postSynapticSurfacePosition( )));
   }
 
   bool Synapse::operator != ( const Synapse& other )
