@@ -17,6 +17,7 @@ namespace nsol
     : Synapse( synapseType_ )
     , _preSynapticSection( nullptr )
     , _preSynapticNode( nullptr )
+    , _postSynapticNode( nullptr )
   {
     NSOL_DEBUG_CHECK( synapseType_ == Synapse::DENDROSOMATIC ||
                       synapseType_ == Synapse::AXOSOMATIC,
@@ -28,6 +29,7 @@ namespace nsol
     :  Synapse( other)
     , _preSynapticSection( other.preSynapticSection( ))
     , _preSynapticNode( other.preSynapticNode( ))
+    , _postSynapticNode( other.postSynapticNode( ))
   {
   }
 
@@ -43,6 +45,12 @@ namespace nsol
     _preSynapticNode = presynaptic_node;
   }
 
+  void SynapseNeuriteToSoma::postSynapticNode(
+    const NodePtr postsynaptic_node)
+  {
+    _postSynapticNode = postsynaptic_node;
+  }
+
   SectionPtr SynapseNeuriteToSoma::preSynapticSection( void ) const
   {
     return _preSynapticSection;
@@ -53,6 +61,11 @@ namespace nsol
     return _preSynapticNode;
   }
 
+  NodePtr SynapseNeuriteToSoma::postSynapticNode( void ) const
+  {
+    return _postSynapticNode;
+  }
+
   //
   // Operators
   //
@@ -60,11 +73,13 @@ namespace nsol
   SynapseNeuriteToSoma& SynapseNeuriteToSoma::operator =
   ( const SynapseNeuriteToSoma& other )
   {
-
-    Synapse::operator = ( other );
-    this->preSynapticSection( other.preSynapticSection( ));
-    this->preSynapticNode( other.preSynapticNode( ));
-
+    if (this != &other)
+    {
+      Synapse::operator = ( other );
+      this->preSynapticSection( other.preSynapticSection( ));
+      this->preSynapticNode( other.preSynapticNode( ));
+      this->postSynapticNode( other.postSynapticNode( ));
+    }
     return *this;
   }
 
@@ -74,7 +89,9 @@ namespace nsol
       ( this->preSynapticSection( ) ==
         other.preSynapticSection( )) &&
       ( this->preSynapticNode( ) ==
-        other.preSynapticNode( ));
+        other.preSynapticNode( )) &&
+      ( this->postSynapticNode( ) ==
+        other.postSynapticNode( ));
   }
 
   bool SynapseNeuriteToSoma::operator != ( const SynapseNeuriteToSoma& other )

@@ -131,16 +131,16 @@ namespace nsol
 
   protected:
 
-    //! Section of a presynaptic neuron
+    //! Section of a presynaptic neuron (neurite)
     SectionPtr _preSynapticSection;
 
-    //! Section of a postsynaptic neuron
+    //! Section of a postsynaptic neuron (neurite)
     SectionPtr _postSynapticSection;
 
-    //! Node of a presynaptic neuron
+    //! Node of a presynaptic neuron (neurite)
     NodePtr _preSynapticNode;
 
-    //! Node of a postsynaptic neuron
+    //! Node of a postsynaptic neuron (neurite)
     NodePtr _postSynapticNode;
 
   }; // class SynapseNeuriteToNeurite
