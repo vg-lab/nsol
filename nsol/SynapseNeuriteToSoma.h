@@ -68,6 +68,15 @@ namespace nsol
     void preSynapticNode( const NodePtr presynaptic_node );
 
     /**
+     * Method to add a postsynaptic node to the synapse.
+     * @param postsynaptic node.
+     * @see Synapse
+     * @return pointer to the added postsynaptic node added
+     */
+    NSOL_API
+    void postSynapticNode( const NodePtr postsynaptic_node );
+
+    /**
      * Method to get the presynaptic section.
      * @return pointer to the presynaptic section.
      */
@@ -80,6 +89,13 @@ namespace nsol
      */
     NSOL_API
     NodePtr preSynapticNode( void ) const;
+
+    /**
+     * Method to get the postsynaptic node.
+     * @return pointer to the postsynaptic node.
+     */
+    NSOL_API
+    NodePtr postSynapticNode( void ) const;
 
     ///@}
 
@@ -101,11 +117,14 @@ namespace nsol
 
   protected:
 
-    //! Section of a presynaptic neuron
+    //! Section of a presynaptic neuron (neurite)
     SectionPtr _preSynapticSection;
 
-    //! Node of a presynaptic neuron
+    //! Node of a presynaptic neuron (neurite)
     NodePtr _preSynapticNode;
+
+    //! Node of a postsynaptic neuron (soma)
+    NodePtr _postSynapticNode;
 
   }; // class SynapseNeuriteToSoma
 

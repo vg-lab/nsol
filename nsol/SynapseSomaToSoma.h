@@ -45,6 +45,43 @@ namespace nsol
 
     ///@}
 
+    /** @name getters and setters methods */
+    ///@{
+
+    /**
+     * Method to add a presynaptic node to the synapse.
+     * @param presynaptic node.
+     * @see Synapse
+     * @return pointer to the added presynaptic node added
+     */
+    NSOL_API
+    void preSynapticNode( const NodePtr presynaptic_node );
+
+    /**
+     * Method to add a postsynaptic node to the synapse.
+     * @param postsynaptic node.
+     * @see Synapse
+     * @return pointer to the added postsynaptic node added
+     */
+    NSOL_API
+    void postSynapticNode( const NodePtr postsynaptic_node );
+
+    /**
+     * Method to get the presynaptic node.
+     * @return pointer to the presynaptic node.
+     */
+    NSOL_API
+    NodePtr preSynapticNode( void ) const;
+
+    /**
+     * Method to get the postsynaptic node.
+     * @return pointer to the postsynaptic node.
+     */
+    NSOL_API
+    NodePtr postSynapticNode( void ) const;
+
+    ///@}
+
     /** @name Operators */
     ///@{
 
@@ -59,6 +96,14 @@ namespace nsol
 
     ///@}
 
+
+  protected:
+
+    //! Node of a presynaptic neuron (soma)
+    NodePtr _preSynapticNode;
+
+    //! Node of a postsynaptic neuron (soma)
+    NodePtr _postSynapticNode;
 
   }; // class SynapseSomaToSoma
 
