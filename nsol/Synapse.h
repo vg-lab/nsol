@@ -46,10 +46,13 @@ namespace nsol
     ///@{
 
     /**
-     * !Default Synapse class constructor.
+     * Default Synapse constructor
+     * @param type of synapse.
+     * @param id id of the synapse.
      */
     NSOL_API
-    Synapse ( const TSynapseType synapseType = AXODENDRITIC );
+    Synapse ( const TSynapseType synapseType = AXODENDRITIC,
+              const unsigned short id = 0 );
 
     /**
      * Copy constructor
@@ -66,6 +69,24 @@ namespace nsol
 
     ///@}
 
+    /** @name Id related methods */
+    ///@{
+
+    /**
+     * Method to get-set synapse id.
+     * @return reference to synapse id
+     */
+    NSOL_API
+    unsigned short & id( void );
+
+    /**
+     * Method to get the synapse id as const.
+     * @return id of the synapse
+     */
+    NSOL_API
+    unsigned short id( void ) const;
+
+    ///@}
 
     /** @name getters and setters methods */
     ///@{
@@ -158,6 +179,9 @@ namespace nsol
     ///@}
 
   protected:
+
+    //! id of this synapse
+    unsigned short _id;
 
     //! Presynaptic neuron
     NeuronPtr _preSynapticNeuron;

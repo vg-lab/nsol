@@ -10,7 +10,6 @@
 
 #include <nsol/api.h>
 #include "NsolTypes.h"
-#include "Segment.h"
 #include "Synapse.h"
 
 namespace nsol
@@ -49,36 +48,68 @@ namespace nsol
     ///@{
 
     /**
-     * Method to add a presynaptic segment to the synapse.
-     * @param presynaptic segment.
+     * Method to add a presynaptic section to the synapse.
+     * @param presynaptic section.
      * @see Synapse
-     * @return pointer to the added presynaptic segment added
+     * @return pointer to the added presynaptic section added
      */
     NSOL_API
-    void preSynapticSegment( const SegmentPtr preSynapticSegment);
+    void preSynapticSection( const SectionPtr preSynapticSection);
 
     /**
-     * Method to add a postsynaptic segment to the synapse.
-     * @param postsynaptic segment.
+     * Method to add a postsynaptic section to the synapse.
+     * @param postsynaptic section.
      * @see Synapse
-     * @return pointer to the added postsynaptic segment added
+     * @return pointer to the added postsynaptic section added
      */
     NSOL_API
-    void postSynapticSegment( const SegmentPtr postSynapticSegment);
+    void postSynapticSection( const SectionPtr postSynapticSection);
 
     /**
-     * Method to get the presynaptic segment.
-     * @return pointer to the presynaptic segment.
+     * Method to add a presynaptic node to the synapse.
+     * @param presynaptic node.
+     * @see Synapse
+     * @return pointer to the added presynaptic node added
      */
     NSOL_API
-    SegmentPtr preSynapticSegment( void ) const;
+    void preSynapticNode( const NodePtr preSynapticNode);
 
     /**
-     * Method to get the postsynaptic segment.
-     * @return pointer to the postsynaptic segment.
+     * Method to add a postsynaptic node to the synapse.
+     * @param postsynaptic node.
+     * @see Synapse
+     * @return pointer to the added postsynaptic node added
      */
     NSOL_API
-    SegmentPtr postSynapticSegment( void ) const;
+    void postSynapticNode( const NodePtr postSynapticNode);
+
+    /**
+     * Method to get the presynaptic section.
+     * @return pointer to the presynaptic section.
+     */
+    NSOL_API
+    SectionPtr preSynapticSection( void ) const;
+
+    /**
+     * Method to get the postsynaptic section.
+     * @return pointer to the postsynaptic section.
+     */
+    NSOL_API
+    SectionPtr postSynapticSection( void ) const;
+
+    /**
+     * Method to get the presynaptic node.
+     * @return pointer to the presynaptic node.
+     */
+    NSOL_API
+    NodePtr preSynapticNode( void ) const;
+
+    /**
+     * Method to get the postsynaptic node.
+     * @return pointer to the postsynaptic node.
+     */
+    NSOL_API
+    NodePtr postSynapticNode( void ) const;
 
     ///@}
 
@@ -100,11 +131,17 @@ namespace nsol
 
   protected:
 
-    //! Segment of a presynaptic neuron
-    SegmentPtr _preSynapticSegment;
+    //! Section of a presynaptic neuron
+    SectionPtr _preSynapticSection;
 
-    //! Segment of a postsynaptic neuron
-    SegmentPtr _postSynapticSegment;
+    //! Section of a postsynaptic neuron
+    SectionPtr _postSynapticSection;
+
+    //! Node of a presynaptic neuron
+    NodePtr _preSynapticNode;
+
+    //! Node of a postsynaptic neuron
+    NodePtr _postSynapticNode;
 
   }; // class SynapseNeuriteToNeurite
 

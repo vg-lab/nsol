@@ -11,7 +11,6 @@
 #include <nsol/api.h>
 #include "NsolTypes.h"
 #include "Neuron.h"
-#include "Segment.h"
 #include "Synapse.h"
 
 namespace nsol
