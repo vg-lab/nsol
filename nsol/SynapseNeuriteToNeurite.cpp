@@ -16,8 +16,10 @@ namespace nsol
   SynapseNeuriteToNeurite::SynapseNeuriteToNeurite (
     const TSynapseType synapseType_)
     :  Synapse( synapseType_ )
-    , _preSynapticSegment( nullptr )
-    , _postSynapticSegment( nullptr )
+    , _preSynapticSection( nullptr )
+    , _postSynapticSection( nullptr )
+    , _preSynapticNode( nullptr )
+    , _postSynapticNode( nullptr )
   {
     NSOL_DEBUG_CHECK( synapseType_ == Synapse::AXODENDRITIC ||
                       synapseType_ == Synapse::DENDRODENDRITIC ||
@@ -28,30 +30,51 @@ namespace nsol
   SynapseNeuriteToNeurite::SynapseNeuriteToNeurite(
     const SynapseNeuriteToNeurite& other )
     :  Synapse( other)
-    , _preSynapticSegment( other.preSynapticSegment( ) )
-    , _postSynapticSegment( other.postSynapticSegment( ))
+    , _preSynapticSection( other.preSynapticSection( ) )
+    , _postSynapticSection( other.postSynapticSection( ))
+    , _preSynapticNode( other.preSynapticNode( ) )
+    , _postSynapticNode( other.postSynapticNode( ))
   {
   }
 
-  void SynapseNeuriteToNeurite::preSynapticSegment( SegmentPtr presynaptic_segment)
+  void SynapseNeuriteToNeurite::preSynapticSection( SectionPtr presynaptic_section)
   {
-    _preSynapticSegment = presynaptic_segment;
+    _preSynapticSection = presynaptic_section;
   }
 
-  void SynapseNeuriteToNeurite::postSynapticSegment( SegmentPtr postsynaptic_segment)
+  void SynapseNeuriteToNeurite::postSynapticSection( SectionPtr postsynaptic_section)
   {
-    _postSynapticSegment = postsynaptic_segment;
+    _postSynapticSection = postsynaptic_section;
   }
 
-
-  SegmentPtr SynapseNeuriteToNeurite::preSynapticSegment( void ) const
+  void SynapseNeuriteToNeurite::preSynapticNode( NodePtr presynaptic_node)
   {
-    return _preSynapticSegment;
+    _preSynapticNode = presynaptic_node;
   }
 
-  SegmentPtr SynapseNeuriteToNeurite::postSynapticSegment( void ) const
+  void SynapseNeuriteToNeurite::postSynapticNode( NodePtr postsynaptic_node)
   {
-    return _postSynapticSegment;
+    _postSynapticNode = postsynaptic_node;
+  }
+
+  SectionPtr SynapseNeuriteToNeurite::preSynapticSection( void ) const
+  {
+    return _preSynapticSection;
+  }
+
+  SectionPtr SynapseNeuriteToNeurite::postSynapticSection( void ) const
+  {
+    return _postSynapticSection;
+  }
+
+  NodePtr SynapseNeuriteToNeurite::preSynapticNode( void ) const
+  {
+    return _preSynapticNode;
+  }
+
+  NodePtr SynapseNeuriteToNeurite::postSynapticNode( void ) const
+  {
+    return _postSynapticNode;
   }
 
   //
@@ -62,8 +85,10 @@ namespace nsol
   SynapseNeuriteToNeurite::operator = ( const SynapseNeuriteToNeurite& other )
   {
     Synapse::operator = ( other );
-    this->preSynapticSegment( other.preSynapticSegment( ));
-    this->postSynapticSegment( other.postSynapticSegment( ));
+    this->preSynapticSection( other.preSynapticSection( ));
+    this->postSynapticSection( other.postSynapticSection( ));
+    this->preSynapticNode( other.preSynapticNode( ));
+    this->postSynapticNode( other.postSynapticNode( ));
 
     return *this;
   }
@@ -72,10 +97,14 @@ namespace nsol
   ( const SynapseNeuriteToNeurite& other )
   {
     return Synapse::operator == ( other ) &&
-      ( this->preSynapticSegment( ) ==
-        other.preSynapticSegment( )) &&
-      ( this->postSynapticSegment( ) ==
-        other.postSynapticSegment( ));
+      ( this->preSynapticSection( ) ==
+        other.preSynapticSection( )) &&
+      ( this->postSynapticSection( ) ==
+        other.postSynapticSection( )) &&
+      ( this->preSynapticNode( ) ==
+        other.preSynapticNode( )) &&
+      ( this->postSynapticNode( ) ==
+        other.postSynapticNode( ));
   }
 
   bool SynapseNeuriteToNeurite::operator !=

@@ -36,14 +36,14 @@ BOOST_AUTO_TEST_CASE( test_constructor_synapseNeuriteToNeurite )
   BOOST_CHECK_EQUAL( saa->synapseType( ), Synapse::AXOAXONIC );
 
   // Add presynaptic segment and postsynaptic segment to the synapse
-  nsol::SegmentPtr presynaptic_segment(new nsol::Segment);
-  nsol::SegmentPtr postsynaptic_segment(new nsol::Segment);
+  //nsol::SegmentPtr presynaptic_segment(new nsol::Segment);
+  //nsol::SegmentPtr postsynaptic_segment(new nsol::Segment);
 
-  saa->preSynapticSegment( presynaptic_segment );
-  saa->postSynapticSegment( postsynaptic_segment );
+  //saa->preSynapticSegment( presynaptic_segment );
+  //saa->postSynapticSegment( postsynaptic_segment );
 
-  BOOST_CHECK_EQUAL( saa->preSynapticSegment( ), presynaptic_segment );
-  BOOST_CHECK_EQUAL( saa->postSynapticSegment( ), postsynaptic_segment );
+  //BOOST_CHECK_EQUAL( saa->preSynapticSegment( ), presynaptic_segment );
+  //BOOST_CHECK_EQUAL( saa->postSynapticSegment( ), postsynaptic_segment );
 
   // Free dymanic memory used
   NSOL_DELETE_PTR( sntn);
@@ -73,20 +73,20 @@ BOOST_AUTO_TEST_CASE( test_synapseNeuriteToNeurite_operators)
   BOOST_CHECK_EQUAL( s3 != *s2, false );
 
   // Add presynaptic segment and postsynaptic segment, and test if equal
-  *s2 = *s;
-  BOOST_CHECK_EQUAL( *s == *s2, true );
-  BOOST_CHECK_EQUAL( *s != *s2, false );
+  //*s2 = *s;
+  //BOOST_CHECK_EQUAL( *s == *s2, true );
+  //BOOST_CHECK_EQUAL( *s != *s2, false );
 
-  s->preSynapticSegment(SegmentPtr( new nsol::Segment( )));
-  s->postSynapticSegment(SegmentPtr( new nsol::Segment( )));
+  //s->preSynapticSegment(SegmentPtr( new nsol::Segment( )));
+  //s->postSynapticSegment(SegmentPtr( new nsol::Segment( )));
 
-  BOOST_CHECK_EQUAL( *s == *s2, false );
-  BOOST_CHECK_EQUAL( *s != *s2, true );
+  //BOOST_CHECK_EQUAL( *s == *s2, false );
+  //BOOST_CHECK_EQUAL( *s != *s2, true );
 
   // Test assigment op with presynaptic and postsynaptic segments
-  *s2 = *s;
-  BOOST_CHECK_EQUAL( *s == *s2, true );
-  BOOST_CHECK_EQUAL( *s != *s2, false );
+  //*s2 = *s;
+  //BOOST_CHECK_EQUAL( *s == *s2, true );
+  //BOOST_CHECK_EQUAL( *s != *s2, false );
 
   // Test copy constructor
   nsol::SynapseNeuriteToNeurite s4( s3 );

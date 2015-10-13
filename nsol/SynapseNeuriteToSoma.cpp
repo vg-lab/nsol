@@ -15,7 +15,8 @@ namespace nsol
   SynapseNeuriteToSoma::SynapseNeuriteToSoma (
     TSynapseType synapseType_)
     : Synapse( synapseType_ )
-    , _preSynapticSegment( nullptr )
+    , _preSynapticSection( nullptr )
+    , _preSynapticNode( nullptr )
   {
     NSOL_DEBUG_CHECK( synapseType_ == Synapse::DENDROSOMATIC ||
                       synapseType_ == Synapse::AXOSOMATIC,
@@ -25,20 +26,31 @@ namespace nsol
   SynapseNeuriteToSoma::SynapseNeuriteToSoma(
     const SynapseNeuriteToSoma& other )
     :  Synapse( other)
-    , _preSynapticSegment( other.preSynapticSegment( ) )
+    , _preSynapticSection( other.preSynapticSection( ))
+    , _preSynapticNode( other.preSynapticNode( ))
   {
   }
 
-
-  void SynapseNeuriteToSoma::preSynapticSegment(
-    const SegmentPtr presynaptic_segment)
+  void SynapseNeuriteToSoma::preSynapticSection(
+    const SectionPtr presynaptic_section)
   {
-    _preSynapticSegment = presynaptic_segment;
+    _preSynapticSection = presynaptic_section;
   }
 
-  SegmentPtr SynapseNeuriteToSoma::preSynapticSegment( void ) const
+  void SynapseNeuriteToSoma::preSynapticNode(
+    const NodePtr presynaptic_node)
   {
-    return _preSynapticSegment;
+    _preSynapticNode = presynaptic_node;
+  }
+
+  SectionPtr SynapseNeuriteToSoma::preSynapticSection( void ) const
+  {
+    return _preSynapticSection;
+  }
+
+  NodePtr SynapseNeuriteToSoma::preSynapticNode( void ) const
+  {
+    return _preSynapticNode;
   }
 
   //
@@ -50,7 +62,8 @@ namespace nsol
   {
 
     Synapse::operator = ( other );
-    this->preSynapticSegment( other.preSynapticSegment( ));
+    this->preSynapticSection( other.preSynapticSection( ));
+    this->preSynapticNode( other.preSynapticNode( ));
 
     return *this;
   }
@@ -58,8 +71,10 @@ namespace nsol
   bool SynapseNeuriteToSoma::operator == ( const SynapseNeuriteToSoma& other )
   {
     return Synapse::operator == ( other ) &&
-      ( this->preSynapticSegment( ) ==
-        other.preSynapticSegment( ));
+      ( this->preSynapticSection( ) ==
+        other.preSynapticSection( )) &&
+      ( this->preSynapticNode( ) ==
+        other.preSynapticNode( ));
   }
 
   bool SynapseNeuriteToSoma::operator != ( const SynapseNeuriteToSoma& other )

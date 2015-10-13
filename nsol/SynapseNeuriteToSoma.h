@@ -12,7 +12,6 @@
 #include "NsolTypes.h"
 #include "Synapse.h"
 #include "Neuron.h"
-#include "Segment.h"
 
 namespace nsol
 {
@@ -51,20 +50,36 @@ namespace nsol
     ///@{
 
     /**
-     * Method to add a presynaptic segment to the synapse.
-     * @param presynaptic segment.
+     * Method to add a presynaptic section to the synapse.
+     * @param presynaptic section.
      * @see Synapse
-     * @return pointer to the added presynaptic segment added
+     * @return pointer to the added presynaptic section added
      */
     NSOL_API
-    void preSynapticSegment( const SegmentPtr presynaptic_segment );
+    void preSynapticSection( const SectionPtr presynaptic_section );
 
     /**
-     * Method to get the presynaptic segment.
-     * @return pointer to the presynaptic segment.
+     * Method to add a presynaptic node to the synapse.
+     * @param presynaptic node.
+     * @see Synapse
+     * @return pointer to the added presynaptic node added
      */
     NSOL_API
-    SegmentPtr preSynapticSegment( void ) const;
+    void preSynapticNode( const NodePtr presynaptic_node );
+
+    /**
+     * Method to get the presynaptic section.
+     * @return pointer to the presynaptic section.
+     */
+    NSOL_API
+    SectionPtr preSynapticSection( void ) const;
+
+    /**
+     * Method to get the presynaptic node.
+     * @return pointer to the presynaptic node.
+     */
+    NSOL_API
+    NodePtr preSynapticNode( void ) const;
 
     ///@}
 
@@ -86,7 +101,11 @@ namespace nsol
 
   protected:
 
-    SegmentPtr _preSynapticSegment;  // Segment of a presynaptic neuron
+    //! Section of a presynaptic neuron
+    SectionPtr _preSynapticSection;
+
+    //! Node of a presynaptic neuron
+    NodePtr _preSynapticNode;
 
   }; // class SynapseNeuriteToSoma
 

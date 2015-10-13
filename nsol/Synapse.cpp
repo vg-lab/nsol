@@ -12,8 +12,10 @@
 namespace nsol
 {
   //! Default constructor and destructor
-  Synapse::Synapse( TSynapseType synapseType_ )
-    : _preSynapticNeuron( nullptr )
+  Synapse::Synapse( TSynapseType synapseType_,
+                    const unsigned short initId )
+    : _id( initId )
+    , _preSynapticNeuron( nullptr )
     , _postSynapticNeuron( nullptr )
     , _preSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
     , _postSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
@@ -22,7 +24,8 @@ namespace nsol
   }
 
   Synapse::Synapse( const Synapse& other )
-    :_preSynapticNeuron( other.preSynapticNeuron( ))
+    :  _id( other.id( ))
+    ,_preSynapticNeuron( other.preSynapticNeuron( ))
     ,_postSynapticNeuron( other.postSynapticNeuron( ))
     ,_preSynapticSurfacePosition( other.preSynapticSurfacePosition( ))
     ,_postSynapticSurfacePosition( other.postSynapticSurfacePosition( ))
@@ -35,6 +38,16 @@ namespace nsol
   }
 
   //! Get the type of synapse
+  unsigned short & Synapse::id( void )
+  {
+    return _id;
+  }
+
+  unsigned short Synapse::id( void ) const
+  {
+    return _id;
+  }
+
   Synapse::TSynapseType Synapse::synapseType( void ) const
   {
     return _synapseType;
@@ -92,18 +105,23 @@ namespace nsol
 
   Synapse& Synapse::operator = ( const Synapse& other)
   {
-    this->synapseType( other.synapseType( ));
-    this->preSynapticNeuron( other.preSynapticNeuron( ));
-    this->postSynapticNeuron( other.postSynapticNeuron( ));
-    this->preSynapticSurfacePosition( other.preSynapticSurfacePosition( ));
-    this->postSynapticSurfacePosition( other.postSynapticSurfacePosition( ));
+    if (this != &other)
+    {
+      this->id( ) = other.id( );
+      this->synapseType( other.synapseType( ));
+      this->preSynapticNeuron( other.preSynapticNeuron( ));
+      this->postSynapticNeuron( other.postSynapticNeuron( ));
+      this->preSynapticSurfacePosition( other.preSynapticSurfacePosition( ));
+      this->postSynapticSurfacePosition( other.postSynapticSurfacePosition( ));
+    }
 
     return *this;
   }
 
   bool Synapse::operator == ( const Synapse& other )
   {
-    return ( ( this->synapseType( ) == other.synapseType( ) ) &&
+    return ( ( this->id( ) == other.id( ) ) &&
+             ( this->synapseType( ) == other.synapseType( ) ) &&
              ( (this->preSynapticNeuron( )) == (other.preSynapticNeuron( ))) &&
              ( (this->postSynapticNeuron( )) == (other.postSynapticNeuron( ))) &&
              ( (this->preSynapticSurfacePosition( )) == (other.preSynapticSurfacePosition())) &&
