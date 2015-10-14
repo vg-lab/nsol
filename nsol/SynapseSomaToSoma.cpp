@@ -11,8 +11,8 @@
 
 namespace nsol
 {
-  SynapseSomaToSoma::SynapseSomaToSoma ( void )
-    :Synapse(Synapse::SOMATOSOMAL)
+  SynapseSomaToSoma::SynapseSomaToSoma ( const unsigned short initId )
+    :Synapse(Synapse::SOMATOSOMAL, initId )
     , _preSynapticNode( nullptr )
     , _postSynapticNode( nullptr )
   {

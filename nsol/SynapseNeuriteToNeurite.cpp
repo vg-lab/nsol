@@ -14,8 +14,9 @@ namespace nsol
 {
 
   SynapseNeuriteToNeurite::SynapseNeuriteToNeurite (
-    const TSynapseType synapseType_)
-    :  Synapse( synapseType_ )
+    const TSynapseType synapseType_,
+    const unsigned short initId )
+    :  Synapse( synapseType_, initId )
     , _preSynapticSection( nullptr )
     , _postSynapticSection( nullptr )
     , _preSynapticNode( nullptr )

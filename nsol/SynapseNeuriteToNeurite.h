@@ -20,7 +20,7 @@ namespace nsol
 
     TODO: extend long description
   */
-  class SynapseNeuriteToNeurite : public Synapse
+  class SynapseNeuriteToNeurite : public virtual Synapse
   {
 
   public:
@@ -34,7 +34,8 @@ namespace nsol
      */
     NSOL_API
     SynapseNeuriteToNeurite ( const TSynapseType synapseType_ =
-                              Synapse::AXODENDRITIC );
+                              Synapse::AXODENDRITIC,
+                              const unsigned short id = 0 );
 
     /**
      * Copy constructor
