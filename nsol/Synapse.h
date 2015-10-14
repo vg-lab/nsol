@@ -34,7 +34,8 @@ namespace nsol
     //! Possible types of synapse
     typedef enum
     {
-      DENDRODENDRITIC = 0,
+      UNDEFINED = 0,
+      DENDRODENDRITIC,
       AXODENDRITIC,
       AXOAXONIC,
       SOMATOSOMAL,

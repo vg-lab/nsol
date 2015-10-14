@@ -13,6 +13,7 @@
 
 #define TESTING_SYNAPSES
 #define TESTING_PROPERTIES_SYNAPSE
+#define CALCULATE_SYNAPSE_TYPE
 
 #include <iostream>
 #include <fstream>
@@ -545,9 +546,8 @@ namespace nsol
     if(loadFlags | CIRCUIT)
     {
       std::cout << ": Loading Circuit Data ... " << std::endl;
-      // circuit = new Circuit(id_circuit);
-      // std::set<SynapsePtr>  afferentSynapses;//number of neurons it is the
-      //same that afferent synapses
+
+      unsigned short id = 1; // ID Synapse
       for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
            it != neuronsExpe.end(); ++it)
       {
@@ -566,12 +566,11 @@ namespace nsol
 
         for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
              synapseIt != synapsesExpe.end(); ++synapseIt)
-          //NSOL_FOREACH( synapseIt, synapsesExpe )
         {
-          nsol::SynapsePtr afferent_synapse (new nsol::Synapse());
+          nsol::SynapsePtr afferent_synapse = new nsol::Synapse(
+              Synapse::UNDEFINED, id );
 
           const bbp::Synapse bbpSynapse = (*synapseIt);
-
           const bbp::Neuron* bbpPreSynNeuron =
             &(bbpSynapse.presynaptic_neuron());
           const bbp::Neuron* bbpPostSynNeuron =
@@ -580,6 +579,31 @@ namespace nsol
           Vec3f bbpPreSynPos  = bbpSynapse.preSynapticSurfacePosition();
           Vec3f bbpPostSynPos = bbpSynapse.postSynapticSurfacePosition();
 
+          // TODO: Treatment of synapse type
+#if 0 CALCULATE_SYNAPSE_TYPE
+          // Computing type of synapse...
+          if((bbpSynapse.presynaptic_section_id( ) != 0) &&
+             (bbpSynapse.postsynaptic_section_id( ) != 0))
+          {
+            //afferent_synapse = new nsol::SynapseNeuriteToNeurite(
+            //    Synapse::AXODENDRITIC, id );
+            afferent_synapse->synapseType( Synapse::AXODENDRITIC);
+          }
+          if((bbpSynapse.presynaptic_section_id( ) != 0) &&
+             (bbpSynapse.postsynaptic_section_id( ) == 0))
+          {
+            //afferent_synapse = new nsol::SynapseNeuriteToSoma(
+             //   Synapse::DENDROSOMATIC, id );
+            afferent_synapse->synapseType( Synapse::DENDROSOMATIC);
+          }
+          if((bbpSynapse.presynaptic_section_id( ) == 0) &&
+             (bbpSynapse.postsynaptic_section_id( ) == 0))
+          {
+            //afferent_synapse = new nsol::SynapseSomaToSoma(
+             //   Synapse::SOMATOSOMAL, id );
+            afferent_synapse->synapseType( Synapse::SOMATOSOMAL);
+          }
+#endif
 #if 0 TESTING_PROPERTIES_SYNAPSE
           std::cout << "Synapse Index " <<
             bbpSynapse.index() << std::endl;
@@ -640,11 +664,9 @@ namespace nsol
             afferent_synapse->preSynapticSurfacePosition(bbpPreSynPos);
             afferent_synapse->postSynapticSurfacePosition(bbpPostSynPos);
 
-            // TODO: Treatment of synapse type
-            //std::cout << "Adding one Afferent Synapse " << std::endl;
-            // afferentSynapses.insert(afferent_synapse);
             circuit.addConnection(afferent_synapse);
           }
+          id++;
         }
       }
     }//circuit data

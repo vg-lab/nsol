@@ -21,7 +21,7 @@ namespace nsol
 
     TODO: extend long description
   */
-  class SynapseSomaToSoma : public Synapse
+  class SynapseSomaToSoma : public virtual Synapse
   {
 
   public:
@@ -34,7 +34,7 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
-    SynapseSomaToSoma ( void );
+    SynapseSomaToSoma ( const unsigned short id = 0 );
 
     /**
      * Copy constructor

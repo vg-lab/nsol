@@ -43,19 +43,9 @@ int main ( int argc, char *argv[] )
 	 if( !columns.empty() )
 	 {
 		 //cout << "Circuit with id" << circuit.id() << endl;
-
 		 set<SynapsePtr> synapses = circuit.connections();
 
-		 cout << "Number of synapses: " << synapses.size() <<endl;
-		 cout << endl;
-
-		 cout << "Synapses of the circuit: " << endl;
-		 cout << endl;
-
 		 int numberSynapse = 0;
-
-		 //for (set<SynapsePtr>::iterator synapseIt = synapses.begin();
-		//		 synapseIt != synapses.end(); ++synapseIt)
 		 NSOL_FOREACH( synapseIt, synapses )
 		 {
 			 NeuronPtr preSynNeuron  = nullptr;
@@ -68,6 +58,7 @@ int main ( int argc, char *argv[] )
 			 Vec3f postSynPos =(*synapseIt)->postSynapticSurfacePosition();
 
 			 cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
+			 cout << " - ID : " <<  (*synapseIt)->id()<< endl;
 #if 1 TESTING_PRINT_LITERAL
 			  switch((*synapseIt)->synapseType())
 			  {
@@ -97,7 +88,7 @@ int main ( int argc, char *argv[] )
 			 cout << " - Type : " <<  int((*synapseIt)->synapseType())<< endl;
 #endif
 
-			 cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid();
+			 cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
 		switch(preSynNeuron->morphologicalType( ))
 					  {
@@ -142,7 +133,7 @@ int main ( int argc, char *argv[] )
 #endif
 
 
-			 cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid();
+			 cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
     switch(postSynNeuron->morphologicalType( ))
             {
@@ -191,6 +182,12 @@ int main ( int argc, char *argv[] )
 
 			 numberSynapse++;
 		 }
+
+     cout << "Number of synapses: " << synapses.size() <<endl;
+     cout << endl;
+
+     cout << "Synapses of the circuit: " << endl;
+     cout << endl;
 
 		 // Free resources
 		 bbpReader.deleteAll(columns);
