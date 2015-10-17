@@ -1,0 +1,101 @@
+stages:
+ - build
+
+stages:
+ - build
+
+Ubuntu-Required-Deps:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export JAMBS_TARGETS="vmmlib"
+  - export BUILD_GENERATOR="Unix Makefiles";
+  - bash .gitlabci.sh
+ tags:
+  - ubuntu
+
+Ubuntu-Optional-Deps:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export JAMBS_TARGETS="vmmlib;brion;lunchbox;bbpsdk"
+  - export BUILD_GENERATOR="Unix Makefiles"
+  - bash .gitlabci.sh
+ tags:
+  - ubuntu
+
+Ubuntu-Subproject:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export BUILD_GENERATOR="Unix Makefiles";
+  - bash .gitlabci.sh
+ tags:
+  - ubuntu
+
+OSX-Required-Deps:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export JAMBS_TARGETS="vmmlib"
+  - export BUILD_GENERATOR="Unix Makefiles";
+  - export CMAKE_OSX_ARCHITECTURES=x86_64
+  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
+  - bash .gitlabci.sh
+ tags:
+  - osx
+
+OSX-Optional-Deps:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export JAMBS_TARGETS="vmmlib;brion;lunchbox;bbpsdk"
+  - export BUILD_GENERATOR="Unix Makefiles"
+  - export CMAKE_OSX_ARCHITECTURES=x86_64
+  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
+  - bash .gitlabci.sh
+ tags:
+  - osx
+
+OSX-Subproject:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export BUILD_GENERATOR="Unix Makefiles";
+  - export CMAKE_OSX_ARCHITECTURES=x86_64
+  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
+  - bash .gitlabci.sh
+ tags:
+  - osx
+
+Win7:
+ stage: build
+ script:
+  - set CMAKE_EXTRA_TARGETS=RUN_TESTS
+  - set RUN_TESTS=1
+  - set BUILD_GENERATOR=Visual Studio 12 Win64
+  - set BOOST_ROOT=c:\libs\boost_1_56_0
+  - set BOOST_LIBRARYDIR=c:\libs\boost_1_56_0\lib64-msvc-12.0
+  - set PATH=%PATH%;%BOOST_LIBRARYDIR%
+  - set PATH=%PATH%;"c:\\Program Files (x86)\\Git\\bin"
+  - bash.exe --login .gitlabci.sh
+ tags:
+  - win7
