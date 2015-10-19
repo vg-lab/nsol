@@ -1,9 +1,6 @@
 stages:
  - build
 
-stages:
- - build
-
 Ubuntu-Required-Deps:
  stage: build
  script:
@@ -13,7 +10,7 @@ Ubuntu-Required-Deps:
   - export CMAKE_EXTRA_TARGETS="test"
   - export JAMBS_TARGETS="vmmlib"
   - export BUILD_GENERATOR="Unix Makefiles";
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - ubuntu
 
@@ -26,7 +23,7 @@ Ubuntu-Optional-Deps:
   - export CMAKE_EXTRA_TARGETS="test"
   - export JAMBS_TARGETS="vmmlib;brion;lunchbox;bbpsdk"
   - export BUILD_GENERATOR="Unix Makefiles"
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - ubuntu
 
@@ -38,7 +35,7 @@ Ubuntu-Subproject:
   - uname -a
   - export CMAKE_EXTRA_TARGETS="test"
   - export BUILD_GENERATOR="Unix Makefiles";
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - ubuntu
 
@@ -48,12 +45,12 @@ OSX-Required-Deps:
   - date
   - hostname
   - uname -a
+  - source $ENVFILESDIR/Qt-5.4
   - export CMAKE_EXTRA_TARGETS="test"
   - export JAMBS_TARGETS="vmmlib"
   - export BUILD_GENERATOR="Unix Makefiles";
   - export CMAKE_OSX_ARCHITECTURES=x86_64
-  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - osx
 
@@ -63,12 +60,12 @@ OSX-Optional-Deps:
   - date
   - hostname
   - uname -a
+  - source $ENVFILESDIR/Qt-5.4
   - export CMAKE_EXTRA_TARGETS="test"
   - export JAMBS_TARGETS="vmmlib;brion;lunchbox;bbpsdk"
   - export BUILD_GENERATOR="Unix Makefiles"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
-  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - osx
 
@@ -78,24 +75,22 @@ OSX-Subproject:
   - date
   - hostname
   - uname -a
+  - source $ENVFILESDIR/Qt-5.4
   - export CMAKE_EXTRA_TARGETS="test"
   - export BUILD_GENERATOR="Unix Makefiles";
   - export CMAKE_OSX_ARCHITECTURES=x86_64
-  - export PATH=$PATH:/Volumes/Data/Qt/5.4/clang_64
-  - bash .gitlabci.sh
+  - bash .gitlab-ci.sh
  tags:
   - osx
 
 Win7:
  stage: build
  script:
+  - call %ENVFILESDIR%\Boost-1.56-vs12-x64.bat
   - set CMAKE_EXTRA_TARGETS=RUN_TESTS
   - set RUN_TESTS=1
   - set BUILD_GENERATOR=Visual Studio 12 Win64
-  - set BOOST_ROOT=c:\libs\boost_1_56_0
-  - set BOOST_LIBRARYDIR=c:\libs\boost_1_56_0\lib64-msvc-12.0
-  - set PATH=%PATH%;%BOOST_LIBRARYDIR%
   - set PATH=%PATH%;"c:\\Program Files (x86)\\Git\\bin"
-  - bash.exe --login .gitlabci.sh
+  - bash.exe --login .gitlab-ci.sh
  tags:
   - win7
