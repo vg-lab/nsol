@@ -74,6 +74,9 @@ namespace nsol
     NSOL_API
     Columns& columns( void );
 
+    NSOL_API
+    Circuit& circuit( void );
+
     template < class NODE = Node,
                class SECTION = Section,
                class DENDRITE = Dendrite,

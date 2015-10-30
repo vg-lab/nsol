@@ -63,5 +63,10 @@ namespace nsol
     return _columns;
   }
 
+  Circuit& DataSet::circuit( void )
+  {
+    return _circuit;
+  }
+
 
 } // namespace nsol
