@@ -19,6 +19,9 @@ target_link_libraries(sectionStats nsol)
 add_executable(neuriteStats neuriteStats.cpp)
 target_link_libraries(neuriteStats nsol)
 
+add_executable(neuriteStatsToCSV neuriteStatsToCSV.cpp)
+target_link_libraries(neuriteStatsToCSV nsol)
+
 add_executable(neuronStats neuronStats.cpp)
 target_link_libraries(neuronStats nsol)
 
