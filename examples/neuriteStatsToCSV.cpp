@@ -13,8 +13,9 @@
 
 void ComputeAndPrint( nsol::NeuronPtr n,
                       const char* fileName,
-                      const int neuronId )
+                      const char* neuronId )
 {
+  /*
   std::string neuronType = "";
   if (n->morphologicalType() == nsol::Neuron::TMorphologicalType::INTERNEURON)
   {
@@ -25,14 +26,14 @@ void ComputeAndPrint( nsol::NeuronPtr n,
     neuronType = "piramidal";
   } else {
     neuronType = "sintipo";
-  }
+  }*/
 
   FILE* fp;
 
   fp = fopen(fileName, "w+");
 
   std::stringstream first_line_stream;
-  first_line_stream << neuronType << "_" << neuronId << ";"
+  first_line_stream << neuronId << ";"
                     << "longitud;grosor;volumen;num_bifurcaciones\n";
 
   std::string first_line_string =
@@ -217,9 +218,7 @@ int main ( int argc, char ** argv )
   PrintCachedState( neuronWithCachedStats );
   std::cout << std::endl;
 
-  const int neuronId = atoi(argv[3]);
-
-  ComputeAndPrint( neuronWithCachedStats, argv[2], neuronId );
+  ComputeAndPrint( neuronWithCachedStats, argv[2], argv[3]);
   std::cout << std::endl;
 
   PrintCachedState( neuronWithCachedStats );

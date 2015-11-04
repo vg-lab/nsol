@@ -28,6 +28,9 @@ target_link_libraries(neuronStats nsol)
 add_executable(miniColumnStats miniColumnStats.cpp)
 target_link_libraries(miniColumnStats nsol)
 
+add_executable(miniColumnStatsToCSV miniColumnStatsToCSV.cpp)
+target_link_libraries(miniColumnStatsToCSV nsol)
+
 add_executable(factory factory.cpp)
 target_link_libraries(factory nsol)
 
