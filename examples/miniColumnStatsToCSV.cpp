@@ -1,5 +1,10 @@
-/*
- * Example to show how to use stats and cached stats
+/**
+ * @file    miniColumnStatsToCSV.h
+ * @brief
+ * @author  Juan Guerrero <j.guerrerom@alumnos.urjc.es>
+ * @date
+ * @remarks Copyright (c) GMRV/URJC. All rights reserved.
+ *          Do not distribute without further notice.
  */
 
 #include <nsol/nsol.h>
