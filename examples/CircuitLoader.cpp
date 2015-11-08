@@ -106,7 +106,7 @@ int main ( int argc, char *argv[] )
 					  		    break;
 					  }
 #else
-				   << " morphological type: " << int(preSynNeuron->morphologicalType( ))
+      cout << " morphological type: " << int(preSynNeuron->morphologicalType( ))
            << endl;
 #endif
 
@@ -128,7 +128,7 @@ int main ( int argc, char *argv[] )
                     break;
             }
 #else
-           << " functional type: " << int(preSynNeuron->functionalType( ))
+      cout << " functional type: " << int(preSynNeuron->functionalType( ))
            << endl;
 #endif
 
@@ -151,7 +151,7 @@ int main ( int argc, char *argv[] )
                     break;
             }
 #else
-           << " morphological type: " << int(postSynNeuron->morphologicalType( ))
+      cout << " morphological type: " << int(postSynNeuron->morphologicalType( ))
            << endl;
 #endif
 
@@ -173,7 +173,7 @@ int main ( int argc, char *argv[] )
                     break;
             }
 #else
-           << " functional type: " << int(postSynNeuron->functionalType( ))
+      cout << " functional type: " << int(postSynNeuron->functionalType( ))
            << endl;
 #endif
 			    cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;

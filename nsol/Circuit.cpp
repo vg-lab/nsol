@@ -113,6 +113,62 @@ namespace nsol
     return ( unsigned int ) _connections.size( );
   }
 
+  //
+  // Afferent & Efferent synapses methods
+  //
+  std::set< SynapsePtr > Circuit::afferentSynapses( NeuronPtr neuron )
+  {
+     std::set< SynapsePtr > affSynapses;
+
+     NSOL_FOREACH( connection, _connections )
+     {
+         NeuronPtr n_post = (*connection)->postSynapticNeuron( );
+         SynapsePtr syn   = (*connection);
+
+         if( n_post == neuron )
+             affSynapses.insert( syn );
+     }
+
+     return affSynapses;
+  }
+
+  std::set< SynapsePtr > Circuit::efferentSynapses( NeuronPtr neuron )
+  {
+    std::set< SynapsePtr > effSynapses;
+
+    NSOL_FOREACH( connection, _connections )
+    {
+        NeuronPtr n_pre = (*connection)->preSynapticNeuron( );
+        SynapsePtr syn  = (*connection);
+
+        if( n_pre == neuron )
+            effSynapses.insert( syn );
+    }
+
+    return effSynapses;
+  }
+
+  void Circuit::clearAfferentSynapses( NeuronPtr neuron )
+  {
+     std::set< SynapsePtr > affSynapses;
+
+     if( this->afferentSynapses(neuron).empty( ) )
+         return;
+
+     affSynapses = this->afferentSynapses(neuron);
+     affSynapses.clear( );
+  }
+
+  void Circuit::clearEfferentSynapses( NeuronPtr neuron )
+  {
+    std::set< SynapsePtr > effSynapses;
+
+    if( this->efferentSynapses(neuron).empty( ) )
+        return;
+
+    effSynapses = this->efferentSynapses(neuron);
+    effSynapses.clear( );
+  }
 
 
 } // namespace nsol

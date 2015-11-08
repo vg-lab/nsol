@@ -135,6 +135,43 @@ namespace nsol
 
     ///@}
 
+    /** @name Afferent & Efferent synapses related methods */
+    ///@{
+
+    /**
+     * Method to get the afferent (incoming) synapses projecting onto a neuron.
+     * @param neuron
+     * @return afferent synapses of this neuron.
+     */
+    NSOL_API
+    std::set< SynapsePtr > afferentSynapses( NeuronPtr neuron );
+
+    /**
+     * Method to get the efferent (outgoing) synapses projecting onto a neuron.
+     * @param neuron
+     * @return efferent synapses of this neuron.
+     */
+    NSOL_API
+    std::set< SynapsePtr > efferentSynapses( NeuronPtr neuron );
+
+    /**
+     * Method to clear the afferent (incoming) synapses
+     * projecting onto a neuron.
+     * @param neuron
+     */
+    NSOL_API
+    void clearAfferentSynapses( NeuronPtr neuron );
+
+    /**
+     * Method to clear the efferent (incoming) synapses
+     * projecting onto a neuron.
+     * @param neuron
+     */
+    NSOL_API
+    void clearEfferentSynapses( NeuronPtr neuron );
+
+     ///@}
+
 
   protected:
 
