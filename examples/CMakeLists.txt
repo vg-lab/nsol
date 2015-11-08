@@ -7,6 +7,10 @@ if (BBPSDK_FOUND)
 
   add_executable(CircuitLoader CircuitLoader.cpp)
   target_link_libraries(CircuitLoader nsol)
+
+  add_executable(CircuitLoader2 CircuitLoader2.cpp)
+  target_link_libraries(CircuitLoader2 nsol)
+
   add_definitions(-DWITH_BBPSDK)
 endif()
 
