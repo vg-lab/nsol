@@ -7,6 +7,9 @@ if (BBPSDK_FOUND)
   add_definitions(-DWITH_BBPSDK)
 endif()
 
+add_executable(nsolExtractNeuronStats nsolExtractNeuronStats.cpp)
+target_link_libraries(nsolExtractNeuronStats nsol)
+
 add_executable(example1 example1.cpp)
 target_link_libraries(example1 nsol)
 
