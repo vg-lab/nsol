@@ -28,21 +28,10 @@ void ComputeAndPrint( nsol::NeuronPtr n,
     neuronType = "sintipo";
   }*/
 
-  FILE* fp;
+  std::ofstream ofs ( fileName, std::ofstream::out );
 
-  fp = fopen(fileName, "w+");
-
-  std::stringstream first_line_stream;
-  first_line_stream << neuronId << ";"
-                    << "longitud;grosor;volumen;num_bifurcaciones\n";
-
-  std::string first_line_string =
-      first_line_stream.str();
-
-  const char* first_line =
-      first_line_string.c_str();
-
-  fputs(first_line, fp);
+  ofs << neuronId << ";"
+      << "longitud;area_superficie;volumen;num_bifurcaciones\n";
 
   unsigned int i = 1;
 
@@ -76,22 +65,12 @@ void ComputeAndPrint( nsol::NeuronPtr n,
       std::cout << " " << ( * it )->stats( )->getStat(
       nsol::NeuriteStats::BIFURCATIONS ) << " ";
 
-      std::stringstream current_line_stream;
-      current_line_stream
-        << "dendrita_" << i << ";"
-        << ( * it )->stats( )->getStat(nsol::NeuriteStats::LENGTH ) << ";"
-        << ( * it )->stats( )->getStat(nsol::NeuriteStats::SURFACE ) << ";"
-        << ( * it )->stats( )->getStat(nsol::NeuriteStats::VOLUME ) << ";"
-        << ( * it )->stats( )->getStat(nsol::NeuriteStats::BIFURCATIONS )
-        << "\n";
-
-      std::string current_line_string =
-          current_line_stream.str();
-
-      const char* current_line =
-          current_line_string.c_str();
-
-      fputs(current_line, fp);
+      ofs << "dendrita_" << i << ";"
+          << ( * it )->stats( )->getStat(nsol::NeuriteStats::LENGTH ) << ";"
+          << ( * it )->stats( )->getStat(nsol::NeuriteStats::SURFACE ) << ";"
+          << ( * it )->stats( )->getStat(nsol::NeuriteStats::VOLUME ) << ";"
+          << ( * it )->stats( )->getStat(nsol::NeuriteStats::BIFURCATIONS )
+          << "\n";
 
       /*
        * Volume per section.
@@ -115,7 +94,7 @@ void ComputeAndPrint( nsol::NeuronPtr n,
     i++;
   }/* for_neurites */
 
-  fclose(fp);
+  ofs.close();
 
 }
 

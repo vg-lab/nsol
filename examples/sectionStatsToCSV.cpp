@@ -174,24 +174,12 @@ int main ( int argc, char ** argv )
   {
     //Generating CSV only for one neurite.
 
-    FILE* fp;
-
-    fp = fopen(argv[2], "w+");
+    std::ofstream ofs ( argv[2], std::ofstream::out );
 
     const char* dendrite_external_id = argv[3];
 
-    std::stringstream first_line_stream;
-    first_line_stream
-      << dendrite_external_id << ";"
-      << "longitud;grosor;volumen;ramas_hijas\n";
-
-    std::string first_line_string =
-        first_line_stream.str();
-
-    const char* first_line =
-        first_line_string.c_str();
-
-    fputs(first_line, fp);
+    ofs << dendrite_external_id << ";"
+        << "longitud;area_superficie;volumen;ramas_hijas\n";
 
     std::cout << "Neurite " << j << std::endl;
 
@@ -228,36 +216,26 @@ int main ( int argc, char ** argv )
       std::cout << "    Length " << section->stats( )->getStat(
           nsol::SectionStats::LENGTH ) << std::endl;
 
-      std::stringstream current_line_stream;
-      current_line_stream
-        << sectionPtrToId[section] << ";"
-        << section->stats( )->getStat( nsol::SectionStats::LENGTH ) << ";"
-        << section->stats( )->getStat( nsol::SectionStats::SURFACE ) << ";"
-        << section->stats( )->getStat( nsol::SectionStats::VOLUME ) << ";";
+      ofs << sectionPtrToId[section] << ";"
+          << section->stats( )->getStat( nsol::SectionStats::LENGTH ) << ";"
+          << section->stats( )->getStat( nsol::SectionStats::SURFACE ) << ";"
+          << section->stats( )->getStat( nsol::SectionStats::VOLUME ) << ";";
 
       if ( section->children( ).size( ) > 0 )
       {
         NSOL_FOREACH( sec, section->children( ))
         {
           sSP.push( *sec );
-          current_line_stream << sectionPtrToId[(*sec)] << " ";
+          ofs << sectionPtrToId[(*sec)] << " ";
         }
       }
 
-      current_line_stream << "\n";
-
-      std::string current_line_string =
-        current_line_stream.str();
-
-      const char* current_line =
-        current_line_string.c_str();
-
-      fputs(current_line, fp);
+      ofs << "\n";
 
       k ++;
     }
 
-    fclose(fp);
+    ofs.close();
 
     j ++;
   } /* for_neurites */

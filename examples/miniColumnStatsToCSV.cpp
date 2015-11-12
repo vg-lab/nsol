@@ -28,55 +28,55 @@ int main ( int argc, char ** argv )
 {
   std::cout << std::endl;
 
-  if ( argc < 5 )
+  if ( argc < 6 )
   {
     std::cerr << "Error. Usage: " << argv[0]
-              << " blue_config_input_file csv_output_file "
-                 "minicolumn_number minicolumn_external_id" << std::endl;
+              << " blue_config_path blue_config_target csv_output_file"
+                 " minicolumn_number minicolumn_external_id" << std::endl;
     return -1;
+  }
+
+  std::string target("");
+  if ( argv[2] != "" )
+  {
+    target = std::string( argv[2] );
   }
 
   nsol::BBPSDKReaderStats readerWithStats;
   nsol::Columns columnsWithStats;
-  readerWithStats.readFromBlueConfig( columnsWithStats, argv[1] );
+  readerWithStats.readFromBlueConfig( columnsWithStats,
+                                      argv[1],
+                                      nsol::LoadFlags::MORPHOLOGY |
+                                      nsol::LoadFlags::HIERARCHY,
+                                      target );
 
-  int minicolumn_number = atoi(argv[3]);
+  int minicolumn_number = atoi(argv[4]);
 
   nsol::MiniColumnPtr miniColumnWithStats =
     columnsWithStats[0]->miniColumns( )[minicolumn_number];
 
-  // columnsWithStats[0]->miniColumns( )[0]->stats()->dendriticSurface();
-  // return 0;
-
-  nsol::BBPSDKReaderCachedStats readerWithCachedStats;
-  nsol:: Columns columnsWithCachedStats;
-  readerWithCachedStats.readFromBlueConfig( columnsWithCachedStats, argv[1] );
-
-  nsol::MiniColumnPtr miniColumnWithCachedStats =
-    columnsWithCachedStats[0]->miniColumns( )[minicolumn_number];
+//  nsol::BBPSDKReaderCachedStats readerWithCachedStats;
+//  nsol:: Columns columnsWithCachedStats;
+//  readerWithCachedStats.readFromBlueConfig( columnsWithStats,
+//                                            argv[1],
+//                                            nsol::LoadFlags::MORPHOLOGY |
+//                                            nsol::LoadFlags::HIERARCHY,
+//                                            target );
+//
+//  nsol::MiniColumnPtr miniColumnWithCachedStats =
+//    columnsWithCachedStats[0]->miniColumns( )[minicolumn_number];
 
   NSOL_CHECK_THROW( miniColumnWithStats->stats( ),
                     "no stats in minicolumn" );
-  NSOL_CHECK_THROW( miniColumnWithCachedStats->stats( ),
-                    "no stats in minicolumn" );
+//  NSOL_CHECK_THROW( miniColumnWithCachedStats->stats( ),
+//                    "no stats in minicolumn" );
 
-  FILE* fp;
+  std::ofstream ofs ( argv[3], std::ofstream::out );
 
-  fp = fopen(argv[2], "w+");
+  const char* minicolumn_external_id = argv[5];
 
-  const char* minicolumn_external_id = argv[4];
-
-  std::stringstream first_line_stream;
-  first_line_stream << minicolumn_external_id << ";"
-                    << "num_piramidales;num_interneuronas\n";
-
-  std::string first_line_string =
-      first_line_stream.str();
-
-  const char* first_line =
-      first_line_string.c_str();
-
-  fputs(first_line, fp);
+  ofs << minicolumn_external_id << ";"
+      << "num_piramidales;num_interneuronas\n";
 
   std::cout << "Number of neurons: "
             << miniColumnWithStats->neurons().size() << std::endl;
@@ -98,28 +98,18 @@ int main ( int argc, char ** argv )
 
       if(layer > 0)
       {
-        std::stringstream current_line_stream;
-        current_line_stream
-          << "capa_" << layer << ";"
+          ofs << "capa_" << layer << ";"
           << miniColumnWithStats->numberOfNeurons( false,
                                                    nsol::Neuron::PYRAMIDAL,
                                                    layer ) << ";"
           << miniColumnWithStats->numberOfNeurons( false,
                                                    nsol::Neuron::INTERNEURON,
-                                                   layer ) << ";"
+                                                   layer )
           << "\n";
-
-        std::string current_line_string =
-            current_line_stream.str();
-
-        const char* current_line =
-            current_line_string.c_str();
-
-        fputs(current_line, fp);
       }
   }
 
-  fclose(fp);
+  ofs.close();
 
   return 0;
 
@@ -140,13 +130,13 @@ int main ( int argc, char ** argv )
   printMiniColumnStats( miniColumnWithStats );
   END_TIME;
 
-  START_TIME;
-  printMiniColumnStats( miniColumnWithCachedStats );
-  END_TIME;
-
-  START_TIME;
-  printMiniColumnStats( miniColumnWithCachedStats );
-  END_TIME;
+//  START_TIME;
+//  printMiniColumnStats( miniColumnWithCachedStats );
+//  END_TIME;
+//
+//  START_TIME;
+//  printMiniColumnStats( miniColumnWithCachedStats );
+//  END_TIME;
 
   return 0;
 
