@@ -27,6 +27,7 @@ namespace nsol
 		  SURFACE = 0,
 		  VOLUME,
 		  LENGTH,
+		  RADIUS,
 		  SEGMENT_NUM_STATS
 		} TSegmentStat;
 

@@ -31,6 +31,10 @@ namespace nsol
 		  return SegmentStats::/*TSegmentStat::*/LENGTH;
 		  break;
 
+		case SectionStats::/*TSectionStat::*/RADIUS:
+		      return SegmentStats::/*TSegmentStat::*/RADIUS;
+		      break;
+
 		case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
 		default:
 		  NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
@@ -77,17 +81,31 @@ namespace nsol
           float tmpValue =
             SegmentStats::getStat( toSegmentStat( stat ), first, second );
           value += ( mean - tmpValue ) * ( mean - tmpValue );
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value += ( mean - second->radius() ) * ( mean - second->radius() );
         }
         else if ( agg == /*TAggregation::*/MIN )
-          value =
-          std::min( value,
-              SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+        {
+          value = std::min( value,
+                    SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value = std::min( value, second->radius() );
+        }
         else if ( agg == /*TAggregation::*/MAX )
-          value =
-          std::max( value,
-               SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+        {
+          value = std::max( value,
+                    SegmentStats::getStat( toSegmentStat( stat ), first, second ));
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value = std::max( value, second->radius() );
+        }
         else
+        {
           value += SegmentStats::getStat( toSegmentStat( stat ), first, second );
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+          {
+            value += second->radius();
+          }
+        }
 
         first = second;
       }
@@ -100,7 +118,11 @@ namespace nsol
 			return value;
 		  case /*TAggregation::*/MEAN:
 		  case /*TAggregation::*/VARIANCE:
-			return value / ( size_middleNodes + 1 );
+		    if( stat == SectionStats::RADIUS )
+		    {
+		      return value / ( size_middleNodes + 2 );
+		    }
+		    return value / ( size_middleNodes + 1 );
 		  case /*TAggregation::*/STD_DEV:
 			break;
 		  }
