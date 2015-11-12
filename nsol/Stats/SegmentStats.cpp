@@ -44,6 +44,11 @@ namespace nsol
 	        ( begin->point( ) - end->point( )).length( ) : 0.0f;
 	        break;
 
+	      case RADIUS:
+        return ( begin && end) ?
+          begin->radius() : 0.0f;
+          break;
+
 	      default:
 	        NSOL_THROW( "stat not implemented for SegmentStats" );
 	      }
