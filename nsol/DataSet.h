@@ -51,7 +51,7 @@ namespace nsol
                          const int loadFlags = MORPHOLOGY | HIERARCHY,
                          const std::string& targetLabel = std::string( "" ))
     {
-     
+
       BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
@@ -94,7 +94,7 @@ namespace nsol
       if( neuronMorphology )
       {
 
-        COLUMN* column = nullptr;
+        Column* column = nullptr;
         NSOL_FOREACH( col, _columns )
         {
           if (( *col )->id( ) == columnId_ )
@@ -132,14 +132,14 @@ namespace nsol
 
 
     template < class NODE = Node,
-	       class SECTION = Section,
-	       class DENDRITE = Dendrite,
-	       class AXON = Axon,
-	       class SOMA = Soma,
-	       class NEURONMORPHOLOGY = NeuronMorphology,
-	       class NEURON = Neuron,
-	       class MINICOLUMN = MiniColumn,
-	       class COLUMN = Column >
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
     void loadScene( const std::string& xmlSceneFile )
     {
 #ifdef NSOL_USE_QT5CORE
