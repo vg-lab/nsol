@@ -16,30 +16,30 @@
 namespace nsol
 {
 
-	class SegmentStats
-	{
+  class SegmentStats
+  {
 
-	public:
+  public:
 
-		//! Stats that can be computed for a segment
-		typedef enum
-		{
-		  SURFACE = 0,
-		  VOLUME,
-		  LENGTH,
-		  RADIUS,
-		  SEGMENT_NUM_STATS
-		} TSegmentStat;
+    //! Stats that can be computed for a segment
+    typedef enum
+    {
+      SURFACE = 0,
+      VOLUME,
+      LENGTH,
+      RADIUS,
+      SEGMENT_NUM_STATS
+    } TSegmentStat;
 
 
-		NSOL_API
-		SegmentStats * stats( void );
+    NSOL_API
+    SegmentStats * stats( void );
 
-		NSOL_API
+    NSOL_API
     static float getStat( TSegmentStat stat,
-							  const NodePtr begin,
-							  const NodePtr end);
-	}; // class SegmentStats
+                          const NodePtr begin,
+                          const NodePtr end);
+  }; // class SegmentStats
 
 
 } // namespace nsol
