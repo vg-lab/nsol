@@ -36,9 +36,24 @@ namespace nsol
     //! Type of neuron based in neuron morphology
     typedef enum : uint8_t
     {
+      //! Type for undefined
       UNDEFINED = 0,
+      //! General pyramidal
       PYRAMIDAL,
-      INTERNEURON
+      //! General interneuron
+      INTERNEURON,
+      //! Cerebellum interneurons
+      BASKET,
+      STELLATE,
+      GOLGI,
+      GRANULE,
+      LUGARO,
+      UNIPOLAR_BRUSH,
+      //! Other Cerebellum cells
+      PURKINJE,
+      CHANDELIER,
+      INFERIOR_OLIVE,
+      DEEP_CEREBELLAR_NUCLEI
     } TMorphologicalType;
 
     //! Type of neuron based in neuron functionality

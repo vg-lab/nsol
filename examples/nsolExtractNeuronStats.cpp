@@ -176,7 +176,7 @@ int main ( int argc, char ** argv )
   if( !blueConfig.empty( ))
   {
 #ifdef NSOL_USE_BBPSDK
-    dataSet.openBlueConfig<
+    dataSet.loadFromBlueConfig<
       nsol::Node,
       nsol::SectionStats,
       nsol::DendriteStats,
@@ -186,7 +186,7 @@ int main ( int argc, char ** argv )
       nsol::Neuron,
       nsol::MiniColumnStats,
       nsol::ColumnStats >( blueConfig,
-                           nsol::HIERARCHY |  nsol::MORPHOLOGY,
+                           nsol::CORTICAL_HIERARCHY |  nsol::MORPHOLOGY,
                            target );
 #else
     std::cerr << "No BBPSDK support built-in" << std::endl;
@@ -197,7 +197,7 @@ int main ( int argc, char ** argv )
   else if( !swcFile.empty( ))
   {
 
-    dataSet.addNeuron<
+    dataSet.loadCorticalNeuronFromSwc<
       nsol::NodeCached,
       nsol::SectionCachedStats,
       nsol::DendriteCachedStats,
