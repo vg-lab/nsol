@@ -179,7 +179,7 @@ int main ( int argc, char ** argv )
     const char* dendrite_external_id = argv[3];
 
     ofs << dendrite_external_id << ";"
-        << "longitud;grosor;area_superficie;volumen;ramas_hijas\n";
+        << "longitud;radio;area_superficie;volumen;ramas_hijas\n";
 
     std::cout << "Neurite " << j << std::endl;
 
@@ -212,7 +212,7 @@ int main ( int argc, char ** argv )
       std::cout << "    Length " << section->stats( )->getStat(
           nsol::SectionStats::LENGTH ) << std::endl;
       std::cout << "    Radius " << section->stats( )->getStat(
-          nsol::SectionStats::RADIUS, nsol::TAggregation::MEAN ) << std::endl;
+          nsol::SectionStats::SEGMENT_RADIUS, nsol::TAggregation::MEAN ) << std::endl;
       std::cout << "    Surface " << section->stats( )->getStat(
           nsol::SectionStats::SURFACE ) << std::endl;
       std::cout << "    Volumne " << section->stats( )->getStat(
@@ -221,8 +221,8 @@ int main ( int argc, char ** argv )
 
       ofs << sectionPtrToId[section] << ";"
           << section->stats( )->getStat( nsol::SectionStats::LENGTH ) << ";"
-          << section->stats( )->getStat( nsol::SectionStats::RADIUS ,
-                                         nsol::TAggregation::MEAN ) * 2.0f << ";"
+          << section->stats( )->getStat( nsol::SectionStats::SEGMENT_RADIUS,
+                                         nsol::TAggregation::MEAN ) << ";"
           << section->stats( )->getStat( nsol::SectionStats::SURFACE ) << ";"
           << section->stats( )->getStat( nsol::SectionStats::VOLUME ) << ";";
 
