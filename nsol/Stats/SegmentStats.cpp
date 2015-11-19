@@ -45,7 +45,7 @@ namespace nsol
 
     case RADIUS:
       return ( begin && end) ?
-        begin->radius() : 0.0f;
+        ( begin->radius() + end->radius() ) * 0.5f : 0.0f;
       break;
 
     default:

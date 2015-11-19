@@ -35,7 +35,7 @@ namespace nsol
       SURFACE = 0,
       VOLUME,
       LENGTH,
-      RADIUS,
+      SEGMENT_RADIUS,
       SECTION_NUM_STATS
     } TSectionStat;
 
