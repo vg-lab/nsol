@@ -79,7 +79,7 @@ int main ( int argc, char ** argv )
 
 
 #define PRINT_SURFACE_DIRTY_STATE( section )                    \
-  (( section->dirty(nsol::SectionCachedStats::RADIUS) ) ?      \
+  (( section->dirty(nsol::SectionCachedStats::SEGMENT_RADIUS) ) ?      \
    "Dirty" : "Clean" )
 
 
@@ -90,34 +90,34 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tNon cached section: "
             << sectionWithStats->stats( )->getStat(
-           nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+           nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-           nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+           nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-           nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+           nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
   // Next code shows how to force dirty on a specific cached value
-  sectionCached->setDirty( nsol::SectionCachedStats::RADIUS );
+  sectionCached->setDirty( nsol::SectionCachedStats::SEGMENT_RADIUS );
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-                 nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+                 nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
@@ -127,12 +127,12 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
@@ -140,12 +140,12 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
@@ -153,12 +153,12 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/RADIUS ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SEGMENT_RADIUS ) << std::endl;
 
   std::cout << std::endl;
 
@@ -182,7 +182,7 @@ int main ( int argc, char ** argv )
 
       std::cout << "  Section " << k << std::endl;
       std::cout << "    Radius " << section->stats( )->getStat(
-          nsol::SectionStats::RADIUS, nsol::TAggregation::MEAN ) << std::endl;
+          nsol::SectionStats::SEGMENT_RADIUS, nsol::TAggregation::MEAN ) << std::endl;
 
       if ( section->children( ).size( ) > 0 )
       {
