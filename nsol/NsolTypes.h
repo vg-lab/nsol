@@ -228,5 +228,9 @@ namespace nsol
 #define M_4PI_3   4.18879020479	//4*pi/3
 #endif
 
+#ifndef M_PI_3
+#define M_PI_3   1.0471975512 //pi/3
+#endif
+
 
 #endif //__NSOL_TYPES__

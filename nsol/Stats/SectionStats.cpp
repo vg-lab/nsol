@@ -31,7 +31,7 @@ namespace nsol
       return SegmentStats::/*TSegmentStat::*/LENGTH;
       break;
 
-    case SectionStats::/*TSectionStat::*/SEGMENT_RADIUS:
+    case SectionStats::/*TSectionStat::*/RADIUS:
       return SegmentStats::/*TSegmentStat::*/RADIUS;
       break;
 
@@ -51,6 +51,7 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
+    float accumLength;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -63,6 +64,11 @@ namespace nsol
 
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
+
+    if( agg == /*TAggregation::*/MEAN && stat == RADIUS )
+    {
+      accumLength = 0.0f;
+    }
 
     if( _firstNode && _lastNode )
     {
@@ -94,10 +100,27 @@ namespace nsol
                             SegmentStats::getStat( toSegmentStat( stat ),
                                                    first, second ));
         }
-        else //TOTAL, MEAN and STD_DEV
+        else if (agg == /*TAggregation::*/MEAN)
+        {
+          if(stat == RADIUS)
+          {
+            float segmentLength =
+                SegmentStats::getStat( toSegmentStat( LENGTH ),
+                                       first, second );
+            value += ( SegmentStats::getStat( toSegmentStat( stat ),
+                         first, second ) * segmentLength );
+            accumLength += segmentLength;
+          }
+          else
+          {
+            value += SegmentStats::getStat( toSegmentStat( stat ),
+                                            first, second );
+          }
+        }
+        else //TOTAL
         {
           value += SegmentStats::getStat( toSegmentStat( stat ),
-                                          first, second );
+                                                    first, second );
         }
 
         first = second;
@@ -110,6 +133,14 @@ namespace nsol
       case /*TAggregation::*/MAX:
         return value;
       case /*TAggregation::*/MEAN:
+        if(stat == RADIUS)
+        {
+          return value / accumLength;
+        }
+        else
+        {
+          return value / ( size_middleNodes + 1 );
+        }
       case /*TAggregation::*/VARIANCE:
         //(size_middleNodes+1) = number of segments
         return value / ( size_middleNodes + 1 );
