@@ -75,7 +75,8 @@ namespace nsol
       unsigned int size_middleNodes = ( unsigned int )_middleNodes.size();
       NodePtr first = _firstNode;
       NodePtr second = _lastNode;
-      for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
+      //First node already included in middle nodes.
+      for ( unsigned int i=1/*0*/; i< size_middleNodes + 1 ; i++)
       {
         if( i == size_middleNodes )
           second = _lastNode;
