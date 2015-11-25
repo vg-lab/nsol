@@ -88,8 +88,20 @@ namespace nsol
         return dend;
     }
 
-    return NULL;
+    return nullptr;
   }
+
+  AxonPtr NeuronMorphology::axon( void ) const
+  {
+    for ( const auto& neurite : _neurites )
+    {
+      auto axon_ = NSOL_DYNAMIC_CAST( Axon, neurite );
+      if ( axon_ )
+        return axon_;
+    }
+    return nullptr;
+  }
+
 
   Neurites & NeuronMorphology::neurites( void )
   {
