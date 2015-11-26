@@ -72,33 +72,13 @@ namespace nsol
 
   public:
 
-    // const std::map<unsigned int, ColumnPtr> &
-    // readExperiment(const char *inputFile,
-    //                unsigned int directory = 0)
-    // {
-    //   if (directory)
-    //     return this->readFromDirectory(std::string(inputFile));
-    //   else
-    //     return this->readFromBlueConfig(std::string(inputFile));
-    // }
-
-    // const std::map<unsigned int, ColumnPtr> &
-    // readExperiment( const std::string inputFile,
-    //                 unsigned int directory = 0)
-    // {
-    //   if (directory)
-    //     return this->readFromDirectory(inputFile);
-    //   else
-    //     return this->readFromBlueConfig(inputFile);
-    // }
-
-
     /**
      * Method to get the columns for BBPSDK experiment allocated in files
      * @param directory where the files are allocated
      * @return map with columns
      */
     void readFromDirectory( Columns& columns,
+                            NeuronsMap& neurons,
                             const std::string inputFile );
 
     /**
@@ -112,8 +92,9 @@ namespace nsol
      */
     void
     readFromBlueConfig( Columns& columns,
+                        NeuronsMap& neurons,
                         const std::string inputFile,
-                        const int loadFlags = MORPHOLOGY | HIERARCHY,
+                        const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
                         const std::string& targetLabel = std::string( "" ));
 
     void deleteAll( Columns& columns )
@@ -222,6 +203,7 @@ namespace nsol
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
     Columns& columns,
+    NeuronsMap& neurons,
     const std::string inputFile,
     const int loadFlags,
     const std::string& targetLabel )
@@ -234,7 +216,7 @@ namespace nsol
     // Detect which flags must be passed to the bbpsdk loader
     int bbpDataTypes = 0;
 
-    if ( loadFlags & HIERARCHY )
+    if ( loadFlags & CORTICAL_HIERARCHY )
       bbpDataTypes |= ( bbp::NEURONS );
 
     if ( loadFlags & MORPHOLOGY )
@@ -274,12 +256,6 @@ namespace nsol
     const bbp::Neurons &neuronsExpe =
       experiment.microcircuit().neurons();
 
-    // std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
-    //           << " neurons. " << std::endl;
-
-    // for (bbp::Neurons::const_iterator it = neuronsExpe.begin();
-    //      it != neuronsExpe.end(); ++it)
-
     unsigned long neuronCounter = 0;
     unsigned int oldPerc = 0;
 
@@ -287,9 +263,6 @@ namespace nsol
 
     NSOL_FOREACH( it, neuronsExpe )
     {
-      // std::cerr << "Neuron " << it->label() << " with morphology "
-      //          << it->morphology().label() << std::endl;
-
       NeuronPtr neuron (new NEURON( )); //New neuron
       neuronVector.push_back( neuron );
 
@@ -349,6 +322,17 @@ namespace nsol
         neuron->functionalType( ) = Neuron::EXCITATORY;
       else
         neuron->functionalType( ) = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
+
+      if ( neurons.find( neuron->gid( )) != neurons.end( ))
+      {
+        Log::log( std::string( "Warning: neuron with gid " ) +
+                  std::to_string( neuron->gid( )) +
+                  std::string( "already exists" ),
+                  NSOL_LOG_WARNING );
+      }
+      else
+        neurons[ neuron->gid( ) ] = neuron;
+
 
       if ( loadFlags & MORPHOLOGY )
       {
@@ -544,6 +528,7 @@ namespace nsol
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromDirectory(
     Columns& columns,
+    NeuronsMap& neurons,
     const std::string inputFile)
   {
 
@@ -719,6 +704,18 @@ namespace nsol
                 neuron->layer() = csvLine.layer;
                 neuron->transform() = csvLine.globalTrans;
                 neuron->gid() = csvLine.id;
+
+                if ( neurons.find( neuron->gid( )) != neurons.end( ))
+                {
+                  Log::log( std::string( "Warning: neuron with gid " ) +
+                            std::to_string( neuron->gid( )) +
+                            std::string( "already exists" ),
+                            NSOL_LOG_WARNING );
+                }
+                else
+                  neurons[ neuron->gid( ) ] = neuron;
+
+
               } else
               {
                 std::cerr << "Loading morphology file "
