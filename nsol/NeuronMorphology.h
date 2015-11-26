@@ -85,6 +85,14 @@ namespace nsol
     NSOL_API
     DendritePtr apicalDendrite( void ) const;
 
+    /**
+     * Returns axon if exists
+     * @return pointer to the axon or nullptr in case it doens't exist
+     */
+    NSOL_API
+    AxonPtr axon( void ) const;
+
+
     NSOL_API
     virtual Neurites & neurites( void );
 
