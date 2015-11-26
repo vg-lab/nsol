@@ -63,5 +63,20 @@ namespace nsol
     return _columns;
   }
 
+  const Columns& DataSet::columns( void ) const
+  {
+    return _columns;
+  }
+
+  NeuronsMap& DataSet::neurons( void )
+  {
+    return _neurons;
+  }
+
+  const NeuronsMap& DataSet::neurons( void ) const
+  {
+    return _neurons;
+  }
+
 
 } // namespace nsol

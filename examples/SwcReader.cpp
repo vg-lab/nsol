@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
       if( section->lastNode( ))
         numNodes ++;
-      numNodes += section->middleNodes( ).size(  );
+      numNodes += ( unsigned int ) section->middleNodes( ).size(  );
 
       cout << "    Section-> number of nodes: "
            << section->middleNodes( ).size( ) + 2 << endl;
