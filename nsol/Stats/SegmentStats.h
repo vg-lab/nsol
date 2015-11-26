@@ -9,22 +9,25 @@
 #ifndef __NSOL_SEGMENT_STATS__
 #define __NSOL_SEGMENT_STATS__
 
-#include "../Segment.h"
+#include <nsol/api.h>
+#include "../NsolTypes.h"
+#include "../Node.h"
 
 namespace nsol
 {
 
-  class SegmentStats : public Segment
+  class SegmentStats
   {
 
   public:
 
-    //! Stats that can be computed for Segment
+    //! Stats that can be computed for a segment
     typedef enum
     {
       SURFACE = 0,
       VOLUME,
       LENGTH,
+      RADIUS,
       SEGMENT_NUM_STATS
     } TSegmentStat;
 
@@ -33,9 +36,9 @@ namespace nsol
     SegmentStats * stats( void );
 
     NSOL_API
-    virtual float getStat( TSegmentStat stat ) const;
-
-
+    static float getStat( TSegmentStat stat,
+                          const NodePtr begin,
+                          const NodePtr end);
   }; // class SegmentStats
 
 

@@ -25,8 +25,10 @@ int main (int argc, char ** argv)
   BBPSDKReader bbpReader;
   Columns columns;
   SimulationData simulationData;
+  NeuronsMap neurons;
 
   bbpReader.readFromBlueConfig( columns,
+				neurons,
                                 simulationData,
                                 argv[1],
                                 LoadFlags::SIMULATION_DATA,

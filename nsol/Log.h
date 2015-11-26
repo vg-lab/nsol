@@ -1,7 +1,9 @@
 #ifndef __NSOL_LOG__
 #define __NSOL_LOG__
 
+#include <nsol/api.h>
 #include <iostream>
+
 
 namespace nsol
 {
@@ -23,6 +25,7 @@ namespace nsol
   {
   public:
 
+    NSOL_API
     static void log( const std::string& msg,
                      TLogLevel level = NSOL_LOG_VERBOSE,
                      std::ostream& stream = std::cerr );

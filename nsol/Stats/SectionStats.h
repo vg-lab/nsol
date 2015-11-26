@@ -35,6 +35,7 @@ namespace nsol
       SURFACE = 0,
       VOLUME,
       LENGTH,
+      RADIUS,
       SECTION_NUM_STATS
     } TSectionStat;
 
@@ -54,6 +55,9 @@ namespace nsol
 
 
   protected:
+
+    //! Segment stats
+    //SegmentStats _segmentStats;
 
 
   }; // class SectionStats

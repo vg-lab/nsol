@@ -19,14 +19,15 @@ int main ( int argc, char ** argv )
 
   nsol::DataSet ds;
 
-  std::cout << "Opening dataset with HIERARCHY " << argv[ 1 ] << std::endl;
-  ds.openBlueConfig( argv[ 1 ], nsol::HIERARCHY, target );
+  std::cout << "Opening dataset with CORTICAL_HIERARCHY "
+            << argv[ 1 ] << std::endl;
+  ds.loadFromBlueConfig( argv[ 1 ], nsol::CORTICAL_HIERARCHY, target );
   std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
   std::cout << "Closing dataset " << std::endl;
   ds.close( );
 
   std::cout << "Opening dataset with MORPHOLOGY " << argv[ 1 ] << std::endl;
-  ds.openBlueConfig( argv[ 1 ], nsol::MORPHOLOGY, target );
+  ds.loadFromBlueConfig( argv[ 1 ], nsol::MORPHOLOGY, target );
   std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
   std::cout << "Closing dataset " << std::endl;
   ds.close( );

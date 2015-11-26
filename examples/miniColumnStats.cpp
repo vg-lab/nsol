@@ -33,7 +33,8 @@ int main ( int argc, char ** argv )
   nsol::BBPSDKReaderStats readerWithStats;
   nsol::Columns columnsWithStats;
   nsol::SimulationData simulationData;
-  readerWithStats.readFromBlueConfig( columnsWithStats,
+  nsol::NeuronsMap neuronsWithStats;
+  readerWithStats.readFromBlueConfig( columnsWithStats, neuronsWithStats,
                                       simulationData,
                                       argv[1] );
 
@@ -43,12 +44,13 @@ int main ( int argc, char ** argv )
   // columnsWithStats[0]->miniColumns( )[0]->stats()->dendriticSurface();
   // return 0;
 
-  nsol::BBPSDKReaderCachedStats readerWithCachedStats;
-  nsol:: Columns columnsWithCachedStats;
+  nsol::BBPSDKReaderCachedStats readerWithCachedStats;;
   nsol::SimulationData simulationData2;
+  nsol::Columns columnsWithCachedStats;
+  nsol::NeuronsMap neuronsWithCachedStats;
   readerWithCachedStats.readFromBlueConfig( columnsWithCachedStats,
-                                            simulationData2,
-                                            argv[1] );
+					    neuronsWithCachedStats,
+                                            simulationData2, argv[1] );
 
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];
@@ -72,7 +74,7 @@ int main ( int argc, char ** argv )
                                             layer )
               <<  " inter: " <<
       miniColumnWithStats->numberOfNeurons( false,
-                                            nsol::Neuron::INTER,
+                                            nsol::Neuron::INTERNEURON,
                                             layer )
               << std::endl;
   }

@@ -10,6 +10,7 @@
 #include "SectionStats.h"
 #include "SegmentStats.h"
 
+
 namespace nsol
 {
 
@@ -30,6 +31,10 @@ namespace nsol
       return SegmentStats::/*TSegmentStat::*/LENGTH;
       break;
 
+    case SectionStats::/*TSectionStat::*/RADIUS:
+      return SegmentStats::/*TSegmentStat::*/RADIUS;
+      break;
+
     case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
     default:
       NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
@@ -46,7 +51,6 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
-    int numSegments = 0;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -60,36 +64,54 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
-    if ( _firstSegment )
+    if( _firstNode && _lastNode )
     {
-      SegmentPtr segment = _firstSegment;
-
-      while ( segment )
+      unsigned int size_middleNodes = ( unsigned int )_middleNodes.size();
+      NodePtr first = _firstNode;
+      NodePtr second = _lastNode;
+      for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
       {
-        NSOL_DEBUG_CHECK( segment->stats( ),
-                          "segment doesn't have stats" );
+        if( i == size_middleNodes )
+          second = _lastNode;
+        else
+          second = _middleNodes[i];
 
         if ( agg == /*TAggregation::*/VARIANCE )
         {
           float tmpValue =
-            segment->stats( )->getStat( toSegmentStat( stat ));
+            SegmentStats::getStat( toSegmentStat( stat ), first, second );
           value += ( mean - tmpValue ) * ( mean - tmpValue );
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value += ( mean - second->radius() ) * ( mean - second->radius() );
         }
         else if ( agg == /*TAggregation::*/MIN )
-          value =
-            std::min( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
+        {
+          value = std::min( value,
+                            SegmentStats::getStat( toSegmentStat( stat ),
+                                                   first, second ));
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value = std::min( value, second->radius() );
+        }
         else if ( agg == /*TAggregation::*/MAX )
-          value =
-            std::max( value,
-                      segment->stats( )->getStat( toSegmentStat( stat )));
+        {
+          value = std::max( value,
+                            SegmentStats::getStat( toSegmentStat( stat ),
+                                                   first, second ));
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+            value = std::max( value, second->radius() );
+        }
         else
-          value += segment->stats( )->getStat( toSegmentStat( stat ));
+        {
+          value += SegmentStats::getStat( toSegmentStat( stat ),
+                                          first, second );
+          if( stat == SectionStats::RADIUS && second == _lastNode )
+          {
+            value += second->radius();
+          }
+        }
 
-        segment = segment->next( );
-        numSegments++;
-      } // while segments
-
+        first = second;
+      }
 
       switch ( agg )
       {
@@ -99,12 +121,17 @@ namespace nsol
         return value;
       case /*TAggregation::*/MEAN:
       case /*TAggregation::*/VARIANCE:
-        return value / numSegments;
+        if( stat == SectionStats::RADIUS )
+        {
+          return value / ( size_middleNodes + 2 );
+        }
+        return value / ( size_middleNodes + 1 );
       case /*TAggregation::*/STD_DEV:
         break;
       }
       NSOL_THROW( "aggregation op not valid" )
-    }
+        }
+
     return 0;
   }
 

@@ -97,7 +97,7 @@ namespace nsol
 
   unsigned int
   MiniColumn::numberOfNeurons( bool all,
-                               Neuron::TNeuronType neuronType,
+                               Neuron::TMorphologicalType neuronType,
                                unsigned int layer) const
   {
     if ( all )
@@ -108,7 +108,7 @@ namespace nsol
 
       NSOL_CONST_FOREACH( nIt, _neurons )
       {
-        if ( ( * nIt )->neuronType( ) == neuronType &&
+        if ( ( * nIt )->morphologicalType( ) == neuronType &&
              ( layer == 0 || layer == ( * nIt )->layer( )))
           nNeurons++;
       }

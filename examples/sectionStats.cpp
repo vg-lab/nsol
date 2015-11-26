@@ -3,6 +3,7 @@
  */
 
 #include <nsol/nsol.h>
+#include <stack>
 
 
 int main ( int argc, char ** argv )
@@ -136,9 +137,6 @@ int main ( int argc, char ** argv )
   std::cout << std::endl;
 
   // Now lets pretend to change something on a segment an see if it propagates
-  nsol::SegmentPtr segment = sectionWithCachedStats->firstSegment( );
-  segment->begin( segment->begin( ));
-
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
@@ -152,8 +150,6 @@ int main ( int argc, char ** argv )
   std::cout << std::endl;
 
   // Now changind the radius of a node should dirty segment and section
-  segment->end( )->radius( 1.0f );
-
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
@@ -166,6 +162,45 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
+
+  int j = 0;
+  NSOL_FOREACH( neurite, neuronWithCachedStats->morphology( )->neurites( ))
+  {
+    std::cout << "Neurite " << j << std::endl;
+
+    std::stack< nsol::SectionPtr > sSP;
+
+    nsol::SectionPtr section = (*neurite)->firstSection( );
+
+    sSP.push( section );
+
+    int k = 0;
+    while( !sSP.empty( ))
+    {
+      section = sSP.top( );;
+      sSP.pop( );
+
+      std::cout << "  Section " << k << std::endl;
+      std::cout << "    Surface " << section->stats( )->getStat(
+          nsol::SectionStats::SURFACE ) << std::endl;
+      std::cout << "    Volumne " << section->stats( )->getStat(
+          nsol::SectionStats::VOLUME ) << std::endl;
+      std::cout << "    Length " << section->stats( )->getStat(
+          nsol::SectionStats::LENGTH ) << std::endl;
+
+
+      if ( section->children( ).size( ) > 0 )
+      {
+        NSOL_FOREACH( sec, section->children( ))
+        {
+          sSP.push( *sec );
+        }
+      }
+      k ++;
+    }
+
+    j ++;
+  }
 
   return 0;
 

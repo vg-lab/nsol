@@ -8,6 +8,11 @@ CMake/common
 .ciscript
 ci.*
 jambs*
+<<<<<<< HEAD
 CMakeCache.txt
 CMakeFiles/*
 
+=======
+.cproject
+.project
+>>>>>>> master

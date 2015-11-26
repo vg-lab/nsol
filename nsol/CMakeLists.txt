@@ -10,7 +10,6 @@ set(NSOL_PUBLIC_HEADERS
   Container/Neurons.h
   Container/Nodes.h
   Container/Sections.h
-  Container/Segments.h
   DataSet.h
   Dendrite.h
   error.h
@@ -24,7 +23,6 @@ set(NSOL_PUBLIC_HEADERS
   Object.h
   ObjectWithProperties.h
   Section.h
-  Segment.h
   SimulationData.h
   Soma.h
   Spine.h
@@ -44,7 +42,6 @@ set(NSOL_PUBLIC_HEADERS
   Stats/SectionStats.h
   Stats/SectionCachedStats.h
   Stats/SegmentStats.h
-  Stats/SegmentCachedStats.h
   Stats/SomaStats.h
   Synapse.h
   # templated classes at last
@@ -70,7 +67,6 @@ set(NSOL_SOURCES
   Object.cpp
   ObjectWithProperties.cpp
   Section.cpp
-  Segment.cpp
   SimulationData.cpp
   Soma.cpp
   Stats/AxonStats.cpp
@@ -87,7 +83,6 @@ set(NSOL_SOURCES
   Stats/SectionStats.cpp
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
-  Stats/SegmentCachedStats.cpp
   Stats/SomaStats.cpp
   )
 

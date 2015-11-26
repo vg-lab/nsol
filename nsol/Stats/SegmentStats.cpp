@@ -18,34 +18,41 @@ namespace nsol
     return this;
   }
 
-  float SegmentStats::getStat( TSegmentStat stat ) const
+  float SegmentStats::getStat(TSegmentStat stat,
+                              const NodePtr begin,
+                              const NodePtr end)
   {
     switch ( stat )
     {
     case SURFACE:
-    return ( _begin && _end) ?
-      float( M_2PI) * _end->radius( ) *
-      ( _begin->point( ) - _end->point( )).length( ) :
-      0.0f;
+      return ( begin && end) ?
+        float( M_2PI ) * end->radius( ) *
+        ( begin->point( ) - end->point( )).length( ) :
+        0.0f;
       break;
 
     case VOLUME:
-    return ( _begin && _end) ?
-      float( M_PI) *
-      ( _begin->point( ) - _end->point( )).length( ) *
-      _end->radius( ) *
-      _end->radius( ) : 0.0f;
+      return ( begin && end) ?
+        float( M_PI ) *
+        ( begin->point( ) - end->point( )).length( ) *
+        end->radius( ) * end->radius( ) : 0.0f;
       break;
 
     case LENGTH:
-    return ( _begin && _end) ?
-      ( _begin->point( ) - _end->point( )).length( ) : 0.0f;
+      return ( begin && end) ?
+        ( begin->point( ) - end->point( )).length( ) : 0.0f;
+      break;
+
+    case RADIUS:
+      return ( begin && end) ?
+        begin->radius() : 0.0f;
       break;
 
     default:
       NSOL_THROW( "stat not implemented for SegmentStats" );
     }
     return 0.0f;
-  }
+  } // class SegmentStats
 
-}
+} // namespace nsol
+
