@@ -37,13 +37,13 @@ namespace nsol
 
     case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
     default:
-      NSOL_THROW( "no know converstion from TSectionStat to TSegmentStat");
+      NSOL_THROW( "no known conversion from TSectionStat to TSegmentStat");
     }
 
     return SegmentStats::/*TSegmentStat::*/SURFACE;
   }
 
-
+  //TODO Make SEGMENT_RADIUS stat lenght-weighted
   float SectionStats::getStat( TSectionStat stat, TAggregation agg ) const
   {
     NSOL_DEBUG_CHECK( stat < SECTION_NUM_STATS, "section stat unknown");
@@ -51,6 +51,7 @@ namespace nsol
 
     float value = 0.0f;
     float mean;
+    float accumLength;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
@@ -64,12 +65,18 @@ namespace nsol
     if ( agg == /*TAggregation::*/VARIANCE )
       mean = this->getStat( stat,  /*TAggregation::*/MEAN );
 
+    if( agg == /*TAggregation::*/MEAN && stat == RADIUS )
+    {
+      accumLength = 0.0f;
+    }
+
     if( _firstNode && _lastNode )
     {
       unsigned int size_middleNodes = ( unsigned int )_middleNodes.size();
       NodePtr first = _firstNode;
       NodePtr second = _lastNode;
-      for ( unsigned int i=0; i< size_middleNodes + 1 ; i++)
+      //First node already included in middle nodes.
+      for ( unsigned int i=1/*0*/; i< size_middleNodes + 1 ; i++)
       {
         if( i == size_middleNodes )
           second = _lastNode;
@@ -81,33 +88,40 @@ namespace nsol
           float tmpValue =
             SegmentStats::getStat( toSegmentStat( stat ), first, second );
           value += ( mean - tmpValue ) * ( mean - tmpValue );
-          if( stat == SectionStats::RADIUS && second == _lastNode )
-            value += ( mean - second->radius() ) * ( mean - second->radius() );
         }
         else if ( agg == /*TAggregation::*/MIN )
         {
           value = std::min( value,
                             SegmentStats::getStat( toSegmentStat( stat ),
                                                    first, second ));
-          if( stat == SectionStats::RADIUS && second == _lastNode )
-            value = std::min( value, second->radius() );
         }
         else if ( agg == /*TAggregation::*/MAX )
         {
           value = std::max( value,
                             SegmentStats::getStat( toSegmentStat( stat ),
                                                    first, second ));
-          if( stat == SectionStats::RADIUS && second == _lastNode )
-            value = std::max( value, second->radius() );
         }
-        else
+        else if (agg == /*TAggregation::*/MEAN)
+        {
+          if(stat == RADIUS)
+          {
+            float segmentLength =
+                SegmentStats::getStat( toSegmentStat( LENGTH ),
+                                       first, second );
+            value += ( SegmentStats::getStat( toSegmentStat( stat ),
+                         first, second ) * segmentLength );
+            accumLength += segmentLength;
+          }
+          else
+          {
+            value += SegmentStats::getStat( toSegmentStat( stat ),
+                                            first, second );
+          }
+        }
+        else //TOTAL
         {
           value += SegmentStats::getStat( toSegmentStat( stat ),
-                                          first, second );
-          if( stat == SectionStats::RADIUS && second == _lastNode )
-          {
-            value += second->radius();
-          }
+                                                    first, second );
         }
 
         first = second;
@@ -120,11 +134,16 @@ namespace nsol
       case /*TAggregation::*/MAX:
         return value;
       case /*TAggregation::*/MEAN:
-      case /*TAggregation::*/VARIANCE:
-        if( stat == SectionStats::RADIUS )
+        if(stat == RADIUS)
         {
-          return value / ( size_middleNodes + 2 );
+          return value / accumLength;
         }
+        else
+        {
+          return value / ( size_middleNodes + 1 );
+        }
+      case /*TAggregation::*/VARIANCE:
+        //(size_middleNodes+1) = number of segments
         return value / ( size_middleNodes + 1 );
       case /*TAggregation::*/STD_DEV:
         break;

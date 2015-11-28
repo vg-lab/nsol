@@ -85,7 +85,7 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-  std::cout << "Surface of the first section of the first neurite "
+  std::cout << "Accumulated radius of the first section of the first neurite "
             << std::endl;
 
   std::cout << "\tNon cached section: "
@@ -183,6 +183,12 @@ int main ( int argc, char ** argv )
       std::cout << "  Section " << k << std::endl;
       std::cout << "    Radius " << section->stats( )->getStat(
           nsol::SectionStats::RADIUS, nsol::TAggregation::MEAN ) << std::endl;
+      std::cout << "    Volume " << section->stats( )->getStat(
+                nsol::SectionStats::VOLUME ) << std::endl;
+      std::cout << "    Surface " << section->stats( )->getStat(
+                nsol::SectionStats::SURFACE ) << std::endl;
+      std::cout << "    Length " << section->stats( )->getStat(
+                nsol::SectionStats::LENGTH ) << std::endl;
 
       if ( section->children( ).size( ) > 0 )
       {
