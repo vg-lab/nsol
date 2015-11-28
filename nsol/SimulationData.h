@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 
+#include <nsol/api.h>
 #include "Object.h"
 
 namespace nsol
@@ -149,36 +150,51 @@ namespace nsol
       /**
        * Constructors & destructor.
        */
+      NSOL_API
       iterator( void );
+      NSOL_API
       iterator( const iterator& extIterator );
 
+      NSOL_API
       ~iterator( void );
 
       /**
        * Getters.
        */
+      NSOL_API
       MultiIndexByTimestamp::iterator getItByTimestamp() const;
+      NSOL_API
       MultiIndexByLabel::iterator getItByLabel() const;
+      NSOL_API
       MultiIndexByObject::iterator getItByObject() const;
+      NSOL_API
       TMultiIndexIterator getUsedIterator() const;
-      
+
       /**
        * Setters.
        */
-      void setItByTimestamp
-      ( const MultiIndexByTimestamp::iterator& itByTimestamp );
-      void setItByLabel
-      ( const MultiIndexByLabel::iterator& itByLabel );
-      void setItByObject
-      ( const MultiIndexByObject::iterator& itByObject );
+      NSOL_API
+      void setItByTimestamp(
+        const MultiIndexByTimestamp::iterator& itByTimestamp );
+      NSOL_API
+      void setItByLabel(
+        const MultiIndexByLabel::iterator& itByLabel );
+      NSOL_API
+      void setItByObject(
+        const MultiIndexByObject::iterator& itByObject );
 
       /**
        * Operators.
        */
+      NSOL_API
       iterator& operator++();
+      NSOL_API
       void operator=( const iterator& extIterator );
+      NSOL_API
       bool operator==( const iterator& extIterator ) const;
+      NSOL_API
       bool operator!=( const iterator& extIterator ) const;
+      NSOL_API
       const Record& operator*() const;
 
     private:
@@ -194,27 +210,32 @@ namespace nsol
     /**
      * Default consructor.
      */
+    NSOL_API
     SimulationData( void );
 
     /**
      * Destructor.
      */
+    NSOL_API
     virtual ~SimulationData( void );
 
     /**
      * This method returns the number of records.
      */
+    NSOL_API
     std::size_t numberOfRecords() const;
 
     /**
      * If the record does not exist, it will be added to the collection.
      * If the record exist, this will be overwritten.
      */
+    NSOL_API
     void insert( Record& record );
 
     /**
      * Erase a record by its timestamp, label and nsol object.
      */
+    NSOL_API
     void erase( float timestamp,
                 std::string label,
                 ObjectPtr object );
@@ -227,16 +248,19 @@ namespace nsol
     /**
      * Erase all records from the collection.
      */
+    NSOL_API
     void clear( void );
 
     /**
      * SimulationData iterator to first record.
      */
+    NSOL_API
     iterator begin();
 
     /**
      * SimulationData iterator to last record.
      */
+    NSOL_API
     iterator end();
 
     /**
@@ -245,53 +269,57 @@ namespace nsol
      *  - label
      *  - nsol object
      */
-    iterator
-    find( float timestamp, std::string label, ObjectPtr object ) const;
+    NSOL_API
+    iterator find( float timestamp,
+                   std::string label, ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
      *  - timestamp
      *  - label
      */
-    std::pair<iterator, iterator>
-    find( float timestamp, std::string label ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( float timestamp,
+                                        std::string label ) const;
 
     /**
      * This method looks for records filtered by:
      *  - label
      *  - nsol object
      */
-    std::pair<iterator, iterator>
-    find( std::string label, ObjectPtr object ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( std::string label,
+                                        ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
      *  - timestamp
      *  - nsol object
      */
-    std::pair<iterator, iterator>
-    find( float timestamp, ObjectPtr object ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( float timestamp,
+                                        ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
      *  - timestamp
      */
-    std::pair<iterator, iterator>
-    find( float timestamp ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( float timestamp ) const;
 
     /**
      * TThis method looks for records filtered by:
      *  - label
      */
-    std::pair<iterator, iterator>
-    find( std::string label ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( std::string label ) const;
 
     /**
      * This method looks for records filtered by:
      *  - nsol object
      */
-    std::pair<iterator, iterator>
-    find( ObjectPtr object ) const;
+    NSOL_API
+    std::pair<iterator, iterator> find( ObjectPtr object ) const;
 
     /**
      * This method looks for records filtered by:
@@ -299,19 +327,21 @@ namespace nsol
      * These records must have its timestamps between a
      * lower bound and an upper bound.
      */
-    std::pair<iterator, iterator>
-    findByRange( float lowerTimestamp,
-                 float upperTimestamp ) const;
+    NSOL_API
+    std::pair<iterator, iterator> findByRange( float lowerTimestamp,
+                                               float upperTimestamp ) const;
 
     /**
      * Get all timestamp values.
      */
-    std::set<float> getTimestamps() const;
+    NSOL_API
+    std::set<float> getTimestamps( void ) const;
 
     /**
      * Get all label values.
      */
-    std::set<std::string> getLabels() const;
+    NSOL_API
+    std::set<std::string> getLabels( void ) const;
 
     /**
      * Get all nsol objects.
