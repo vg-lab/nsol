@@ -10,15 +10,12 @@
 
 #include <nsol/NsolTypes.h>
 #include <nsol/Neuron.h>
+#include <unordered_map>
 
 namespace nsol {
 
-  class Neurons : public NsolVector<NeuronPtr> {
-
-
-  protected:
-
-  };
+  typedef NsolVector< NeuronPtr > Neurons;
+  typedef std::unordered_map< unsigned int, NeuronPtr > NeuronsMap;
 
 }
 
