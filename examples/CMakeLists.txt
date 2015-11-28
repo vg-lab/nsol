@@ -5,6 +5,10 @@ if (BBPSDK_FOUND)
   add_executable(BBPSDKLoader BBPSDKLoader.cpp)
   target_link_libraries(BBPSDKLoader nsol)
   add_definitions(-DWITH_BBPSDK)
+
+  add_executable(simulationDataLoad simulationDataLoad.cpp)
+  target_link_libraries(simulationDataLoad ${NSOL_LINK_LIBRARIES} nsol)
+
 endif()
 
 add_executable(nsolExtractNeuronStats nsolExtractNeuronStats.cpp)
@@ -36,9 +40,6 @@ target_link_libraries(factory nsol)
 
 #add_executable(simulationDataStats simulationDataStats.cpp)
 #target_link_libraries(simulationDataStats ${NSOL_LINK_LIBRARIES} nsol)
-
-add_executable(simulationDataLoad simulationDataLoad.cpp)
-target_link_libraries(simulationDataLoad ${NSOL_LINK_LIBRARIES} nsol)
 
 add_executable(dataset dataset.cpp)
 target_link_libraries(dataset nsol)

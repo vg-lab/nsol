@@ -17,6 +17,7 @@
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
+#include "SimulationData.h"
 
 #ifdef NSOL_USE_QT5CORE
 #include <QStringList>
