@@ -96,9 +96,6 @@ namespace nsol
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
 
 
-//  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
-
-
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE __ )   \
   std::enable_shared_from_this< __TYPE __>
 
@@ -125,12 +122,8 @@ namespace nsol
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Soma* SomaPtr;
-
-
   typedef NodeCached* NodeCachedPtr;
 
-
-//  typedef CachedSection * CachedSectionPtr;
 
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE__ )
 
@@ -201,10 +194,10 @@ namespace nsol
 
   enum LoadFlags
   {
-    HIERARCHY       =   0x00000001,
-    MORPHOLOGY      =   0x00000002,
-    CIRCUIT         =   0x00000004,
-    SIMULATION_DATA =   0x00000008,
+    CORTICAL_HIERARCHY       = 0x00000001,
+    MORPHOLOGY               = 0x00000002,
+    CIRCUIT                  = 0x00000004,
+    SIMULATION_DATA          = 0x00000008,
   };
 
 

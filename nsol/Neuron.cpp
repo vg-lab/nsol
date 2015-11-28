@@ -92,7 +92,13 @@ namespace nsol
 
   bool Neuron::isInterneuron( void )
   {
-    return _morphologicalType == Neuron::INTERNEURON;
+    return ( _morphologicalType == Neuron::INTERNEURON ||
+             _morphologicalType == Neuron::BASKET ||
+             _morphologicalType == Neuron::STELLATE ||
+             _morphologicalType == Neuron::GOLGI ||
+             _morphologicalType == Neuron::GRANULE ||
+             _morphologicalType == Neuron::LUGARO ||
+             _morphologicalType == Neuron::UNIPOLAR_BRUSH );
   }
 
   bool Neuron::isExcitatory( void )

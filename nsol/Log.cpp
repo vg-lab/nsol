@@ -28,7 +28,12 @@ namespace nsol
                  std::ostream& stream )
   {
 
+#ifdef _DEBUG
+    std::string logLevel( "NSOL_LOG_VERBOSE" );
+#else
     std::string logLevel( "NSOL_LOG_ERROR" );
+#endif
+
     char *envLogLevel = getenv ("NSOL_LOG_LEVEL");
 
     if ( envLogLevel )
