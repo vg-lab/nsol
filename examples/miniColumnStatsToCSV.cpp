@@ -44,10 +44,12 @@ int main ( int argc, char ** argv )
 
   nsol::BBPSDKReaderStats readerWithStats;
   nsol::Columns columnsWithStats;
+  nsol::NeuronsMap neuronsMap;
   readerWithStats.readFromBlueConfig( columnsWithStats,
+                                      neuronsMap,
                                       argv[1],
                                       nsol::LoadFlags::MORPHOLOGY |
-                                      nsol::LoadFlags::HIERARCHY,
+                                      nsol::LoadFlags::CORTICAL_HIERARCHY,
                                       target );
 
   int minicolumn_number = atoi(argv[4]);

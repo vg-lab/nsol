@@ -43,8 +43,11 @@ void ComputeAndPrint( nsol::NeuronPtr n,
               <<  ( * it )->neuriteType( ) << " ";
 
     if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
-      std::cout << NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ))
-        ->dendriteType( );
+    {
+      nsol::Dendrite::TDendriteType dendriteType =
+          NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ) )->dendriteType( );
+      std::cout << dendriteType;
+    }
 
     if ( ( * it )->stats( ))
     {
@@ -65,12 +68,25 @@ void ComputeAndPrint( nsol::NeuronPtr n,
       std::cout << " " << ( * it )->stats( )->getStat(
       nsol::NeuriteStats::BIFURCATIONS ) << " ";
 
-      ofs << "dendrita_" << i << ";"
-          << ( * it )->stats( )->getStat(nsol::NeuriteStats::LENGTH ) << ";"
-          << ( * it )->stats( )->getStat(nsol::NeuriteStats::SURFACE ) << ";"
-          << ( * it )->stats( )->getStat(nsol::NeuriteStats::VOLUME ) << ";"
-          << ( * it )->stats( )->getStat(nsol::NeuriteStats::BIFURCATIONS )
-          << "\n";
+      ofs << "dendrita_" << i;
+
+      if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
+      {
+        nsol::Dendrite::TDendriteType dendriteType =
+            NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ) )->dendriteType( );
+        if(dendriteType == nsol::Dendrite::TDendriteType::APICAL)
+        {
+          //Avoiding capital letters.
+          ofs << "_apical"; //<< dendriteType;
+        }
+      }
+
+      ofs << ";"
+      << ( * it )->stats( )->getStat(nsol::NeuriteStats::LENGTH ) << ";"
+      << ( * it )->stats( )->getStat(nsol::NeuriteStats::SURFACE ) << ";"
+      << ( * it )->stats( )->getStat(nsol::NeuriteStats::VOLUME ) << ";"
+      << ( * it )->stats( )->getStat(nsol::NeuriteStats::BIFURCATIONS )
+      << "\n";
 
       /*
        * Volume per section.
