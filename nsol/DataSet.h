@@ -11,6 +11,7 @@
 
 #include <nsol/api.h>
 #include "error.h"
+#include "Log.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
 #include "Container/Columns.h"
@@ -28,6 +29,7 @@
 
 namespace nsol
 {
+
 
   class DataSet
   {
@@ -47,15 +49,16 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-    void openBlueConfig( const std::string& blueconfig,
-                         const int loadFlags = MORPHOLOGY | HIERARCHY,
+    void loadFromBlueConfig( const std::string& blueconfig,
+                         const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
                          const std::string& targetLabel = std::string( "" ))
     {
-     
+
       BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
       reader.readFromBlueConfig( _columns,
+                                 _neurons,
                                  blueconfig,
                                  loadFlags,
                                  targetLabel );
@@ -72,6 +75,65 @@ namespace nsol
     NSOL_API
     Columns& columns( void );
 
+    NSOL_API
+    const Columns& columns( void ) const;
+
+    NSOL_API
+    NeuronsMap& neurons( void );
+
+    NSOL_API
+    const NeuronsMap& neurons( void ) const;
+
+    bool addNeuron( const NeuronPtr neuron )
+    {
+      if ( _neurons.find( neuron->gid( )) != _neurons.end( ))
+      {
+        Log::log( std::string( "Warning: neuron with gid " ) +
+                  std::to_string( neuron->gid( )) +
+                  std::string( "already exists in the dataset" ),
+                  NSOL_LOG_WARNING );
+        return false;
+      }
+
+      _neurons[ neuron->gid( ) ] = neuron;
+      return true;
+
+    }
+
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron >
+    NeuronPtr loadNeuronFromSwc(
+      const std::string& swc,
+      const unsigned int gid_,
+      const unsigned int layer_ = 0,
+      const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+      const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
+    {
+      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+          NEURONMORPHOLOGY, NEURON > swcReader;
+      NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
+
+      NEURON* neuron = nullptr;
+
+      if ( neuronMorphology )
+      {
+        neuron = new NEURON( neuronMorphology, layer_,
+                             gid_, transform_,
+                             nullptr, type_ );
+        if ( neuron && !addNeuron( neuron ))
+          delete neuronMorphology;
+      }
+      return neuron;
+
+    }
+
+
     template < class NODE = Node,
                class SECTION = Section,
                class DENDRITE = Dendrite,
@@ -81,20 +143,22 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-    void addNeuron( const std::string& swc, const unsigned int gid_,
-        const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
-        const unsigned int layer_ = 0,
-        const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
-        const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
+    void loadCorticalNeuronFromSwc(
+      const std::string& swc, const unsigned int gid_,
+      const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
+      const unsigned int layer_ = 0,
+      const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+      const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
-      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
-          NEURONMORPHOLOGY, NEURON > swcReader;
-      NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
+      NeuronPtr neuron =
+        loadNeuronFromSwc< NODE, SECTION, DENDRITE, AXON, SOMA,
+                    NEURONMORPHOLOGY, NEURON >( swc, gid_, layer_,
+                                                transform_, type_ );
 
-      if( neuronMorphology )
+      if( neuron && neuron->morphology( ))
       {
 
-        COLUMN* column = nullptr;
+        Column* column = nullptr;
         NSOL_FOREACH( col, _columns )
         {
           if (( *col )->id( ) == columnId_ )
@@ -118,12 +182,10 @@ namespace nsol
         }
         if( !miniColumn )
         {
-          miniColumn = ( MiniColumnPtr )new MINICOLUMN( column, miniColumnId_ );
+          miniColumn =
+            ( MiniColumnPtr ) new MINICOLUMN( column, miniColumnId_ );
           column->addMiniColumn( miniColumn );
         }
-
-        NEURON* neuron = new NEURON( neuronMorphology, layer_, gid_, transform_,
-                    nullptr, type_ );
         neuron->miniColumn( miniColumn );
         miniColumn->addNeuron( neuron );
       }
@@ -132,14 +194,14 @@ namespace nsol
 
 
     template < class NODE = Node,
-	       class SECTION = Section,
-	       class DENDRITE = Dendrite,
-	       class AXON = Axon,
-	       class SOMA = Soma,
-	       class NEURONMORPHOLOGY = NeuronMorphology,
-	       class NEURON = Neuron,
-	       class MINICOLUMN = MiniColumn,
-	       class COLUMN = Column >
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
     void loadScene( const std::string& xmlSceneFile )
     {
 #ifdef NSOL_USE_QT5CORE
@@ -330,10 +392,18 @@ namespace nsol
                                             transform, miniColumn,
                                             morphologicalType,
                                             functionalType );
-                            miniColumn->addNeuron( neuron );
-                            neuronsMap.insert(
-                                std::pair< unsigned int, NeuronPtr>( gid,
-                                                                     neuron ));
+                            if ( neuron )
+                            {
+                              if ( addNeuron( neuron ))
+                              {
+                                miniColumn->addNeuron( neuron );
+                                neuronsMap.insert(
+                                  std::pair< unsigned int, NeuronPtr >(
+                                    gid, neuron ));
+                              }
+                              else
+                                delete neuron;
+                            }
                           }
                         }
                       }
@@ -367,9 +437,9 @@ namespace nsol
                          swcReader.readMorphology( swc );
                      if ( neuronMorphology )
                      {
-                       QStringList neurons =
+                       QStringList neurons_ =
                            attributes.value("neurons").toString( ).split(',');
-                       NSOL_FOREACH( n, neurons )
+                       NSOL_FOREACH( n, neurons_ )
                        {
                          std::map<unsigned int, NeuronPtr>::iterator neuronFind =
                              neuronsMap.find(( *n ).toUInt( ));
@@ -407,6 +477,9 @@ namespace nsol
   protected:
 
     Columns _columns;
+
+    //! Container of neurons by its gid
+    NeuronsMap _neurons;
 
   }; // class DataSet
 
