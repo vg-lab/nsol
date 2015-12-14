@@ -42,6 +42,11 @@ set(COMMON_PROJECT_DOMAIN gmrv.es)
 option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 option(WITH_BBPSDK "WITH_BBPSDK" ON)
 
+option( NSOL_WITH_LOGGING "NSOL_WITH_LOGGING" ON )
+if ( NSOL_WITH_LOGGING )
+  add_definitions( -DNSOL_WITH_LOGGING )
+endif( )
+
 include(Common)
 
 common_package(Boost COMPONENTS unit_test_framework)

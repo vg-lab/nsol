@@ -91,7 +91,7 @@ namespace nsol
         Log::log( std::string( "Warning: neuron with gid " ) +
                   std::to_string( neuron->gid( )) +
                   std::string( "already exists in the dataset" ),
-                  NSOL_LOG_WARNING );
+                  LOG_LEVEL_WARNING );
         return false;
       }
 

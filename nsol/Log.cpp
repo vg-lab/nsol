@@ -3,48 +3,103 @@
 #include <string>
 #include <iostream>
 
+#include <nsol/defines.h>
+
+
 namespace nsol
 {
 
-  std::string logLevelToString( TLogLevel level )
+  TLogLevel Log::_logLevel =
+#ifdef DEBUG
+    LOG_LEVEL_VERBOSE;
+#else
+    LOG_LEVEL_ERROR;
+#endif
+
+  std::ostream* Log::_stream = &std::cerr;
+
+
+  TLogLevel Log::logLevel( void )
   {
-    switch ( level )
-    {
-    case NSOL_LOG_WARNING:
-      return std::string( "WARNING" );
-    case NSOL_LOG_VERBOSE:
-      return std::string( "VERBOSE" );
-    case NSOL_LOG_ERROR:
-    default:
-      return std::string( "ERROR" );
-    }
-    return std::string( "" );
+    return _logLevel;
   }
 
+  void Log::setLogLevel( const TLogLevel logLevel_ )
+  {
+    _logLevel = logLevel_;
+  }
+
+  void Log::setStream( std::ostream& stream_ )
+  {
+    _stream = &stream_;
+  }
+
+  const std::ostream& Log::stream( void )
+  {
+    return *_stream;
+  }
+
+#ifdef NSOL_WITH_LOGGING
+
+  void Log::log( const std::string& msg,
+                 const TLogLevel level )
+  {
+    Log::log( msg, *_stream, level );
+  }
+
+  TLogLevel stringToLogLevel( std::string logLevelString )
+  {
+  if ( logLevelString == "WARNING" )
+    return LOG_LEVEL_WARNING;
+
+  if ( logLevelString == "ERROR" )
+    return LOG_LEVEL_ERROR;
+
+  if ( logLevelString == "VERBOSE" )
+    return LOG_LEVEL_VERBOSE;
+
+  std::cerr << "nsol: Unknown log level" << std::endl;
+  return LOG_LEVEL_UNKNOWN;
+}
 
 
   void Log::log( const std::string& msg,
-                 TLogLevel level,
-                 std::ostream& stream )
+                 std::ostream& stream,
+                 const TLogLevel level )
   {
+    TLogLevel currentLogLevel = _logLevel;
 
-#ifdef _DEBUG
-    std::string logLevel( "NSOL_LOG_VERBOSE" );
-#else
-    std::string logLevel( "NSOL_LOG_ERROR" );
-#endif
+    char* envLogLevelString = getenv ( "NSOL_LOG_LEVEL" );
 
-    char *envLogLevel = getenv ("NSOL_LOG_LEVEL");
+    if ( envLogLevelString )
+    {
+      auto envLogLevel = stringToLogLevel( envLogLevelString );
 
-    if ( envLogLevel )
-      logLevel = std::string( envLogLevel );
+      if ( envLogLevel != LOG_LEVEL_UNKNOWN )
+        currentLogLevel = envLogLevel;
+    }
 
-    if ( logLevelToString( level ) < logLevel )
+    if ( currentLogLevel >= level )
     {
       stream << std::boolalpha
              << msg << std::endl;
     }
-
   }
 
-}
+
+#else
+  void Log::log( const std::string&,
+                 std::ostream&,
+                 const TLogLevel )
+  {
+  }
+
+  void Log::log( const std::string&,
+                 const TLogLevel )
+  {
+  }
+#endif
+
+
+
+} // namespace nsol
