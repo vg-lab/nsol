@@ -22,6 +22,7 @@
 #include <fstream>
 #include <sstream>
 #include <assert.h>
+#include <cctype>
 
 #include <map>
 #include <stack>
@@ -201,62 +202,85 @@ namespace nsol
       return nullptr;
     }
 
-    std::string line;
-    std::getline(inFile, line);
+    std::string lineString;
+    std::getline( inFile, lineString );
 
-    NsolVector<NodePtr> nodes;
+    NsolVector< NodePtr > nodes;
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
 
     std::map<unsigned int, TSwcLine> lines;
 
-    while (std::getline(inFile, line))
+    int lineCount = 0;
+
+    while ( std::getline( inFile, lineString ))
     {
+      lineCount++;
 
       // TODO: this does not cover the case the # char is not the first char
-      if (line[0] != '#')
+      if ( lineString[0] != '#' )
       {
-        std::istringstream iss(line);
 
-        TSwcLine swcLine;
-        iss >> swcLine.id;
-        iss >> swcLine.type;
-        iss >> swcLine.xyz[0] >> swcLine.xyz[1] >> swcLine.xyz[2];
-        iss >> swcLine.radius;
-        iss >> swcLine.parent;
+        // Trim spaces
+        lineString.erase( lineString.find_last_not_of( " \r\t") +1 );
+        unsigned int fields =
+          1 + std::count_if( lineString.begin( ), lineString.end( ),
+                             []( unsigned char c )
+                             {
+                               return std::isspace( c );
+                             });
 
-        lines[swcLine.id] = swcLine;
+        if ( fields < 7 )
+        {
+          Log::log( std::string( "Skipping lineString " ) +
+                    std::to_string( lineCount ) +
+                    std::string( ". Not enough fields found" ),
+                    LOG_LEVEL_WARNING );
+          continue;
+        }
+
+
+        std::istringstream iss(lineString);
+
+        TSwcLine swcLineString;
+        iss >> swcLineString.id;
+        iss >> swcLineString.type;
+        iss >> swcLineString.xyz[0]
+            >> swcLineString.xyz[1]
+            >> swcLineString.xyz[2];
+        iss >> swcLineString.radius;
+        iss >> swcLineString.parent;
+
+        lines[swcLineString.id] = swcLineString;
 
       }
     }
 
-    NSOL_CONST_FOREACH( it, lines )
+    for ( const auto& line : lines )
     {
-      if (it->second.parent != -1)
-      {
-        lines[it->second.parent].children.push_back(it->first);
-      }
+      if (line.second.parent != -1)
+        lines[line.second.parent].children.push_back( line.first );
     }
 
     std::vector<unsigned int> somaChildren;
     std::map<unsigned int, NodePtr > nodeSomaPtr;
 
-    NSOL_CONST_FOREACH( it, lines )
+    for ( const auto& line : lines )
     {
-      if (it->second.type == SWC_SOMA)
+      if (line.second.type == SWC_SOMA)
       {
         NodePtr node(
-          new NODE(it->second.xyz, it->second.id, it->second.radius) );
+          new NODE(line.second.xyz, line.second.id, line.second.radius) );
 
         if ( reposition_ )
           nodes.push_back( node );
 
         neuronMorphology->soma( )->addNode(node);
 
-        nodeSomaPtr[it->second.id] = node;
+        nodeSomaPtr[line.second.id] = node;
 
-        for (unsigned int i = 0; i < it->second.children.size( ); i++)
-          if (lines[it->second.children[i]].type != SWC_SOMA)
-            somaChildren.push_back(it->second.children[i]);
+        for (unsigned int i = 0; i < line.second.children.size( ); i++)
+          if (lines[line.second.children[i]].type != SWC_SOMA)
+            somaChildren.push_back(line.second.children[i]);
       }
     }
 

@@ -328,7 +328,7 @@ namespace nsol
         Log::log( std::string( "Warning: neuron with gid " ) +
                   std::to_string( neuron->gid( )) +
                   std::string( "already exists" ),
-                  NSOL_LOG_WARNING );
+                  LOG_LEVEL_WARNING );
       }
       else
         neurons[ neuron->gid( ) ] = neuron;
@@ -710,7 +710,7 @@ namespace nsol
                   Log::log( std::string( "Warning: neuron with gid " ) +
                             std::to_string( neuron->gid( )) +
                             std::string( "already exists" ),
-                            NSOL_LOG_WARNING );
+                            LOG_LEVEL_WARNING );
                 }
                 else
                   neurons[ neuron->gid( ) ] = neuron;
