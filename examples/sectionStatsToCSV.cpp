@@ -10,6 +10,28 @@
 #include <nsol/nsol.h>
 #include <stack>
 
+void GenerateRealIdToTestIdMap( std::map<int, int>& map_ )
+{
+  map_.insert( std::pair<int,int> (0,0) );
+  map_.insert( std::pair<int,int> (1,1) );
+  map_.insert( std::pair<int,int> (2,7) );
+  map_.insert( std::pair<int,int> (3,15) );
+  map_.insert( std::pair<int,int> (4,12) );
+  map_.insert( std::pair<int,int> (5,5) );
+  map_.insert( std::pair<int,int> (6,6) );
+  map_.insert( std::pair<int,int> (7,2) );
+  map_.insert( std::pair<int,int> (8,8) );
+  map_.insert( std::pair<int,int> (9,18) );
+  map_.insert( std::pair<int,int> (10,14) );
+  map_.insert( std::pair<int,int> (11,11) );
+  map_.insert( std::pair<int,int> (12,16) );
+  map_.insert( std::pair<int,int> (13,13) );
+  map_.insert( std::pair<int,int> (14,10) );
+  map_.insert( std::pair<int,int> (15,3) );
+  map_.insert( std::pair<int,int> (16,4) );
+  map_.insert( std::pair<int,int> (17,17) );
+  map_.insert( std::pair<int,int> (18,9) );
+}
 
 int main ( int argc, char ** argv )
 {
@@ -26,11 +48,11 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-  if ( argc < 4 )
+  if ( argc < 5 )
   {
     std::cerr << "Error. Usage: " << argv[0]
               << " swc_input_file csv_output_file"
-              << " dendrite_external id" << std::endl;
+              << " dendrite_external_id for_test" << std::endl;
     return -1;
   }
 
@@ -173,10 +195,16 @@ int main ( int argc, char ** argv )
   NSOL_FOREACH( neurite, neuronWithCachedStats->morphology( )->neurites( ))
   {
     //Generating CSV only for one neurite.
-
     std::ofstream ofs ( argv[2], std::ofstream::out );
 
     const char* dendrite_external_id = argv[3];
+
+    //Checks if section ids must be permuted for a validation test.
+    std::string for_test = argv[4];
+    bool permuteIds = ( for_test == "true" ) ? true : false;
+
+    std::map<int, int> realIdToTestId;
+    if ( permuteIds ) GenerateRealIdToTestIdMap(realIdToTestId);
 
     ofs << dendrite_external_id << ";"
         << "longitud;radio;area_superficie;volumen;ramas_hijas\n";
@@ -203,6 +231,7 @@ int main ( int argc, char ** argv )
     sSP.push( section );
 
     int k = 0;
+    int currentId = 0;
     while( !sSP.empty( ))
     {
       section = sSP.top( );
@@ -218,8 +247,10 @@ int main ( int argc, char ** argv )
       std::cout << "    Volumne " << section->stats( )->getStat(
           nsol::SectionStats::VOLUME ) << std::endl;
 
+      currentId = sectionPtrToId[section];
+      if( permuteIds ) currentId = realIdToTestId[currentId];
 
-      ofs << sectionPtrToId[section] << ";"
+      ofs << currentId << ";"
           << section->stats( )->getStat( nsol::SectionStats::LENGTH ) << ";"
           << section->stats( )->getStat( nsol::SectionStats::RADIUS,
                                          nsol::TAggregation::MEAN ) << ";"
@@ -231,7 +262,9 @@ int main ( int argc, char ** argv )
         NSOL_FOREACH( sec, section->children( ))
         {
           sSP.push( *sec );
-          ofs << sectionPtrToId[(*sec)] << " ";
+          currentId = sectionPtrToId[(*sec)];
+          if( permuteIds ) currentId = realIdToTestId[currentId];
+          ofs << currentId << " ";
         }
       }
 
