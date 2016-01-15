@@ -68,17 +68,29 @@ void ComputeAndPrint( nsol::NeuronPtr n,
       std::cout << " " << ( * it )->stats( )->getStat(
       nsol::NeuriteStats::BIFURCATIONS ) << " ";
 
-      ofs << "dendrita_" << i;
+      ofs << i << "_";
 
-      if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
+      if ( ( * it )->neuriteType( ) == nsol::Neurite::AXON )
       {
+        ofs << "axon";
+      }
+      else if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
+      {
+        ofs << "dendrita";
         nsol::Dendrite::TDendriteType dendriteType =
             NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ) )->dendriteType( );
         if(dendriteType == nsol::Dendrite::TDendriteType::APICAL)
         {
-          //Avoiding capital letters.
-          ofs << "_apical"; //<< dendriteType;
+          ofs << "_apical";
         }
+        else if(dendriteType == nsol::Dendrite::TDendriteType::BASAL)
+        {
+          ofs << "_basal";
+        }
+      }
+      else
+      {
+        ofs << "neurita";
       }
 
       ofs << ";"
