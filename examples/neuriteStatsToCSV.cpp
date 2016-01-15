@@ -33,6 +33,24 @@ void ComputeAndPrint( nsol::NeuronPtr n,
   ofs << neuronId << ";"
       << "longitud;area_superficie;volumen;num_bifurcaciones\n";
 
+  nsol::SomaPtr neuronSoma = n->morphology()->soma();
+  if(neuronSoma->stats())
+  {
+    std::cout << "\tSoma ";
+    std::cout << "surface: " <<
+      neuronSoma->stats( )->getStat( nsol::SomaStats::SURFACE ) << " "
+              << "volume: " <<
+      neuronSoma->stats( )->getStat( nsol::SomaStats::VOLUME ) <<
+    std::endl << std::endl;
+
+    ofs << "0_soma;"
+        << ";" //LENGTH
+        << neuronSoma->stats( )->getStat( nsol::SomaStats::SURFACE ) << ";"
+        << neuronSoma->stats( )->getStat( nsol::SomaStats::VOLUME ) << ";"
+        //BIFURCATIONS
+        << "\n";
+  }
+
   unsigned int i = 1;
 
   for ( auto it = n->morphology( )->neurites( ).begin( );
