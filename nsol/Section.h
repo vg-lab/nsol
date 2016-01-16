@@ -38,6 +38,24 @@ namespace nsol
     NSOL_API
     virtual ~Section( );
 
+#if 0
+    /// DISABLED DUE NAME COLLISION WITH:
+    /// void SectionCachedStats::setAndPropagateDirty( unsigned int id )
+    /**
+     * Method to get-set the section id.
+     * @return section id
+     */
+    NSOL_API
+    unsigned int & id( void );
+
+    /**
+     * Method to get the section id.
+     * @return reference to section id
+     */
+    NSOL_API
+    unsigned int id( void ) const;
+#endif
+
     /**
      * Gets the parent Neurite of the Section
      * @return pointer to the parent Neurite
@@ -136,6 +154,11 @@ namespace nsol
       return this;
     }
 
+
+  public:
+
+    //! Identifier of the section
+    uint16_t _id = 0;
 
   protected:
 
