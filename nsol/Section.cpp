@@ -36,6 +36,21 @@ namespace nsol
     // }
   }
 
+
+#if 0
+    /// DISABLED DUE NAME COLLISION WITH:
+    /// void SectionCachedStats::setAndPropagateDirty( unsigned int id )
+  unsigned int & Section::id(void)
+  {
+    return _id;
+  }
+
+  unsigned int Section::id(void) const
+  {
+    return _id;
+  }
+#endif
+
   NeuritePtr Section::neurite( void )
   {
     return _neurite;
