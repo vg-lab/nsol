@@ -29,6 +29,9 @@
 #include "../Dendrite.h"
 #include "../NeuronMorphology.h"
 #include "../Synapse.h"
+#include "../SynapseNeuriteToNeurite.h"
+#include "../SynapseNeuriteToSoma.h"
+#include "../SynapseSomaToSoma.h"
 #include "../Circuit.h"
 
 #include "SwcReader.h"
@@ -457,7 +460,8 @@ namespace nsol
                 SectionPtr parentSection = parents.top();
                 parents.pop();
 
-                SectionPtr section ( new SECTION );
+                SectionPtr section ( new SECTION ());
+                section->_id = lS->id();
                 if ( dendrite )
                 {
                   if ( ! dendrite->firstSection( ))
@@ -542,7 +546,7 @@ namespace nsol
     NSOL_FOREACH( column, columnMap )
       columns.push_back( column->second );
 
-    // << Treatment Circuit Data >>
+    //              << Treatment Circuit Data >>                //
     if(loadFlags | CIRCUIT)
     {
       std::cout << ": Loading Circuit Data ... " << std::endl;
@@ -555,20 +559,11 @@ namespace nsol
         // number of neurons it is the same that afferent synapses
         const bbp::Synapses &synapsesExpe = bbpNeuron->afferent_synapses();
 
-#if 0 TESTING_SYNAPSES
-        std::cout << "Number of Afferent Synapses " <<
-          bbpNeuron->afferent_synapses().size() << std::endl;
-        std::cout << "Number of Efferent Synapses " <<
-          bbpNeuron->efferent_synapses().size() << std::endl;
-        std::cout << std::endl;
-        std::cout << std::endl;
-#endif
-
         for (bbp::Synapses::const_iterator synapseIt = synapsesExpe.begin();
              synapseIt != synapsesExpe.end(); ++synapseIt)
         {
           nsol::SynapsePtr afferent_synapse = new nsol::Synapse(
-              Synapse::UNDEFINED, id );
+                                                    Synapse::UNDEFINED, id );
 
           const bbp::Synapse bbpSynapse = (*synapseIt);
           const bbp::Neuron* bbpPreSynNeuron =
@@ -579,31 +574,6 @@ namespace nsol
           Vec3f bbpPreSynPos  = bbpSynapse.preSynapticSurfacePosition();
           Vec3f bbpPostSynPos = bbpSynapse.postSynapticSurfacePosition();
 
-          // TODO: Treatment of synapse type
-#if 0 CALCULATE_SYNAPSE_TYPE
-          // Computing type of synapse...
-          if((bbpSynapse.presynaptic_section_id( ) != 0) &&
-             (bbpSynapse.postsynaptic_section_id( ) != 0))
-          {
-            //afferent_synapse = new nsol::SynapseNeuriteToNeurite(
-            //    Synapse::AXODENDRITIC, id );
-            afferent_synapse->synapseType( Synapse::AXODENDRITIC);
-          }
-          if((bbpSynapse.presynaptic_section_id( ) != 0) &&
-             (bbpSynapse.postsynaptic_section_id( ) == 0))
-          {
-            //afferent_synapse = new nsol::SynapseNeuriteToSoma(
-             //   Synapse::DENDROSOMATIC, id );
-            afferent_synapse->synapseType( Synapse::DENDROSOMATIC);
-          }
-          if((bbpSynapse.presynaptic_section_id( ) == 0) &&
-             (bbpSynapse.postsynaptic_section_id( ) == 0))
-          {
-            //afferent_synapse = new nsol::SynapseSomaToSoma(
-             //   Synapse::SOMATOSOMAL, id );
-            afferent_synapse->synapseType( Synapse::SOMATOSOMAL);
-          }
-#endif
 #if 0 TESTING_PROPERTIES_SYNAPSE
           std::cout << "Synapse Index " <<
             bbpSynapse.index() << std::endl;
@@ -630,18 +600,6 @@ namespace nsol
           std::cout << std::endl;
           std::cout << std::endl;
 #endif
-#if 0 TESTING_PROPERTIES_SYNAPSE
-          std::cout << "PreSynaptic Position " <<
-            bbpSynapse.presynaptic_position()<< std::endl;
-          std::cout << "PreSynaptic Surface Position " <<
-            bbpSynapse.preSynapticSurfacePosition()<< std::endl;
-          std::cout << "PostSynaptic Position " <<
-            bbpSynapse.postsynaptic_position()<< std::endl;
-          std::cout << "PostSynaptic Surface Position " <<
-            bbpSynapse.postSynapticSurfacePosition()<< std::endl;
-          std::cout << std::endl;
-          std::cout << std::endl;
-#endif
 
           std::map< const bbp::Neuron*, NeuronPtr >::iterator nitPre =
             neuronMap.find( bbpPreSynNeuron );
@@ -658,6 +616,191 @@ namespace nsol
             nsolPreSynNeuron  = nitPre->second;
             nsolPostSynNeuron = nitPost->second;
 
+
+#if 1 //@@1
+            // Treatment of synapse type:
+            // To pre-synaptic section...
+
+            bool isPreDentrite, isPreAxon, isPreSoma;
+            isPreDentrite = isPreAxon = false;
+            isPreSoma = true;
+
+            bool found = false;
+
+            nsol::SectionPtr nsolPreSynSection = nullptr;
+            unsigned int bbp_id_section = bbpSynapse.presynaptic_section_id();
+            std::cout <<" PRE SECTION:"
+                      <<"\n bbp_id_section= "<< bbp_id_section << std::endl;
+
+            nsol::Neurites neuritesPre = nsolPreSynNeuron->morphology()->neurites();
+            NSOL_FOREACH( neuriteIt, neuritesPre )
+            {
+                // if bbp_id_section == 0 then is pre-soma and there are not pre-section
+                if( found || (bbp_id_section == 0)) break;
+
+                const nsol::NeuritePtr neurite = (*neuriteIt);
+                nsol::Sections sections = neurite->sections();
+
+                NSOL_FOREACH( sectionIt, sections )
+                {
+                    const nsol::SectionPtr section = (*sectionIt);
+
+                    if( section->_id == bbp_id_section )
+                    {
+                        std::cout <<" BBP ID= "<< bbp_id_section
+                                  <<"\n NSOL ID= "<< section->_id << std::endl;
+
+                        found = true;
+                        nsolPreSynSection = section;
+
+                        switch(neurite->neuriteType())
+                        {
+                            case Neurite::DENDRITE:  isPreDentrite = true;
+                                                     isPreSoma = false;
+                            break;
+                            case Neurite::AXON: isPreAxon = true;
+                                                isPreSoma = false;
+                            break;
+                            default: break;
+                        }
+                        break;
+                    }
+                }// for all sections of one neurite
+            }// for all neurites
+
+            // To post-synaptic section...
+            bool isPostDentrite, isPostAxon, isPostSoma;
+            isPostDentrite = isPostAxon = false;
+            isPostSoma = true;
+
+            found = false;
+
+            nsol::SectionPtr nsolPostSynSection = nullptr;
+            bbp_id_section = bbpSynapse.postsynaptic_section_id();
+            std::cout <<" POST SECTION:"
+                      <<"\n bbp_id_section= "<< bbp_id_section << std::endl;
+
+            nsol::Neurites neuritesPost = nsolPostSynNeuron->morphology()->neurites();
+            NSOL_FOREACH( neuriteIt, neuritesPost )
+            {
+                // if bbp_id_section == 0 then is post-soma and there are not post-section
+                if( found || (bbp_id_section == 0)) break;
+
+                const nsol::NeuritePtr neurite = (*neuriteIt);
+                nsol::Sections sections = neurite->sections();
+
+                NSOL_FOREACH( sectionIt, sections )
+                {
+                    const nsol::SectionPtr section = (*sectionIt);
+
+                    if( section->_id == bbp_id_section )
+                    {
+                        std::cout <<" BBP ID= "<< bbp_id_section
+                                  <<"\n NSOL ID= "<< section->_id << std::endl;
+
+                        found = true;
+                        nsolPostSynSection = section;
+
+                        switch(neurite->neuriteType())
+                        {
+                            case Neurite::DENDRITE:  isPostDentrite = true;
+                                                     isPostSoma = false;
+                            break;
+                            case Neurite::AXON: isPostAxon = true;
+                                                isPostSoma = false;
+                            break;
+                            default: break;
+                        }
+                        break;
+                    }
+                }// for all sections of one neurite
+            }// for all neurites
+
+            // Checking type of synapse...
+            if( isPreDentrite ) // 1º Checkup
+            {
+                if( isPostDentrite )
+                {
+                    nsol::SynapseNeuriteToNeuritePtr synapse =
+                                            new nsol::SynapseNeuriteToNeurite
+                                                (Synapse::DENDRODENDRITIC, id);
+                    synapse->preSynapticSection( nsolPreSynSection );
+                    synapse->postSynapticSection( nsolPostSynSection );
+
+                    std::cout <<" DENDRODENDRITIC \n";
+
+                    afferent_synapse = synapse;
+                }else
+                {
+                    if( isPostSoma )
+                    {
+                        nsol::SynapseNeuriteToSomaPtr synapse =
+                                                new nsol::SynapseNeuriteToSoma
+                                                    (Synapse::DENDROSOMATIC, id);
+                        synapse->preSynapticSection( nsolPreSynSection );
+
+                        std::cout <<" DENDROSOMATIC \n";
+
+                        afferent_synapse = synapse;
+                    }
+                }
+            }
+            if( isPreAxon ) // 2º Checkup
+            {
+                if( isPostDentrite )
+                {
+                    nsol::SynapseNeuriteToNeuritePtr synapse =
+                                            new nsol::SynapseNeuriteToNeurite
+                                                (Synapse::AXODENDRITIC, id);
+                    synapse->preSynapticSection( nsolPreSynSection );
+                    synapse->postSynapticSection( nsolPostSynSection );
+
+                    std::cout <<" AXODENDRITIC \n";
+
+                    afferent_synapse = synapse;
+                }else
+                {
+                    if( isPostSoma )
+                    {
+                        nsol::SynapseNeuriteToSomaPtr synapse =
+                                                new nsol::SynapseNeuriteToSoma
+                                                    (Synapse::AXOSOMATIC, id);
+                        synapse->preSynapticSection( nsolPreSynSection );
+
+                        std::cout <<" AXOSOMATIC \n";
+
+                        afferent_synapse = synapse;
+                    }else
+                    {
+                        if( isPostAxon )
+                        {
+                            nsol::SynapseNeuriteToNeuritePtr synapse =
+                                                    new nsol::SynapseNeuriteToNeurite
+                                                        (Synapse::AXOAXONIC, id);
+                            synapse->preSynapticSection( nsolPreSynSection );
+                            synapse->postSynapticSection( nsolPostSynSection );
+
+                            std::cout <<" AXOAXONIC \n";
+
+                            afferent_synapse = synapse;
+                        }
+                    }
+                }
+            }
+            if( isPreSoma ) // 3º Checkup
+                if( isPostSoma )
+                {
+                    nsol::SynapseSomaToSomaPtr synapse =
+                                            new nsol::SynapseSomaToSoma( id );
+
+                    std::cout <<" SOMATOSOMAL \n";
+
+                    afferent_synapse = synapse;
+                }
+
+            std::cout << std::endl;
+
+#endif //@@1
             // We have to build a nsol Neurons using a BBPSDK Neuron.
             afferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
             afferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
@@ -667,8 +810,8 @@ namespace nsol
             circuit.addConnection(afferent_synapse);
           }
           id++;
-        }
-      }
+        }// all synapses of a neuron
+      }// all neurons
     }//circuit data
 
     // close experiment and free its resources
