@@ -35,13 +35,17 @@ int main ( int argc, char *argv[] )
 	bbpReader.readFromBlueConfig( columns,
 								  circuit,
 								  argv[1],
-								  LoadFlags::CIRCUIT );
+                                  LoadFlags::CIRCUIT | LoadFlags::MORPHOLOGY |
+                                  LoadFlags::HIERARCHY);
 
 	 cout << " EXECUTING CircuitLoader... " << endl;
 	 cout << endl; cout << endl; cout << endl;
 
 	 if( !columns.empty() )
 	 {
+         cout << "Synapses of the circuit: " << endl;
+         cout << endl;
+
 		 //cout << "Circuit with id" << circuit.id() << endl;
 		 set<SynapsePtr> synapses = circuit.connections();
 
@@ -184,9 +188,6 @@ int main ( int argc, char *argv[] )
 		 }
 
      cout << "Number of synapses: " << synapses.size() <<endl;
-     cout << endl;
-
-     cout << "Synapses of the circuit: " << endl;
      cout << endl;
 
 		 // Free resources
