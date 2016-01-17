@@ -24,6 +24,7 @@
 #include <map>
 #include <set>
 #include <dirent.h>
+#include <math.h>
 
 #include "../NsolTypes.h"
 #include "../Dendrite.h"
@@ -616,11 +617,9 @@ namespace nsol
             nsolPreSynNeuron  = nitPre->second;
             nsolPostSynNeuron = nitPost->second;
 
-
-#if 1 //@@1
-            // Treatment of synapse type:
+            // *** Treatment of synapse type:
+            // Computing synaptic-sections:
             // To pre-synaptic section...
-
             bool isPreDentrite, isPreAxon, isPreSoma;
             isPreDentrite = isPreAxon = false;
             isPreSoma = true;
@@ -629,7 +628,7 @@ namespace nsol
 
             nsol::SectionPtr nsolPreSynSection = nullptr;
             unsigned int bbp_id_section = bbpSynapse.presynaptic_section_id();
-            std::cout <<" PRE SECTION:"
+            std::cout <<" [PRE SECTION]:"
                       <<"\n bbp_id_section= "<< bbp_id_section << std::endl;
 
             nsol::Neurites neuritesPre = nsolPreSynNeuron->morphology()->neurites();
@@ -677,7 +676,7 @@ namespace nsol
 
             nsol::SectionPtr nsolPostSynSection = nullptr;
             bbp_id_section = bbpSynapse.postsynaptic_section_id();
-            std::cout <<" POST SECTION:"
+            std::cout <<" [POST SECTION]:"
                       <<"\n bbp_id_section= "<< bbp_id_section << std::endl;
 
             nsol::Neurites neuritesPost = nsolPostSynNeuron->morphology()->neurites();
@@ -716,6 +715,75 @@ namespace nsol
                 }// for all sections of one neurite
             }// for all neurites
 
+            // Computing synaptic-nodes:
+            // To pre-synaptic node...
+            nsol::NodePtr nsolPreSynNode = nullptr;
+            nsol::Nodes nodesPre = nsolPreSynNeuron->morphology()
+                                                   ->soma()->nodes();
+            if(nsolPreSynSection != nullptr)
+            {
+                nodesPre = nsolPreSynSection->middleNodes();
+                nodesPre.push_back(nsolPreSynSection->firstNode());
+                nodesPre.push_back(nsolPreSynSection->lastNode());
+            }
+
+            Vec3f bbpPreSynCenterPos  = bbpSynapse.presynaptic_position();
+            float distance = 10000000;
+            NSOL_FOREACH( nodeIt, nodesPre )
+            {
+                const nsol::NodePtr node = (*nodeIt);
+                Vec3f posNode = node->point();
+                Vec3f p_ = bbpPreSynCenterPos;
+                float distActual = std::sqrt(pow((p_.x()-posNode.x()), 2)+
+                                             pow((p_.y()-posNode.y()), 2)+
+                                             pow((p_.z()-posNode.z()), 2));
+                if(distActual < distance)
+                {
+                    distance = distActual;
+                    nsolPreSynNode = node;
+                }
+            }
+
+            std::cout <<" [PRE NODE]:"<<
+                        "\n bbpPreSynCenterPos= "<< bbpPreSynCenterPos <<
+                        "\n Distance= "<< distance <<
+                        "\n Ref node= " << nsolPreSynNode <<
+                        "\n Pos node= " << nsolPreSynNode->point() << std::endl;
+
+            // To post-synaptic node...
+            nsol::NodePtr nsolPostSynNode = nullptr;
+            nsol::Nodes nodesPost = nsolPostSynNeuron->morphology()
+                                                     ->soma()->nodes();
+            if(nsolPostSynSection != nullptr)
+            {
+                nodesPost = nsolPostSynSection->middleNodes();
+                nodesPost.push_back(nsolPostSynSection->firstNode());
+                nodesPost.push_back(nsolPostSynSection->lastNode());
+            }
+
+            Vec3f bbpPostSynCenterPos  = bbpSynapse.postsynaptic_position();
+            distance = 10000000;
+            NSOL_FOREACH( nodeIt, nodesPost )
+            {
+                const nsol::NodePtr node = (*nodeIt);
+                Vec3f posNode = node->point();
+                Vec3f p_ = bbpPostSynCenterPos;
+                float distActual = std::sqrt(pow((p_.x()-posNode.x()), 2)+
+                                             pow((p_.y()-posNode.y()), 2)+
+                                             pow((p_.z()-posNode.z()), 2));
+                if(distActual < distance)
+                {
+                    distance = distActual;
+                    nsolPostSynNode = node;
+                }
+            }
+
+            std::cout <<" [POST NODE]:"<<
+                        "\n bbpPostSynCenterPos= "<< bbpPostSynCenterPos <<
+                        "\n Distance= "<< distance <<
+                        "\n Ref node= " << nsolPostSynNode <<
+                        "\n Pos node= " << nsolPostSynNode->point() << std::endl;
+
             // Checking type of synapse...
             if( isPreDentrite ) // 1º Checkup
             {
@@ -727,8 +795,10 @@ namespace nsol
                     synapse->preSynapticSection( nsolPreSynSection );
                     synapse->postSynapticSection( nsolPostSynSection );
 
-                    std::cout <<" DENDRODENDRITIC \n";
+                    synapse->preSynapticNode( nsolPreSynNode );
+                    synapse->postSynapticNode( nsolPostSynNode );
 
+                    std::cout <<" DENDRODENDRITIC \n";
                     afferent_synapse = synapse;
                 }else
                 {
@@ -739,8 +809,10 @@ namespace nsol
                                                     (Synapse::DENDROSOMATIC, id);
                         synapse->preSynapticSection( nsolPreSynSection );
 
-                        std::cout <<" DENDROSOMATIC \n";
+                        synapse->preSynapticNode( nsolPreSynNode );
+                        synapse->postSynapticNode( nsolPostSynNode );
 
+                        std::cout <<" DENDROSOMATIC \n";
                         afferent_synapse = synapse;
                     }
                 }
@@ -755,8 +827,10 @@ namespace nsol
                     synapse->preSynapticSection( nsolPreSynSection );
                     synapse->postSynapticSection( nsolPostSynSection );
 
-                    std::cout <<" AXODENDRITIC \n";
+                    synapse->preSynapticNode( nsolPreSynNode );
+                    synapse->postSynapticNode( nsolPostSynNode );
 
+                    std::cout <<" AXODENDRITIC \n";
                     afferent_synapse = synapse;
                 }else
                 {
@@ -767,8 +841,10 @@ namespace nsol
                                                     (Synapse::AXOSOMATIC, id);
                         synapse->preSynapticSection( nsolPreSynSection );
 
-                        std::cout <<" AXOSOMATIC \n";
+                        synapse->preSynapticNode( nsolPreSynNode );
+                        synapse->postSynapticNode( nsolPostSynNode );
 
+                        std::cout <<" AXOSOMATIC \n";
                         afferent_synapse = synapse;
                     }else
                     {
@@ -780,8 +856,10 @@ namespace nsol
                             synapse->preSynapticSection( nsolPreSynSection );
                             synapse->postSynapticSection( nsolPostSynSection );
 
-                            std::cout <<" AXOAXONIC \n";
+                            synapse->preSynapticNode( nsolPreSynNode );
+                            synapse->postSynapticNode( nsolPostSynNode );
 
+                            std::cout <<" AXOAXONIC \n";
                             afferent_synapse = synapse;
                         }
                     }
@@ -792,15 +870,15 @@ namespace nsol
                 {
                     nsol::SynapseSomaToSomaPtr synapse =
                                             new nsol::SynapseSomaToSoma( id );
+                    synapse->preSynapticNode( nsolPreSynNode );
+                    synapse->postSynapticNode( nsolPostSynNode );
 
                     std::cout <<" SOMATOSOMAL \n";
-
                     afferent_synapse = synapse;
                 }
 
             std::cout << std::endl;
 
-#endif //@@1
             // We have to build a nsol Neurons using a BBPSDK Neuron.
             afferent_synapse->preSynapticNeuron(nsolPreSynNeuron);
             afferent_synapse->postSynapticNeuron(nsolPostSynNeuron);
