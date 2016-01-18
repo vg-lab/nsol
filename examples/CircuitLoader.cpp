@@ -52,61 +52,200 @@ int main ( int argc, char *argv[] )
 		 int numberSynapse = 0;
 		 NSOL_FOREACH( synapseIt, synapses )
 		 {
+             SynapsePtr synapse = (*synapseIt);
+
 			 NeuronPtr preSynNeuron  = nullptr;
 			 NeuronPtr postSynNeuron = nullptr;
 
-			 preSynNeuron  = (*synapseIt)->preSynapticNeuron();
-			 postSynNeuron = (*synapseIt)->postSynapticNeuron();
+             preSynNeuron  = synapse->preSynapticNeuron();
+             postSynNeuron = synapse->postSynapticNeuron();
 
-			 Vec3f preSynPos  =(*synapseIt)->preSynapticSurfacePosition();
-			 Vec3f postSynPos =(*synapseIt)->postSynapticSurfacePosition();
+             SectionPtr preSynSection  = nullptr;
+             SectionPtr postSynSection = nullptr;
 
-			 cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
-			 cout << " - ID : " <<  (*synapseIt)->id()<< endl;
+             NodePtr preSynNode  = nullptr;
+             NodePtr postSynNode = nullptr;
+
+             Vec3f preSynPos  = synapse->preSynapticSurfacePosition();
+             Vec3f postSynPos = synapse->postSynapticSurfacePosition();
+
+             cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
+             cout << " - ID : " <<  synapse->id()<< endl;
 #if 1 TESTING_PRINT_LITERAL
-			  switch((*synapseIt)->synapseType())
+             SynapseNeuriteToNeuritePtr syn1 = nullptr;
+             SynapseNeuriteToSomaPtr    syn2 = nullptr;
+             SynapseSomaToSomaPtr       syn3 = nullptr;
+              switch(synapse->synapseType())
 			  {
 			  	  case 	Synapse::DENDRODENDRITIC:
-			  		    cout << " - Type: DENDRODENDRITIC" << endl;
+                        cout << " - Type: DENDRODENDRITIC" << endl;
+                        syn1 = dynamic_cast<SynapseNeuriteToNeuritePtr>(synapse);
+                        preSynSection = syn1->preSynapticSection();
+                        postSynSection = syn1->postSynapticSection();
+
+                        preSynNode = syn1->preSynapticNode();
+                        postSynNode = syn1->postSynapticNode();
+
+                        cout << " - [Presynaptic Section] id: "
+                             << preSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << preSynSection->middleNodes().size()<< endl;
+                        cout << " - [Postsynaptic Section] id: "
+                             << postSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << postSynSection->middleNodes().size()<< endl;
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  case	Synapse::AXODENDRITIC:
-			  		    cout << " - Type: AXODENDRITIC" << endl;
+                        cout << " - Type: AXODENDRITIC" << endl;
+                        syn1 = dynamic_cast<SynapseNeuriteToNeuritePtr>(synapse);
+                        preSynSection = syn1->preSynapticSection();
+                        postSynSection = syn1->postSynapticSection();
+
+                        preSynNode = syn1->preSynapticNode();
+                        postSynNode = syn1->postSynapticNode();
+
+                        cout << " - [Presynaptic Section] id: "
+                             << preSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << preSynSection->middleNodes().size()<< endl;
+                        cout << " - [Postsynaptic Section] id: "
+                             << postSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << postSynSection->middleNodes().size()<< endl;
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  case	Synapse::AXOAXONIC:
-			  		    cout << " - Type: AXOAXONIC" << endl;
+                        cout << " - Type: AXOAXONIC" << endl;
+                        syn1= dynamic_cast<SynapseNeuriteToNeuritePtr>(synapse);
+                        preSynSection = syn1->preSynapticSection();
+                        postSynSection = syn1->postSynapticSection();
+
+                        preSynNode = syn1->preSynapticNode();
+                        postSynNode = syn1->postSynapticNode();
+
+                        cout << " - [Presynaptic Section] id: "
+                             << preSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << preSynSection->middleNodes().size()<< endl;
+                        cout << " - [Postsynaptic Section] id: "
+                             << postSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << postSynSection->middleNodes().size()<< endl;
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  case	Synapse::SOMATOSOMAL:
-			  		    cout << " - Type: SOMATOSOMAL" << endl;
+                        cout << " - Type: SOMATOSOMAL" << endl;
+                        syn3 = dynamic_cast<SynapseSomaToSomaPtr>(synapse);
+                        preSynNode = syn3->preSynapticNode();
+                        postSynNode = syn3->postSynapticNode();
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  case	Synapse::AXOSOMATIC:
-			  		    cout << " - Type: AXOSOMATIC" << endl;
+                        cout << " - Type: AXOSOMATIC" << endl;
+                        syn2 = dynamic_cast<SynapseNeuriteToSomaPtr>(synapse);
+                        preSynSection = syn2->preSynapticSection();
+
+                        preSynNode = syn2->preSynapticNode();
+                        postSynNode = syn2->postSynapticNode();
+
+                        cout << " - [Presynaptic Section] id: "
+                             << preSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << preSynSection->middleNodes().size()<< endl;
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  case	Synapse::DENDROSOMATIC:
-			  		    cout << " - Type: DENDROSOMATIC" << endl;
+                        cout << " - Type: DENDROSOMATIC" << endl;
+                        syn2 = dynamic_cast<SynapseNeuriteToSomaPtr>(synapse);
+                        preSynSection = syn2->preSynapticSection();
+
+                        preSynNode = syn2->preSynapticNode();
+                        postSynNode = syn2->postSynapticNode();
+
+                        cout << " - [Presynaptic Section] id: "
+                             << preSynSection->_id << endl;
+                        cout << " nº middle nodes: "
+                             << preSynSection->middleNodes().size()<< endl;
+
+                        cout << " - [Presynaptic Node] id: "
+                             << preSynNode->id() << endl;
+                        cout << " postion: "
+                             << preSynNode->point() << endl;
+                        cout << " - [Postsynaptic Node] id: "
+                             << postSynNode->id() << endl;
+                        cout << " postion: "
+                             << postSynNode->point() << endl;
+
 			  		    break;
 			  	  default:
-			  		    cout<< "synapse type not consistent"<< endl;
+                        cout<< "synapse type not consistent"<< endl;
 			  		    break;
 			  }
 #else
-			 cout << " - Type : " <<  int((*synapseIt)->synapseType())<< endl;
+             cout << " - Type : " <<  int(synapse->synapseType())<< endl;
 #endif
 
-			 cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid()<< endl;
+             cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
 		switch(preSynNeuron->morphologicalType( ))
 					  {
 					  	  case 	Neuron::UNDEFINED:
-					  		    cout << " morphological type: UNDEFINED " << endl;
+                                cout << " morphological type: UNDEFINED " << endl;
 					  		    break;
 					  	  case	Neuron::INTERNEURON:
-					  		    cout << " morphological type: INTERNEURON " << endl;
+                                cout << " morphological type: INTERNEURON " << endl;
 					  		    break;
 					  	  case Neuron::PYRAMIDAL:
-					  		    cout << " morphological type: PYRAMIDAL " << endl;
+                                cout << " morphological type: PYRAMIDAL " << endl;
 								break;
 					  	  default:
-					  		    cout<< "neuron morphological type not consistent"<< endl;
+                                cout<< "neuron morphological type not consistent"<< endl;
 					  		    break;
 					  }
 #else
@@ -137,7 +276,7 @@ int main ( int argc, char *argv[] )
 #endif
 
 
-			 cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid()<< endl;
+             cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
     switch(postSynNeuron->morphologicalType( ))
             {
@@ -180,9 +319,10 @@ int main ( int argc, char *argv[] )
       cout << " functional type: " << int(postSynNeuron->functionalType( ))
            << endl;
 #endif
-			    cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;
-			    cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;
-			    cout << endl;
+
+            cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;
+            cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;
+            cout << endl;
 
 			 numberSynapse++;
 		 }
@@ -196,7 +336,7 @@ int main ( int argc, char *argv[] )
 		 return 0;
 	 }
 
-	 cout << "Error: columns is empty. " << endl;
+     cout << "Error: columns is empty. " << endl;
 	 return -1;
 } // namespace nsol
 
