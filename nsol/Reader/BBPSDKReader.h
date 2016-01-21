@@ -727,16 +727,21 @@ namespace nsol
                 nodesPre.push_back(nsolPreSynSection->lastNode());
             }
 
-            Vec3f bbpPreSynCenterPos  = bbpSynapse.presynaptic_position();
+            Vec3f bbpPreSynCenterPos  = bbpSynapse.preSynapticSurfacePosition();
+            nsol::Matrix4_4f modelPre = nsolPreSynNeuron->transform();
             float distance = 10000000;
             NSOL_FOREACH( nodeIt, nodesPre )
             {
                 const nsol::NodePtr node = (*nodeIt);
                 Vec3f posNode = node->point();
+
+                nsol::Vec4f pt = modelPre * nsol::Vec4f(posNode, 1.f);
+                pt = pt/pt.w();
+
                 Vec3f p_ = bbpPreSynCenterPos;
-                float distActual = std::sqrt(pow((p_.x()-posNode.x()), 2)+
-                                             pow((p_.y()-posNode.y()), 2)+
-                                             pow((p_.z()-posNode.z()), 2));
+                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+                                             pow((p_.y()-pt.y()), 2)+
+                                             pow((p_.z()-pt.z()), 2));
                 if(distActual < distance)
                 {
                     distance = distActual;
@@ -761,16 +766,21 @@ namespace nsol
                 nodesPost.push_back(nsolPostSynSection->lastNode());
             }
 
-            Vec3f bbpPostSynCenterPos  = bbpSynapse.postsynaptic_position();
+            Vec3f bbpPostSynCenterPos  = bbpSynapse.postSynapticSurfacePosition();
+            nsol::Matrix4_4f modelPost = nsolPostSynNeuron->transform();
             distance = 10000000;
             NSOL_FOREACH( nodeIt, nodesPost )
             {
                 const nsol::NodePtr node = (*nodeIt);
                 Vec3f posNode = node->point();
+
+                nsol::Vec4f pt = modelPost * nsol::Vec4f(posNode, 1.f);
+                pt = pt/pt.w();
+
                 Vec3f p_ = bbpPostSynCenterPos;
-                float distActual = std::sqrt(pow((p_.x()-posNode.x()), 2)+
-                                             pow((p_.y()-posNode.y()), 2)+
-                                             pow((p_.z()-posNode.z()), 2));
+                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+                                             pow((p_.y()-pt.y()), 2)+
+                                             pow((p_.z()-pt.z()), 2));
                 if(distActual < distance)
                 {
                     distance = distActual;
