@@ -15,12 +15,12 @@ void GenerateRealIdToTestIdMap( std::map<int, int>& map_ )
   map_.insert( std::pair<int,int> (0,0) );
   map_.insert( std::pair<int,int> (1,1) );
   map_.insert( std::pair<int,int> (2,7) );
-  map_.insert( std::pair<int,int> (3,15) );
-  map_.insert( std::pair<int,int> (4,12) );
-  map_.insert( std::pair<int,int> (5,5) );
-  map_.insert( std::pair<int,int> (6,6) );
-  map_.insert( std::pair<int,int> (7,2) );
-  map_.insert( std::pair<int,int> (8,8) );
+  map_.insert( std::pair<int,int> (3,6) );
+  map_.insert( std::pair<int,int> (4,2) );
+  map_.insert( std::pair<int,int> (5,8) );
+  map_.insert( std::pair<int,int> (6,15) );
+  map_.insert( std::pair<int,int> (7,12) );
+  map_.insert( std::pair<int,int> (8,5) );
   map_.insert( std::pair<int,int> (9,18) );
   map_.insert( std::pair<int,int> (10,14) );
   map_.insert( std::pair<int,int> (11,11) );
