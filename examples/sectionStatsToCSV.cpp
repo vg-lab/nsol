@@ -207,7 +207,7 @@ int main ( int argc, char ** argv )
     if ( permuteIds ) GenerateRealIdToTestIdMap(realIdToTestId);
 
     ofs << dendrite_external_id << ";"
-        << "longitud;radio;area_superficie;volumen;ramas_hijas\n";
+        << "longitud;radio;area_superficie;volumen;secciones_hijas\n";
 
     std::cout << "Neurite " << j << std::endl;
 
