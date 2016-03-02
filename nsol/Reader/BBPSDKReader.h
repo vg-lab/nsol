@@ -124,8 +124,7 @@ namespace nsol
           Sections sections = ( *neurite )->sections( );
           NSOL_FOREACH( section, sections )
           {
-            delete ( *section )->lastNode( );
-            NSOL_FOREACH( node, (*section)->middleNodes( ))
+            NSOL_FOREACH( node, (*section)->nodes( ))
             {
               delete *node;
             }

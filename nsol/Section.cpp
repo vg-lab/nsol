@@ -15,10 +15,8 @@ namespace nsol
   Section::Section( void )
     : _neurite( nullptr )
     , _parent( nullptr )
-    , _firstNode( nullptr )
-    , _lastNode( nullptr )
   {
-    _middleNodes.clear( );
+    _nodes.clear( );
   }
 
   Section::~Section( void )
@@ -57,7 +55,7 @@ namespace nsol
     {
       _parent = newParent;
       if( _parent->lastNode() )
-        _firstNode = _parent->lastNode( );
+        firstNode( _parent->lastNode( ));
     }
   }
 
@@ -78,37 +76,41 @@ namespace nsol
   }
 
 
-  Nodes & Section::middleNodes( void )
+  Nodes & Section::nodes( void )
   {
-    return _middleNodes;
+    return _nodes;
   }
 
-  const Nodes & Section::middleNodes( void ) const
+  const Nodes & Section::nodes( void ) const
   {
-    return _middleNodes;
+    return _nodes;
   }
 
 
   void Section::addNode( NodePtr node )
   {
-    if ( _lastNode )
-      _middleNodes.push_back( _lastNode );
-    _lastNode = node;
+    if ( node )
+      _nodes.push_back( node );
   }
 
   NodePtr Section::firstNode( void )
   {
-    return _firstNode;
+    if ( _nodes.size( ) > 0 )
+      return _nodes[0];
+    return nullptr;
   }
 
   void Section::firstNode( NodePtr firstNode_ )
   {
-    _firstNode = firstNode_;
+    if ( firstNode_ )
+      _nodes.insert( _nodes.begin( ), firstNode_ );
   }
 
   NodePtr Section::lastNode( void )
   {
-    return _lastNode;
+    if( _nodes.size( ) > 0 )
+      return _nodes.back( );
+    return nullptr;
   }
 
   SectionStats * Section::stats( void )

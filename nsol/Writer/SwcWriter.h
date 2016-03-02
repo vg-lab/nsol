@@ -122,17 +122,15 @@ namespace nsol
           SectionPtr lS = sPS.top();
           sPS.pop();
 
-          parent = lS->firstNode( )->id();
-          NSOL_FOREACH( node, lS->middleNodes() )
+          NSOL_FOREACH( node, lS->nodes() )
           {
-
-            nodePtrMap[( *node )->id( )] = *node;
-            nodeParentId[( *node )->id( )] = parent;
-
+            if ( (*node) != lS->firstNode( ) )
+            {
+              nodePtrMap[( *node )->id( )] = *node;
+              nodeParentId[( *node )->id( )] = parent;
+            }
             parent = ( *node )->id( );
           }
-          nodePtrMap[ lS->lastNode( )->id( )] = lS->lastNode( );
-          nodeParentId[ lS->lastNode( )->id( ) ] = parent;
 
           if (lS->children().size() > 0)
             for (unsigned int i = 0; i < lS->children().size(); ++i)
