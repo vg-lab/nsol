@@ -34,14 +34,15 @@ namespace nsol
     {
       NSOL_FOREACH( neurite, ( *morphology )->neurites( ))
       {
-        Sections sections = ( *neurite )->sections( );
         delete ( *neurite )->firstSection( )->firstNode( );
+        Sections sections = ( *neurite )->sections( );
         NSOL_FOREACH( section, sections )
         {
-          Nodes nodes = ( *section )->middleNodes( );
+          Nodes nodes = ( *section )->nodes( );
           NSOL_FOREACH( node, nodes )
           {
-            delete *node;
+            if( *node != ( *section )->firstNode( ))
+              delete *node;
           }
           delete ( *section )->lastNode( );
           delete *section;
