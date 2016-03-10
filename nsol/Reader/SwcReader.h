@@ -151,6 +151,8 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
     const char *fileName, bool reposition_ )
   {
+    std::cerr << "SwcReader< >::readNeuron is deprecated. "
+              << "Please use BrainReader< >::loadNeuron" << std::endl;
     return this->readNeuron(std::string(fileName), reposition_ );
   }
 
@@ -161,6 +163,8 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
     const std::string fileName, bool reposition_ )
   {
+    std::cerr << "SwcReader< >::readNeuron is deprecated. "
+              << "Please use BrainReader< >::loadNeuron" << std::endl;
     NeuronMorphologyPtr nm = this->readMorphology( std::string( fileName ),
         reposition_ );
 
@@ -181,6 +185,8 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
     const char * fileName, bool reposition_ )
   {
+    std::cerr << "SwcReader< >::readMorphology is deprecated. "
+              << "Please use BrainReader< >::loadMorphology" << std::endl;
     return this->readMorphology(std::string(fileName), reposition_ );
   }
 
@@ -191,6 +197,8 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
     const std::string fileName, bool reposition_ )
   {
+    std::cerr << "SwcReader< >::readMorphology is deprecated. "
+              << "Please use BrainReader< >::loadMorphology" << std::endl;
     std::ifstream inFile;
     inFile.open(fileName, std::ios::in);
 

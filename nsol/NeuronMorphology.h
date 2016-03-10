@@ -20,6 +20,8 @@
 #include "Container/Neurites.h"
 #include "Container/Neurons.h"
 
+#include <string>
+
 namespace nsol
 {
 
@@ -41,10 +43,21 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
+    NeuronMorphology( void );
+
+    NSOL_API
     NeuronMorphology( SomaPtr soma );
 
     NSOL_API
     virtual ~NeuronMorphology( void );
+
+    /**
+     * Method to set the neuronal soma.
+     * @param soma pointer to the soma to be setted.
+     * @return pointer to the setted soma
+     */
+    NSOL_API
+    SomaPtr soma( SomaPtr soma );
 
     /**
      * Method to add a new neurite to the neuron.
@@ -126,10 +139,9 @@ namespace nsol
 
   protected:
 
-    Soma * _soma;
+    SomaPtr _soma;
     Neurites _neurites;
     Neurons _parentNeurons;
-
   };
 
 

@@ -1,6 +1,6 @@
 /**
- * @file    Node.cpp
- * @brief   Test for class nsol::Node
+ * @file    Neuron.cpp
+ * @brief   Test for class nsol::Neuron
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
@@ -35,5 +35,25 @@ BOOST_AUTO_TEST_CASE( neuron_constructor )
     BOOST_CHECK_EQUAL( neuron.morphologicalType( ), Neuron::PYRAMIDAL );
     BOOST_CHECK_EQUAL( neuron.functionalType( ),
         Neuron::INHIBITORY );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( neuron_type )
+{
+  {
+    Neuron neuron( nullptr, 1, 1, Matrix4_4f::IDENTITY, nullptr,
+                   Neuron::PYRAMIDAL, Neuron::INHIBITORY );
+    BOOST_CHECK_EQUAL( neuron.isPyramidal(), true );
+    BOOST_CHECK_EQUAL( neuron.isInterneuron(), false );
+    BOOST_CHECK_EQUAL( neuron.isExcitatory(), false );
+    BOOST_CHECK_EQUAL( neuron.isInhibitory(), true );
+  }
+  {
+    Neuron neuron( nullptr, 1, 1, Matrix4_4f::IDENTITY, nullptr,
+                   Neuron::INTERNEURON, Neuron::EXCITATORY );
+    BOOST_CHECK_EQUAL( neuron.isPyramidal(), false );
+    BOOST_CHECK_EQUAL( neuron.isInterneuron(), true );
+    BOOST_CHECK_EQUAL( neuron.isExcitatory(), true );
+    BOOST_CHECK_EQUAL( neuron.isInhibitory(), false );
   }
 }

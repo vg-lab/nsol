@@ -81,6 +81,9 @@ namespace nsol
     NSOL_API
     bool hasMorphology() const;
 
+    NSOL_API
+    bool isMorphologyLoaded( ) const;
+
     // NSOL_API
     // NeuronMorphologyPtr createMorphology( void );
 
@@ -190,8 +193,6 @@ namespace nsol
     TFunctionalType _functionalType;
 
   };
-
- 
 }
 
 #endif

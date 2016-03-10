@@ -15,6 +15,7 @@ namespace nsol
   Soma::Soma( )
     : _center( Vec3f( 0.0f, 0.0f, 0.0f ))
     , _maxRadius( 0.0f )
+    , _meanRadius( 0.0f )
   {
   }
 
@@ -41,6 +42,11 @@ namespace nsol
     return _maxRadius;
   }
 
+  const float & Soma::meanRadius( void ) const
+  {
+    return _meanRadius;
+  }
+
   void Soma::center( Vec3f center_ )
   {
     _center = center_;
@@ -50,38 +56,40 @@ namespace nsol
   {
     _nodes.push_back(node);
 
-    _recalculateCenter();
-    _recalculateMaxRadius();
+    _recalculateParams();
   }
 
-  void Soma::_recalculateCenter( void )
+  void Soma::_recalculateParams( void )
   {
     Vec3f tmp = Vec3f( 0.0f, 0.0f, 0.0f );
+    _maxRadius = 0.0f;
+    _meanRadius = 0.0f;
 
-    // Recalculated soma center node
-    for (unsigned int it = 0; it < _nodes.size(); ++it)
-      tmp += _nodes[it]->point();
-
+    // Recalculate soma center
+    for ( auto node: _nodes )
+      tmp += node->point( );
     _center = tmp / float( _nodes.size( ));
-  }
 
-  void Soma::_recalculateMaxRadius( void )
-  {
-    if ( _nodes.size( ) == 0 )
+
+    // Recalculate soma max radius and mean
+    if( _nodes.size( ) < 1 )
+      return;
+
+    if( _nodes.size( ) == 1 )
     {
-      _maxRadius = 0.0f;
+      _maxRadius = _nodes[0]->radius( );
+      _meanRadius = _maxRadius;
       return;
     }
 
-    _maxRadius = _nodes[0]->radius( );
-
-    for ( unsigned int it = 1; it < _nodes.size( ); ++it )
+    for( auto node: _nodes )
     {
-      float mod = ( _center - _nodes[it]->point( )).length( );
-
-      if ( mod > _maxRadius )
-        _maxRadius = mod;
+      float radius = ( _center - node->point( )).length( );
+      if ( radius > _maxRadius )
+        _maxRadius = radius;
+      _meanRadius += radius;
     }
+    _meanRadius /= ( float )_nodes.size( );
   }
 
 } // namespace nsol

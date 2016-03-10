@@ -12,13 +12,28 @@
 namespace nsol
 {
 
+  NeuronMorphology::NeuronMorphology( void )
+    : _soma( nullptr )
+  {
+
+  }
+
   NeuronMorphology::NeuronMorphology( SomaPtr soma_ )
     : _soma( soma_ )
   {
+
   }
 
   NeuronMorphology::~NeuronMorphology( void )
   {
+  }
+
+  SomaPtr
+  NeuronMorphology::soma( SomaPtr soma_ )
+  {
+    NSOL_DEBUG_CHECK( soma_, "soma is null" );
+    _soma = soma_;
+    return soma_;
   }
 
   NeuritePtr

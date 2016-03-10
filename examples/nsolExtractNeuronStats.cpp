@@ -197,7 +197,7 @@ int main ( int argc, char ** argv )
   else if( !swcFile.empty( ))
   {
 
-    dataSet.loadCorticalNeuronFromSwc<
+    dataSet.loadCorticalNeuronFromFile<
       nsol::NodeCached,
       nsol::SectionCachedStats,
       nsol::DendriteCachedStats,
