@@ -207,6 +207,8 @@ namespace nsol
     const int loadFlags,
     const std::string& targetLabel )
   {
+    std::cerr << "BBPSDKReader< >::readFromBlueConfig is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     if ( loadFlags == 0 )
       return;
 
@@ -530,7 +532,8 @@ namespace nsol
     NeuronsMap& neurons,
     const std::string inputFile)
   {
-
+    std::cerr << "BBPSDKReader< >::readFromDirectory is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     std::map<unsigned int, ColumnPtr> columnMap;
 
     SwcReader r;

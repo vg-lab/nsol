@@ -17,6 +17,7 @@
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
+#include "Reader/BrionReader.h"
 
 #ifdef NSOL_USE_QT5CORE
 #include <QStringList>
@@ -62,10 +63,6 @@ namespace nsol
                                  blueconfig,
                                  loadFlags,
                                  targetLabel );
-
-      // NSOL_FOREACH( column, columnsMap )
-      //   _columns.push_back( column->second );
-
     }
 #endif
 
@@ -107,30 +104,32 @@ namespace nsol
                class AXON = Axon,
                class SOMA = Soma,
                class NEURONMORPHOLOGY = NeuronMorphology,
-               class NEURON = Neuron >
-    NeuronPtr loadNeuronFromSwc(
-      const std::string& swc,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    NeuronPtr loadNeuronFromFile(
+      const std::string& file_,
       const unsigned int gid_,
       const unsigned int layer_ = 0,
       const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
-      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
-          NEURONMORPHOLOGY, NEURON > swcReader;
-      NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( swc );
+      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+                            NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN  >
+        brionReader;
 
-      NEURON* neuron = nullptr;
+      NEURON* neuron =  brionReader.loadNeuron( file_,
+                                                gid_,
+                                                layer_,
+                                                transform_,
+                                                type_ );
 
-      if ( neuronMorphology )
+      if ( neuron && !addNeuron( neuron ))
       {
-        neuron = new NEURON( neuronMorphology, layer_,
-                             gid_, transform_,
-                             nullptr, type_ );
-        if ( neuron && !addNeuron( neuron ))
-          delete neuronMorphology;
+        delete neuron;
+        return nullptr;
       }
       return neuron;
-
     }
 
 
@@ -143,19 +142,19 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-    void loadCorticalNeuronFromSwc(
-      const std::string& swc, const unsigned int gid_,
+    void loadCorticalNeuronFromFile(
+      const std::string& file_, const unsigned int gid_,
       const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
       const unsigned int layer_ = 0,
       const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
       NeuronPtr neuron =
-        loadNeuronFromSwc< NODE, SECTION, DENDRITE, AXON, SOMA,
-                    NEURONMORPHOLOGY, NEURON >( swc, gid_, layer_,
-                                                transform_, type_ );
+        loadNeuronFromFile< NODE, SECTION, DENDRITE, AXON, SOMA,
+                           NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN >
+        ( file_, gid_, layer_, transform_, type_ );
 
-      if( neuron && neuron->morphology( ))
+      if( neuron && neuron->morphology( ) )
       {
 
         Column* column = nullptr;
@@ -431,10 +430,11 @@ namespace nsol
                     std::string swc =
                         attributes.value( "swc" ).toString( ).toStdString( );
 
-                    SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                        SOMA, NEURONMORPHOLOGY, NEURON > swcReader;
+                    BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                                          SOMA, NEURONMORPHOLOGY, NEURON,
+                                          MINICOLUMN, COLUMN > brionReader;
                      NeuronMorphologyPtr neuronMorphology =
-                         swcReader.readMorphology( swc );
+                         brionReader.loadMorphology( swc );
                      if ( neuronMorphology )
                      {
                        QStringList neurons_ =

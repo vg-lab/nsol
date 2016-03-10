@@ -47,6 +47,7 @@ set(NSOL_PUBLIC_HEADERS
   Writer/SwcWriter.h
   Factory.h
   Reader/BBPSDKReader.h
+  Reader/BrionReader.h
   Reader/SwcReader.h
   )
 
@@ -86,6 +87,10 @@ set(NSOL_SOURCES
 
 if (VMMLIB_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC vmmlib)
+endif()
+
+if (BRION_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
 endif()
 
 if (BBPSDK_FOUND)
