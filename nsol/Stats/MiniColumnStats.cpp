@@ -91,7 +91,7 @@ namespace nsol
       toNeuronMorphologyStat( stat );
 
     float value = 0;
-    float mean;
+    float mean = .0f;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
