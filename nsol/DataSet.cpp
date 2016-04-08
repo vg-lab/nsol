@@ -49,23 +49,6 @@ namespace nsol
 
     NSOL_FOREACH( morphology, morphologies )
     {
-      NSOL_FOREACH( neurite, ( *morphology )->neurites( ))
-      {
-        delete ( *neurite )->firstSection( )->firstNode( );
-        Sections sections = ( *neurite )->sections( );
-        NSOL_FOREACH( section, sections )
-        {
-          Nodes nodes = ( *section )->nodes( );
-          NSOL_FOREACH( node, nodes )
-          {
-            if( *node != ( *section )->firstNode( ))
-              delete *node;
-          }
-          delete *section;
-        }
-        delete *neurite;
-      }
-      delete ( *morphology )->soma( );
       delete *morphology;
     }
 
