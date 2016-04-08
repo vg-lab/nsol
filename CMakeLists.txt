@@ -52,7 +52,7 @@ include(Common)
 common_package(Boost COMPONENTS unit_test_framework)
 common_package(vmmlib REQUIRED)
 common_package(Brion REQUIRED)
-list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib Brion Brain)
+list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib Brion)
 
 if (WITH_BBPSDK)
   common_package(BBPSDK)
