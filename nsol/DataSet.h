@@ -39,6 +39,123 @@ namespace nsol
     NSOL_API
     DataSet( void );
 
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void loadBlueConfigHierarchy( const std::string& blueConfig_,
+                                  const std::string& target_ )
+    {
+      close( );
+      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                            SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                            COLUMN > brionReader;
+
+      _blueConfig = new brion::BlueConfig( blueConfig_ );
+      _target = target_;
+
+      brionReader. loadBlueConfigHierarchy( _columns,
+                                            _neurons,
+                                            *_blueConfig,
+                                            _target );
+    }
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void loadMorphology( unsigned int neuronId_ )
+    {
+      if( !_blueConfig )
+        return;
+
+      const brion::Circuit circuit( _blueConfig->getCircuitSource( ));
+      const std::string morphologySource =
+        _blueConfig->getMorphologySource( ).getPath( );
+
+      brion::GIDSet gidSet;
+      gidSet.insert( neuronId_ );
+
+      const brion::NeuronMatrix& data = circuit.get(
+        gidSet, brion::NEURON_MORPHOLOGY_NAME );
+
+      std::string morphologyLabel = data[0][0];
+
+      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                            SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                            COLUMN > brionReader;
+
+      _loadMorphology( neuronId_, morphologySource, morphologyLabel,
+                       brionReader );
+    }
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void loadMorphologies( std::set< unsigned int >& neuronIds_ )
+    {
+      if( !_blueConfig )
+        return;
+
+      const brion::Circuit circuit( _blueConfig->getCircuitSource( ));
+      const std::string morphologySource =
+        _blueConfig->getMorphologySource( ).getPath( );
+
+      const brion::NeuronMatrix& data = circuit.get(
+        neuronIds_, brion::NEURON_MORPHOLOGY_NAME );
+
+      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                            SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                            COLUMN > brionReader;
+
+      int i = 0;
+      for( auto id: neuronIds_ )
+      {
+        std::string morphologyLabel = data[i][0];
+        i++;
+        _loadMorphology( id, morphologySource, morphologyLabel,
+                         brionReader );
+      }
+    }
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void loadAllMorphologies( void )
+    {
+      std::set< unsigned int > neuronIds;
+      for ( auto par: _neurons )
+      {
+        neuronIds.insert( par.second->gid( ));
+      }
+      loadMorphologies< NODE, SECTION, DENDRITE, AXON,
+                        SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                        COLUMN >( neuronIds );
+    }
+
 #ifdef NSOL_USE_BBPSDK
 
     template < class NODE = Node,
@@ -50,11 +167,14 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-    void loadFromBlueConfig( const std::string& blueconfig,
-                         const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
-                         const std::string& targetLabel = std::string( "" ))
+    void loadFromBlueConfig(
+      const std::string& blueconfig,
+      const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
+      const std::string& targetLabel = std::string( "" ))
     {
-
+      std::cerr << "DataSet< >::loadFromBlueConfig is deprecated.\n"
+                << "Please use DataSet< >::loadBlueConfigHierarchy and\n"
+                << "DataSet< >::loadMorphologies" << std::endl;
       BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > reader;
@@ -65,6 +185,9 @@ namespace nsol
                                  targetLabel );
     }
 #endif
+
+    NSOL_API
+    void unloadMorphologies( void );
 
     NSOL_API
     void close( void );
@@ -473,6 +596,53 @@ namespace nsol
 
     }
 
+  private:
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+    void _loadMorphology( unsigned int& neuronId_,
+                          const std::string& morphologySource_,
+                          const std::string& morphologyLabel_,
+                          BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                          SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                          COLUMN >& brionReader_ )
+  {
+      NeuronsMap::iterator neuronIt = _neurons.find( neuronId_ );
+
+      if( neuronIt == _neurons.end( ))
+      {
+        std::cerr << "Neuron " << neuronId_ << " doesn't exist in DataSet"
+                  << std::endl;
+        return;
+      }
+      NeuronPtr neuron = neuronIt->second;
+
+      if ( neuron->morphology( ))
+        return;
+
+      std::map< std::string, NeuronMorphologyPtr >::iterator morphoIt =
+        _morphologies.find( morphologyLabel_ );
+
+      if( morphoIt != _morphologies.end( ))
+      {
+        neuron->morphology( morphoIt->second );
+        return;
+      }
+
+      NeuronMorphologyPtr morpho = brionReader_.loadMorphology(
+        morphologySource_ + "/" + morphologyLabel_ + ".h5" );
+
+      neuron->morphology( morpho );
+      _morphologies[ morphologyLabel_ ] = morpho;
+    }
+
 
   protected:
 
@@ -480,6 +650,13 @@ namespace nsol
 
     //! Container of neurons by its gid
     NeuronsMap _neurons;
+
+    std::map< std::string, NeuronMorphologyPtr > _morphologies;
+
+    brion::BlueConfig* _blueConfig;
+
+    std::string _target;
+
 
   }; // class DataSet
 
