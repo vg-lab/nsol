@@ -7,8 +7,25 @@ namespace nsol
 {
 
   DataSet::DataSet( void )
+    : _blueConfig( nullptr )
+    , _target( std::string(""))
   {
 
+  }
+
+  void DataSet::unloadMorphologies( void )
+  {
+    for( auto par: _morphologies )
+    {
+      delete par.second;
+    }
+    _morphologies.clear( );
+
+    for( auto par: _neurons )
+    {
+      NeuronPtr neuron = par.second;
+      neuron->morphology( nullptr );
+    }
   }
 
   void DataSet::close( void )
@@ -44,7 +61,6 @@ namespace nsol
             if( *node != ( *section )->firstNode( ))
               delete *node;
           }
-          delete ( *section )->lastNode( );
           delete *section;
         }
         delete *neurite;
@@ -54,6 +70,11 @@ namespace nsol
     }
 
     _columns.clear( );
+    _neurons.clear( );
+    _morphologies.clear( );
+
+    if ( _blueConfig )
+      delete _blueConfig;
 
     return;
   }
@@ -78,6 +99,5 @@ namespace nsol
   {
     return _neurons;
   }
-
 
 } // namespace nsol

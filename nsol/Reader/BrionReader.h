@@ -78,15 +78,12 @@ namespace nsol
       bool reposition_ = true );
 
     void
-    loadFromBlueconfig( Columns& columns_,
-                        const brion::BlueConfig& blueConfig_,
-                        const std::string& targetLabel_ = std::string( "" ));
+    loadBlueConfigHierarchy(
+      Columns& columns_,
+      NeuronsMap& neurons_,
+      const brion::BlueConfig& blueConfig_,
+      const std::string& targetLabel = std::string( "" ));
 
-    void
-    loadFromBlueConfig( Columns& columns_,
-                        NeuronsMap& neurons_,
-                        const std::string& blueConfig_,
-                        const std::string& targetLabel = std::string( "" ));
 
   }; // BrionReaderTemplated
 
@@ -283,53 +280,115 @@ namespace nsol
   template < BRION_READER_TEMPLATE_CLASSES >
   void
   BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadFromBlueconfig(
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigHierarchy(
     Columns& columns_,
+    NeuronsMap& neurons_,
     const brion::BlueConfig& blueConfig_,
-    const std::string& target_   )
+    const std::string& target_ )
   {
+    columns_.clear( );
+    neurons_.clear( );
+
     brion::Circuit circuit( blueConfig_.getCircuitSource( ));
     brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
 
-    uint32_t attributes = brion::NEURON_POSITION_X |
+    uint32_t attributes =
+      brion::NEURON_COLUMN_GID | brion::NEURON_MINICOLUMN_GID |
+      brion::NEURON_LAYER | brion::NEURON_MTYPE | brion::NEURON_POSITION_X |
       brion::NEURON_POSITION_Y | brion::NEURON_POSITION_Z |
-      brion::NEURON_ROTATION | brion::NEURON_LAYER |
-      brion::NEURON_MINICOLUMN_GID | brion::NEURON_COLUMN_GID |
-      brion::NEURON_METYPE ;
+      brion::NEURON_ROTATION;
+
+    brion::Strings functionTypes =
+      circuit.getTypes( brion::NEURONCLASS_FUNCTION_CLASS );
+    brion::Strings morphologyTypes =
+      circuit.getTypes( brion::NEURONCLASS_MORPHOLOGY_CLASS );
+
     const brion::NeuronMatrix& data = circuit.get( gidSet, attributes );
 
     std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
 
     for ( unsigned int i = 0; i < gidSet.size( ); i++ )
     {
-      unsigned short layer =( dynamic_cast< unsigned short >( data[i][4] ));
       unsigned int gid = neuronIds[i];
       Matrix4_4f transform = Matrix4_4f::IDENTITY;
 
-      transform.rotate_y( dynamic_cast< float >( data[i][3] ) * (M_PI*1280.0f));
-      Vec3f translationVec( dynamic_cast< float >( data[i][0] ),
-                               dynamic_cast< float >( data[i][1] ),
-                            dynamic_cast< float >( data[i][2] ));
+      transform.rotate_y(
+        boost::lexical_cast< float >( data[i][7] ) * (M_PI*1280.0f));
+      Vec3f translationVec( boost::lexical_cast< float >( data[i][4] ),
+                            boost::lexical_cast< float >( data[i][5] ),
+                            boost::lexical_cast< float >( data[i][6] ));
       transform.set_translation( translationVec );
 
-      unsigned int miniColumnId = dynamic_cast< unsigned int >( data[i][5] );
-      unsigned int columnId = dynamic_cast< unsigned int >( data[i][6] );
-      brion::NeuronClass type = dynamic_cast< brion::NeuronClass >( data[i][7] );
+      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] ));
 
-      std::cout << "*****************" << std::endl;
-      std::cout << "Gid: " << gid << std::endl;
-      std::cout << "Layer: " << layer << std::endl;
-      std::cout << "Transform matrix: " << transform << std::endl;
-      std::cout << "MiniColumn: " << miniColumnId << std::endl;
-      std::cout << "Column: " << columnId << std::endl;
-      std::cout << "Type: " << type << std::endl;
+      unsigned int miniColumnId = boost::lexical_cast< uint16_t >( data[i][1] );
+      unsigned int columnId = boost::lexical_cast< uint16_t >( data[i][0] );
+      std::string mType =
+        morphologyTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
+      std::string eType =
+        functionTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
 
-      // MiniColumnPtr miniColumn;
-      // TMorphologicalType morphologicalType;
-      // TFunctionalType functionalType;
+      Neuron::TMorphologicalType morphoType = Neuron::UNDEFINED;
+      Neuron::TFunctionalType functionalType =
+        Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
-      // NEURON* neuron = new NEURON( nullptr, layer, gid, transform, miniColumn,
-      //                              morphologicalType, functionalType );
+      if( mType == "PYR" )
+        morphoType = Neuron::PYRAMIDAL;
+      else if( mType == "INT" )
+        morphoType = Neuron::INTERNEURON;
+
+      if( eType == "EXC" )
+        functionalType = Neuron::EXCITATORY;
+      else if( eType == "INH" )
+        functionalType = Neuron::INHIBITORY;
+
+      // std::cout << "*****************" << std::endl;
+      // std::cout << "Gid: " << gid << std::endl;
+      // std::cout << "Layer: " << layer << std::endl;
+      // std::cout << "Transform matrix:\n " << transform << std::endl;
+      // std::cout << "MiniColumn: " << miniColumnId << std::endl;
+      // std::cout << "Column: " << columnId << std::endl;
+      // std::cout << "Morphology type: " << morphoType << std::endl;
+      // std::cout << "Electric type: " << functionalType << std::endl;
+
+      MiniColumnPtr miniColumn = nullptr;
+      ColumnPtr column = nullptr;
+
+      for ( auto col: columns_ )
+      {
+        if ( col->id( ) == columnId )
+        {
+          column = col;
+          break;
+        }
+      }
+
+      if ( !column )
+      {
+        column = new COLUMN( columnId );
+        columns_.push_back( column );
+      }
+
+
+      for( auto miniCol: column->miniColumns( ))
+      {
+        if ( miniCol->id( ) == miniColumnId )
+        {
+          miniColumn = miniCol;
+          break;
+        }
+      }
+
+      if( !miniColumn )
+      {
+        miniColumn = new MINICOLUMN( column, miniColumnId );
+        column->addMiniColumn( miniColumn );
+      }
+
+      Neuron* neuron = new NEURON( nullptr, layer, gid, transform, miniColumn,
+                                   morphoType, functionalType );
+      miniColumn->addNeuron( neuron );
+      neurons_[ gid ] = neuron;
     }
   }
 }
