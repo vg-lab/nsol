@@ -91,7 +91,7 @@ namespace nsol
     NeuronMorphologyPtr morphology( void ) const;
 
     NSOL_API
-    void morphology( NeuronMorphologyPtr morphology );
+    virtual void morphology( NeuronMorphologyPtr morphology );
 
     /**
      * Method to get the transformation matrix of the neuron.
