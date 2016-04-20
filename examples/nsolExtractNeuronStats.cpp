@@ -40,6 +40,8 @@ bool atLeastTwo( bool a, bool b, bool c )
       return std::string("Soma Volume");
       break;
     case nsol::NeuronMorphologyStats::VOLUME:
+      return std::string("Volume");
+      break;
 
     // Surface
     case nsol::NeuronMorphologyStats::DENDRITIC_SURFACE:
