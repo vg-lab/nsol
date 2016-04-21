@@ -1,5 +1,3 @@
-
-
 configure_file(${PROJECT_SOURCE_DIR}/testData/ExampleNeuron.swc
   ${CMAKE_CURRENT_BINARY_DIR}/ExampleNeuron.swc)
 

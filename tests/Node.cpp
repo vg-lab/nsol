@@ -62,6 +62,19 @@ BOOST_AUTO_TEST_CASE( node_getters_setters )
 
 }
 
+BOOST_AUTO_TEST_CASE( node_clone )
+{
+
+  Node node( POINT, ID, RADIUS );
+  NodePtr cloneNode = node.clone( );
+
+  BOOST_CHECK( &node != cloneNode );
+  BOOST_CHECK_EQUAL( cloneNode->point( ), POINT );
+  BOOST_CHECK_EQUAL( cloneNode->id( ), ID );
+  BOOST_CHECK_EQUAL( cloneNode->radius( ), RADIUS );
+
+}
+
 BOOST_AUTO_TEST_CASE( node_operators )
 {
 
