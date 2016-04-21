@@ -59,6 +59,27 @@ namespace nsol
     _recalculateParams();
   }
 
+  bool Soma::operator == ( Soma & other )
+  {
+    unsigned int size = this->nodes( ).size( );
+
+    if ( size != other.nodes( ).size( ))
+      return false;
+
+    bool equal = true;
+    for ( unsigned int i = 0; i < size; i++ )
+    {
+      equal &= ( this->nodes( )[i] == other.nodes( )[i]);
+    }
+
+    return equal;
+  }
+
+  bool Soma::operator != ( Soma & other )
+  {
+    return ! ( *this == other );
+  }
+
   void Soma::_recalculateParams( void )
   {
     Vec3f tmp = Vec3f( 0.0f, 0.0f, 0.0f );

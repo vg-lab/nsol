@@ -12,6 +12,8 @@
 #include <nsol/api.h>
 
 #include "NsolTypes.h"
+#include "Node.h"
+#include "Section.h"
 #include "Soma.h"
 #include "Axon.h"
 #include "Neurite.h"
@@ -136,6 +138,23 @@ namespace nsol
       return this;
     }
 
+    template< class NODE = Node,
+              class SECTION = Section,
+              class SOMA = Soma,
+              class NEURONMORPHOLOGY = NeuronMorphology >
+    NeuronMorphologyPtr clone( void )
+    {
+      NeuronMorphologyPtr newMorpho = new NEURONMORPHOLOGY( );
+      newMorpho->soma( _soma->clone( ));
+
+      for ( NeuritePtr neurite: _neurites )
+      {
+        NeuritePtr newNeurite = neurite->clone( );
+        newNeurite->morphology( newMorpho );
+        newMorpho->addNeurite( newNeurite );
+      }
+      return newMorpho;
+    }
 
   protected:
 

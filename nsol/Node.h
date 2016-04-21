@@ -48,6 +48,12 @@ namespace nsol
     NSOL_API
     int id( void ) const;
 
+    template < class NODE = Node >
+    NodePtr clone( void ) const
+    {
+      return new NODE( _point, _id, _radius );
+    }
+
     NSOL_API
     Node & operator = ( const Node & other );
 

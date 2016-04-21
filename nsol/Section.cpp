@@ -118,6 +118,27 @@ namespace nsol
     return nullptr;
   }
 
+  bool Section::operator == ( Section & other ) const
+  {
+    unsigned int size = this->nodes( ).size( );
+
+    if( size != other.nodes( ).size( ))
+      return false;
+
+    bool equal = true;
+    for ( unsigned int i = 0; i < size; i++ )
+    {
+      equal &= ( this->nodes( )[i] == other.nodes( )[i] );
+    }
+
+    return equal;
+  }
+
+  bool Section::operator != ( Section & other ) const
+  {
+    return ! ( *this == other );
+  }
+
 } // namespace nsol
 
 
