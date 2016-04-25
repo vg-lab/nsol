@@ -156,6 +156,12 @@ namespace nsol
       return newMorpho;
     }
 
+    NSOL_API
+    bool operator == ( NeuronMorphology & other );
+
+    NSOL_API
+    bool operator != ( NeuronMorphology & other );
+
   protected:
 
     SomaPtr _soma;

@@ -66,13 +66,11 @@ namespace nsol
     if ( size != other.nodes( ).size( ))
       return false;
 
-    bool equal = true;
     for ( unsigned int i = 0; i < size; i++ )
-    {
-      equal &= ( this->nodes( )[i] == other.nodes( )[i]);
-    }
+      if ( this->nodes( )[i] != other.nodes( )[i])
+        return false;
 
-    return equal;
+    return true;
   }
 
   bool Soma::operator != ( Soma & other )
