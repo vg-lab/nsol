@@ -40,6 +40,9 @@ target_link_libraries(nsolFactory nsol)
 add_executable(nsolDataset dataset.cpp)
 target_link_libraries(nsolDataset nsol)
 
+add_executable(nsolSimplifier simplifier.cpp)
+target_link_libraries(nsolSimplifier nsol)
+
 if (QT5CORE_FOUND)
   add_executable(nsolScene scene.cpp)
   target_link_libraries(nsolScene
