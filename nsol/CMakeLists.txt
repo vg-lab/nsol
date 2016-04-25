@@ -23,6 +23,7 @@ set(NSOL_PUBLIC_HEADERS
   Object.h
   ObjectWithProperties.h
   Section.h
+  Simplifier.h
   Soma.h
   Spine.h
   Stats/AxonStats.h
@@ -67,6 +68,7 @@ set(NSOL_SOURCES
   Object.cpp
   ObjectWithProperties.cpp
   Section.cpp
+  Simplifier.cpp
   Soma.cpp
   Stats/AxonStats.cpp
   Stats/AxonCachedStats.cpp
