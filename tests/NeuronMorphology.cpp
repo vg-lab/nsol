@@ -26,3 +26,28 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_constructor )
     BOOST_CHECK_EQUAL( neuronMorphology.neurites( ).size( ), 0 );
   }
 }
+
+BOOST_AUTO_TEST_CASE( neuronMorphology_clone )
+{
+  BrionReader brionReader;
+
+  NeuronMorphologyPtr neuronMorphology =
+    brionReader.loadMorphology( "ExampleNeuron.swc" );
+
+  NeuronMorphologyPtr neuronMorphology1 = neuronMorphology->clone( );
+
+  BOOST_CHECK( *neuronMorphology->soma( ) != *neuronMorphology1->soma( ));
+}
+
+BOOST_AUTO_TEST_CASE( neuronMorphology_operators )
+{
+  BrionReader brionReader;
+  NeuronMorphologyPtr neuronMorphology1 =
+    brionReader.loadMorphology( "ExampleNeuron.swc" );
+  NeuronMorphologyPtr neuronMorphology2 =
+    brionReader.loadMorphology( "mini.swc" );
+
+  BOOST_CHECK( neuronMorphology1 == neuronMorphology1 );
+  BOOST_CHECK( neuronMorphology2 == neuronMorphology2 );
+  BOOST_CHECK( neuronMorphology1 != neuronMorphology2 );
+}

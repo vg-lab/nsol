@@ -89,7 +89,9 @@ namespace nsol
     unsigned int numBranchs = 0;
     unsigned int numBifur = 0;
     std::stack<SectionPtr> sPS;
-    sPS.push(_firstSection);
+
+    if( _firstSection )
+      sPS.push(_firstSection);
 
     while (!sPS.empty( ))
     {
@@ -124,6 +126,26 @@ namespace nsol
   NeuriteStats * Neurite::stats( void )
   {
     return nullptr;
+  }
+
+  bool Neurite::operator == ( Neurite & other )
+  {
+    if ( _neuriteType != other.neuriteType( ) ||
+         sections( ).size( ) != other.sections( ).size( ) ||
+         numBranches( ) != other.numBranches( ) ||
+         numBifurcations( ) != other.numBifurcations( ))
+      return false;
+
+    for ( unsigned int i = 0; i < sections( ).size( ); i++ )
+      if ( sections( )[i] != other.sections( )[i] )
+        return false;
+
+    return true;
+  }
+
+  bool Neurite::operator != ( Neurite & other )
+  {
+    return ! ( *this == other );
   }
 
   void Neurite::_addBifurcationCount( unsigned int newNumBifurcations )

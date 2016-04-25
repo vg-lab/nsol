@@ -51,10 +51,12 @@ BOOST_AUTO_TEST_CASE( soma_clone )
   SomaPtr soma2 = soma1.clone( );
 
   BOOST_CHECK_EQUAL( soma1.nodes( ).size( ), soma2->nodes( ).size( ));
+
   for ( unsigned int i = 0; i < soma1.nodes( ).size( ); i++ )
   {
-    BOOST_CHECK_EQUAL( soma1.nodes( )[i], soma2->nodes( )[i]);
+    BOOST_CHECK( *(soma1.nodes( )[i]) == *(soma2->nodes( )[i]) );
   }
+
   BOOST_CHECK_EQUAL( soma1.center( ), soma2->center( ));
   BOOST_CHECK_EQUAL( soma1.maxRadius( ), soma2->maxRadius( ));
   BOOST_CHECK_EQUAL( soma1.meanRadius( ), soma2->meanRadius( ));

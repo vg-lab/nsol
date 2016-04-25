@@ -147,6 +147,12 @@ namespace nsol {
       return neurite;
     }
 
+    NSOL_API
+    bool operator == ( Neurite & other );
+
+    NSOL_API
+    bool operator != ( Neurite & other );
+
   protected:
 
     NSOL_API

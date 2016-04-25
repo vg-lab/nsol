@@ -173,7 +173,23 @@ namespace nsol
     return _soma;
   }
 
+  bool NeuronMorphology::operator == ( NeuronMorphology & other )
+  {
+    if (*_soma != *other.soma( ) ||
+        _neurites.size( ) != other.neurites( ).size( ))
+      return false;
 
+    for ( unsigned int i = 0; i < _neurites.size( ); i++ )
+      if ( *_neurites[i] != *other.neurites( )[i] )
+        return false;
+
+    return true;
+  }
+
+  bool NeuronMorphology::operator != ( NeuronMorphology & other )
+  {
+    return !( *this == other );
+  }
 } // namespace nsol
 
 // EOF
