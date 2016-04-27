@@ -139,7 +139,7 @@ namespace nsol
     }
 
     NSOL_API
-    NeuronMorphologyPtr clone( void ) const;
+    virtual NeuronMorphologyPtr clone( void ) const;
 
     NSOL_API
     bool operator == ( NeuronMorphology & other );
