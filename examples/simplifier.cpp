@@ -39,7 +39,7 @@ int main( int argc, char* argv[ ])
 
   std::cout << "Simplificada" << std::endl;
 
-  morpho = Simplifier::Instance( )->simplify( morpho, Simplifier::DIST_NODES, 100 );
+  morpho = Simplifier::Instance( )->simplify( morpho, Simplifier::DIST_NODES, 100, true );
 
   printMorpho( morpho );
 }
