@@ -130,17 +130,8 @@ namespace nsol
     NSOL_API
     virtual SectionStats * stats( void );
 
-    template < class NODE = Node,
-               class SECTION = Section >
-    SectionPtr clone( void ) const
-    {
-      SectionPtr section = new SECTION( );
-      for ( unsigned int i = 1; i < _nodes.size( ); i++ )
-      {
-        section->addNode( _nodes[i]->clone( ));
-      }
-      return section;
-    }
+    NSOL_API
+    SectionPtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Section & other ) const;
