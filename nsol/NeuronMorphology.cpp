@@ -173,6 +173,20 @@ namespace nsol
     return _soma;
   }
 
+  NeuronMorphologyPtr NeuronMorphology::clone( void ) const
+  {
+    NeuronMorphologyPtr newMorpho = new NeuronMorphology( );
+    newMorpho->soma( _soma->clone( ));
+
+    for ( NeuritePtr neurite: _neurites )
+    {
+      NeuritePtr newNeurite = neurite->clone( );
+      newNeurite->morphology( newMorpho );
+      newMorpho->addNeurite( newNeurite );
+    }
+    return newMorpho;
+  }
+
   bool NeuronMorphology::operator == ( NeuronMorphology & other )
   {
     if (*_soma != *other.soma( ) ||

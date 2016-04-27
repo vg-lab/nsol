@@ -56,6 +56,11 @@ namespace nsol
     return _id;
   }
 
+  NodePtr Node::clone( void ) const
+  {
+    return new Node( _point, _id, _radius );
+  }
+
   Node & Node::operator = ( const Node & other )
   {
     if (this != &other)
