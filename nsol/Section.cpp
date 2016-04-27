@@ -118,6 +118,16 @@ namespace nsol
     return nullptr;
   }
 
+  SectionPtr Section::clone( void ) const
+  {
+    SectionPtr section = new Section( );
+    for ( unsigned int i = 1; i < _nodes.size( ); i++ )
+    {
+      section->addNode( _nodes[i]->clone( ));
+    }
+    return section;
+  }
+
   bool Section::operator == ( Section & other ) const
   {
     unsigned int size = this->nodes( ).size( );

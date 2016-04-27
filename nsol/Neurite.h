@@ -108,44 +108,8 @@ namespace nsol {
     NSOL_API
     virtual NeuriteStats * stats( void );
 
-    template < class NODE = Node,
-               class SECTION = Section,
-               class NEURITE = Neurite >
-    NeuritePtr clone( void ) const
-    {
-      NeuritePtr neurite = new NEURITE( _neuriteType );
-      SectionPtr firstSec = _firstSection->clone( );
-
-      firstSec->neurite( neurite );
-      firstSec->firstNode( _firstSection->firstNode( )->clone( ));
-      neurite->firstSection( firstSec );
-
-      std::stack< SectionPtr > originalSections;
-      std::stack< SectionPtr > newSections;
-
-      originalSections.push( _firstSection );
-      newSections.push( firstSec );
-
-      while( ! originalSections.empty( ))
-      {
-        SectionPtr originalSec = originalSections.top( );
-        SectionPtr newSec = newSections.top( );
-        originalSections.pop( );
-        newSections.pop( );
-
-        for ( SectionPtr childSec: originalSec->children( ))
-        {
-          SectionPtr newChildSec = childSec->clone( );
-          newChildSec->parent( newSec );
-          newChildSec->neurite( neurite );
-          newSec->addChild( newChildSec );
-
-          originalSections.push( childSec );
-          newSections.push( newChildSec );
-        }
-      }
-      return neurite;
-    }
+    NSOL_API
+    NeuritePtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Neurite & other );

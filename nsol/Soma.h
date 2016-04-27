@@ -87,17 +87,8 @@ namespace nsol
       return nullptr;
     }
 
-    template < class NODE = Node,
-               class SOMA = Soma >
-    SomaPtr clone( void ) const
-    {
-      SomaPtr newSoma = new SOMA( );
-      for ( NodePtr node: _nodes )
-      {
-        newSoma->addNode( node->clone( ));
-      }
-      return newSoma;
-    }
+    NSOL_API
+    SomaPtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Soma & other );

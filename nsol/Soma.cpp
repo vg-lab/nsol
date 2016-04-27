@@ -59,6 +59,16 @@ namespace nsol
     _recalculateParams();
   }
 
+  SomaPtr Soma::clone( void ) const
+  {
+    SomaPtr newSoma = new Soma( );
+    for ( NodePtr node: _nodes )
+    {
+      newSoma->addNode( node->clone( ));
+    }
+    return newSoma;
+  }
+
   bool Soma::operator == ( Soma & other )
   {
     unsigned int size = this->nodes( ).size( );
