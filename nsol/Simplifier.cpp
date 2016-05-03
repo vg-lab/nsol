@@ -17,45 +17,45 @@ namespace nsol
   }
 
   NeuronMorphologyPtr Simplifier::simplify( NeuronMorphologyPtr morpho_,
-                                            TSimplificationMethod /*simplMethod_*/,
-                                            float /*tolerance_*/,
-                                            bool /*clone*/ )
+                                            TSimplificationMethod simplMethod_,
+                                            float tolerance_,
+                                            bool clone )
   {
     NeuronMorphologyPtr morpho = morpho_;
 
     if ( clone )
       morpho = morpho->clone( );
 
-    // typedef void (*func)( SectionPtr, float ) ;
+    typedef void (*func)( SectionPtr, float ) ;
 
-    // func function = nullptr;
+    func function = nullptr;
 
-    // switch( simplMethod_ )
-    // {
-    // case 0:
-    //   std::cout << "Simplification method: Delete all" << std::endl;
-    //   function = Simplifier::_simplSecDeleteAll;
-    //   break;
-    // case 1:
-    //   std::cout << "Simplification method: Distance between nodes" << std::endl;
-    //   function = Simplifier::_simplSecDistNodes;
-    //   break;
-    // default:
-    //   std::cout << "Simplification method: Delete all" << std::endl;
-    //   function = Simplifier::_simplSecDeleteAll;
-    //   break;
-    // }
+    switch( simplMethod_ )
+    {
+    case 0:
+      std::cout << "Simplification method: Delete all" << std::endl;
+      function = Simplifier::_simplSecDeleteAll;
+      break;
+    case 1:
+      std::cout << "Simplification method: Distance between nodes" << std::endl;
+      function = Simplifier::_simplSecDistNodes;
+      break;
+    default:
+      std::cout << "Simplification method: Delete all" << std::endl;
+      function = Simplifier::_simplSecDeleteAll;
+      break;
+    }
 
-    // if ( !function )
-    //   return morpho;
+    if ( !function )
+      return morpho;
 
-    // for ( auto neurite: morpho->neurites( ))
-    //   for ( auto section: neurite->sections( ))
-    //   {
-    //     std::cout << "simplificando seccion" << std::endl;
+    for ( auto neurite: morpho->neurites( ))
+      for ( auto section: neurite->sections( ))
+      {
+        std::cout << "simplificando seccion" << std::endl;
 
-    //     // function( section, tolerance_ );
-    //   }
+        function( section, tolerance_ );
+      }
     return morpho;
   }
 
@@ -63,13 +63,14 @@ namespace nsol
                                        float /*tolerance_*/ )
   {
     Nodes* nodes = &section_->nodes( );
+
     for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
     {
       delete (*nodes)[i];
       nodes->erase( nodes->begin( ) + i );
       i--;
     }
-    // nodes->erase( nodes->begin( )+1, nodes->end( )-1);
+    // nodes->erase( nodes->begin( )+1, nodes->end( ) - 1);
   }
 
   void Simplifier::_simplSecDistNodes( SectionPtr section_,
