@@ -33,15 +33,12 @@ namespace nsol
     switch( simplMethod_ )
     {
     case 0:
-      std::cout << "Simplification method: Delete all" << std::endl;
       function = Simplifier::_simplSecDeleteAll;
       break;
     case 1:
-      std::cout << "Simplification method: Distance between nodes" << std::endl;
       function = Simplifier::_simplSecDistNodes;
       break;
     default:
-      std::cout << "Simplification method: Delete all" << std::endl;
       function = Simplifier::_simplSecDeleteAll;
       break;
     }
@@ -52,8 +49,6 @@ namespace nsol
     for ( auto neurite: morpho->neurites( ))
       for ( auto section: neurite->sections( ))
       {
-        std::cout << "simplificando seccion" << std::endl;
-
         function( section, tolerance_ );
       }
     return morpho;
