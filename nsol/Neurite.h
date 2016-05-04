@@ -109,7 +109,7 @@ namespace nsol {
     virtual NeuriteStats * stats( void );
 
     NSOL_API
-    NeuritePtr clone( void ) const;
+    virtual NeuritePtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Neurite & other );

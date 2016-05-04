@@ -49,7 +49,7 @@ namespace nsol
     int id( void ) const;
 
     NSOL_API
-    NodePtr clone( void ) const;
+    virtual NodePtr clone( void ) const;
 
     NSOL_API
     Node & operator = ( const Node & other );

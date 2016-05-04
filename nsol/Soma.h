@@ -88,7 +88,7 @@ namespace nsol
     }
 
     NSOL_API
-    SomaPtr clone( void ) const;
+    virtual SomaPtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Soma & other );
