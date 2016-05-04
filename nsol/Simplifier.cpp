@@ -54,6 +54,51 @@ namespace nsol
     return morpho;
   }
 
+  NeuronMorphologyPtr Simplifier::adaptSoma( NeuronMorphologyPtr morpho_,
+                                             bool clone )
+  {
+    NeuronMorphologyPtr morpho = morpho_;
+
+    if ( clone )
+      morpho = morpho->clone( );
+
+    Vec3f somaCenter = morpho->soma( )->center( );
+    float radius = morpho->soma( )->minRadius( );
+
+    for ( auto neurite: morpho->neurites( ))
+    {
+      SectionPtr sec = neurite->firstSection( );
+      Nodes* nodes = &sec->nodes( );
+
+      // Deleting the nodes inside the initial sphere
+      for ( unsigned int i = 0; i < nodes->size( )-1; i++ )
+      {
+        NodePtr node = (*nodes)[i];
+        if ( (node->point( ) - somaCenter).norm( ) < radius )
+        {
+          delete (*nodes)[i];
+          nodes->erase( nodes->begin( ) + i );
+          i--;
+        }
+      }
+
+      // Deleting the nodes
+      float dist = ((*nodes)[0]->point( ) - somaCenter).norm( );
+      for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
+      {
+        NodePtr node = (*nodes)[i];
+        if ( (node->point( ) - somaCenter).norm( ) < dist )
+        {
+          delete (*nodes)[i];
+          nodes->erase( nodes->begin( ) + i );
+          i--;
+        }
+      }
+    }
+
+    return morpho;
+  }
+
   void Simplifier::_simplSecDeleteAll( SectionPtr section_,
                                        float /*tolerance_*/ )
   {
