@@ -131,7 +131,7 @@ namespace nsol
     virtual SectionStats * stats( void );
 
     NSOL_API
-    SectionPtr clone( void ) const;
+    virtual SectionPtr clone( void ) const;
 
     NSOL_API
     bool operator == ( Section & other ) const;
