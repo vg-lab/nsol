@@ -42,6 +42,11 @@ namespace nsol
     return _maxRadius;
   }
 
+  const float & Soma::minRadius( void ) const
+  {
+    return _minRadius;
+  }
+
   const float & Soma::meanRadius( void ) const
   {
     return _meanRadius;
@@ -93,6 +98,7 @@ namespace nsol
     Vec3f tmp = Vec3f( 0.0f, 0.0f, 0.0f );
     _maxRadius = 0.0f;
     _meanRadius = 0.0f;
+    _minRadius = std::numeric_limits<float>::max( );
 
     // Recalculate soma center
     for ( auto node: _nodes )
@@ -108,6 +114,7 @@ namespace nsol
     {
       _maxRadius = _nodes[0]->radius( );
       _meanRadius = _maxRadius;
+      _minRadius = _maxRadius;
       return;
     }
 
@@ -116,6 +123,8 @@ namespace nsol
       float radius = ( _center - node->point( )).length( );
       if ( radius > _maxRadius )
         _maxRadius = radius;
+      if ( radius < _minRadius )
+        _minRadius = radius;
       _meanRadius += radius;
     }
     _meanRadius /= ( float )_nodes.size( );

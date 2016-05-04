@@ -61,6 +61,13 @@ namespace nsol
     const float & maxRadius( void ) const;
 
     /**
+     * Method to get the min radius of the soma
+     * @return min radius of the soma
+     */
+    NSOL_API
+    const float & minRadius( void ) const;
+
+    /**
      * Method to get the mean radius of the soma
      * @return mean radius of the soma
      */
@@ -106,6 +113,9 @@ namespace nsol
 
     //! Maximum radius of the soma
     float _maxRadius;
+
+    //! Minimum radius of the soma
+    float _minRadius;
 
     //! Mean radius of the soma
     float _meanRadius;
