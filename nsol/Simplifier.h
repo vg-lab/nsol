@@ -26,7 +26,7 @@ namespace nsol
     typedef enum
     {
       DELETE_ALL = 0,
-      DIST_NODES
+      DIST_NODES,
     } TSimplificationMethod;
 
     NSOL_API
@@ -37,6 +37,11 @@ namespace nsol
       NeuronMorphologyPtr morpho_,
       TSimplificationMethod simplMethod_ = DELETE_ALL,
       float tolerance_ = 0.1,
+      bool clone = false );
+
+    NSOL_API
+    NeuronMorphologyPtr adaptSoma(
+      NeuronMorphologyPtr morpho_,
       bool clone = false );
 
     NSOL_API
