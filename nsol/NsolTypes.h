@@ -30,8 +30,7 @@
 namespace nsol
 {
 
-#if __GNUC__ == 4
-#if  __GNUC_MINOR__ > 6
+#if ( __GNUC__ == 4 && __GNUC_MINOR__ > 6 ) || __GNUC__ == 5
   //! NsolVector container template alias (gcc 4.7 min required)
   template<typename T>
   using NsolVector = std::vector<T>;
@@ -45,7 +44,6 @@ namespace nsol
   //! NsolList container redefinition for gcc 4.6 and previous
 #define NsolList std::list
 
-#endif
 #endif
 
 #ifdef _WINDOWS
