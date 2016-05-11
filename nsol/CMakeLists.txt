@@ -13,6 +13,7 @@ set(NSOL_PUBLIC_HEADERS
   DataSet.h
   Dendrite.h
   error.h
+  ImportanceNode.h
   Log.h
   MiniColumn.h
   Neurite.h
@@ -59,6 +60,7 @@ set(NSOL_SOURCES
   Column.cpp
   DataSet.cpp
   Dendrite.cpp
+  ImportanceNode.cpp
   Log.cpp
   MiniColumn.cpp
   Neurite.cpp

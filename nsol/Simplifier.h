@@ -45,6 +45,11 @@ namespace nsol
       bool clone = false );
 
     NSOL_API
+    NeuronMorphologyPtr cutout(
+      NeuronMorphologyPtr morpho_,
+      bool clone = false );
+
+    NSOL_API
     Simplifier( Simplifier const& ) = delete;
 
     NSOL_API
@@ -53,6 +58,10 @@ namespace nsol
   private:
 
     Simplifier( void ){ };
+
+    void _cutoutAnalizeSection( SectionPtr section_ );
+
+    void _cutoutSection( SectionPtr section_ );
 
     static void _simplSecDeleteAll( SectionPtr section_,
                                     float tolerance_ );

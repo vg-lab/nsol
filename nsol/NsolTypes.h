@@ -66,6 +66,7 @@ namespace nsol
   class Axon;
   class Column;
   class Dendrite;
+  class ImportanceNode;
   class MiniColumn;
   class Neurite;
   class Neuron;
@@ -83,6 +84,7 @@ namespace nsol
   typedef std::shared_ptr< Axon > AxonPtr;
   typedef std::shared_ptr< Column > ColumnPtr;
   typedef std::shared_ptr< Dendrite > DendritePtr;
+  typedef std::shared_ptr< ImportanceNode > ImportanceNodePtr;
   typedef std::shared_ptr< MiniColumn > MiniColumnPtr;
   typedef std::shared_ptr< Neurite > NeuritePtr;
   typedef std::shared_ptr< Neuron > NeuronPtr;
@@ -112,6 +114,7 @@ namespace nsol
   typedef Axon* AxonPtr;
   typedef Column* ColumnPtr;
   typedef Dendrite* DendritePtr;
+  typedef ImportanceNode* ImportanceNodePtr;
   typedef MiniColumn* MiniColumnPtr;
   typedef Neurite* NeuritePtr;
   typedef Neuron* NeuronPtr;

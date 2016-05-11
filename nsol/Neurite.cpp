@@ -29,6 +29,10 @@ namespace nsol
 
   Neurite::~Neurite( )
   {
+    delete _firstSection->firstNode( );
+
+    for ( SectionPtr section: this->sections( ))
+      delete section;
   }
 
   //! Get the type of neurite

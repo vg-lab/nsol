@@ -28,16 +28,6 @@ namespace nsol
   {
     for ( auto neurite: _neurites)
     {
-      delete neurite->firstSection( )->firstNode( );
-      for ( auto section: neurite->sections( ))
-      {
-        for ( auto node: section->nodes( ))
-        {
-          if( node != section->firstNode( ))
-            delete node;
-        }
-        delete section;
-      }
       delete neurite;
     }
     delete _soma;

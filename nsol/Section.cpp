@@ -21,17 +21,10 @@ namespace nsol
 
   Section::~Section( void )
   {
-    // if (_firstSegment)
-    // {
-    //   SegmentPtr sP = _firstSegment;
+    for ( unsigned int i = 1; i < _nodes.size( ); i++ )
+      delete _nodes[i];
 
-    //   while (sP)
-    //   {
-    // 	SegmentPtr next = sP->_next;
-    // 	delete sP;
-    // 	sP = next;
-    //   }
-    // }
+    _nodes.clear( );
   }
 
   NeuritePtr Section::neurite( void )
