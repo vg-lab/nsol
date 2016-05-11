@@ -21,9 +21,9 @@ namespace nsol
 
   Soma::~Soma( )
   {
-    // for (Nodes::iterator it = _nodes.begin();
-    // 	 it != _nodes.end(); ++it)
-    //   delete *it;
+    for ( NodePtr node: _nodes )
+      delete node;
+
     _nodes.clear();
   }
 

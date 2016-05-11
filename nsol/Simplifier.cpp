@@ -2,6 +2,9 @@
 
 #include "NeuronMorphology.h"
 #include "Container/Nodes.h"
+#include "ImportanceNode.h"
+
+#include <stack>
 
 namespace nsol
 {
@@ -97,6 +100,61 @@ namespace nsol
     }
 
     return morpho;
+  }
+
+  NeuronMorphologyPtr Simplifier::cutout( NeuronMorphologyPtr morpho_,
+                                          bool clone )
+  {
+    NeuronMorphologyPtr morpho = morpho_;
+
+    if ( morpho->neurites( ).size( ) < 1 )
+    {
+      std::cerr << "This morphology doesn't containes neurites" << std::endl;
+      return morpho;
+    }
+
+    if ( ! dynamic_cast<ImportanceNodePtr>(
+           morpho->neurites( )[0]->firstSection( )->firstNode( )))
+    {
+      std::cerr << "This morphology doesn't containes ImportanceNodes"
+                << std::endl;
+      return morpho;
+    }
+
+    if ( clone )
+      morpho = morpho->clone( );
+
+    for ( NeuritePtr neurite: morpho->neurites( ))
+    {
+      for( SectionPtr section: neurite->sections( ))
+      {
+        _cutoutAnalizeSection( section );
+      }
+    }
+
+    return morpho;
+  }
+
+  void Simplifier::_cutoutAnalizeSection( SectionPtr /*section_*/ )
+  {
+  }
+
+  void Simplifier::_cutoutSection( SectionPtr section_ )
+  {
+    std::stack< SectionPtr > sectionStack;
+
+    sectionStack.push( section_ );
+
+    while( ! sectionStack.empty( ))
+    {
+      SectionPtr section = sectionStack.top( );
+      sectionStack.pop( );
+
+      for ( SectionPtr child: section->children( ))
+        sectionStack.push( child );
+
+      delete section;
+    }
   }
 
   void Simplifier::_simplSecDeleteAll( SectionPtr section_,
