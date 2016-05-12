@@ -126,6 +126,13 @@ namespace nsol
 
     for ( NeuritePtr neurite: morpho->neurites( ))
     {
+      ImportanceNodePtr inode = dynamic_cast<ImportanceNodePtr>(
+        neurite->firstSection( )->firstNode( ));
+      if( inode->importance( ) < 1 )
+      {
+        delete neurite;
+      }
+
       for( SectionPtr section: neurite->sections( ))
       {
         _cutoutAnalizeSection( section );
@@ -135,8 +142,52 @@ namespace nsol
     return morpho;
   }
 
-  void Simplifier::_cutoutAnalizeSection( SectionPtr /*section_*/ )
+  void Simplifier::_cutoutAnalizeSection( SectionPtr section_ )
   {
+    ImportanceNodePtr inode;
+
+    bool deleteFromHere = false;
+
+    std::stack< SectionPtr > sectionStack;
+
+    sectionStack.push( section_ );
+
+    while( ! sectionStack.empty( ))
+    {
+      SectionPtr section = sectionStack.top( );
+      sectionStack.pop( );
+
+      Nodes* nodes = &section->nodes( );
+
+      for ( unsigned int i = 1; i < nodes->size( ); i++ )
+      {
+        if ( deleteFromHere )
+        {
+          delete (*nodes)[i];
+          nodes->erase( nodes->begin( ) + i );
+          i--;
+        }
+        else
+        {
+          inode = dynamic_cast<ImportanceNodePtr>( (*nodes)[i] );
+          if ( inode->importance( ) < 1 )
+          {
+            deleteFromHere = true;
+            i --;
+          }
+        }
+      }
+      for ( SectionPtr child: section->children( ))
+      {
+        if ( deleteFromHere )
+        {
+          section->children( ).clear( );
+          _cutoutSection( child );
+        }
+        else
+          sectionStack.push( child );
+      }
+    }
   }
 
   void Simplifier::_cutoutSection( SectionPtr section_ )

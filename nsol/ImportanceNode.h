@@ -18,6 +18,7 @@ namespace nsol
   class ImportanceNode
     : public Node
   {
+  public:
 
     NSOL_API
     ImportanceNode( const Vec3f & point = Vec3f(0,0,0),
