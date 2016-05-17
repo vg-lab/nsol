@@ -110,7 +110,7 @@ namespace nsol
     ///@}
 
     //! Static instance of Simplifier singleton class
-    static Simplifier* m_pInstance;
+    static Simplifier* _mpInstance;
   };
 
 } // namespace nsol

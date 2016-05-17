@@ -9,14 +9,14 @@
 namespace nsol
 {
 
-  Simplifier* Simplifier::m_pInstance = NULL;
+  Simplifier* Simplifier::_mpInstance = NULL;
 
   Simplifier* Simplifier::Instance( void )
   {
-    if ( !m_pInstance )
-      m_pInstance = new Simplifier;
+    if ( !_mpInstance )
+      _mpInstance = new Simplifier;
 
-    return m_pInstance;
+    return _mpInstance;
   }
 
   NeuronMorphologyPtr Simplifier::simplify( NeuronMorphologyPtr morpho_,
