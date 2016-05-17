@@ -8,7 +8,7 @@
  */
 
 #include "Neurite.h"
-
+#include "NeuronMorphology.h"
 #include <stack>
 
 
@@ -30,6 +30,19 @@ namespace nsol
   Neurite::~Neurite( )
   {
     delete _firstSection->firstNode( );
+
+    if ( _morphology )
+    {
+      Neurites neurites = _morphology->neurites( );
+
+      for ( unsigned int i = 0; i < neurites.size( ); i++ )
+      {
+        if ( neurites[i] == this ){
+          neurites.erase( neurites.begin( ) + i );
+          i--;
+        }
+      }
+    }
 
     for ( SectionPtr section: this->sections( ))
       delete section;
