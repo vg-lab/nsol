@@ -16,14 +16,15 @@ using namespace nsol;
 BOOST_AUTO_TEST_CASE( neurite_constructor )
 {
 
-  Neurite neurite;
+  BOOST_CHECK( true );
 
-  BOOST_CHECK_EQUAL( neurite.neuriteType( ), 0 );
-  BOOST_CHECK( !neurite.morphology( ));
-  BOOST_CHECK( !neurite.firstSection( ));
-  BOOST_CHECK_EQUAL( neurite.numBranches( ), 0 );
-  BOOST_CHECK_EQUAL( neurite.numBifurcations( ), 0 );
+  Neurite* neurite = new Neurite( );
 
+  BOOST_CHECK_EQUAL( neurite->neuriteType( ), 0 );
+  BOOST_CHECK( !neurite->morphology( ));
+  BOOST_CHECK( !neurite->firstSection( ));
+  BOOST_CHECK_EQUAL( neurite->numBranches( ), 0 );
+  BOOST_CHECK_EQUAL( neurite->numBifurcations( ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( neurite_clone )
@@ -49,14 +50,14 @@ BOOST_AUTO_TEST_CASE( neurite_clone )
   Section section1 = *(section.clone( ));
   section1.parent( &section );
 
-  Neurite neurite;
-  section.neurite( &neurite );
-  section1.neurite( &neurite );
-  neurite.firstSection( &section );
-  Neurite neurite1 = *( neurite.clone( ));
+  Neurite* neurite = new Neurite( );
+  section.neurite( neurite );
+  section1.neurite( neurite );
+  neurite->firstSection( &section );
+  Neurite* neurite1 = neurite->clone( );
 
-  Sections originalSecs = neurite.sections( );
-  Sections cloneSecs = neurite1.sections( );
+  Sections originalSecs = neurite->sections( );
+  Sections cloneSecs = neurite1->sections( );
   for ( unsigned int i = 0; i < originalSecs.size( ); i++ )
   {
     Nodes originalNodes = originalSecs[i]->nodes( );
@@ -94,17 +95,17 @@ BOOST_AUTO_TEST_CASE( neurite_operators )
   section1.parent( &section );
   Section section2 = *(section.clone( ));
 
-  Neurite neurite;
-  section.neurite( &neurite );
-  section1.neurite( &neurite );
-  section2.neurite( &neurite );
-  neurite.firstSection( &section );
+  Neurite* neurite = new Neurite( );
+  section.neurite( neurite );
+  section1.neurite( neurite );
+  section2.neurite( neurite );
+  neurite->firstSection( &section );
 
-  Neurite neurite1 = *( neurite.clone( ));
+  Neurite* neurite1 = neurite->clone( );
 
   section2.parent( &section1 );
 
-  BOOST_CHECK( neurite == neurite );
-  BOOST_CHECK( neurite1 == neurite1 );
-  BOOST_CHECK( neurite != neurite1);
+  BOOST_CHECK( *neurite == *neurite );
+  BOOST_CHECK( *neurite1 == *neurite1 );
+  BOOST_CHECK( *neurite != *neurite1);
 }
