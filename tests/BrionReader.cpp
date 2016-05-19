@@ -15,8 +15,9 @@
 
 using namespace nsol;
 
-BOOST_AUTO_TEST_CASE( brionReader_loadMorphology )
+BOOST_AUTO_TEST_CASE( brionReader_loaders )
 {
+  {
     BrionReaderTemplated<
       Node,
       Section,
@@ -58,4 +59,48 @@ BOOST_AUTO_TEST_CASE( brionReader_loadMorphology )
     BOOST_CHECK_EQUAL( numBranches, 80 );
     BOOST_CHECK_EQUAL( numBifurcations, 160 );
     BOOST_CHECK_EQUAL( numNeuritesNodes, 515 );
+  }
+  {
+    BrionReaderTemplated<
+      Node,
+      Section,
+      Dendrite,
+      Axon,
+      Soma,
+      NeuronMorphology,
+      Neuron,
+      MiniColumn,
+      Column> br;
+
+    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 0 );
+
+    BOOST_CHECK_EQUAL( neuron->gid( ), 0 );
+    BOOST_CHECK_EQUAL( neuron->layer( ), 0 );
+    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4f::IDENTITY );
+    BOOST_CHECK_EQUAL( neuron->morphologicalType( ), Neuron::PYRAMIDAL );
+    BOOST_CHECK_EQUAL( neuron->functionalType( ), Neuron::EXCITATORY );
+  }
+  {
+    BrionReaderTemplated<
+      Node,
+      Section,
+      Dendrite,
+      Axon,
+      Soma,
+      NeuronMorphology,
+      Neuron,
+      MiniColumn,
+      Column> br;
+
+    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 1, 1,
+                                      Matrix4_4f::IDENTITY,
+                                      Neuron::INTERNEURON,
+                                      Neuron::INHIBITORY );
+
+    BOOST_CHECK_EQUAL( neuron->gid( ), 1 );
+    BOOST_CHECK_EQUAL( neuron->layer( ), 1 );
+    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4f::IDENTITY );
+    BOOST_CHECK_EQUAL( neuron->morphologicalType( ), Neuron::INTERNEURON );
+    BOOST_CHECK_EQUAL( neuron->functionalType( ), Neuron::INHIBITORY );
+  }
 }
