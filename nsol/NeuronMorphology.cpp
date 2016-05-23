@@ -165,7 +165,6 @@ namespace nsol
 
   NeuronMorphologyPtr NeuronMorphology::clone( void ) const
   {
-    std::cout << "Clone en nsol" << std::endl;
     NeuronMorphologyPtr newMorpho = new NeuronMorphology( );
     newMorpho->soma( _soma->clone( ));
 

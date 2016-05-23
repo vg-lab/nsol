@@ -11,8 +11,6 @@
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
-#include <iostream>
-
 using namespace nsol;
 
 BOOST_AUTO_TEST_CASE( brionReader_loaders )
