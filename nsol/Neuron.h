@@ -70,7 +70,7 @@ namespace nsol
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
             const unsigned short layer = 0,
             const unsigned int gid = 0,
-            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
+            const Matrix4_4f transform = Matrix4_4fIdentity,
             const MiniColumnPtr miniColumn = nullptr,
             const TMorphologicalType morphologicalType = UNDEFINED,
             const TFunctionalType functionalType = UNDEFINED_FUNCTIONAL_TYPE );
