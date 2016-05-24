@@ -50,8 +50,8 @@ endif( )
 include(Common)
 
 common_package(Boost COMPONENTS unit_test_framework)
-common_package(vmmlib REQUIRED)
-list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib)
+common_package(Eigen3 SYSTEM REQUIRED)
+list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
 
 if (WITH_BBPSDK)
   common_package(BBPSDK)

@@ -262,23 +262,24 @@ int main ( int argc, char ** argv )
     {
       for( const auto neuron : miniCol->neurons( ))
       {
-        ( *outStream ) << neuron->gid( ) << ","
-                       << ( neuron->transform( ) *
-                            neuron->morphology( )->soma( )->center( )).x( )
-                       << ","
-                       << ( neuron->transform( ) *
-                            neuron->morphology( )->soma( )->center( )).y( )
-                       << ","
-                  << ( neuron->transform( ) *
-                       neuron->morphology( )->soma( )->center( )).z( )
-                       << ","
-                  << neuron->layer( ) << ","
-                  << neuron->miniColumn( )->column( )->id( ) << ","
-                  << neuron->miniColumn( )->id( ) << ","
-                  << neuron->morphologicalType( ) << ","
-                  << neuron->functionalType( ) << ","
-                  << neuron->morphology( )->soma( )->maxRadius( );
-
+        nsol::Vec4f center = neuron->transform( ) *
+          neuron->morphology( )->soma( )->center( ).homogeneous( );
+        
+        ( *outStream )
+          << neuron->gid( ) << ","
+          << center.x( )
+          << ","
+          << center.y( )
+          << ","
+          << center.z( )
+          << ","
+          << neuron->layer( ) << ","
+          << neuron->miniColumn( )->column( )->id( ) << ","
+          << neuron->miniColumn( )->id( ) << ","
+          << neuron->morphologicalType( ) << ","
+          << neuron->functionalType( ) << ","
+          << neuron->morphology( )->soma( )->maxRadius( );
+        
         assert( neuron->morphology( ) &&  neuron->morphology( )->stats( ));
 
         nsol::NeuronMorphologyStats* nms = neuron->morphology( )->stats( );

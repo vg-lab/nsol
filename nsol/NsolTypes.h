@@ -13,12 +13,8 @@
 
 #include <list>
 #include <vector>
-
 #include <iostream>
-
-#include <vmmlib/vmmlib.hpp>
-/* #include <vmmlib/matrix.hpp> */
-
+#include <Eigen/Dense>
 #include <nsol/defines.h>
 
 // This pragma should be removed. Added to macosx clang building
@@ -53,13 +49,12 @@ namespace nsol
 
 #endif
 
-
-  typedef ::vmml::vector<3, float> Vec3f;
-  typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
-  typedef ::vmml::vector<4, float> Vec4f;
+  typedef ::Eigen::Vector3f Vec3f;
+  typedef ::Eigen::Matrix4f Matrix4_4f;
+  typedef ::Eigen::Vector4f Vec4f;
+  #define Matrix4_4fIdentity Matrix4_4f::Identity()
 
   static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
-
 
   class Axon;
   class Column;
