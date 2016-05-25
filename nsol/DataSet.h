@@ -234,7 +234,7 @@ namespace nsol
       const std::string& file_,
       const unsigned int gid_,
       const unsigned int layer_ = 0,
-      const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+      const Matrix4_4f transform_ = Matrix4_4fIdentity,
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
       BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
@@ -269,7 +269,7 @@ namespace nsol
       const std::string& file_, const unsigned int gid_,
       const unsigned int columnId_ = 0, const unsigned int miniColumnId_ = 0,
       const unsigned int layer_ = 0,
-      const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+      const Matrix4_4f transform_ = Matrix4_4fIdentity,
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
       NeuronPtr neuron =
@@ -434,7 +434,7 @@ namespace nsol
                                 nsol::Neuron::UNDEFINED;
                             nsol::Neuron::TFunctionalType functionalType =
                                 nsol::Neuron::UNDEFINED_FUNCTIONAL_TYPE;
-                            Matrix4_4f transform = Matrix4_4f::IDENTITY;
+                            Matrix4_4f transform = Matrix4_4fIdentity;
 
                             //GET Layer
                             if ( attributes.hasAttribute( "layer" ))
@@ -505,7 +505,8 @@ namespace nsol
                                 {
                                   for ( unsigned int i = 0; i < 4; i ++ )
                                     for ( unsigned int j = 0; j < 4; j ++ )
-                                      transform.at( i, j ) = mL[ i * 4 + j].toFloat( );
+                                      transform( i, j ) =
+                                        mL[ i * 4 + j].toFloat( );
                                 }
                               }
                             }

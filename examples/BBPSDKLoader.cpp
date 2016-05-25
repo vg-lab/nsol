@@ -35,19 +35,14 @@ int main( int argc, char *argv[] )
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];
 
-    // cout << "soma surface: " << neuron->morphology( )->soma().surface() << endl;
-
-    for (vmml::matrix<4,4,float>::const_iterator it =
-           neuron->transform().begin();
-         it != neuron->transform().end(); ++it)
-      cout << *it << endl;
+    cout << neuron->transform() << endl;
 
 
     NeuritePtr n = neuron->morphology()->neurites()[0];
 
     std::cout << "soma center: "
               << neuron->transform() *
-      Vec4f(neuron->morphology()->soma()->center(),1)
+      neuron->morphology()->soma()->center().homogeneous()
               << std::endl;
 
     std::cout << "soma first point: "

@@ -274,7 +274,7 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
           NeuronPtr( new Neuron( NeuronMorphologyPtr(
                                    new NeuronMorphology ( new Soma ) ),
                                  l, gid++,
-                                 Matrix4_4f::IDENTITY,
+                                 Matrix4_4fIdentity,
                                  *mcIt, Neuron::PYRAMIDAL )));
       }
       for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; ++j )
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
           NeuronPtr( new Neuron( NeuronMorphologyPtr(
                                    new NeuronMorphology ( new Soma ) ),
                                  l, gid++,
-                                 Matrix4_4f::IDENTITY,
+                                 Matrix4_4fIdentity,
                                  *mcIt, Neuron::INTERNEURON )));
       }
     }

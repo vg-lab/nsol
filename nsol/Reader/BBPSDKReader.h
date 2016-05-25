@@ -307,7 +307,8 @@ namespace nsol
           miniColumnMap[it->minicolumn()]);
 
       neuron->layer() = it->layer();
-      neuron->transform() = it->global_transform();
+      memcpy( neuron->transform( ).data( ), it->global_transform( ).data( ),
+              16 * sizeof( float ));
       neuron->gid() = it->gid();
 
       if( it->type( ).is_interneuron( ))
@@ -602,37 +603,37 @@ namespace nsol
               getline(iss, comma, ',');
 
 //TODO:column order, why?
-              iss >> csvLine.globalTrans[0][0];
+              iss >> csvLine.globalTrans(0,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][0];
+              iss >> csvLine.globalTrans(1,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][0];
+              iss >> csvLine.globalTrans(2,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][0];
+              iss >> csvLine.globalTrans(3,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][1];
+              iss >> csvLine.globalTrans(0,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][1];
+              iss >> csvLine.globalTrans(1,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][1];
+              iss >> csvLine.globalTrans(2,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][1];
+              iss >> csvLine.globalTrans(3,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][2];
+              iss >> csvLine.globalTrans(0,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][2];
+              iss >> csvLine.globalTrans(1,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][2];
+              iss >> csvLine.globalTrans(2,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][2];
+              iss >> csvLine.globalTrans(3,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][3];
+              iss >> csvLine.globalTrans(0,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][3];
+              iss >> csvLine.globalTrans(1,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][3];
+              iss >> csvLine.globalTrans(2,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][3];
+              iss >> csvLine.globalTrans(3,3);
               getline(iss, comma, ',');
               iss >> csvLine.orientation[0];
               getline(iss, comma, ',');

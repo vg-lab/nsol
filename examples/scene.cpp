@@ -30,28 +30,28 @@ int main ( int argc, char ** argv )
                   << (int)(*neuron)->morphologicalType( ) << std::endl;
         std::cout << "            Transform" << std::endl;
         std::cout << "                "
-                  << (*neuron)->transform( ).at(0,0) << " "
-                  << (*neuron)->transform( ).at(0,1) << " "
-                  << (*neuron)->transform( ).at(0,2) << " "
-                  << (*neuron)->transform( ).at(0,3) << " "
+                  << (*neuron)->transform( )(0,0) << " "
+                  << (*neuron)->transform( )(0,1) << " "
+                  << (*neuron)->transform( )(0,2) << " "
+                  << (*neuron)->transform( )(0,3) << " "
                   << std::endl;
         std::cout << "                "
-                  << (*neuron)->transform( ).at(1,0) << " "
-                  << (*neuron)->transform( ).at(1,1) << " "
-                  << (*neuron)->transform( ).at(1,2) << " "
-                  << (*neuron)->transform( ).at(1,3) << " "
+                  << (*neuron)->transform( )(1,0) << " "
+                  << (*neuron)->transform( )(1,1) << " "
+                  << (*neuron)->transform( )(1,2) << " "
+                  << (*neuron)->transform( )(1,3) << " "
                   << std::endl;
         std::cout << "                "
-                  << (*neuron)->transform( ).at(2,0) << " "
-                  << (*neuron)->transform( ).at(2,1) << " "
-                  << (*neuron)->transform( ).at(2,2) << " "
-                  << (*neuron)->transform( ).at(2,3) << " "
+                  << (*neuron)->transform( )(2,0) << " "
+                  << (*neuron)->transform( )(2,1) << " "
+                  << (*neuron)->transform( )(2,2) << " "
+                  << (*neuron)->transform( )(2,3) << " "
                   << std::endl;
         std::cout << "                "
-                  << (*neuron)->transform( ).at(3,0) << " "
-                  << (*neuron)->transform( ).at(3,1) << " "
-                  << (*neuron)->transform( ).at(3,2) << " "
-                  << (*neuron)->transform( ).at(3,3) << " "
+                  << (*neuron)->transform( )(3,0) << " "
+                  << (*neuron)->transform( )(3,1) << " "
+                  << (*neuron)->transform( )(3,2) << " "
+                  << (*neuron)->transform( )(3,3) << " "
                   << std::endl;
         if ( (*neuron)->morphology( ))
           std::cout << "            Morphology linked" << std::endl;
