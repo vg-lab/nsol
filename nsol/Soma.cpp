@@ -120,7 +120,7 @@ namespace nsol
 
     for( auto node: _nodes )
     {
-      float radius = ( _center - node->point( )).length( );
+      float radius = ( _center - node->point( )).norm( );
       if ( radius > _maxRadius )
         _maxRadius = radius;
       if ( radius < _minRadius )
