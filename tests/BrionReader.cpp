@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
 
     BOOST_CHECK_EQUAL( neuron->gid( ), 0 );
     BOOST_CHECK_EQUAL( neuron->layer( ), 0 );
-    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4f::IDENTITY );
+    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4fIdentity );
     BOOST_CHECK_EQUAL( neuron->morphologicalType( ), Neuron::PYRAMIDAL );
     BOOST_CHECK_EQUAL( neuron->functionalType( ), Neuron::EXCITATORY );
   }
@@ -91,13 +91,13 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       Column> br;
 
     NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 1, 1,
-                                      Matrix4_4f::IDENTITY,
+                                      Matrix4_4fIdentity,
                                       Neuron::INTERNEURON,
                                       Neuron::INHIBITORY );
 
     BOOST_CHECK_EQUAL( neuron->gid( ), 1 );
     BOOST_CHECK_EQUAL( neuron->layer( ), 1 );
-    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4f::IDENTITY );
+    BOOST_CHECK_EQUAL( neuron->transform( ), Matrix4_4fIdentity );
     BOOST_CHECK_EQUAL( neuron->morphologicalType( ), Neuron::INTERNEURON );
     BOOST_CHECK_EQUAL( neuron->functionalType( ), Neuron::INHIBITORY );
   }
