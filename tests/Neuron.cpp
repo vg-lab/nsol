@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE( neuron_constructor )
 BOOST_AUTO_TEST_CASE( neuron_type )
 {
   {
-    Neuron neuron( nullptr, 1, 1, Matrix4_4f::IDENTITY, nullptr,
+    Neuron neuron( nullptr, 1, 1, Matrix4_4fIdentity, nullptr,
                    Neuron::PYRAMIDAL, Neuron::INHIBITORY );
     BOOST_CHECK_EQUAL( neuron.isPyramidal(), true );
     BOOST_CHECK_EQUAL( neuron.isInterneuron(), false );
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( neuron_type )
     BOOST_CHECK_EQUAL( neuron.isInhibitory(), true );
   }
   {
-    Neuron neuron( nullptr, 1, 1, Matrix4_4f::IDENTITY, nullptr,
+    Neuron neuron( nullptr, 1, 1, Matrix4_4fIdentity, nullptr,
                    Neuron::INTERNEURON, Neuron::EXCITATORY );
     BOOST_CHECK_EQUAL( neuron.isPyramidal(), false );
     BOOST_CHECK_EQUAL( neuron.isInterneuron(), true );

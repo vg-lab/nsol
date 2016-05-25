@@ -231,7 +231,7 @@ namespace nsol
     for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
     {
       float distance =
-        ((*nodes)[i-1]->point( ) - (*nodes)[i]->point( )).length( );
+        ((*nodes)[i-1]->point( ) - (*nodes)[i]->point( )).norm( );
       if ( distance < tolerance_ )
       {
         delete (*nodes)[i];

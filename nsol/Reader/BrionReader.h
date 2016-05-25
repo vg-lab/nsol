@@ -72,7 +72,7 @@ namespace nsol
       const std::string& path_,
       const unsigned int gid_,
       const unsigned int layer_ = 0,
-      const Matrix4_4f transform_ = Matrix4_4f::IDENTITY,
+      const Matrix4_4f transform_ = Matrix4_4fIdentity,
       const Neuron::TMorphologicalType morphologicalType_ = Neuron::PYRAMIDAL,
       const Neuron::TFunctionalType functionalType_ = Neuron::EXCITATORY,
       bool reposition_ = true );
@@ -310,14 +310,21 @@ namespace nsol
     for ( unsigned int i = 0; i < gidSet.size( ); i++ )
     {
       unsigned int gid = neuronIds[i];
-      Matrix4_4f transform = Matrix4_4f::IDENTITY;
+      Matrix4_4f transform = Matrix4_4fIdentity;
 
-      transform.rotate_y(
-        boost::lexical_cast< float >( data[i][7] ) * (M_PI*1280.0f));
+      float yRotation =
+        boost::lexical_cast< float >( data[i][7] ) * (M_PI*1280.0f);
+      transform( 0, 0 ) = cos( yRotation );
+      transform( 0, 2 ) = sin( yRotation );
+      transform( 2, 0 ) = -sin( yRotation );
+      transform( 2, 2 ) = cos( yRotation );
+
       Vec3f translationVec( boost::lexical_cast< float >( data[i][4] ),
                             boost::lexical_cast< float >( data[i][5] ),
                             boost::lexical_cast< float >( data[i][6] ));
-      transform.set_translation( translationVec );
+      transform( 0, 3 ) = translationVec.x( );
+      transform( 1, 3 ) = translationVec.y( );
+      transform( 2, 3 ) = translationVec.z( );
 
       unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] ));
 
