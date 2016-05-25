@@ -32,7 +32,7 @@ namespace nsol
       }
       //Lateral area of a truncated cone.
       float segmentLength =
-        (begin->point( ) - end->point( )).length( );
+        (begin->point( ) - end->point( )).norm( );
       float radiusDifference =
         begin->radius() - end->radius();
       float generatrix =
@@ -50,7 +50,7 @@ namespace nsol
       }
       //Volume of a truncated cone.
       return (M_PI_3) *
-        (begin->point( ) - end->point( )).length( ) *
+        (begin->point( ) - end->point( )).norm( ) *
         ( begin->radius()*begin->radius() +
           end->radius()*end->radius() +
           2.0f*begin->radius()*end->radius() );
@@ -59,7 +59,7 @@ namespace nsol
     case LENGTH:
     {
       return (begin && end) ?
-        (begin->point( ) - end->point( )).length( ) : 0.0f;
+        (begin->point( ) - end->point( )).norm( ) : 0.0f;
       break;
     }
     case RADIUS:

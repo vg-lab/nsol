@@ -77,7 +77,7 @@ namespace nsol
 
     for ( unsigned int it = 1; it < _nodes.size( ); ++it )
     {
-      float mod = ( _center - _nodes[it]->point( )).length( );
+      float mod = ( _center - _nodes[it]->point( )).norm( );
 
       if ( mod > _maxRadius )
         _maxRadius = mod;
