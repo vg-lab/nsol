@@ -124,18 +124,20 @@ namespace nsol
     if ( clone )
       morpho = morpho->clone( );
 
-    for ( NeuritePtr neurite: morpho->neurites( ))
+    for ( unsigned int i = 0; morpho->neurites( ).size( ); i++ )
     {
+      NeuritePtr neurite = morpho->neurites( )[i];
       ImportanceNodePtr inode = dynamic_cast<ImportanceNodePtr>(
         neurite->firstSection( )->firstNode( ));
       if( inode->importance( ) < 1 )
       {
+        morpho->neurites( ).erase( morpho->neurites( ).begin( ) + i );
         delete neurite;
+        i--;
       }
-
-      for( SectionPtr section: neurite->sections( ))
+      else
       {
-        _cutoutAnalizeSection( section );
+        _cutoutAnalizeSection( neurite->firstSection( ));
       }
     }
 
