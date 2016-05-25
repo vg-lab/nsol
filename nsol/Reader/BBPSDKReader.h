@@ -306,10 +306,8 @@ namespace nsol
           miniColumnMap[it->minicolumn()]);
 
       neuron->layer() = it->layer();
-      //neuron->transform( ).data( ) = &(it->global_transform( )[0]);
-      // void * memcpy ( void * destination, const void * source, size_t num );
-      memcpy( neuron->transform().data( ), &(it->global_transform()[0]),
-              4 * sizeof( Vec4f ));
+      memcpy( neuron->transform( ).data( ), it->global_transform( ).data( ),
+              16 * sizeof( float ));
       neuron->gid() = it->gid();
 
       if( it->type( ).is_interneuron( ))
