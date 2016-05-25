@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
           new nsol::Neuron(
             new nsol::NeuronMorphology( new nsol::Soma ),
             l, gid++,
-            nsol::Matrix4_4f::IDENTITY,
+            nsol::Matrix4_4fIdentity,
             mc, nsol::Neuron::PYRAMIDAL )));
     }
     for ( int j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
@@ -266,7 +266,7 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
           new nsol::Neuron(
             new nsol::NeuronMorphology( new nsol::Soma ),
             l, gid++,
-            nsol::Matrix4_4f::IDENTITY,
+            nsol::Matrix4_4fIdentity,
             mc, nsol::Neuron::INTERNEURON )));
     }
   }

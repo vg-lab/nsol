@@ -6,8 +6,9 @@
 #   www.gmrv.es
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-cmake_minimum_required(VERSION 2.8)
-project(nsol)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(nsol VERSION 0.1.0 )
+set(nsol_VERSION_ABI 1)
 
 # Disable in source building
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -49,19 +50,19 @@ endif( )
 
 include(Common)
 
-common_package(Boost COMPONENTS unit_test_framework)
-common_package(vmmlib REQUIRED)
-list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib)
+common_find_package(Boost COMPONENTS unit_test_framework)
+common_find_package(Eigen3 SYSTEM REQUIRED)
+list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
 
 if (WITH_BBPSDK)
-  common_package(BBPSDK)
+  common_find_package(BBPSDK)
   if( BBPSDK_FOUND )
     list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
   endif( )
 endif()
-common_package(Qt5Core)
-common_package(fires)
-common_package_post()
+common_find_package(Qt5Core)
+common_find_package(fires)
+common_find_package_post()
 
 if(FIRES_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES fires)
