@@ -13,6 +13,7 @@ set(NSOL_PUBLIC_HEADERS
   DataSet.h
   Dendrite.h
   error.h
+  ImportanceNode.h
   Log.h
   MiniColumn.h
   Neurite.h
@@ -23,6 +24,7 @@ set(NSOL_PUBLIC_HEADERS
   Object.h
   ObjectWithProperties.h
   Section.h
+  Simplifier.h
   Soma.h
   Spine.h
   Stats/AxonStats.h
@@ -47,6 +49,7 @@ set(NSOL_PUBLIC_HEADERS
   Writer/SwcWriter.h
   Factory.h
   Reader/BBPSDKReader.h
+  Reader/BrionReader.h
   Reader/SwcReader.h
   )
 
@@ -57,6 +60,7 @@ set(NSOL_SOURCES
   Column.cpp
   DataSet.cpp
   Dendrite.cpp
+  ImportanceNode.cpp
   Log.cpp
   MiniColumn.cpp
   Neurite.cpp
@@ -66,6 +70,7 @@ set(NSOL_SOURCES
   Object.cpp
   ObjectWithProperties.cpp
   Section.cpp
+  Simplifier.cpp
   Soma.cpp
   Stats/AxonStats.cpp
   Stats/AxonCachedStats.cpp
@@ -84,6 +89,10 @@ set(NSOL_SOURCES
   Stats/SomaStats.cpp
   )
 
+
+if (BRION_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
+endif()
 
 if (BBPSDK_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC BBPSDK)

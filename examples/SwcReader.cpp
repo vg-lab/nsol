@@ -54,12 +54,11 @@ int main(int argc, char *argv[])
       sPS.pop( );
       numSections ++;
 
-      if( section->lastNode( ))
-        numNodes ++;
-      numNodes += ( unsigned int ) section->middleNodes( ).size(  );
+      if ( section->firstNode( ))
+        numNodes += ( unsigned int ) section->nodes( ).size(  ) - 1;
 
       cout << "    Section-> number of nodes: "
-           << section->middleNodes( ).size( ) + 2 << endl;
+           << section->nodes( ).size( ) << endl;
       cout << "      First Node: " << section->firstNode( )->id( )
            << " End Node: " << section->lastNode( )->id( ) << endl;
 

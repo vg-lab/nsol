@@ -124,8 +124,7 @@ namespace nsol
           Sections sections = ( *neurite )->sections( );
           NSOL_FOREACH( section, sections )
           {
-            delete ( *section )->lastNode( );
-            NSOL_FOREACH( node, (*section)->middleNodes( ))
+            NSOL_FOREACH( node, (*section)->nodes( ))
             {
               delete *node;
             }
@@ -208,6 +207,8 @@ namespace nsol
     const int loadFlags,
     const std::string& targetLabel )
   {
+    std::cerr << "BBPSDKReader< >::readFromBlueConfig is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     if ( loadFlags == 0 )
       return;
 
@@ -532,7 +533,8 @@ namespace nsol
     NeuronsMap& neurons,
     const std::string inputFile)
   {
-
+    std::cerr << "BBPSDKReader< >::readFromDirectory is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     std::map<unsigned int, ColumnPtr> columnMap;
 
     SwcReader r;

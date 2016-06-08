@@ -12,6 +12,8 @@
 #include <nsol/api.h>
 
 #include "NsolTypes.h"
+#include "Node.h"
+#include "Section.h"
 #include "Soma.h"
 #include "Axon.h"
 #include "Neurite.h"
@@ -19,6 +21,8 @@
 #include "Container/Dendrites.h"
 #include "Container/Neurites.h"
 #include "Container/Neurons.h"
+
+#include <string>
 
 namespace nsol
 {
@@ -41,10 +45,21 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
+    NeuronMorphology( void );
+
+    NSOL_API
     NeuronMorphology( SomaPtr soma );
 
     NSOL_API
     virtual ~NeuronMorphology( void );
+
+    /**
+     * Method to set the neuronal soma.
+     * @param soma pointer to the soma to be setted.
+     * @return pointer to the setted soma
+     */
+    NSOL_API
+    SomaPtr soma( SomaPtr soma );
 
     /**
      * Method to add a new neurite to the neuron.
@@ -123,13 +138,20 @@ namespace nsol
       return this;
     }
 
+    NSOL_API
+    virtual NeuronMorphologyPtr clone( void ) const;
+
+    NSOL_API
+    bool operator == ( NeuronMorphology & other );
+
+    NSOL_API
+    bool operator != ( NeuronMorphology & other );
 
   protected:
 
-    Soma * _soma;
+    SomaPtr _soma;
     Neurites _neurites;
     Neurons _parentNeurons;
-
   };
 
 

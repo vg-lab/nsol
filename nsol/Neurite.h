@@ -13,6 +13,8 @@
 #include "NsolTypes.h"
 #include "Section.h"
 
+#include <stack>
+
 #include <iostream>
 
 
@@ -105,6 +107,15 @@ namespace nsol {
      */
     NSOL_API
     virtual NeuriteStats * stats( void );
+
+    NSOL_API
+    virtual NeuritePtr clone( void ) const;
+
+    NSOL_API
+    bool operator == ( Neurite & other );
+
+    NSOL_API
+    bool operator != ( Neurite & other );
 
   protected:
 
