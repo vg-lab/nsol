@@ -54,6 +54,14 @@ namespace nsol
       NEURON_MORPHOLOGY_NUM_STATS
     } TNeuronMorphologyStat;
 
+
+    NSOL_API
+    NeuronMorphologyStats( void )
+      : NeuronMorphology( )
+    {
+    }
+
+    NSOL_API
     NeuronMorphologyStats( SomaPtr soma_ )
       : NeuronMorphology( soma_ )
     {

@@ -12,13 +12,35 @@
 namespace nsol
 {
 
+  NeuronMorphology::NeuronMorphology( void )
+    : _soma( nullptr )
+  {
+
+  }
+
   NeuronMorphology::NeuronMorphology( SomaPtr soma_ )
     : _soma( soma_ )
   {
+
   }
 
   NeuronMorphology::~NeuronMorphology( void )
   {
+    for ( auto neurite: _neurites)
+    {
+      delete neurite;
+    }
+    delete _soma;
+    _neurites.clear( );
+    _parentNeurons.clear( );
+  }
+
+  SomaPtr
+  NeuronMorphology::soma( SomaPtr soma_ )
+  {
+    NSOL_DEBUG_CHECK( soma_, "soma is null" );
+    _soma = soma_;
+    return soma_;
   }
 
   NeuritePtr
@@ -141,7 +163,37 @@ namespace nsol
     return _soma;
   }
 
+  NeuronMorphologyPtr NeuronMorphology::clone( void ) const
+  {
+    NeuronMorphologyPtr newMorpho = new NeuronMorphology( );
+    newMorpho->soma( _soma->clone( ));
 
+    for ( NeuritePtr neurite: _neurites )
+    {
+      NeuritePtr newNeurite = neurite->clone( );
+      newNeurite->morphology( newMorpho );
+      newMorpho->addNeurite( newNeurite );
+    }
+    return newMorpho;
+  }
+
+  bool NeuronMorphology::operator == ( NeuronMorphology & other )
+  {
+    if (*_soma != *other.soma( ) ||
+        _neurites.size( ) != other.neurites( ).size( ))
+      return false;
+
+    for ( unsigned int i = 0; i < _neurites.size( ); i++ )
+      if ( *_neurites[i] != *other.neurites( )[i] )
+        return false;
+
+    return true;
+  }
+
+  bool NeuronMorphology::operator != ( NeuronMorphology & other )
+  {
+    return !( *this == other );
+  }
 } // namespace nsol
 
 // EOF

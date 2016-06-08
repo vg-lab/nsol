@@ -7,8 +7,8 @@ Ubuntu-Required-Deps:
   - date
   - hostname
   - uname -a
-  - export CMAKE_EXTRA_TARGETS="test"
-  - export JAMBS_TARGETS="eigen"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
+  - export JAMBS_TARGETS="eigen;brion"
   - export BUILD_GENERATOR="Unix Makefiles";
   - bash .gitlab-ci.sh
  tags:
@@ -20,7 +20,7 @@ Ubuntu-Optional-Deps:
   - date
   - hostname
   - uname -a
-  - export CMAKE_EXTRA_TARGETS="test"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export JAMBS_TARGETS="eigen;brion;lunchbox;bbpsdk"
   - export BUILD_GENERATOR="Unix Makefiles"
   - bash .gitlab-ci.sh
@@ -33,7 +33,7 @@ Ubuntu-Subproject:
   - date
   - hostname
   - uname -a
-  - export CMAKE_EXTRA_TARGETS="test"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Unix Makefiles";
   - bash .gitlab-ci.sh
  tags:
@@ -46,8 +46,8 @@ OSX-Required-Deps:
   - hostname
   - uname -a
   - source $ENVFILESDIR/Qt-5.4
-  - export CMAKE_EXTRA_TARGETS="test"
-  - export JAMBS_TARGETS="eigen"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
+  - export JAMBS_TARGETS="eigen;brion"
   - export BUILD_GENERATOR="Unix Makefiles";
   - export CMAKE_OSX_ARCHITECTURES=x86_64
   - bash .gitlab-ci.sh
@@ -61,7 +61,7 @@ OSX-Optional-Deps:
   - hostname
   - uname -a
   - source $ENVFILESDIR/Qt-5.4
-  - export CMAKE_EXTRA_TARGETS="test"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export JAMBS_TARGETS="eigen;brion;lunchbox;bbpsdk"
   - export BUILD_GENERATOR="Unix Makefiles"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
@@ -76,7 +76,7 @@ OSX-Subproject:
   - hostname
   - uname -a
   - source $ENVFILESDIR/Qt-5.4
-  - export CMAKE_EXTRA_TARGETS="test"
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Unix Makefiles";
   - export CMAKE_OSX_ARCHITECTURES=x86_64
   - bash .gitlab-ci.sh
@@ -87,10 +87,11 @@ Win7:
  stage: build
  script:
   - call %ENVFILESDIR%\Boost-1.56-vs12-x64.bat
+  - call %ENVFILESDIR%\HDF5-1.8.14-vs12-x64.bat
   - call %ENVFILESDIR%\Qt-5.4.bat
-  - set JAMBS_TARGETS=eigen
-  - set CMAKE_EXTRA_TARGETS=RUN_TESTS
-  - set RUN_TESTS=1
+  - set JAMBS_TARGETS=eigen;brion
+  - set CMAKE_EXTRA_TARGETS=RUN_NSOL-TESTSS
+  - set RUN_NSOL-TESTSS=1
   - set BUILD_GENERATOR=Visual Studio 12 Win64
   - set PATH=%PATH%;"c:\\Program Files (x86)\\Git\\bin"
   - bash.exe --login .gitlab-ci.sh

@@ -52,7 +52,8 @@ include(Common)
 
 common_find_package(Boost COMPONENTS unit_test_framework)
 common_find_package(Eigen3 SYSTEM REQUIRED)
-list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
+common_find_package(Brion REQUIRED)
+list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3 Brion)
 
 if (WITH_BBPSDK)
   common_find_package(BBPSDK)
