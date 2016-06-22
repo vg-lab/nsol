@@ -103,7 +103,7 @@ if (QT5CORE_FOUND)
 endif()
 
 if (FIRES_FOUND)
-  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC fires)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC FiReS)
 endif()
 
 common_library(nsol)
