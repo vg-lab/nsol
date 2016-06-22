@@ -1,28 +1,15 @@
 stages:
  - build
 
-Ubuntu-Required-Deps:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export JAMBS_TARGETS="eigen;brion"
-  - export BUILD_GENERATOR="Unix Makefiles";
-  - bash .gitlab-ci.sh
- tags:
-  - ubuntu
-
 Ubuntu-Optional-Deps:
  stage: build
  script:
   - date
   - hostname
   - uname -a
+  - export BUILD_OPTIONALS_SUBPROJECTS=1
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export JAMBS_TARGETS="eigen;brion;lunchbox;bbpsdk"
-  - export BUILD_GENERATOR="Unix Makefiles"
+  - export BUILD_GENERATOR="Ninja"
   - bash .gitlab-ci.sh
  tags:
   - ubuntu
@@ -34,25 +21,10 @@ Ubuntu-Subproject:
   - hostname
   - uname -a
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Unix Makefiles";
+  - export BUILD_GENERATOR="Ninja";
   - bash .gitlab-ci.sh
  tags:
   - ubuntu
-
-OSX-Required-Deps:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - source $ENVFILESDIR/Qt-5.4
-  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export JAMBS_TARGETS="eigen;brion"
-  - export BUILD_GENERATOR="Unix Makefiles";
-  - export CMAKE_OSX_ARCHITECTURES=x86_64
-  - bash .gitlab-ci.sh
- tags:
-  - osx
 
 OSX-Optional-Deps:
  stage: build
@@ -60,10 +32,10 @@ OSX-Optional-Deps:
   - date
   - hostname
   - uname -a
+  - export BUILD_OPTIONALS_SUBPROJECTS=1
   - source $ENVFILESDIR/Qt-5.4
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export JAMBS_TARGETS="eigen;brion;lunchbox;bbpsdk"
-  - export BUILD_GENERATOR="Unix Makefiles"
+  - export BUILD_GENERATOR="Ninja"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
   - bash .gitlab-ci.sh
  tags:
@@ -77,7 +49,7 @@ OSX-Subproject:
   - uname -a
   - source $ENVFILESDIR/Qt-5.4
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Unix Makefiles";
+  - export BUILD_GENERATOR="Ninja"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
   - bash .gitlab-ci.sh
  tags:
@@ -89,7 +61,7 @@ Win7:
   - call %ENVFILESDIR%\Boost-1.56-vs12-x64.bat
   - call %ENVFILESDIR%\HDF5-1.8.14-vs12-x64.bat
   - call %ENVFILESDIR%\Qt-5.4.bat
-  - set JAMBS_TARGETS=eigen;brion
+  - set JAMBS_TARGETS=eigen
   - set CMAKE_EXTRA_TARGETS=RUN_NSOL-TESTSS
   - set RUN_NSOL-TESTSS=1
   - set BUILD_GENERATOR=Visual Studio 12 Win64
