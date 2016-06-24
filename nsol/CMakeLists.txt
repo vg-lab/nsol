@@ -47,6 +47,7 @@ set(NSOL_PUBLIC_HEADERS
   Synapse.h
   # templated classes at last
   Writer/SwcWriter.h
+  Writer/XmlSceneWriter.h
   Factory.h
   Reader/BBPSDKReader.h
   Reader/BrionReader.h
@@ -87,6 +88,7 @@ set(NSOL_SOURCES
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
+  Writer/XmlSceneWriter.cpp
   )
 
 

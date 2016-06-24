@@ -456,9 +456,11 @@ namespace nsol
                               }
                               else
                               {
-                                NSOL_LOG( std::string( "Neuron " ) +
-                                    std::to_string( gid ) +
-                                    std::string( " undefined morphological type." ));
+                                Log::log( std::string( "Neuron " ) +
+                                          std::to_string( gid ) +
+                                          std::string(
+                                            " undefined morphological type." ),
+                                          LOG_LEVEL_WARNING );
                               }
                             }
 
@@ -478,9 +480,12 @@ namespace nsol
                               }
                               else
                               {
-                                NSOL_LOG( std::string( "Neuron " ) +
-                                    std::to_string( gid ) +
-                                    std::string( " undefined functional type." ));
+                                Log::log(
+                                  std::string( "Neuron " ) +
+                                  std::to_string( gid ) +
+                                  std::string(
+                                    " undefined functional type." ),
+                                  LOG_LEVEL_WARNING );
                               }
                             }
 
@@ -597,6 +602,9 @@ namespace nsol
 
     }
 
+
+    void writeXmlScene( const std::string& xmlSceneFile );
+
   private:
 
     template < class NODE = Node,
@@ -626,13 +634,16 @@ namespace nsol
       NeuronPtr neuron = neuronIt->second;
 
       if ( neuron->morphology( ))
+      {
         return;
+      }
 
       std::map< std::string, NeuronMorphologyPtr >::iterator morphoIt =
         _morphologies.find( morphologyLabel_ );
 
       if( morphoIt != _morphologies.end( ))
       {
+        morphoIt->second->parentNeurons( ).push_back( neuron );
         neuron->morphology( morphoIt->second );
         return;
       }
@@ -641,6 +652,7 @@ namespace nsol
         morphologySource_ + "/" + morphologyLabel_ + ".h5" );
 
       neuron->morphology( morpho );
+      morpho->parentNeurons( ).push_back( neuron );
       _morphologies[ morphologyLabel_ ] = morpho;
     }
 
