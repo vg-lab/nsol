@@ -55,7 +55,7 @@ namespace nsol
     NSOL_API
     virtual ~Column( void ) ;
 
-        /**
+    /**
      * Returns object as MiniColumnStats
      * @return pointer to MiniColumnStats object
      */

@@ -1,6 +1,7 @@
 #include <set>
 #include "DataSet.h"
 #include "error.h"
+#include "Writer/XmlSceneWriter.h"
 
 
 namespace nsol
@@ -62,6 +63,10 @@ namespace nsol
     return;
   }
 
+  void DataSet::writeXmlScene( const std::string& xmlSceneFile )
+  {
+    XmlSceneWriter::writeToXml( xmlSceneFile, _columns, _morphologies );
+  }
 
   Columns& DataSet::columns( void )
   {
