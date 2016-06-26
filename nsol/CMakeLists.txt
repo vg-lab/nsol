@@ -52,6 +52,7 @@ set(NSOL_PUBLIC_HEADERS
   Reader/BBPSDKReader.h
   Reader/BrionReader.h
   Reader/SwcReader.h
+  Reader/XmlSceneReader.h
   )
 
 set(NSOL_HEADERS )
@@ -59,6 +60,7 @@ set(NSOL_HEADERS )
 set(NSOL_SOURCES
   Axon.cpp
   Column.cpp
+  Container/Neurons.cpp
   DataSet.cpp
   Dendrite.cpp
   ImportanceNode.cpp
