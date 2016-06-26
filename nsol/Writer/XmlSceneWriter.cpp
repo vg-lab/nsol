@@ -109,7 +109,7 @@ namespace nsol
         if ( neuron != * ( morphology.second->parentNeurons( ).end( )))
           file << ",";
       }
-      file << "\" src=\"" << std::to_string( counter )
+      file << "\" swc=\"" << std::to_string( counter )
            << ".swc\">" << std::endl;
       file << "      </neuronmorphology>" << std::endl;
 

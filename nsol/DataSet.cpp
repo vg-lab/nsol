@@ -78,6 +78,11 @@ namespace nsol
     return _columns;
   }
 
+  bool DataSet::addNeuron( const NeuronPtr neuron )
+  {
+    return _neurons.addNeuron( neuron );
+  }
+
   NeuronsMap& DataSet::neurons( void )
   {
     return _neurons;
