@@ -326,7 +326,8 @@ namespace nsol
       transform( 1, 3 ) = translationVec.y( );
       transform( 2, 3 ) = translationVec.z( );
 
-      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] ));
+      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] )
+                               + 1 );
 
       unsigned int miniColumnId = boost::lexical_cast< uint16_t >( data[i][1] );
       unsigned int columnId = boost::lexical_cast< uint16_t >( data[i][0] );
