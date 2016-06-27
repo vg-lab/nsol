@@ -28,10 +28,55 @@
 namespace nsol
 {
 
+  std::string morphologicalTypeToString( const Neuron::TMorphologicalType type )
+  {
+    switch( type )
+    {
+    case Neuron::UNDEFINED:
+      return std::string( "UNDEFINED" );
+      break;
+    case Neuron::PYRAMIDAL:
+      return std::string( "PYRAMIDAL" );
+      break;
+    case Neuron::INTERNEURON:
+      return std::string( "INTERNEURON" );
+      break;
+    default:
+      break;
+    }
+    Log::log( "nsol warning (XmlSceneWriter): "
+              "unknown morphological type",
+              LOG_LEVEL_WARNING );
+    return std::string( "UNDEFINED" );
+  }
+
+  std::string functionalTypeToString( const Neuron::TFunctionalType type )
+  {
+    switch( type )
+    {
+    case Neuron::UNDEFINED_FUNCTIONAL_TYPE:
+      return std::string( "UNDEFINED_FUNCTIONAL_TYPE" );
+      break;
+    case Neuron::INHIBITORY:
+      return std::string( "INHIBITORY" );
+      break;
+    case Neuron::EXCITATORY:
+      return std::string( "EXCITATORY" );
+      break;
+    default:
+      break;
+    }
+    Log::log( "nsol warning (XmlSceneWriter): "
+              "unknown functional type",
+              LOG_LEVEL_WARNING );
+    return std::string( "UNDEFINED_FUNCTIONAL_TYPE" );
+  }
+
   bool XmlSceneWriter::writeToXml( const std::string& fileName,
                                    const Columns& columns,
                                    std::map< std::string, NeuronMorphologyPtr >
-                                   morphologies )
+                                   morphologies,
+                                   bool relativeToXmlMorphologyPath )
   {
     if ( columns.size( ) == 0 )
       Log::log( "Writting Xml file from an empty columns container",
@@ -63,25 +108,28 @@ namespace nsol
         for ( const auto& neuron : minicol->neurons( ))
         {
           file << "          <neuron gid=\"" << neuron->gid( ) << "\" "
-               << "morphologicalType=\"" << int( neuron->morphologicalType( ))
+               << "layer=\"" << neuron->layer( ) <<  "\" "
+               << "morphologicalType=\""
+               << morphologicalTypeToString( neuron->morphologicalType( ))
                <<  "\" "
-               << "functionalType=\"" << int( neuron->functionalType( ))
+               << "functionalType=\""
+               << functionalTypeToString( neuron->functionalType( ))
                << "\">" << std::endl;
 
           const auto& xform = neuron->transform( );
           file << "            <transform>" << std::endl;
           file << "              "
-               << xform(0) << ", " << xform(1) << ", "
-               << xform(2) << ", " << xform(3) << ", " << std::endl;
+               << xform( 0, 0 ) << ", " << xform( 0, 1 ) << ", "
+               << xform( 0, 2 ) << ", " << xform( 0, 3 ) << ", " << std::endl;
           file << "              "
-               << xform(4) << ", " << xform(5) << ", "
-               << xform(6) << ", " << xform(7) << ", " << std::endl;
+               << xform( 1, 0 ) << ", " << xform( 1, 1 ) << ", "
+               << xform( 1, 2 ) << ", " << xform( 1, 3 ) << ", " << std::endl;
           file << "              "
-               << xform(8) << ", " << xform(9) << ", "
-               << xform(10) << ", " << xform(11) << ", " << std::endl;
+               << xform( 2, 0 ) << ", " << xform( 2, 1 ) << ", "
+               << xform( 2, 2 ) << ", " << xform( 2, 3 ) << ", " << std::endl;
           file << "              "
-               << xform(12) << ", " << xform(13) << ", "
-               << xform(14) << ", " << xform(15) << ", " << std::endl;
+               << xform( 3, 0 ) << ", " << xform( 3, 1 ) << ", "
+               << xform( 3, 2 ) << ", " << xform( 3, 3 ) << std::endl;
           file << "            </transform>" << std::endl;
 
           file << "          </neuron>" << std::endl;
@@ -106,12 +154,15 @@ namespace nsol
       for ( const auto& neuron : morphology.second->parentNeurons( ))
       {
         file << neuron->gid( );
-        if ( neuron != * ( morphology.second->parentNeurons( ).end( )))
+        if ( &neuron != &morphology.second->parentNeurons( ).back( ))
           file << ",";
       }
       file << "\" swc=\"" << std::to_string( counter )
-           << ".swc\">" << std::endl;
-      file << "      </neuronmorphology>" << std::endl;
+           << ".swc\"";
+      if ( relativeToXmlMorphologyPath )
+        file << "pathRelativeToXml=\"true\"";
+      file << " />" << std::endl;
+      // file << "      </neuronmorphology>" << std::endl;
 
       swcWriter.writeMorphology( std::to_string( counter++ ) +
                                  std::string( ".swc" ),

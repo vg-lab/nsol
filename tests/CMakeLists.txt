@@ -4,6 +4,10 @@ configure_file(${PROJECT_SOURCE_DIR}/testData/ExampleNeuron.swc
 configure_file(${PROJECT_SOURCE_DIR}/testData/mini.swc
   ${CMAKE_CURRENT_BINARY_DIR}/mini.swc)
 
+configure_file(${PROJECT_SOURCE_DIR}/tests/testData.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/testData.h)
+
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 if (${Boost_FOUND})
   set(TEST_LIBRARIES
