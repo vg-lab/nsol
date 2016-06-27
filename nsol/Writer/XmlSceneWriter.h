@@ -36,19 +36,23 @@ namespace nsol
   class XmlSceneWriter
   {
   public:
+
     /**
      * Write structure and optinally morphologies to xml file.
      * @param fileName name of file to write to
      * @param columns container of columns to be written
      * @param morphologies morphologies to be written to SWC
-                           files and linked in the Xml
+     *        files and linked in the Xml
+     * @param relativeToXmlMorphologyPath if true morphology paths will be
+     *                                    set to be relative to the xml
      * @return true if everything went ok
      */
     NSOL_API
     static bool writeToXml( const std::string& fileName,
                             const Columns& columns,
                             std::map< std::string, NeuronMorphologyPtr >
-                            morphologies);
+                            morphologies,
+                            bool relativeToXmlMorphologyPath = false );
   }; // class XmlSceneWriter
 
 }; // namespace nsol

@@ -28,14 +28,12 @@
 namespace nsol
 {
 
-  class Neuron;
+  typedef NsolVector< NeuronPtr > Neurons;
 
-  typedef NsolVector< Neuron* > Neurons;
-
-  class NeuronsMap : public std::unordered_map< unsigned int, Neuron* >
+  class NeuronsMap : public std::unordered_map< unsigned int, NeuronPtr >
   {
   public:
-    bool addNeuron( Neuron* neuron );
+    bool addNeuron( NeuronPtr neuron );
   };
 }
 

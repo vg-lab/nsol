@@ -191,7 +191,6 @@ namespace nsol
                                 attributes.value(
                                   "morphologicalType" ).toString(
                                     ).toStdString( ));
-
                               if ( typeString == "INTERNEURON" )
                               {
                                 morphologicalType = nsol::Neuron::INTERNEURON;
@@ -202,11 +201,14 @@ namespace nsol
                               }
                               else
                               {
-                                Log::log( std::string( "Neuron " ) +
-                                          std::to_string( gid ) +
-                                          std::string(
-                                            " undefined morphological type." ),
-                                          LOG_LEVEL_WARNING );
+                                Log::log(
+                                  std::string(
+                                    "nsol warning (XmlSceneReader): " ) +
+                                  std::string( "Neuron " ) +
+                                  std::to_string( gid ) +
+                                  std::string(
+                                    " undefined morphological type." ),
+                                  LOG_LEVEL_WARNING );
                               }
                             }
 
@@ -229,6 +231,8 @@ namespace nsol
                               else
                               {
                                 Log::log(
+                                  std::string(
+                                    "nsol warning (XmlSceneReader): " ) +
                                   std::string( "Neuron " ) +
                                   std::to_string( gid ) +
                                   std::string(
@@ -302,19 +306,29 @@ namespace nsol
                 {
                   QXmlStreamAttributes attributes = xml.attributes( );
                   if( attributes.hasAttribute( "neurons" ) &&
-                      attributes.hasAttribute( "swc" ) )
+                      attributes.hasAttribute( "swc" ))
                   {
                     std::string swc =
                       attributes.value( "swc" ).toString( ).toStdString( );
 
-                    BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                                          SOMA, NEURONMORPHOLOGY, NEURON,
-                                          MINICOLUMN, COLUMN > brionReader;
-                    NeuronMorphologyPtr neuronMorphology =
-                      brionReader.loadMorphology( swc );
-                    morphologies[ swc ] = neuronMorphology;
+                    NeuronMorphologyPtr neuronMorphology = nullptr;
+                    if ( morphologies.find( swc ) == morphologies.end( ))
+                    {
+                      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                                            SOMA, NEURONMORPHOLOGY, NEURON,
+                                            MINICOLUMN, COLUMN > brionReader;
+                      neuronMorphology = brionReader.loadMorphology( swc );
+                      if ( neuronMorphology )
+                        morphologies[ swc ] = neuronMorphology;
+                    }
+                    else
+                    {
+                      neuronMorphology = morphologies[ swc ];
+                    }
+
                     if ( neuronMorphology )
                     {
+
                       QStringList neurons_ =
                         attributes.value("neurons").toString( ).split(',');
                       for ( const auto& n : neurons_ )
@@ -329,8 +343,15 @@ namespace nsol
                         }
                       }
                     }
-
-                  }
+                    else
+                    {
+                      Log::log(
+                        std::string(
+                          "nsol warning (XmlSceneReader): morphology " ) +
+                        swc + std::string( " could not be readed" ),
+                        LOG_LEVEL_WARNING );
+                    }
+                  } // if ( neuronMorphology )
                 }
               }
             }
@@ -341,9 +362,9 @@ namespace nsol
           //TODO
         }
         else
-          NSOL_THROW ( std::string( "Element <" ) +
-                       xml.name( ).toString( ).toStdString( ) +
-                       std::string( "> not expected" ) );
+          NSOL_THROW( std::string( "Element <" ) +
+                      xml.name( ).toString( ).toStdString( ) +
+                      std::string( "> not expected" ) );
       }
 
 #else // NSOL_USE_QT5CORE
