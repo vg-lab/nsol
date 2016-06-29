@@ -13,6 +13,7 @@
 
 using namespace nsol;
 
+#ifdef NSOL_USE_BRION
 BOOST_AUTO_TEST_CASE( brionReader_loaders )
 {
   {
@@ -102,3 +103,10 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
     BOOST_CHECK_EQUAL( neuron->functionalType( ), Neuron::INHIBITORY );
   }
 }
+#else
+
+BOOST_AUTO_TEST_CASE( brionReader_loaders )
+{
+}
+
+#endif // NSOL_USE_BRION

@@ -17,11 +17,13 @@
 #include <Eigen/Dense>
 #include <nsol/defines.h>
 
-// This pragma should be removed. Added to macosx clang building
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
-
 // Visual Studio Warning disable.
 #pragma warning( disable : 4250 )
+
+#ifdef __APPLE__
+// This pragma should be removed. Added to macosx clang building
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
 
 namespace nsol
 {

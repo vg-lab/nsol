@@ -7,8 +7,10 @@ namespace nsol
 {
 
   DataSet::DataSet( void )
+#ifdef NSOL_USE_BRION
     : _blueConfig( nullptr )
     , _target( std::string(""))
+#endif
   {
 
   }
@@ -56,8 +58,10 @@ namespace nsol
     _neurons.clear( );
     _morphologies.clear( );
 
+#ifdef NSOL_USE_BRION
     if ( _blueConfig )
       delete _blueConfig;
+#endif
 
     return;
   }

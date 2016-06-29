@@ -230,12 +230,12 @@ namespace nsol
 
         // Trim spaces
         lineString.erase( lineString.find_last_not_of( " \r\t") +1 );
-        unsigned int fields =
-          1 + std::count_if( lineString.begin( ), lineString.end( ),
-                             []( unsigned char c )
-                             {
-                               return std::isspace( c );
-                             });
+        unsigned int fields = 1 +
+          (unsigned int)std::count_if( lineString.begin( ), lineString.end( ),
+                                       []( unsigned char c )
+                                       {
+                                         return std::isspace( c );
+                                       });
 
         if ( fields < 7 )
         {

@@ -62,11 +62,11 @@ include(Common)
 
 common_find_package(Boost COMPONENTS unit_test_framework)
 common_find_package(Eigen3 SYSTEM REQUIRED)
-common_find_package(Brion REQUIRED)
 common_find_package(Qt5Core)
 common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
+common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
 
-list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3 Brion)
+list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
 
 if(FIRES_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES FiReS)
@@ -76,6 +76,9 @@ if(QT5CORE_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES Qt5Core)
 endif()
 
+if( BRION_FOUND )
+  list(APPEND NSOL_DEPENDENT_LIBRARIES Brion)
+endif( )
 
 if (NSOL_WITH_BBPSDK)
   common_find_package(BBPSDK)
