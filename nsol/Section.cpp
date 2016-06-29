@@ -123,7 +123,7 @@ namespace nsol
 
   bool Section::operator == ( Section & other ) const
   {
-    unsigned int size = this->nodes( ).size( );
+    unsigned int size = ( unsigned int )this->nodes( ).size( );
 
     if( size != other.nodes( ).size( ))
       return false;

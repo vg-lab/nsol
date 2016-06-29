@@ -76,7 +76,7 @@ namespace nsol
 
   bool Soma::operator == ( Soma & other )
   {
-    unsigned int size = this->nodes( ).size( );
+    unsigned int size = ( unsigned int )this->nodes( ).size( );
 
     if ( size != other.nodes( ).size( ))
       return false;

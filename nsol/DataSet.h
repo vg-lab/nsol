@@ -17,7 +17,12 @@
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/SwcReader.h"
+
+#ifdef NSOL_USE_BRION
 #include "Reader/BrionReader.h"
+#else
+#include <set>
+#endif
 
 #ifdef NSOL_USE_QT5CORE
 #include <QStringList>
@@ -49,6 +54,7 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
+#ifdef NSOL_USE_BRION
     void loadBlueConfigHierarchy( const std::string& blueConfig_,
                                   const std::string& target_ )
     {
@@ -64,6 +70,13 @@ namespace nsol
                                             _neurons,
                                             *_blueConfig,
                                             _target );
+
+#else
+    void loadBlueConfigHierarchy( const std::string& /*blueConfig_*/,
+                                    const std::string& /*target_*/ )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
     }
 
     template < class NODE = Node,
@@ -75,6 +88,7 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
+#ifdef NSOL_USE_BRION
     void loadMorphology( unsigned int neuronId_ )
     {
       if( !_blueConfig )
@@ -98,6 +112,11 @@ namespace nsol
 
       _loadMorphology( neuronId_, morphologySource, morphologyLabel,
                        brionReader );
+#else
+    void loadMorphology( unsigned int /*neuronId_*/ )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
     }
 
     template < class NODE = Node,
@@ -109,6 +128,7 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
+#ifdef NSOL_USE_BRION
     void loadMorphologies( std::set< unsigned int >& neuronIds_ )
     {
       if( !_blueConfig )
@@ -133,6 +153,11 @@ namespace nsol
         _loadMorphology( id, morphologySource, morphologyLabel,
                          brionReader );
       }
+#else
+    void loadMorphologies( std::set< unsigned int >& /*neuronIds_*/ )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
     }
 
     template < class NODE = Node,
@@ -206,7 +231,7 @@ namespace nsol
 
     bool addNeuron( const NeuronPtr neuron )
     {
-      if ( _neurons.find( neuron->gid( )) != _neurons.end( ))
+      if ( _neurons.find( (unsigned int)neuron->gid( )) != _neurons.end( ))
       {
         Log::log( std::string( "Warning: neuron with gid " ) +
                   std::to_string( neuron->gid( )) +
@@ -237,16 +262,24 @@ namespace nsol
       const Matrix4_4f transform_ = Matrix4_4fIdentity,
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
+      NeuronPtr neuron;
+#ifdef NSOL_USE_BRION
       BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
                             NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN  >
         brionReader;
 
-      NEURON* neuron =  brionReader.loadNeuron( file_,
-                                                gid_,
-                                                layer_,
-                                                transform_,
-                                                type_ );
+      neuron =  brionReader.loadNeuron( file_, gid_, layer_, transform_,
+                                        type_ );
+#else
+      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+                          NEURONMORPHOLOGY, NEURON > swcReader;
+      neuron = swcReader.readNeuron( file_ );
+      neuron->gid( ) = gid_;
+      neuron->layer( ) = layer_;
+      neuron->transform( ) = transform_;
+      neuron->morphologicalType( ) = type_;
 
+#endif
       if ( neuron && !addNeuron( neuron ))
       {
         delete neuron;
@@ -554,11 +587,19 @@ namespace nsol
                     std::string swc =
                         attributes.value( "swc" ).toString( ).toStdString( );
 
+                    NeuronMorphologyPtr neuronMorphology;
+
+#ifdef NSOL_USE_BRION
                     BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                                           SOMA, NEURONMORPHOLOGY, NEURON,
                                           MINICOLUMN, COLUMN > brionReader;
-                     NeuronMorphologyPtr neuronMorphology =
-                         brionReader.loadMorphology( swc );
+                     neuronMorphology = brionReader.loadMorphology( swc );
+#else
+                     SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+                                         NEURONMORPHOLOGY, NEURON> swcReader;
+                     neuronMorphology = swcReader.readMorphology( swc );
+#endif
+
                      if ( neuronMorphology )
                      {
                        QStringList neurons_ =
@@ -599,6 +640,7 @@ namespace nsol
 
   private:
 
+#ifdef NSOL_USE_BRION
     template < class NODE = Node,
                class SECTION = Section,
                class DENDRITE = Dendrite,
@@ -643,7 +685,7 @@ namespace nsol
       neuron->morphology( morpho );
       _morphologies[ morphologyLabel_ ] = morpho;
     }
-
+#endif
 
   protected:
 
@@ -654,9 +696,11 @@ namespace nsol
 
     std::map< std::string, NeuronMorphologyPtr > _morphologies;
 
+#ifdef NSOL_USE_BRION
     brion::BlueConfig* _blueConfig;
 
     std::string _target;
+#endif
 
 
   }; // class DataSet
