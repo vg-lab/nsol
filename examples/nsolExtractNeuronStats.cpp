@@ -213,7 +213,7 @@ int main ( int argc, char ** argv )
   else if ( !sceneFile.empty( ))
   {
 #ifdef NSOL_USE_QT5CORE
-    dataSet.loadScene<
+    dataSet.loadXmlScene<
       nsol::NodeCached,
       nsol::SectionCachedStats,
       nsol::DendriteCachedStats,
