@@ -19,22 +19,26 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef __NSOL__NEURONS__
-#define __NSOL__NEURONS__
+#include "Neurons.h"
+#include "../Neuron.h"
 
-#include <nsol/NsolTypes.h>
-#include <unordered_map>
 
 namespace nsol
 {
 
-  typedef NsolVector< NeuronPtr > Neurons;
-
-  class NeuronsMap : public std::unordered_map< unsigned int, NeuronPtr >
+  bool NeuronsMap::addNeuron( Neuron* neuron )
   {
-  public:
-    bool addNeuron( NeuronPtr neuron );
-  };
-}
+    if ( this->find( neuron->gid( )) != this->end( ))
+    {
+      Log::log( std::string( "Warning: neuron with gid " ) +
+                std::to_string( neuron->gid( )) +
+                std::string( "already exists in the dataset" ),
+                LOG_LEVEL_WARNING );
+      return false;
+    }
 
-#endif /* _NSOL_NEURONS_H_ */
+    ( *this )[ neuron->gid( ) ] = neuron;
+    return true;
+  }
+
+} // namespace nsol

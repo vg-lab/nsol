@@ -9,17 +9,14 @@
 #ifndef __NSOL_ERROR__
 #define __NSOL_ERROR__
 
+
+#include "Log.h"
 #include <stdexcept>
 
-#define NSOL_LOG( msg )                                          \
-  std::cerr << "nsol "                                           \
-  << __FILE__ << "("                                             \
-  << __LINE__ << "): "                                           \
-  << msg << std::endl;
 
 #define NSOL_THROW( msg )                                        \
   {                                                              \
-    NSOL_LOG( msg );                                             \
+    nsol::Log::log( std::string( msg ), nsol::LOG_LEVEL_ERROR ); \
     throw std::runtime_error( msg );                             \
   }
 
