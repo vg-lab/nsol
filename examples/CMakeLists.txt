@@ -45,6 +45,11 @@ target_link_libraries(nsolDataset nsol)
 add_executable(nsolSimplifier simplifier.cpp)
 target_link_libraries(nsolSimplifier nsol)
 
+
+set(NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
+set(NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )
+common_application( nsolBlueConfig2XmlScene )
+
 if (QT5CORE_FOUND)
   add_executable(nsolScene scene.cpp)
   target_link_libraries(nsolScene

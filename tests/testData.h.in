@@ -19,25 +19,4 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef __NSOL__NEURONS__
-#define __NSOL__NEURONS__
-
-#include <nsol/api.h>
-#include <nsol/NsolTypes.h>
-#include <unordered_map>
-
-namespace nsol
-{
-
-  typedef NsolVector< NeuronPtr > Neurons;
-
-  class NeuronsMap : public std::unordered_map< unsigned int, NeuronPtr >
-  {
-  public:
-
-    NSOL_API
-    bool addNeuron( NeuronPtr neuron );
-  };
-}
-
-#endif /* _NSOL_NEURONS_H_ */
+#define NSOL_XML_SCENE_TEST_DATA "@PROJECT_BINARY_DIR@/testData/scene.xml"
