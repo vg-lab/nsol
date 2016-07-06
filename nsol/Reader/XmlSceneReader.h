@@ -27,6 +27,7 @@
 #include <QString>
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QFileInfo>
 #endif
 
 #include "BrionReader.h"
@@ -312,6 +313,14 @@ namespace nsol
                     std::string swc =
                       attributes.value( "swc" ).toString( ).toStdString( );
 
+                    QFileInfo checkFile( swc.c_str( ));
+                    if ( !checkFile.exists( ) || !checkFile.isFile( ))
+                    {
+                      // If the file does not exist then prepend xml file path
+                      QFileInfo xmlSceneFileInfo( xmlSceneFile.c_str( ));
+                      swc = xmlSceneFileInfo.path(
+                        ).toStdString( ) + std::string( "/" ) + swc;
+                    }
                     NeuronMorphologyPtr neuronMorphology = nullptr;
                     if ( morphologies.find( swc ) == morphologies.end( ))
                     {
