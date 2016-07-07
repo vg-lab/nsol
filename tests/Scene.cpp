@@ -36,7 +36,9 @@ void checkScene( const DataSet& ds )
   BOOST_CHECK_EQUAL( ds.neurons( ).size( ), 4 );
 
   for ( const auto& neuron : ds.neurons( ))
+  {
     BOOST_CHECK( neuron.second->morphology( ) != nullptr );
+  }
 
   auto neurons = ds.neurons( );
 

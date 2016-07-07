@@ -29,10 +29,14 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_constructor )
 
 BOOST_AUTO_TEST_CASE( neuronMorphology_clone )
 {
+  NeuronMorphologyPtr neuronMorphology;
+#ifdef NSOL_USE_BRION
   BrionReader brionReader;
-
-  NeuronMorphologyPtr neuronMorphology =
-    brionReader.loadMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = brionReader.loadMorphology( "ExampleNeuron.swc" );
+#else
+  SwcReader swcReader;
+  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+#endif
 
   NeuronMorphologyPtr neuronMorphology1 = neuronMorphology->clone( );
 
@@ -41,11 +45,18 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_clone )
 
 BOOST_AUTO_TEST_CASE( neuronMorphology_operators )
 {
+  NeuronMorphologyPtr neuronMorphology1;
+  NeuronMorphologyPtr neuronMorphology2;
+
+#ifdef NSOL_USE_BRION
   BrionReader brionReader;
-  NeuronMorphologyPtr neuronMorphology1 =
-    brionReader.loadMorphology( "ExampleNeuron.swc" );
-  NeuronMorphologyPtr neuronMorphology2 =
-    brionReader.loadMorphology( "mini.swc" );
+  neuronMorphology1 = brionReader.loadMorphology( "ExampleNeuron.swc" );
+  neuronMorphology2 = brionReader.loadMorphology( "mini.swc" );
+#else
+  SwcReader swcReader;
+  neuronMorphology1 = swcReader.readMorphology( "ExampleNeuron.swc" );
+  neuronMorphology2 = swcReader.readMorphology( "mini.swc" );
+#endif
 
   BOOST_CHECK( neuronMorphology1 == neuronMorphology1 );
   BOOST_CHECK( neuronMorphology2 == neuronMorphology2 );
