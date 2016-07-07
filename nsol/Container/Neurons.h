@@ -22,6 +22,7 @@
 #ifndef __NSOL__NEURONS__
 #define __NSOL__NEURONS__
 
+#include <nsol/api.h>
 #include <nsol/NsolTypes.h>
 #include <unordered_map>
 
@@ -33,6 +34,8 @@ namespace nsol
   class NeuronsMap : public std::unordered_map< unsigned int, NeuronPtr >
   {
   public:
+
+    NSOL_API
     bool addNeuron( NeuronPtr neuron );
   };
 }

@@ -25,15 +25,21 @@ void printMorpho( NeuronMorphologyPtr morpho )
 
 int main( int argc, char* argv[ ])
 {
-  BrionReader r;
-
   if( argc < 2 )
   {
     std::cerr << "Error: swc/hdf5 file parameters needed" << std::endl;
     return -1;
   }
 
-  NeuronMorphologyPtr morpho = r.loadMorphology( std::string( argv[1]) );
+  NeuronMorphologyPtr morpho;
+
+#ifdef NSOL_USE_BRION
+  BrionReader r;
+  morpho = r.loadMorphology( std::string( argv[1]) );
+#else
+  SwcReader r;
+  morpho = r.readMorphology( std::string(argv[1]) );
+#endif
 
   printMorpho( morpho );
 

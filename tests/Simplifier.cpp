@@ -28,22 +28,21 @@ BOOST_AUTO_TEST_CASE( simplifier_constructor )
 BOOST_AUTO_TEST_CASE( simplifier_simplify )
 {
   {
-    BrionReaderTemplated<
-      Node,
-      Section,
-      Dendrite,
-      Axon,
-      Soma,
-      NeuronMorphology,
-      Neuron,
-      MiniColumn,
-      Column> br;
+    NeuronMorphologyPtr morpho0;
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#ifdef NSOL_USE_BRION
+    BrionReader br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReader swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
+
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -54,7 +53,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -62,8 +61,9 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       Simplifier::Instance( )->simplify( morpho0, Simplifier::DELETE_ALL );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -87,22 +87,21 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
   }
 
   {
-    BrionReaderTemplated<
-      Node,
-      Section,
-      Dendrite,
-      Axon,
-      Soma,
-      NeuronMorphology,
-      Neuron,
-      MiniColumn,
-      Column> br;
+    NeuronMorphologyPtr morpho0;
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#ifdef NSOL_USE_BRION
+    BrionReader br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReader swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
+
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -113,7 +112,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -122,8 +121,9 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
                                          true );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -147,22 +147,21 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
   }
 
   {
-    BrionReaderTemplated<
-      Node,
-      Section,
-      Dendrite,
-      Axon,
-      Soma,
-      NeuronMorphology,
-      Neuron,
-      MiniColumn,
-      Column> br;
+    NeuronMorphologyPtr morpho0;
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#ifdef NSOL_USE_BRION
+    BrionReader br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReader swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
+
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -173,15 +172,16 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
     morpho1 =
       Simplifier::Instance( )->simplify( morpho0, Simplifier::DIST_NODES, 5 );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -205,22 +205,21 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
   }
 
   {
-    BrionReaderTemplated<
-      Node,
-      Section,
-      Dendrite,
-      Axon,
-      Soma,
-      NeuronMorphology,
-      Neuron,
-      MiniColumn,
-      Column> br;
+    NeuronMorphologyPtr morpho0;
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#ifdef NSOL_USE_BRION
+    BrionReader br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReader swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
+
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -231,7 +230,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
     morpho1 =
@@ -239,8 +238,9 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
                                          true );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -267,6 +267,9 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
 BOOST_AUTO_TEST_CASE( cutout )
 {
   {
+    NeuronMorphologyPtr morpho0;
+
+#ifdef NSOL_USE_BRION
     BrionReaderTemplated<
       ImportanceNode,
       Section,
@@ -276,13 +279,27 @@ BOOST_AUTO_TEST_CASE( cutout )
       NeuronMorphology,
       Neuron,
       MiniColumn,
-      Column> br;
+      Column
+      > br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReaderTemplated<
+      ImportanceNode,
+      Section,
+      Dendrite,
+      Axon,
+      Soma,
+      NeuronMorphology,
+      Neuron
+      > swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -293,15 +310,16 @@ BOOST_AUTO_TEST_CASE( cutout )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
     morpho1 =
       Simplifier::Instance( )->cutout( morpho0 );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -312,7 +330,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 
@@ -325,6 +343,9 @@ BOOST_AUTO_TEST_CASE( cutout )
   }
 
   {
+    NeuronMorphologyPtr morpho0;
+
+#ifdef NSOL_USE_BRION
     BrionReaderTemplated<
       ImportanceNode,
       Section,
@@ -334,13 +355,27 @@ BOOST_AUTO_TEST_CASE( cutout )
       NeuronMorphology,
       Neuron,
       MiniColumn,
-      Column> br;
+      Column
+      > br;
+    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+#else
+    SwcReaderTemplated<
+      ImportanceNode,
+      Section,
+      Dendrite,
+      Axon,
+      Soma,
+      NeuronMorphology,
+      Neuron
+      > swcr;
+    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+#endif
 
-    NeuronMorphologyPtr morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
     NeuronMorphologyPtr morpho1;
     Neurites originalNeurites = morpho0->neurites( );
-    unsigned int originalNumNeurites = originalNeurites.size( );
-    unsigned int originalNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int originalNumNeurites = (unsigned int)originalNeurites.size( );
+    unsigned int originalNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int originalNumBranches = 0;
     unsigned int originalNumBifurcations = 0;
     unsigned int originalNumNeuritesNodes = 0;
@@ -351,15 +386,16 @@ BOOST_AUTO_TEST_CASE( cutout )
       originalNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        originalNumNeuritesNodes += section->nodes( ).size( );
+        originalNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
     morpho1 =
       Simplifier::Instance( )->cutout( morpho0, true );
 
     Neurites resultNeurites = morpho1->neurites( );
-    unsigned int resultNumNeurites = resultNeurites.size( );
-    unsigned int resultNumSomaNodes = morpho0->soma( )->nodes().size( );
+    unsigned int resultNumNeurites = (unsigned int)resultNeurites.size( );
+    unsigned int resultNumSomaNodes =
+      (unsigned int)morpho0->soma( )->nodes().size( );
     unsigned int resultNumBranches = 0;
     unsigned int resultNumBifurcations = 0;
     unsigned int resultNumNeuritesNodes = 0;
@@ -370,7 +406,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       resultNumBifurcations += neurite->numBifurcations( );
       for ( auto section: neurite->sections( ) )
       {
-        resultNumNeuritesNodes += section->nodes( ).size( );
+        resultNumNeuritesNodes += (unsigned int)section->nodes( ).size( );
       }
     }
 

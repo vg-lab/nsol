@@ -27,9 +27,11 @@
 #include <QString>
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QFileInfo>
 #endif
 
 #include "BrionReader.h"
+#include "SwcReader.h"
 #include <map>
 
 
@@ -311,13 +313,27 @@ namespace nsol
                     std::string swc =
                       attributes.value( "swc" ).toString( ).toStdString( );
 
+                    QFileInfo checkFile( swc.c_str( ));
+                    if ( !checkFile.exists( ) || !checkFile.isFile( ))
+                    {
+                      // If the file does not exist then prepend xml file path
+                      QFileInfo xmlSceneFileInfo( xmlSceneFile.c_str( ));
+                      swc = xmlSceneFileInfo.path(
+                        ).toStdString( ) + std::string( "/" ) + swc;
+                    }
                     NeuronMorphologyPtr neuronMorphology = nullptr;
                     if ( morphologies.find( swc ) == morphologies.end( ))
                     {
-                      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                                            SOMA, NEURONMORPHOLOGY, NEURON,
-                                            MINICOLUMN, COLUMN > brionReader;
-                      neuronMorphology = brionReader.loadMorphology( swc );
+#ifdef NSOL_USE_BRION
+                    BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                                          SOMA, NEURONMORPHOLOGY, NEURON,
+                                          MINICOLUMN, COLUMN > brionReader;
+                     neuronMorphology = brionReader.loadMorphology( swc );
+#else
+                     SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+                                         NEURONMORPHOLOGY, NEURON> swcReader;
+                     neuronMorphology = swcReader.readMorphology( swc );
+#endif
                       if ( neuronMorphology )
                         morphologies[ swc ] = neuronMorphology;
                     }

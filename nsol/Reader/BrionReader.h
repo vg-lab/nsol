@@ -5,6 +5,7 @@
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
  *          Do not distribute without further notice.
  */
+#ifdef NSOL_USE_BRION
 
 #ifndef __NSOL_BRAIN_READER__
 #define __NSOL_BRAIN_READER__
@@ -55,19 +56,19 @@ namespace nsol
 
   public:
 
-    NEURONMORPHOLOGY*
+    NeuronMorphologyPtr
     loadMorphology( brion::Morphology* brionMorphology_,
                     bool reposition_ = true );
 
-    NEURONMORPHOLOGY*
+    NeuronMorphologyPtr
     loadMorphology( const brion::URI& uri_,
                     bool reposition_ = true );
 
-    NEURONMORPHOLOGY*
+    NeuronMorphologyPtr
     loadMorphology( const std::string& path_,
                     bool reposition_ = true );
 
-    NEURON*
+    NeuronPtr
     loadNeuron(
       const std::string& path_,
       const unsigned int gid_,
@@ -122,12 +123,12 @@ namespace nsol
 
 
   template < BRION_READER_TEMPLATE_CLASSES >
-  NEURONMORPHOLOGY*
+  NeuronMorphologyPtr
   BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
     brion::Morphology* brionMorpho_,
     bool reposition_ )
   {
-    NEURONMORPHOLOGY* nsolMorpho = new NEURONMORPHOLOGY( );
+    NeuronMorphologyPtr nsolMorpho = new NEURONMORPHOLOGY( );
 
     brion::Vector4fsPtr points = brionMorpho_->readPoints(
       brion::MORPHOLOGY_UNDEFINED );
@@ -236,7 +237,7 @@ namespace nsol
   }
 
   template < BRION_READER_TEMPLATE_CLASSES >
-  NEURONMORPHOLOGY*
+  NeuronMorphologyPtr
   BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
     const brion::URI& uri_,
     bool reposition_ )
@@ -244,13 +245,13 @@ namespace nsol
     brion::Morphology* brionMorpho = new brion::Morphology(
       uri_.getPath( ));
 
-    NEURONMORPHOLOGY* nsolMorpho = loadMorphology( brionMorpho, reposition_ );
+    NeuronMorphologyPtr nsolMorpho = loadMorphology( brionMorpho, reposition_ );
     delete brionMorpho;
     return nsolMorpho;
   }
 
   template < BRION_READER_TEMPLATE_CLASSES >
-  NEURONMORPHOLOGY*
+  NeuronMorphologyPtr
   BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
     const std::string& path_,
     bool reposition_ )
@@ -259,7 +260,7 @@ namespace nsol
   }
 
   template < BRION_READER_TEMPLATE_CLASSES >
-  NEURON*
+  NeuronPtr
   BrionReaderTemplated
   < BRION_READER_TEMPLATE_CLASS_NAMES >::loadNeuron(
     const std::string& path_,
@@ -270,8 +271,8 @@ namespace nsol
     const nsol::Neuron::TFunctionalType functionalType_,
     bool reposition_ )
   {
-    NEURONMORPHOLOGY* neuronMorphology = loadMorphology( path_, reposition_ );
-    NEURON* neuron = new NEURON( neuronMorphology, layer_, gid_, transform_,
+    NeuronMorphologyPtr neuronMorphology = loadMorphology( path_, reposition_ );
+    NeuronPtr neuron = new NEURON( neuronMorphology, layer_, gid_, transform_,
                                  nullptr, morphologicalType_, functionalType_ );
 
     return neuron;
@@ -326,7 +327,8 @@ namespace nsol
       transform( 1, 3 ) = translationVec.y( );
       transform( 2, 3 ) = translationVec.z( );
 
-      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] ));
+      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] )
+                               + 1 );
 
       unsigned int miniColumnId = boost::lexical_cast< uint16_t >( data[i][1] );
       unsigned int columnId = boost::lexical_cast< uint16_t >( data[i][0] );
@@ -401,3 +403,4 @@ namespace nsol
 }
 
 #endif // __NSOL_BRION_READER__
+#endif // NSOL_USE_BRION
