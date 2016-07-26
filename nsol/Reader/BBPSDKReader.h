@@ -84,33 +84,13 @@ namespace nsol
 
   public:
 
-    // const std::map<unsigned int, ColumnPtr> &
-    // readExperiment(const char *inputFile,
-    //                unsigned int directory = 0)
-    // {
-    //   if (directory)
-    //     return this->readFromDirectory(std::string(inputFile));
-    //   else
-    //     return this->readFromBlueConfig(std::string(inputFile));
-    // }
-
-    // const std::map<unsigned int, ColumnPtr> &
-    // readExperiment( const std::string inputFile,
-    //                 unsigned int directory = 0)
-    // {
-    //   if (directory)
-    //     return this->readFromDirectory(inputFile);
-    //   else
-    //     return this->readFromBlueConfig(inputFile);
-    // }
-
-
     /**
      * Method to get the columns for BBPSDK experiment allocated in files
      * @param directory where the files are allocated
      * @return map with columns
      */
     void readFromDirectory( Columns& columns,
+                            NeuronsMap& neurons,
                             const std::string inputFile );
 
     /**
@@ -125,8 +105,9 @@ namespace nsol
      */
     void
     readFromBlueConfig( Columns& columns, Circuit& circuit,
+                        NeuronsMap& neurons,
                         const std::string inputFile,
-                        const int loadFlags = MORPHOLOGY | HIERARCHY,
+                        const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
                         const std::string& targetLabel = std::string( "" ));
 
     void deleteAll( Columns& columns )
@@ -156,8 +137,7 @@ namespace nsol
           Sections sections = ( *neurite )->sections( );
           NSOL_FOREACH( section, sections )
           {
-            delete ( *section )->lastNode( );
-            NSOL_FOREACH( node, (*section)->middleNodes( ))
+            NSOL_FOREACH( node, (*section)->nodes( ))
             {
               delete *node;
             }
@@ -235,16 +215,20 @@ namespace nsol
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromBlueConfig(
     Columns& columns, Circuit& circuit,
+    NeuronsMap& neurons,
     const std::string inputFile,
     const int loadFlags,
     const std::string& targetLabel )
   {
+    std::cerr << "BBPSDKReader< >::readFromBlueConfig is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     if ( loadFlags == 0 )
       return;
 
     // Detect which flags must be passed to the bbpsdk loader
     int bbpDataTypes = 0;
-    if ( loadFlags & HIERARCHY )
+
+    if ( loadFlags & CORTICAL_HIERARCHY )
       bbpDataTypes |= ( bbp::NEURONS );
     if ( loadFlags & MORPHOLOGY )
       bbpDataTypes |= ( bbp::MORPHOLOGIES | bbp::NEURONS );
@@ -284,9 +268,6 @@ namespace nsol
 
     const bbp::Neurons &neuronsExpe = experiment.microcircuit().neurons();
 
-    //std::cerr << inputFile << ": Exporting " << neuronsExpe.size()
-    //                   << " neurons. " << std::endl;
-
     unsigned long neuronCounter = 0;
     unsigned int oldPerc = 0;
 
@@ -302,9 +283,6 @@ namespace nsol
          it != neuronsExpe.end(); ++it)
       //NSOL_FOREACH( it, neuronsExpe )
     {
-      //std::cerr << "Neuron " << it->label() << " with morphology "
-      //           << it->morphology().label() << std::endl;
-
       NeuronPtr neuron (new NEURON( )); //New neuron
       const bbp::Neuron* bbpNeuron = &(*it);
       //neuronVector.push_back( neuron );
@@ -351,7 +329,8 @@ namespace nsol
           miniColumnMap[it->minicolumn()]);
 
       neuron->layer() = it->layer();
-      neuron->transform() = it->global_transform();
+      memcpy( neuron->transform( ).data( ), it->global_transform( ).data( ),
+              16 * sizeof( float ));
       neuron->gid() = it->gid();
 
       if( it->type( ).is_interneuron( ))
@@ -367,6 +346,17 @@ namespace nsol
         neuron->functionalType( ) = Neuron::EXCITATORY;
       else
         neuron->functionalType( ) = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
+
+      if ( neurons.find( neuron->gid( )) != neurons.end( ))
+      {
+        Log::log( std::string( "Warning: neuron with gid " ) +
+                  std::to_string( neuron->gid( )) +
+                  std::string( "already exists" ),
+                  LOG_LEVEL_WARNING );
+      }
+      else
+        neurons[ neuron->gid( ) ] = neuron;
+
 
       if ( loadFlags & MORPHOLOGY )
       {
@@ -915,9 +905,11 @@ namespace nsol
   BBPSDKReaderTemplated
   < BBPSDK_LOADER_TEMPLATE_CLASS_NAMES >::readFromDirectory(
     Columns& columns,
+    NeuronsMap& neurons,
     const std::string inputFile)
   {
-
+    std::cerr << "BBPSDKReader< >::readFromDirectory is deprecated. "
+              << "Please use BrainReader< >::loadFromBlueConfig" << std::endl;
     std::map<unsigned int, ColumnPtr> columnMap;
 
     SwcReader r;
@@ -986,37 +978,37 @@ namespace nsol
               getline(iss, comma, ',');
 
 //TODO:column order, why?
-              iss >> csvLine.globalTrans[0][0];
+              iss >> csvLine.globalTrans(0,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][0];
+              iss >> csvLine.globalTrans(1,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][0];
+              iss >> csvLine.globalTrans(2,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][0];
+              iss >> csvLine.globalTrans(3,0);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][1];
+              iss >> csvLine.globalTrans(0,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][1];
+              iss >> csvLine.globalTrans(1,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][1];
+              iss >> csvLine.globalTrans(2,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][1];
+              iss >> csvLine.globalTrans(3,1);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][2];
+              iss >> csvLine.globalTrans(0,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][2];
+              iss >> csvLine.globalTrans(1,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][2];
+              iss >> csvLine.globalTrans(2,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][2];
+              iss >> csvLine.globalTrans(3,2);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[0][3];
+              iss >> csvLine.globalTrans(0,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[1][3];
+              iss >> csvLine.globalTrans(1,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[2][3];
+              iss >> csvLine.globalTrans(2,3);
               getline(iss, comma, ',');
-              iss >> csvLine.globalTrans[3][3];
+              iss >> csvLine.globalTrans(3,3);
               getline(iss, comma, ',');
               iss >> csvLine.orientation[0];
               getline(iss, comma, ',');
@@ -1090,6 +1082,18 @@ namespace nsol
                 neuron->layer() = csvLine.layer;
                 neuron->transform() = csvLine.globalTrans;
                 neuron->gid() = csvLine.id;
+
+                if ( neurons.find( neuron->gid( )) != neurons.end( ))
+                {
+                  Log::log( std::string( "Warning: neuron with gid " ) +
+                            std::to_string( neuron->gid( )) +
+                            std::string( "already exists" ),
+                            LOG_LEVEL_WARNING );
+                }
+                else
+                  neurons[ neuron->gid( ) ] = neuron;
+
+
               } else
               {
                 std::cerr << "Loading morphology file "

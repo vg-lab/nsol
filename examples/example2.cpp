@@ -96,7 +96,7 @@ int main ( void )
           NeuronPtr( new Neuron(
             new nsol::NeuronMorphology( new nsol::Soma ),
             l, gid++,
-            Matrix4_4f::IDENTITY,
+            Matrix4_4fIdentity,
             *mcIt, Neuron::PYRAMIDAL )));
       }
       for ( unsigned short j = 0 ; j < NUM_NEURONS_INT_PER_LAYER ; j++ )
@@ -106,7 +106,7 @@ int main ( void )
                        nsol::NeuronMorphologyPtr (
                          new nsol::NeuronMorphology( new nsol::Soma )),
                        l, gid++,
-                       Matrix4_4f::IDENTITY,
+                       Matrix4_4fIdentity,
                        *mcIt, Neuron::INTERNEURON )));
       }
     }

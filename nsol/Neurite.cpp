@@ -8,7 +8,7 @@
  */
 
 #include "Neurite.h"
-
+#include "NeuronMorphology.h"
 #include <stack>
 
 
@@ -29,6 +29,23 @@ namespace nsol
 
   Neurite::~Neurite( )
   {
+    delete _firstSection->firstNode( );
+
+    if ( _morphology )
+    {
+      Neurites neurites = _morphology->neurites( );
+
+      for ( unsigned int i = 0; i < neurites.size( ); i++ )
+      {
+        if ( neurites[i] == this ){
+          neurites.erase( neurites.begin( ) + i );
+          i--;
+        }
+      }
+    }
+
+    for ( SectionPtr section: this->sections( ))
+      delete section;
   }
 
   //! Get the type of neurite
@@ -89,7 +106,9 @@ namespace nsol
     unsigned int numBranchs = 0;
     unsigned int numBifur = 0;
     std::stack<SectionPtr> sPS;
-    sPS.push(_firstSection);
+
+    if( _firstSection )
+      sPS.push(_firstSection);
 
     while (!sPS.empty( ))
     {
@@ -124,6 +143,62 @@ namespace nsol
   NeuriteStats * Neurite::stats( void )
   {
     return nullptr;
+  }
+
+  NeuritePtr Neurite::clone( void ) const
+  {
+    NeuritePtr neurite = new Neurite( _neuriteType );
+    SectionPtr firstSec = _firstSection->clone( );
+
+    firstSec->neurite( neurite );
+    firstSec->firstNode( _firstSection->firstNode( )->clone( ));
+    neurite->firstSection( firstSec );
+
+    std::stack< SectionPtr > originalSections;
+    std::stack< SectionPtr > newSections;
+
+    originalSections.push( _firstSection );
+    newSections.push( firstSec );
+
+    while( ! originalSections.empty( ))
+    {
+      SectionPtr originalSec = originalSections.top( );
+      SectionPtr newSec = newSections.top( );
+      originalSections.pop( );
+      newSections.pop( );
+
+      for ( SectionPtr childSec: originalSec->children( ))
+      {
+        SectionPtr newChildSec = childSec->clone( );
+        newChildSec->parent( newSec );
+        newChildSec->neurite( neurite );
+        newSec->addChild( newChildSec );
+
+        originalSections.push( childSec );
+        newSections.push( newChildSec );
+      }
+    }
+    return neurite;
+  }
+
+  bool Neurite::operator == ( Neurite & other )
+  {
+    if ( _neuriteType != other.neuriteType( ) ||
+         sections( ).size( ) != other.sections( ).size( ) ||
+         numBranches( ) != other.numBranches( ) ||
+         numBifurcations( ) != other.numBifurcations( ))
+      return false;
+
+    for ( unsigned int i = 0; i < sections( ).size( ); i++ )
+      if ( sections( )[i] != other.sections( )[i] )
+        return false;
+
+    return true;
+  }
+
+  bool Neurite::operator != ( Neurite & other )
+  {
+    return ! ( *this == other );
   }
 
   void Neurite::_addBifurcationCount( unsigned int newNumBifurcations )

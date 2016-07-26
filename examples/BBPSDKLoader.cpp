@@ -17,7 +17,8 @@ int main( int argc, char *argv[] )
 
   Columns columns;
   Circuit circuit;
-  r.readFromBlueConfig( columns, circuit, argv[1] );
+  NeuronsMap neurons;
+  r.readFromBlueConfig( columns, neurons, circuit, argv[1] );
 
   if (!columns.empty())
   {
@@ -35,19 +36,14 @@ int main( int argc, char *argv[] )
 
     NeuronPtr neuron = miniColumns[0]->neurons()[0];
 
-    // cout << "soma surface: " << neuron->morphology( )->soma().surface() << endl;
-
-    for (vmml::matrix<4,4,float>::const_iterator it =
-           neuron->transform().begin();
-         it != neuron->transform().end(); ++it)
-      cout << *it << endl;
+    cout << neuron->transform() << endl;
 
 
     NeuritePtr n = neuron->morphology()->neurites()[0];
 
     std::cout << "soma center: "
               << neuron->transform() *
-      Vec4f(neuron->morphology()->soma()->center(),1)
+      neuron->morphology()->soma()->center().homogeneous()
               << std::endl;
 
     std::cout << "soma first point: "
@@ -86,12 +82,10 @@ int main( int argc, char *argv[] )
           sPS.pop( );
           numSections ++;
 
-          if( section->lastNode( ))
-            numNodes ++;
-          numNodes += section->middleNodes( ).size(  );
+          numNodes += section->nodes( ).size(  ) - 1;
 
           cout << "    Section-> number of nodes: "
-               << section->middleNodes( ).size( ) + 2 << endl;
+               << section->nodes( ).size( ) << endl;
           cout << "      First Node: " << section->firstNode( )->id( )
                << " End Node: " << section->lastNode( )->id( ) << endl;
 

@@ -33,9 +33,9 @@ int main ( int argc, char ** argv )
   nsol::BBPSDKReaderStats readerWithStats;
   nsol::Columns columnsWithStats;
   nsol::Circuit circuit1;
-  readerWithStats.readFromBlueConfig( columnsWithStats,
-		  	  	  	  	  	  	  	  circuit1,
-		  	  	  	  	  	  	  	  argv[1] );
+  nsol::NeuronsMap neuronsWithStats;
+  readerWithStats.readFromBlueConfig( columnsWithStats, neuronsWithStats,
+                                      circuit1, argv[1] );
 
   nsol::MiniColumnPtr miniColumnWithStats =
     columnsWithStats[0]->miniColumns( )[0];
@@ -44,11 +44,12 @@ int main ( int argc, char ** argv )
   // return 0;
 
   nsol::BBPSDKReaderCachedStats readerWithCachedStats;
-  nsol:: Columns columnsWithCachedStats;
+  nsol::Columns columnsWithCachedStats;
   nsol::Circuit  circuit2;
+  nsol::NeuronsMap neuronsWithCachedStats;
   readerWithCachedStats.readFromBlueConfig( columnsWithCachedStats,
-		  	  	  	  	  	  	  	  	  	circuit2,
-		  	  	  	  	  	  	  	  	  	argv[1] );
+                                            neuronsWithCachedStats,
+                                            circuit2, argv[1] );
 
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];

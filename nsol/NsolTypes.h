@@ -13,25 +13,22 @@
 
 #include <list>
 #include <vector>
-
 #include <iostream>
-
-#include <vmmlib/vmmlib.hpp>
-/* #include <vmmlib/matrix.hpp> */
-
+#include <Eigen/Dense>
 #include <nsol/defines.h>
-
-// This pragma should be removed. Added to macosx clang building
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
 
 // Visual Studio Warning disable.
 #pragma warning( disable : 4250 )
 
+#ifdef __APPLE__
+// This pragma should be removed. Added to macosx clang building
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 namespace nsol
 {
 
-#if __GNUC__ == 4
-#if  __GNUC_MINOR__ > 6
+#if ( __GNUC__ == 4 && __GNUC_MINOR__ > 6 ) || __GNUC__ == 5
   //! NsolVector container template alias (gcc 4.7 min required)
   template<typename T>
   using NsolVector = std::vector<T>;
@@ -46,7 +43,6 @@ namespace nsol
 #define NsolList std::list
 
 #endif
-#endif
 
 #ifdef _WINDOWS
 
@@ -55,17 +51,17 @@ namespace nsol
 
 #endif
 
-
-  typedef ::vmml::vector<3, float> Vec3f;
-  typedef ::vmml::matrix<4, 4, float> Matrix4_4f;
-  typedef ::vmml::vector<4, float> Vec4f;
+  typedef ::Eigen::Vector3f Vec3f;
+  typedef ::Eigen::Matrix4f Matrix4_4f;
+  typedef ::Eigen::Vector4f Vec4f;
+  #define Matrix4_4fIdentity Matrix4_4f::Identity()
 
   static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
-
 
   class Axon;
   class Column;
   class Dendrite;
+  class ImportanceNode;
   class MiniColumn;
   class Neurite;
   class Neuron;
@@ -88,6 +84,7 @@ namespace nsol
   typedef std::shared_ptr< Axon > AxonPtr;
   typedef std::shared_ptr< Column > ColumnPtr;
   typedef std::shared_ptr< Dendrite > DendritePtr;
+  typedef std::shared_ptr< ImportanceNode > ImportanceNodePtr;
   typedef std::shared_ptr< MiniColumn > MiniColumnPtr;
   typedef std::shared_ptr< Neurite > NeuritePtr;
   typedef std::shared_ptr< Neuron > NeuronPtr;
@@ -106,9 +103,6 @@ namespace nsol
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
 
 
-//  typedef std::shared_ptr<CachedSection> CachedSectionPtr;
-
-
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE __ )   \
   std::enable_shared_from_this< __TYPE __>
 
@@ -125,6 +119,7 @@ namespace nsol
   typedef Axon* AxonPtr;
   typedef Column* ColumnPtr;
   typedef Dendrite* DendritePtr;
+  typedef ImportanceNode* ImportanceNodePtr;
   typedef MiniColumn* MiniColumnPtr;
   typedef Neurite* NeuritePtr;
   typedef Neuron* NeuronPtr;
@@ -142,8 +137,6 @@ namespace nsol
   typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
 
   typedef NodeCached* NodeCachedPtr;
-
-//  typedef CachedSection * CachedSectionPtr;
 
 #define NSOL_ENABLE_SHARED_FROM_THIS( __TYPE__ )
 
@@ -214,10 +207,10 @@ namespace nsol
 
   enum LoadFlags
   {
-    HIERARCHY       =   0x00000001,
-    MORPHOLOGY      =   0x00000002,
-    CIRCUIT         =   0x00000004,
-    SIMULATION_DATA =   0x00000008,
+    CORTICAL_HIERARCHY       = 0x00000001,
+    MORPHOLOGY               = 0x00000002,
+    CIRCUIT                  = 0x00000004,
+    SIMULATION_DATA          = 0x00000008,
   };
 
 
@@ -239,6 +232,10 @@ namespace nsol
 
 #ifndef M_4PI_3
 #define M_4PI_3   4.18879020479	//4*pi/3
+#endif
+
+#ifndef M_PI_3
+#define M_PI_3   1.0471975512 //pi/3
 #endif
 
 
