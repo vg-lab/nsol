@@ -54,11 +54,25 @@ namespace nsol
     Nodes & nodes( void );
 
     /**
-     * Method to get de max radius of the soma
+     * Method to get the max radius of the soma
      * @return max radius of the soma
      */
     NSOL_API
     const float & maxRadius( void ) const;
+
+    /**
+     * Method to get the min radius of the soma
+     * @return min radius of the soma
+     */
+    NSOL_API
+    const float & minRadius( void ) const;
+
+    /**
+     * Method to get the mean radius of the soma
+     * @return mean radius of the soma
+     */
+    NSOL_API
+    const float & meanRadius( void ) const;
 
     /**
      * Method to set the center of the soma
@@ -80,6 +94,14 @@ namespace nsol
       return nullptr;
     }
 
+    NSOL_API
+    virtual SomaPtr clone( void ) const;
+
+    NSOL_API
+    bool operator == ( Soma & other );
+
+    NSOL_API
+    bool operator != ( Soma & other );
 
   protected:
 
@@ -92,11 +114,16 @@ namespace nsol
     //! Maximum radius of the soma
     float _maxRadius;
 
+    //! Minimum radius of the soma
+    float _minRadius;
+
+    //! Mean radius of the soma
+    float _meanRadius;
+
   private:
 
 
-    void _recalculateCenter( void );
-    void _recalculateMaxRadius( void );
+    void _recalculateParams( void );
 
 
   }; // class Soma

@@ -106,10 +106,10 @@ namespace nsol
      * @return container of middle Nodes
      */
     NSOL_API
-    Nodes & middleNodes( void );
+    Nodes & nodes( void );
 
     NSOL_API
-    const Nodes & middleNodes( void ) const;
+    const Nodes & nodes( void ) const;
 
     /**
      * Adds a Node at the end of Section
@@ -149,11 +149,19 @@ namespace nsol
     virtual SectionStats * stats( void );
 
     NSOL_API
+    virtual SectionPtr clone( void ) const;
+
+    NSOL_API
+    bool operator == ( Section & other ) const;
+
+    NSOL_API
+    bool operator != ( Section & other ) const;
+
+    NSOL_API
     virtual SectionPtr asSection( void )
     {
       return this;
     }
-
 
   public:
 
@@ -171,14 +179,8 @@ namespace nsol
     //! Container of the childrens sections of this section
     Sections _children;
 
-    //! First node
-    NodePtr _firstNode;
-
-    //! Last node
-    NodePtr _lastNode;
-
     //! Container of the middle nodes of this section
-    Nodes _middleNodes;
+    Nodes _nodes;
 
 
   }; // class Section

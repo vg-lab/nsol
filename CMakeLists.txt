@@ -6,8 +6,9 @@
 #   www.gmrv.es
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-cmake_minimum_required(VERSION 2.8)
-project(nsol)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(nsol VERSION 0.1.0 )
+set(nsol_VERSION_ABI 1)
 
 # Disable in source building
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -39,32 +40,53 @@ set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
 set(COMMON_PROJECT_DOMAIN gmrv.es)
 
 # Option to build with shared pointers or raw pointers
-option(WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
-option(WITH_BBPSDK "WITH_BBPSDK" ON)
+option(NSOL_WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
+option(NSOL_WITH_BBPSDK "WITH_BBPSDK" OFF)
+
+option( NSOL_WITH_LOGGING "NSOL_WITH_LOGGING" ON )
+if ( NSOL_WITH_LOGGING )
+  add_definitions( -DNSOL_WITH_LOGGING )
+endif( )
+
+option( NSOL_OPTIONALS_AS_REQUIRED
+  "Force optional dependencies as required" OFF )
+
+if ( NSOL_OPTIONALS_AS_REQUIRED )
+  set( NSOL_OPTS_FIND_ARGS "REQUIRED" )
+else()
+  set( NSOL_OPTS_FIND_ARGS "" )
+endif()
+
 
 include(Common)
 
-common_package(Boost COMPONENTS unit_test_framework)
-common_package(vmmlib REQUIRED)
-list(APPEND NSOL_DEPENDENT_LIBRARIES vmmlib)
+common_find_package(Boost COMPONENTS unit_test_framework)
+common_find_package(Eigen3 SYSTEM REQUIRED)
+common_find_package(Qt5Core)
+common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
+common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
 
-if (WITH_BBPSDK)
-  common_package(BBPSDK)
-  if( BBPSDK_FOUND )
-    list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
-  endif( )
-endif()
-common_package(Qt5Core)
-common_package(fires)
-common_package_post()
+list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
 
 if(FIRES_FOUND)
-  list(APPEND NSOL_DEPENDENT_LIBRARIES fires)
+  list(APPEND NSOL_DEPENDENT_LIBRARIES FiReS)
 endif()
 
 if(QT5CORE_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES Qt5Core)
 endif()
+
+if( BRION_FOUND )
+  list(APPEND NSOL_DEPENDENT_LIBRARIES Brion)
+endif( )
+
+if (NSOL_WITH_BBPSDK)
+  common_find_package(BBPSDK)
+  if( BBPSDK_FOUND )
+    list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
+  endif( )
+endif()
+common_find_package_post()
 
 # library subdirectory
 add_subdirectory(nsol)

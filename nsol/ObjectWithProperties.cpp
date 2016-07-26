@@ -18,7 +18,7 @@ namespace nsol
     return this;
 #else
     Log::log( "No properties available. FiReS not supported.",
-              NSOL_LOG_WARNING );
+              LOG_LEVEL_WARNING );
     return nullptr;
 #endif
   }

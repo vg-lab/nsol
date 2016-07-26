@@ -19,6 +19,7 @@ set(NSOL_PUBLIC_HEADERS
   DataSet.h
   Dendrite.h
   error.h
+  ImportanceNode.h
   Log.h
   MiniColumn.h
   Neurite.h
@@ -29,6 +30,7 @@ set(NSOL_PUBLIC_HEADERS
   Object.h
   ObjectWithProperties.h
   Section.h
+  Simplifier.h
   Soma.h
   Spine.h
   Stats/AxonStats.h
@@ -54,9 +56,12 @@ set(NSOL_PUBLIC_HEADERS
   SynapseSomaToSoma.h
   # templated classes at last
   Writer/SwcWriter.h
+  Writer/XmlSceneWriter.h
   Factory.h
   Reader/BBPSDKReader.h
+  Reader/BrionReader.h
   Reader/SwcReader.h
+  Reader/XmlSceneReader.h
   )
 
 set(NSOL_HEADERS )
@@ -65,8 +70,10 @@ set(NSOL_SOURCES
   Axon.cpp
   Circuit.cpp
   Column.cpp
+  Container/Neurons.cpp
   DataSet.cpp
   Dendrite.cpp
+  ImportanceNode.cpp
   Log.cpp
   MiniColumn.cpp
   Neurite.cpp
@@ -76,6 +83,7 @@ set(NSOL_SOURCES
   Object.cpp
   ObjectWithProperties.cpp
   Section.cpp
+  Simplifier.cpp
   Soma.cpp
   Stats/AxonStats.cpp
   Stats/AxonCachedStats.cpp
@@ -96,10 +104,12 @@ set(NSOL_SOURCES
   SynapseNeuriteToNeurite.cpp
   SynapseNeuriteToSoma.cpp
   SynapseSomaToSoma.cpp
+  Writer/XmlSceneWriter.cpp
   )
 
-if (VMMLIB_FOUND)
-  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC vmmlib)
+
+if (BRION_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
 endif()
 
 if (BBPSDK_FOUND)
@@ -111,7 +121,7 @@ if (QT5CORE_FOUND)
 endif()
 
 if (FIRES_FOUND)
-  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC fires)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC FiReS)
 endif()
 
 common_library(nsol)

@@ -36,9 +36,24 @@ namespace nsol
     //! Type of neuron based in neuron morphology
     typedef enum : uint8_t
     {
+      //! Type for undefined
       UNDEFINED = 0,
+      //! General pyramidal
       PYRAMIDAL,
-      INTERNEURON
+      //! General interneuron
+      INTERNEURON,
+      //! Cerebellum interneurons
+      BASKET,
+      STELLATE,
+      GOLGI,
+      GRANULE,
+      LUGARO,
+      UNIPOLAR_BRUSH,
+      //! Other Cerebellum cells
+      PURKINJE,
+      CHANDELIER,
+      INFERIOR_OLIVE,
+      DEEP_CEREBELLAR_NUCLEI
     } TMorphologicalType;
 
     //! Type of neuron based in neuron functionality
@@ -55,7 +70,7 @@ namespace nsol
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
             const unsigned short layer = 0,
             const unsigned int gid = 0,
-            const Matrix4_4f transform = Matrix4_4f::IDENTITY,
+            const Matrix4_4f transform = Matrix4_4fIdentity,
             const MiniColumnPtr miniColumn = nullptr,
             const TMorphologicalType morphologicalType = UNDEFINED,
             const TFunctionalType functionalType = UNDEFINED_FUNCTIONAL_TYPE );
@@ -66,6 +81,9 @@ namespace nsol
     NSOL_API
     bool hasMorphology() const;
 
+    NSOL_API
+    bool isMorphologyLoaded( ) const;
+
     // NSOL_API
     // NeuronMorphologyPtr createMorphology( void );
 
@@ -73,7 +91,7 @@ namespace nsol
     NeuronMorphologyPtr morphology( void ) const;
 
     NSOL_API
-    void morphology( NeuronMorphologyPtr morphology );
+    virtual void morphology( NeuronMorphologyPtr morphology );
 
     /**
      * Method to get the transformation matrix of the neuron.
@@ -175,8 +193,6 @@ namespace nsol
     TFunctionalType _functionalType;
 
   };
-
- 
 }
 
 #endif

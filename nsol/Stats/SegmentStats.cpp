@@ -19,35 +19,59 @@ namespace nsol
   }
 
   float SegmentStats::getStat(TSegmentStat stat,
-							  const NodePtr begin,
-							  const NodePtr end)
+                              const NodePtr begin,
+                              const NodePtr end)
   {
-	  switch ( stat )
-	      {
-	      case SURFACE:
-	      return ( begin && end) ?
-	        float( M_2PI) * end->radius( ) *
-	        ( begin->point( ) - end->point( )).length( ) :
-	        0.0f;
-	        break;
-
-	      case VOLUME:
-	      return ( begin && end) ?
-	        float( M_PI) *
-	        ( begin->point( ) - end->point( )).length( ) *
-	        end->radius( ) *
-	        end->radius( ) : 0.0f;
-	        break;
-
-	      case LENGTH:
-	      return ( begin && end) ?
-	        ( begin->point( ) - end->point( )).length( ) : 0.0f;
-	        break;
-
-	      default:
-	        NSOL_THROW( "stat not implemented for SegmentStats" );
-	      }
-	      return 0.0f;
+    switch ( stat )
+    {
+    case SURFACE:
+    {
+      if( !(begin && end) )
+      {
+        return 0.0f;
+      }
+      //Lateral area of a truncated cone.
+      float segmentLength =
+        (begin->point( ) - end->point( )).norm( );
+      float radiusDifference =
+        begin->radius() - end->radius();
+      float generatrix =
+        sqrt( segmentLength*segmentLength +
+              radiusDifference*radiusDifference );
+      return ( M_PI ) *
+        ( begin->radius() + end->radius() ) * generatrix;
+      break;
+    }
+    case VOLUME:
+    {
+      if( !(begin && end) )
+      {
+        return 0.0f;
+      }
+      //Volume of a truncated cone.
+      return (M_PI_3) *
+        (begin->point( ) - end->point( )).norm( ) *
+        ( begin->radius()*begin->radius() +
+          end->radius()*end->radius() +
+          2.0f*begin->radius()*end->radius() );
+      break;
+    }
+    case LENGTH:
+    {
+      return (begin && end) ?
+        (begin->point( ) - end->point( )).norm( ) : 0.0f;
+      break;
+    }
+    case RADIUS:
+    {
+      return (begin && end) ?
+        (begin->radius() + end->radius()) * 0.5f : 0.0f;
+      break;
+    }
+    default:
+      NSOL_THROW( "stat not implemented for SegmentStats" );
+    }
+    return 0.0f;
   } // class SegmentStats
 
 } // namespace nsol
