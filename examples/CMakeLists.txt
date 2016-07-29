@@ -1,9 +1,12 @@
 add_executable(nsolSwcReader SwcReader.cpp)
 target_link_libraries(nsolSwcReader nsol)
 
-if(BRION_FOUND)
 add_executable(nsolBrionReaderFile BrionReaderFile.cpp)
 target_link_libraries(nsolBrionReaderFile nsol)
+
+if(BRION_FOUND)
+add_executable(brionCircuitLoader brionCircuitLoader.cpp)
+target_link_libraries(brionCircuitLoader nsol)
 endif()
 
 if (BBPSDK_FOUND)
