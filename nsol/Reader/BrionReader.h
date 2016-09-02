@@ -290,8 +290,19 @@ namespace nsol
     columns_.clear( );
     neurons_.clear( );
 
-    brion::Circuit circuit( blueConfig_.getCircuitSource( ));
-    brion::Synapse brionSynapse(blueConfig_.getSynapseSource( ).getPath());
+    brion::Circuit circuit( blueConfig_.getCircuitSource( ).getPath());
+
+    std::cout << "*****************" << std::endl;
+    std::cout << "blueConfig_.getSynapseSource( ).getPath() = " <<
+           blueConfig_.getSynapseSource( ).getPath()<< std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "blueConfig_.getCircuitSource( ).getPath() = " <<
+           blueConfig_.getCircuitSource( ).getPath() << std::endl;
+    std::cout << std::endl;
+    std::cout << "*****************" << std::endl;
+
+//    brion::Synapse brionSynapse(blueConfig_.getSynapseSource( ).getPath());
 
     brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
 
@@ -408,57 +419,57 @@ namespace nsol
     // Treatment Circuit Data
     std::cout << "gidSet.size( ): " << gidSet.size( ) << std::endl;
 
-    unsigned short id_synapse = 1;
-    for ( unsigned int i = 0; i < gidSet.size( ); i++ )
-    {
-        unsigned int gid = neuronIds[i];
-        uint32_t attributes_synapse =
-          brion::SYNAPSE_PRESYNAPTIC_NEURON
-        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_X
-        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_Y
-        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_Z
-        | brion::SYNAPSE_PRESYNAPTIC_SECTION
-        | brion::SYNAPSE_POSTSYNAPTIC_NEURON
-        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_X
-        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_Y
-        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_Z
-        | brion::SYNAPSE_POSTSYNAPTIC_SECTION;
+//    unsigned short id_synapse = 1;
+//    for ( unsigned int i = 0; i < gidSet.size( ); i++ )
+//    {
+//        unsigned int gid = neuronIds[i];
+//        uint32_t attributes_synapse =
+//          brion::SYNAPSE_PRESYNAPTIC_NEURON
+//        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_X
+//        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_Y
+//        | brion::SYNAPSE_PRESYNAPTIC_SURFACE_Z
+//        | brion::SYNAPSE_PRESYNAPTIC_SECTION
+//        | brion::SYNAPSE_POSTSYNAPTIC_NEURON
+//        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_X
+//        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_Y
+//        | brion::SYNAPSE_POSTSYNAPTIC_SURFACE_Z
+//        | brion::SYNAPSE_POSTSYNAPTIC_SECTION;
 
-        const brion::SynapseMatrix& data_synapse = brionSynapse.read(gid,
-                                                            attributes_synapse);
+//        const brion::SynapseMatrix& data_synapse = brionSynapse.read(gid,
+//                                                            attributes_synapse);
 
-        std::cout << "data_synapse.size(): " << data_synapse.size() << std::endl;
+//        std::cout << "data_synapse.size(): " << data_synapse.size() << std::endl;
 
-        for(int j=0; j < data_synapse.size(); j++)
-        {
-            unsigned int preSynNeuronId = boost::lexical_cast< uint16_t >(
-                                                               data_synapse[j][0] );
-            unsigned int postSynNeuronId = boost::lexical_cast< uint16_t >(
-                                                               data_synapse[j][5] );
+//        for(int j=0; j < data_synapse.size(); j++)
+//        {
+//            unsigned int preSynNeuronId = boost::lexical_cast< uint16_t >(
+//                                                               data_synapse[j][0] );
+//            unsigned int postSynNeuronId = boost::lexical_cast< uint16_t >(
+//                                                               data_synapse[j][5] );
 
-            Neuron* presynapticNeuron  = neurons_[preSynNeuronId];
-            Neuron* postsynapticNeuron = neurons_[postSynNeuronId];
+//            Neuron* presynapticNeuron  = neurons_[preSynNeuronId];
+//            Neuron* postsynapticNeuron = neurons_[postSynNeuronId];
 
-            Vec3f preSynPosition(
-                            boost::lexical_cast< float >( data_synapse[j][1] ),
-                            boost::lexical_cast< float >( data_synapse[j][2] ),
-                            boost::lexical_cast< float >( data_synapse[j][3] ));
+//            Vec3f preSynPosition(
+//                            boost::lexical_cast< float >( data_synapse[j][1] ),
+//                            boost::lexical_cast< float >( data_synapse[j][2] ),
+//                            boost::lexical_cast< float >( data_synapse[j][3] ));
 
-            Vec3f postSynPosition(
-                            boost::lexical_cast< float >( data_synapse[j][6] ),
-                            boost::lexical_cast< float >( data_synapse[j][7] ),
-                            boost::lexical_cast< float >( data_synapse[j][8] ));
+//            Vec3f postSynPosition(
+//                            boost::lexical_cast< float >( data_synapse[j][6] ),
+//                            boost::lexical_cast< float >( data_synapse[j][7] ),
+//                            boost::lexical_cast< float >( data_synapse[j][8] ));
 
-            SynapsePtr synapse = new Synapse( Synapse::UNDEFINED, id_synapse);
-            synapse->preSynapticNeuron( presynapticNeuron );
-            synapse->postSynapticNeuron( postsynapticNeuron );
+//            SynapsePtr synapse = new Synapse( Synapse::UNDEFINED, id_synapse);
+//            synapse->preSynapticNeuron( presynapticNeuron );
+//            synapse->postSynapticNeuron( postsynapticNeuron );
 
-            synapse->preSynapticSurfacePosition( preSynPosition );
-            synapse->postSynapticSurfacePosition( postSynPosition );
-        }
+//            synapse->preSynapticSurfacePosition( preSynPosition );
+//            synapse->postSynapticSurfacePosition( postSynPosition );
+//        }
 
-        id_synapse++;
-    }
+//        id_synapse++;
+//    }
   }
 }
 
