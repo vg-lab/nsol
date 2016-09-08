@@ -130,11 +130,11 @@ namespace nsol
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Soma* SomaPtr;
-  typedef Circuit * CircuitPtr;
-  typedef Synapse * SynapsePtr;
-  typedef SynapseNeuriteToNeurite * SynapseNeuriteToNeuritePtr;
-  typedef SynapseNeuriteToSoma * SynapseNeuriteToSomaPtr;
-  typedef SynapseSomaToSoma * SynapseSomaToSomaPtr;
+  typedef Circuit* CircuitPtr;
+  typedef Synapse* SynapsePtr;
+  typedef SynapseNeuriteToNeurite* SynapseNeuriteToNeuritePtr;
+  typedef SynapseNeuriteToSoma* SynapseNeuriteToSomaPtr;
+  typedef SynapseSomaToSoma* SynapseSomaToSomaPtr;
 
   typedef NodeCached* NodeCachedPtr;
 
