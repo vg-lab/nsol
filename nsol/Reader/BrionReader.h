@@ -21,6 +21,7 @@
 
 #include "../NsolTypes.h"
 
+#include <brain/brain.h>
 #include <brion/brion.h>
 
 #include <string>
@@ -291,6 +292,7 @@ namespace nsol
     neurons_.clear( );
 
     brion::Circuit circuit( blueConfig_.getCircuitSource( ).getPath());
+    brain::Circuit circuitbrain( blueConfig_.getCircuitSource( ));
 
     std::cout << "*****************" << std::endl;
     std::cout << "blueConfig_.getSynapseSource( ).getPath() = " <<
@@ -473,5 +475,5 @@ namespace nsol
   }
 }
 
-#endif // __NSOL_BRION_READER__
+#endif // __NSOL_BRAIN_READER__
 #endif // NSOL_USE_BRION

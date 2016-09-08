@@ -107,11 +107,6 @@ set(NSOL_SOURCES
   Writer/XmlSceneWriter.cpp
   )
 
-
-if (BRION_FOUND)
-  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
-endif()
-
 if (BBPSDK_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC BBPSDK)
 endif()
@@ -122,6 +117,13 @@ endif()
 
 if (FIRES_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC FiReS)
+endif()
+
+if (BRION_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brain )
+  if(BRAIN_FOUND)
+      set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
+  endif()
 endif()
 
 common_library(nsol)
