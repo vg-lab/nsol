@@ -63,6 +63,7 @@ namespace nsol
       _target = target_;
 
       brionReader. loadBlueConfigHierarchy( _columns,
+                                            _circuit,
                                             _neurons,
                                             *_blueConfig,
                                             _target );
