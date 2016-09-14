@@ -76,6 +76,354 @@ namespace nsol
 #endif
     }
 
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+#ifdef NSOL_USE_BRION
+    void loadBlueConfigBasicConnectivity( const std::string& blueConfig_,
+                                          const std::string& target_ )
+    {
+        close( );
+        BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                              COLUMN > brionReader;
+
+        _blueConfig = new brion::BlueConfig( blueConfig_ );
+        _target = target_;
+
+        brionReader.loadBlueConfigBasicConnectivity( _columns,
+                                                     _circuit,
+                                                     _neurons,
+                                                     *_blueConfig,
+                                                     _target );
+#else
+    void loadBlueConfigBasicConnectivity( const std::string& /*blueConfig_*/,
+                                          const std::string& /*target_*/ )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
+    }
+
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+#ifdef NSOL_USE_BRION
+    void loadBlueConfigConnectivity( const std::string& blueConfig_,
+                                     const std::string& target_ )
+    {
+        close( );
+        BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                              COLUMN > brionReader;
+
+        _blueConfig = new brion::BlueConfig( blueConfig_ );
+        _target = target_;
+
+        std::map< const brain::Synapse*, SynapsePtr > synapseMap =
+                      brionReader.loadBlueConfigBasicConnectivity( _columns,
+                                                                   _circuit,
+                                                                   _neurons,
+                                                                   *_blueConfig,
+                                                                    _target );
+        NSOL_FOREACH( neuronIt, _neurons )
+        {
+            const NeuronPtr neuron = (*neuronIt);
+            this->loadMorphology( neuron->gid() );
+        }
+
+        brain::Circuit brainCircuit( blueConfig_ );
+        brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+        const brain::Synapses& brainSynapses = brainCircuit.
+                                          getAfferentSynapses( gidSetBrain );
+
+        NSOL_FOREACH( brainSynapseIt, brainSynapses )
+        {
+            const brain::Synapse* brainSynapse = (*brainSynapseIt);
+            SynapsePtr synapse = synapseMap.find(brainSynapse);
+
+            Neuron* preSynapticNeuron  = synapse->preSynapticNeuron();
+            Neuron* postSynapticNeuron = synapse->postSynapticNeuron();
+
+            if( preSynapticNeuron == nullptr || postSynapticNeuron == nullptr )
+                continue;
+
+            // -- Treatment of synapse type: -- //
+            // Computing pre-synaptic section..
+            SynapsePtr newSynapse = nullptr;
+
+            bool isPreDentrite, isPreAxon, isPreSoma;
+            isPreDentrite = isPreAxon = false;
+            isPreSoma = true;
+
+            bool found = false;
+            SectionPtr preSynSection = nullptr;
+            unsigned int brainIDSection = brainSynapse->getPresynapticSectionID();
+
+            Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
+            NSOL_FOREACH( neuriteIt, neuritesPre )
+            {
+                if( found ) break;
+
+                const NeuritePtr neurite = (*neuriteIt);
+                Sections sections = neurite->sections();
+
+                NSOL_FOREACH( sectionIt, sections )
+                {
+                    const SectionPtr section = (*sectionIt);
+                    if( section->_id == brainIDSection )
+                    {
+                        found = true;
+                        preSynSection = section;
+
+                        switch(neurite->neuriteType())
+                        {
+                            case Neurite::DENDRITE:  isPreDentrite = true;
+                                                     isPreSoma = false;
+                            break;
+                            case Neurite::AXON: isPreAxon = true;
+                                                isPreSoma = false;
+                            break;
+                            default: break;
+                        }
+                        break;
+                    }
+                }// for all sections of one neurite
+            }// for all neurites
+
+            // Computing post-synaptic section..
+            bool isPostDentrite, isPostAxon, isPostSoma;
+            isPostDentrite = isPostAxon = false;
+            isPostSoma = true;
+
+            found = false;
+
+            SectionPtr postSynSection = nullptr;
+            brainIDSection = brainSynapse->getPostsynapticSectionID();
+
+            Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
+            NSOL_FOREACH( neuriteIt, neuritesPost )
+            {
+                if( found ) break;
+
+                const NeuritePtr neurite = (*neuriteIt);
+                Sections sections = neurite->sections();
+
+                NSOL_FOREACH( sectionIt, sections )
+                {
+                    const SectionPtr section = (*sectionIt);
+
+                    if( section->_id == brainIDSection )
+                    {
+                        found = true;
+                        postSynSection = section;
+
+                        switch(neurite->neuriteType())
+                        {
+                            case Neurite::DENDRITE:  isPostDentrite = true;
+                                                     isPostSoma = false;
+                            break;
+                            case Neurite::AXON: isPostAxon = true;
+                                                isPostSoma = false;
+                            break;
+                            default: break;
+                        }
+                        break;
+                    }
+                }// for all sections of one neurite
+            }// for all neurites
+
+            // -- Computing synaptic-nodes --
+            // To pre-synaptic node...
+            NodePtr preSynNode = nullptr;
+            Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
+
+            if(preSynSection != nullptr) nodesPre = preSynSection->nodes();
+
+            Matrix4_4f modelPre = preSynapticNeuron->transform();
+            float distance = 10000000;
+
+            NSOL_FOREACH( nodeIt, nodesPre )
+            {
+                const NodePtr node = (*nodeIt);
+                Vec3f posNode = node->point();
+
+                Vec4f pt = modelPre * Vec4f(posNode, 1.f);
+                pt = pt/pt.w();
+
+                vmml::Vector3f p_ = brainPreSynPos;////// CONTINUE
+                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+                                             pow((p_.y()-pt.y()), 2)+
+                                             pow((p_.z()-pt.z()), 2));
+                if(distActual < distance)
+                {
+                    distance = distActual;
+                    preSynNode = node;
+                }
+            }
+
+            // To post-synaptic node...
+            NodePtr postSynNode = nullptr;
+            Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
+
+            if(postSynSection != nullptr) nodesPost = postSynSection->nodes();
+
+            Matrix4_4f modelPost = postSynapticNeuron->transform();
+            distance = 10000000;
+            NSOL_FOREACH( nodeIt, nodesPost )
+            {
+                const NodePtr node = (*nodeIt);
+                Vec3f posNode = node->point();
+
+                Vec4f pt = modelPost * Vec4f(posNode, 1.f);
+                pt = pt/pt.w();
+
+                vmml::Vector3f p_ = brainPostSynPos;
+                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+                                             pow((p_.y()-pt.y()), 2)+
+                                             pow((p_.z()-pt.z()), 2));
+                if(distActual < distance)
+                {
+                    distance = distActual;
+                    postSynNode = node;
+                }
+            }
+
+            // Checking type of synapse...
+            if( isPreDentrite ) // 1º Checkup
+            {
+                if( isPostDentrite )
+                {
+                    SynapseNeuriteToNeurite* _synapse =
+                                                    new SynapseNeuriteToNeurite(
+                                                    Synapse::DENDRODENDRITIC,
+                                                    synapse->id());
+
+                    _synapse->preSynapticSection( preSynSection );
+                    _synapse->postSynapticSection( postSynSection );
+
+                    _synapse->preSynapticNode( preSynNode );
+                    _synapse->postSynapticNode( postSynNode );
+
+//                    std::cout <<" DENDRODENDRITIC \n";
+                    newSynapse = _synapse;
+                }else
+                {
+                    if( isPostSoma )
+                    {
+                        SynapseNeuriteToSomaPtr _synapse =
+                                                       new SynapseNeuriteToSoma(
+                                                       Synapse::DENDROSOMATIC,
+                                                       synapse->id());
+                        _synapse->preSynapticSection( preSynSection );
+
+                        _synapse->preSynapticNode( preSynNode );
+                        _synapse->postSynapticNode( postSynNode );
+
+//                        std::cout <<" DENDROSOMATIC \n";
+                        newSynapse = _synapse;
+                    }
+                }
+            }
+            if( isPreAxon ) // 2º Checkup
+            {
+                if( isPostDentrite )
+                {
+                    SynapseNeuriteToNeuritePtr _synapse =
+                                                    new SynapseNeuriteToNeurite(
+                                                    Synapse::AXODENDRITIC,
+                                                    synapse->id());
+                    _synapse->preSynapticSection( preSynSection );
+                    _synapse->postSynapticSection( postSynSection );
+
+                    _synapse->preSynapticNode( preSynNode );
+                    _synapse->postSynapticNode( postSynNode );
+
+//                    std::cout <<" AXODENDRITIC \n";
+                    newSynapse = _synapse;
+                }else
+                {
+                    if( isPostSoma )
+                    {
+                        SynapseNeuriteToSomaPtr _synapse =
+                                                      new SynapseNeuriteToSoma (
+                                                      Synapse::AXOSOMATIC,
+                                                      synapse->id());
+                        _synapse->preSynapticSection( preSynSection );
+
+                        _synapse->preSynapticNode( preSynNode );
+                        _synapse->postSynapticNode( postSynNode );
+
+//                        std::cout <<" AXOSOMATIC \n";
+                        newSynapse = _synapse;
+                    }else
+                    {
+                        if( isPostAxon )
+                        {
+                            SynapseNeuriteToNeuritePtr _synapse =
+                                                   new SynapseNeuriteToNeurite (
+                                                   Synapse::AXOAXONIC,
+                                                   synapse->id());
+                            _synapse->preSynapticSection( preSynSection );
+                            _synapse->postSynapticSection( postSynSection );
+
+                            _synapse->preSynapticNode( preSynNode );
+                            _synapse->postSynapticNode( postSynNode );
+
+//                            std::cout <<" AXOAXONIC \n";
+                            newSynapse = _synapse;
+                        }
+                    }
+                }
+            }
+            if( isPreSoma ) // 3º Checkup
+                if( isPostSoma )
+                {
+                    SynapseSomaToSomaPtr _synapse = new SynapseSomaToSoma
+                                                            ( synapse->id() );
+                    _synapse->preSynapticNode( preSynNode );
+                    _synapse->postSynapticNode( postSynNode );
+
+//                    std::cout <<" SOMATOSOMAL \n";
+                    newSynapse = _synapse;
+                }
+
+            //new synapse with type
+            newSynapse->preSynapticNeuron(synapse->preSynapticNeuron());
+            newSynapse->postSynapticNeuron(synapse->postSynapticNeuron());
+            newSynapse->preSynapticSurfacePosition(synapse->
+                                                 preSynapticSurfacePosition());
+            newSynapse->postSynapticSurfacePosition(synapse->
+                                                 postSynapticSurfacePosition());
+            _circuit.removeConnection( synapse );
+            delete( synapse );
+
+            _circuit.addConnection( newSynapse );
+        }
+
+
+#else
+    void loadBlueConfigConnectivity( const std::string& /*blueConfig_*/,
+                                     const std::string& /*target_*/ )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
+    }
+
+
     template < class NODE = Node,
                class SECTION = Section,
                class DENDRITE = Dendrite,
