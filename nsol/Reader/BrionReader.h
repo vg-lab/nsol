@@ -83,10 +83,18 @@ namespace nsol
     void
     loadBlueConfigHierarchy(
       Columns& columns_,
-      Circuit& circuit_,
+//      Circuit& circuit_,
       NeuronsMap& neurons_,
       const brion::BlueConfig& blueConfig_,
       const std::string& targetLabel = std::string( "" ));
+
+    std::map< const brain::Synapse*, SynapsePtr >
+    loadBlueConfigBasicConnectivity(
+      Columns& columns_,
+      Circuit& circuit_,
+      NeuronsMap& neurons_,
+      const brion::BlueConfig& blueConfig_,
+      const std::string& target_ );
 
 
   }; // BrionReaderTemplated
@@ -285,9 +293,9 @@ namespace nsol
   template < BRION_READER_TEMPLATE_CLASSES >
   void
   BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigHierarchy(
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigHierarchy(// REVIEW
     Columns& columns_,
-    Circuit& circuit_,
+//    Circuit& circuit_,
     NeuronsMap& neurons_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
@@ -295,10 +303,10 @@ namespace nsol
     columns_.clear( );
     neurons_.clear( );
 
-    std::map< unsigned int, NeuronMorphologyPtr > neuronMorphoMap;
+//    std::map< unsigned int, NeuronMorphologyPtr > neuronMorphoMap;
 
     brion::Circuit brionCircuit( blueConfig_.getCircuitSource( ).getPath());
-    brain::Circuit brainCircuit( blueConfig_);
+//    brain::Circuit brainCircuit( blueConfig_);
 
     brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
 
@@ -416,282 +424,347 @@ namespace nsol
     //                     bool reposition_ = true );
 
     // Treatment Circuit Data
-    brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
-    std::cout << "gidSetBrain.size( ): " << gidSetBrain.size( ) << std::endl;
+//    brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+//    std::cout << "gidSetBrain.size( ): " << gidSetBrain.size( ) << std::endl;
 
-    const brain::Synapses& synapses = brainCircuit.
-                                      getAfferentSynapses( gidSetBrain );
+//    const brain::Synapses& brainSynapses = brainCircuit.
+//                                      getAfferentSynapses( gidSetBrain );
 
-    // number of neurons it is the same that efferent synapses
-    for ( unsigned int i = 0; i < synapses.size(); i++ )
-    {
-        const brain::Synapse brainSynapse = synapses[i];
-        unsigned short gid = brainSynapse.getGID().second;
+//    // number of neurons it is the same that efferent synapses
+//    for ( unsigned int i = 0; i < brainSynapses.size(); i++ )
+//    {
+//        const brain::Synapse brainSynapse = brainSynapses[i];
+//        unsigned short gid = brainSynapse.getGID().second;
 
-        Synapse* afferent_synapse = new Synapse(Synapse::UNDEFINED, gid );
+//        Synapse* afferent_synapse = new Synapse(Synapse::UNDEFINED, gid );
 
-        vmml::Vector3f brainPreSynPos  = brainSynapse.
-                                          getPresynapticSurfacePosition();
-        vmml::Vector3f brainPostSynPos = brainSynapse.
-                                          getPostsynapticSurfacePosition();
+//        vmml::Vector3f brainPreSynPos  = brainSynapse.
+//                                          getPresynapticSurfacePosition();
+//        vmml::Vector3f brainPostSynPos = brainSynapse.
+//                                          getPostsynapticSurfacePosition();
 
-        std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
-                                        .find(brainSynapse.getPresynapticGID());
-        std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
-                                        .find(brainSynapse.getPostsynapticGID());
+//        std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
+//                                        .find(brainSynapse.getPresynapticGID());
+//        std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
+//                                        .find(brainSynapse.getPostsynapticGID());
 
-        Neuron* preSynapticNeuron  = nullptr;
-        Neuron* postSynapticNeuron = nullptr;
+//        Neuron* preSynapticNeuron  = nullptr;
+//        Neuron* postSynapticNeuron = nullptr;
 
-        if (( nitPre  != neurons_.end( ))&&
-            ( nitPost != neurons_.end( )))
-        {
-            preSynapticNeuron  = nitPre->second;
-            postSynapticNeuron = nitPost->second;
+//        if (( nitPre  != neurons_.end( ))&&
+//            ( nitPost != neurons_.end( )))
+//        {
+//            preSynapticNeuron  = nitPre->second;
+//            postSynapticNeuron = nitPost->second;
 
-            // -- Treatment of synapse type: -- //
-            // Computing pre-synaptic section..
-            bool isPreDentrite, isPreAxon, isPreSoma;
-            isPreDentrite = isPreAxon = false;
-            isPreSoma = true;
+//            // -- Treatment of synapse type: -- //
+//            // Computing pre-synaptic section..
+//            bool isPreDentrite, isPreAxon, isPreSoma;
+//            isPreDentrite = isPreAxon = false;
+//            isPreSoma = true;
 
-            bool found = false;
-            SectionPtr preSynSection = nullptr;
-            unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
+//            bool found = false;
+//            SectionPtr preSynSection = nullptr;
+//            unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
 
-            Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
-            NSOL_FOREACH( neuriteIt, neuritesPre )
-            {
-                if( found ) break;
+//            Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
+//            NSOL_FOREACH( neuriteIt, neuritesPre )
+//            {
+//                if( found ) break;
 
-                const NeuritePtr neurite = (*neuriteIt);
-                Sections sections = neurite->sections();
+//                const NeuritePtr neurite = (*neuriteIt);
+//                Sections sections = neurite->sections();
 
-                NSOL_FOREACH( sectionIt, sections )
-                {
-                    const SectionPtr section = (*sectionIt);
-                    if( section->_id == brainIDSection )
-                    {
-                        found = true;
-                        preSynSection = section;
+//                NSOL_FOREACH( sectionIt, sections )
+//                {
+//                    const SectionPtr section = (*sectionIt);
+//                    if( section->_id == brainIDSection )
+//                    {
+//                        found = true;
+//                        preSynSection = section;
 
-                        switch(neurite->neuriteType())
-                        {
-                            case Neurite::DENDRITE:  isPreDentrite = true;
-                                                     isPreSoma = false;
-                            break;
-                            case Neurite::AXON: isPreAxon = true;
-                                                isPreSoma = false;
-                            break;
-                            default: break;
-                        }
-                        break;
-                    }
-                }// for all sections of one neurite
-            }// for all neurites
+//                        switch(neurite->neuriteType())
+//                        {
+//                            case Neurite::DENDRITE:  isPreDentrite = true;
+//                                                     isPreSoma = false;
+//                            break;
+//                            case Neurite::AXON: isPreAxon = true;
+//                                                isPreSoma = false;
+//                            break;
+//                            default: break;
+//                        }
+//                        break;
+//                    }
+//                }// for all sections of one neurite
+//            }// for all neurites
 
-            // Computing pre-synaptic section..
-            bool isPostDentrite, isPostAxon, isPostSoma;
-            isPostDentrite = isPostAxon = false;
-            isPostSoma = true;
+//            // Computing post-synaptic section..
+//            bool isPostDentrite, isPostAxon, isPostSoma;
+//            isPostDentrite = isPostAxon = false;
+//            isPostSoma = true;
 
-            found = false;
+//            found = false;
 
-            SectionPtr postSynSection = nullptr;
-            brainIDSection = brainSynapse.getPostsynapticSectionID();
+//            SectionPtr postSynSection = nullptr;
+//            brainIDSection = brainSynapse.getPostsynapticSectionID();
 
-            Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
-            NSOL_FOREACH( neuriteIt, neuritesPost )
-            {
-                if( found ) break;
+//            Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
+//            NSOL_FOREACH( neuriteIt, neuritesPost )
+//            {
+//                if( found ) break;
 
-                const NeuritePtr neurite = (*neuriteIt);
-                Sections sections = neurite->sections();
+//                const NeuritePtr neurite = (*neuriteIt);
+//                Sections sections = neurite->sections();
 
-                NSOL_FOREACH( sectionIt, sections )
-                {
-                    const SectionPtr section = (*sectionIt);
+//                NSOL_FOREACH( sectionIt, sections )
+//                {
+//                    const SectionPtr section = (*sectionIt);
 
-                    if( section->_id == brainIDSection )
-                    {
-                        found = true;
-                        postSynSection = section;
+//                    if( section->_id == brainIDSection )
+//                    {
+//                        found = true;
+//                        postSynSection = section;
 
-                        switch(neurite->neuriteType())
-                        {
-                            case Neurite::DENDRITE:  isPostDentrite = true;
-                                                     isPostSoma = false;
-                            break;
-                            case Neurite::AXON: isPostAxon = true;
-                                                isPostSoma = false;
-                            break;
-                            default: break;
-                        }
-                        break;
-                    }
-                }// for all sections of one neurite
-            }// for all neurites
-
-
-            // -- Computing synaptic-nodes --
-            // To pre-synaptic node...
-            NodePtr preSynNode = nullptr;
-            Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
-
-            if(preSynSection != nullptr) nodesPre = preSynSection->nodes();
-
-            Matrix4_4f modelPre = preSynapticNeuron->transform();
-            float distance = 10000000;
-            NSOL_FOREACH( nodeIt, nodesPre )
-            {
-                const NodePtr node = (*nodeIt);
-                Vec3f posNode = node->point();
-
-                Vec4f pt = modelPre * Vec4f(posNode, 1.f);
-                pt = pt/pt.w();
-
-                vmml::Vector3f p_ = brainPreSynPos;
-                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
-                                             pow((p_.y()-pt.y()), 2)+
-                                             pow((p_.z()-pt.z()), 2));
-                if(distActual < distance)
-                {
-                    distance = distActual;
-                    preSynNode = node;
-                }
-            }
-
-            // To post-synaptic node...
-            NodePtr postSynNode = nullptr;
-            Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
-
-            if(postSynSection != nullptr) nodesPost = postSynSection->nodes();
-
-            Matrix4_4f modelPost = postSynapticNeuron->transform();
-            distance = 10000000;
-            NSOL_FOREACH( nodeIt, nodesPost )
-            {
-                const NodePtr node = (*nodeIt);
-                Vec3f posNode = node->point();
-
-                Vec4f pt = modelPost * Vec4f(posNode, 1.f);
-                pt = pt/pt.w();
-
-                vmml::Vector3f p_ = brainPostSynPos;
-                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
-                                             pow((p_.y()-pt.y()), 2)+
-                                             pow((p_.z()-pt.z()), 2));
-                if(distActual < distance)
-                {
-                    distance = distActual;
-                    postSynNode = node;
-                }
-            }
-
-            // Checking type of synapse...
-            if( isPreDentrite ) // 1º Checkup
-            {
-                if( isPostDentrite )
-                {
-                    SynapseNeuriteToNeurite* synapse =
-                    new SynapseNeuriteToNeurite(Synapse::DENDRODENDRITIC, gid);
-
-                    synapse->preSynapticSection( preSynSection );
-                    synapse->postSynapticSection( postSynSection );
-
-                    synapse->preSynapticNode( preSynNode );
-                    synapse->postSynapticNode( postSynNode );
-
-//                    std::cout <<" DENDRODENDRITIC \n";
-                    afferent_synapse = synapse;
-                }else
-                {
-                    if( isPostSoma )
-                    {
-                        SynapseNeuriteToSomaPtr synapse =
-                           new SynapseNeuriteToSoma(Synapse::DENDROSOMATIC, gid);
-                        synapse->preSynapticSection( preSynSection );
-
-                        synapse->preSynapticNode( preSynNode );
-                        synapse->postSynapticNode( postSynNode );
-
-//                        std::cout <<" DENDROSOMATIC \n";
-                        afferent_synapse = synapse;
-                    }
-                }
-            }
-            if( isPreAxon ) // 2º Checkup
-            {
-                if( isPostDentrite )
-                {
-                    SynapseNeuriteToNeuritePtr synapse =
-                       new SynapseNeuriteToNeurite(Synapse::AXODENDRITIC, gid);
-                    synapse->preSynapticSection( preSynSection );
-                    synapse->postSynapticSection( postSynSection );
-
-                    synapse->preSynapticNode( preSynNode );
-                    synapse->postSynapticNode( postSynNode );
-
-//                    std::cout <<" AXODENDRITIC \n";
-                    afferent_synapse = synapse;
-                }else
-                {
-                    if( isPostSoma )
-                    {
-                        SynapseNeuriteToSomaPtr synapse =
-                            new SynapseNeuriteToSoma (Synapse::AXOSOMATIC, gid);
-                        synapse->preSynapticSection( preSynSection );
-
-                        synapse->preSynapticNode( preSynNode );
-                        synapse->postSynapticNode( postSynNode );
-
-//                        std::cout <<" AXOSOMATIC \n";
-                        afferent_synapse = synapse;
-                    }else
-                    {
-                        if( isPostAxon )
-                        {
-                            SynapseNeuriteToNeuritePtr synapse =
-                             new SynapseNeuriteToNeurite (Synapse::AXOAXONIC, gid);
-                            synapse->preSynapticSection( preSynSection );
-                            synapse->postSynapticSection( postSynSection );
-
-                            synapse->preSynapticNode( preSynNode );
-                            synapse->postSynapticNode( postSynNode );
-
-//                            std::cout <<" AXOAXONIC \n";
-                            afferent_synapse = synapse;
-                        }
-                    }
-                }
-            }
-            if( isPreSoma ) // 3º Checkup
-                if( isPostSoma )
-                {
-                    SynapseSomaToSomaPtr synapse = new SynapseSomaToSoma( gid );
-                    synapse->preSynapticNode( preSynNode );
-                    synapse->postSynapticNode( postSynNode );
-
-//                    std::cout <<" SOMATOSOMAL \n";
-                    afferent_synapse = synapse;
-                }
+//                        switch(neurite->neuriteType())
+//                        {
+//                            case Neurite::DENDRITE:  isPostDentrite = true;
+//                                                     isPostSoma = false;
+//                            break;
+//                            case Neurite::AXON: isPostAxon = true;
+//                                                isPostSoma = false;
+//                            break;
+//                            default: break;
+//                        }
+//                        break;
+//                    }
+//                }// for all sections of one neurite
+//            }// for all neurites
 
 
-            afferent_synapse->preSynapticNeuron( preSynapticNeuron );
-            afferent_synapse->postSynapticNeuron( postSynapticNeuron );
-            afferent_synapse->preSynapticSurfacePosition( Vec3f(
-                                                         brainPreSynPos.x(),
-                                                         brainPreSynPos.y(),
-                                                         brainPreSynPos.z()));
-            afferent_synapse->postSynapticSurfacePosition( Vec3f(
-                                                          brainPostSynPos.x(),
-                                                          brainPostSynPos.y(),
-                                                          brainPostSynPos.z()));
+//            // -- Computing synaptic-nodes --
+//            // To pre-synaptic node...
+//            NodePtr preSynNode = nullptr;
+//            Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
 
-            circuit_.addConnection(afferent_synapse);
-        }
+//            if(preSynSection != nullptr) nodesPre = preSynSection->nodes();
 
-    }// for all synapses
+//            Matrix4_4f modelPre = preSynapticNeuron->transform();
+//            float distance = 10000000;
+//            NSOL_FOREACH( nodeIt, nodesPre )
+//            {
+//                const NodePtr node = (*nodeIt);
+//                Vec3f posNode = node->point();
+
+//                Vec4f pt = modelPre * Vec4f(posNode, 1.f);
+//                pt = pt/pt.w();
+
+//                vmml::Vector3f p_ = brainPreSynPos;
+//                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+//                                             pow((p_.y()-pt.y()), 2)+
+//                                             pow((p_.z()-pt.z()), 2));
+//                if(distActual < distance)
+//                {
+//                    distance = distActual;
+//                    preSynNode = node;
+//                }
+//            }
+
+//            // To post-synaptic node...
+//            NodePtr postSynNode = nullptr;
+//            Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
+
+//            if(postSynSection != nullptr) nodesPost = postSynSection->nodes();
+
+//            Matrix4_4f modelPost = postSynapticNeuron->transform();
+//            distance = 10000000;
+//            NSOL_FOREACH( nodeIt, nodesPost )
+//            {
+//                const NodePtr node = (*nodeIt);
+//                Vec3f posNode = node->point();
+
+//                Vec4f pt = modelPost * Vec4f(posNode, 1.f);
+//                pt = pt/pt.w();
+
+//                vmml::Vector3f p_ = brainPostSynPos;
+//                float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
+//                                             pow((p_.y()-pt.y()), 2)+
+//                                             pow((p_.z()-pt.z()), 2));
+//                if(distActual < distance)
+//                {
+//                    distance = distActual;
+//                    postSynNode = node;
+//                }
+//            }
+
+//            // Checking type of synapse...
+//            if( isPreDentrite ) // 1º Checkup
+//            {
+//                if( isPostDentrite )
+//                {
+//                    SynapseNeuriteToNeurite* synapse =
+//                    new SynapseNeuriteToNeurite(Synapse::DENDRODENDRITIC, gid);
+
+//                    synapse->preSynapticSection( preSynSection );
+//                    synapse->postSynapticSection( postSynSection );
+
+//                    synapse->preSynapticNode( preSynNode );
+//                    synapse->postSynapticNode( postSynNode );
+
+////                    std::cout <<" DENDRODENDRITIC \n";
+//                    afferent_synapse = synapse;
+//                }else
+//                {
+//                    if( isPostSoma )
+//                    {
+//                        SynapseNeuriteToSomaPtr synapse =
+//                           new SynapseNeuriteToSoma(Synapse::DENDROSOMATIC, gid);
+//                        synapse->preSynapticSection( preSynSection );
+
+//                        synapse->preSynapticNode( preSynNode );
+//                        synapse->postSynapticNode( postSynNode );
+
+////                        std::cout <<" DENDROSOMATIC \n";
+//                        afferent_synapse = synapse;
+//                    }
+//                }
+//            }
+//            if( isPreAxon ) // 2º Checkup
+//            {
+//                if( isPostDentrite )
+//                {
+//                    SynapseNeuriteToNeuritePtr synapse =
+//                       new SynapseNeuriteToNeurite(Synapse::AXODENDRITIC, gid);
+//                    synapse->preSynapticSection( preSynSection );
+//                    synapse->postSynapticSection( postSynSection );
+
+//                    synapse->preSynapticNode( preSynNode );
+//                    synapse->postSynapticNode( postSynNode );
+
+////                    std::cout <<" AXODENDRITIC \n";
+//                    afferent_synapse = synapse;
+//                }else
+//                {
+//                    if( isPostSoma )
+//                    {
+//                        SynapseNeuriteToSomaPtr synapse =
+//                            new SynapseNeuriteToSoma (Synapse::AXOSOMATIC, gid);
+//                        synapse->preSynapticSection( preSynSection );
+
+//                        synapse->preSynapticNode( preSynNode );
+//                        synapse->postSynapticNode( postSynNode );
+
+////                        std::cout <<" AXOSOMATIC \n";
+//                        afferent_synapse = synapse;
+//                    }else
+//                    {
+//                        if( isPostAxon )
+//                        {
+//                            SynapseNeuriteToNeuritePtr synapse =
+//                             new SynapseNeuriteToNeurite (Synapse::AXOAXONIC, gid);
+//                            synapse->preSynapticSection( preSynSection );
+//                            synapse->postSynapticSection( postSynSection );
+
+//                            synapse->preSynapticNode( preSynNode );
+//                            synapse->postSynapticNode( postSynNode );
+
+////                            std::cout <<" AXOAXONIC \n";
+//                            afferent_synapse = synapse;
+//                        }
+//                    }
+//                }
+//            }
+//            if( isPreSoma ) // 3º Checkup
+//                if( isPostSoma )
+//                {
+//                    SynapseSomaToSomaPtr synapse = new SynapseSomaToSoma( gid );
+//                    synapse->preSynapticNode( preSynNode );
+//                    synapse->postSynapticNode( postSynNode );
+
+////                    std::cout <<" SOMATOSOMAL \n";
+//                    afferent_synapse = synapse;
+//                }
+//        }
+
+//        afferent_synapse->preSynapticNeuron( preSynapticNeuron );
+//        afferent_synapse->postSynapticNeuron( postSynapticNeuron );
+//        afferent_synapse->preSynapticSurfacePosition( Vec3f(
+//                                                     brainPreSynPos.x(),
+//                                                     brainPreSynPos.y(),
+//                                                     brainPreSynPos.z()));
+//        afferent_synapse->postSynapticSurfacePosition( Vec3f(
+//                                                      brainPostSynPos.x(),
+//                                                      brainPostSynPos.y(),
+//                                                      brainPostSynPos.z()));
+//        circuit_.addConnection(afferent_synapse);
+
+//    }// for all synapses
+  }
+
+  template < BRION_READER_TEMPLATE_CLASSES >
+  std::map< const brain::Synapse*, SynapsePtr >
+  BrionReaderTemplated
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
+    Columns& columns_,
+    Circuit& circuit_,
+    NeuronsMap& neurons_,
+    const brion::BlueConfig& blueConfig_,
+    const std::string& target_ )
+  {
+      this->loadBlueConfigHierarchy( columns_, neurons_, blueConfig_, target_ );
+
+      std::map< const brain::Synapse*, SynapsePtr > synapseMap;
+
+      brain::Circuit brainCircuit( blueConfig_);
+      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+
+      const brain::Synapses& synapses = brainCircuit.
+                                        getAfferentSynapses( gidSetBrain );
+
+      // number of neurons it is the same that efferent synapses
+      for ( unsigned int i = 0; i < synapses.size(); i++ )
+      {
+          const brain::Synapse* brainSynapse = &synapses[i];
+          unsigned short gid = brainSynapse->getGID().second;
+
+          Synapse* afferent_synapse = new Synapse(Synapse::UNDEFINED, gid );
+
+          vmml::Vector3f brainPreSynPos  = brainSynapse->
+                                            getPresynapticSurfacePosition();
+          vmml::Vector3f brainPostSynPos = brainSynapse->
+                                            getPostsynapticSurfacePosition();
+
+          std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
+                                          .find(brainSynapse->getPresynapticGID());
+          std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
+                                          .find(brainSynapse->getPostsynapticGID());
+
+          Neuron* preSynapticNeuron  = nullptr;
+          Neuron* postSynapticNeuron = nullptr;
+
+          if (( nitPre  != neurons_.end( ))&&
+              ( nitPost != neurons_.end( )))
+          {
+              preSynapticNeuron  = nitPre->second;
+              postSynapticNeuron = nitPost->second;
+          }
+
+          afferent_synapse->preSynapticNeuron( preSynapticNeuron );
+          afferent_synapse->postSynapticNeuron( postSynapticNeuron );
+          afferent_synapse->preSynapticSurfacePosition( Vec3f(
+                                                       brainPreSynPos.x(),
+                                                       brainPreSynPos.y(),
+                                                       brainPreSynPos.z()));
+          afferent_synapse->postSynapticSurfacePosition( Vec3f(
+                                                        brainPostSynPos.x(),
+                                                        brainPostSynPos.y(),
+                                                        brainPostSynPos.z()));
+          circuit_.addConnection(afferent_synapse);
+
+          synapseMap.insert(std::pair<const brain::Synapse*, SynapsePtr>
+                            (brainSynapse, afferent_synapse));
+      }// for all synapses
+
+      return synapseMap;
   }
 }
 
