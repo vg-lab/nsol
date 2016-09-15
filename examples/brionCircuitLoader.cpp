@@ -52,7 +52,20 @@ int main( int argc, char* argv[ ])
 
   DataSet dataSet;
 
-  dataSet.loadBlueConfigHierarchy( blueConfig, target);
+  dataSet.loadBlueConfigConnectivity( blueConfig, target);
+
+//  Circuit circuit = dataSet.circuit();
+
+//  if(!circuit.connections().empty())
+//  {
+//      cout << "Synapses of the circuit: " << endl;
+//      cout << endl;
+
+//      //cout << "Circuit with id" << circuit.id() << endl;
+//      set<SynapsePtr> synapses = circuit.connections();
+//  }
+
+
 
   return 0;
 }

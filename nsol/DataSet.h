@@ -14,8 +14,17 @@
 #include "Log.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
+#include "NeuronMorphology.h"
+#include "Neurite.h"
+#include "Axon.h"
+#include "Section.h"
 #include "Circuit.h"
+#include "Synapse.h"
+#include "SynapseNeuriteToNeurite.h"
+#include "SynapseNeuriteToSoma.h"
+#include "SynapseSomaToSoma.h"
 #include "Container/Columns.h"
+#include "Container/Sections.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
@@ -63,7 +72,6 @@ namespace nsol
       _target = target_;
 
       brionReader. loadBlueConfigHierarchy( _columns,
-                                            _circuit,
                                             _neurons,
                                             *_blueConfig,
                                             _target );
@@ -133,27 +141,31 @@ namespace nsol
         _blueConfig = new brion::BlueConfig( blueConfig_ );
         _target = target_;
 
-        std::map< const brain::Synapse*, SynapsePtr > synapseMap =
+        std::map< unsigned short, SynapsePtr > synapseMap =
                       brionReader.loadBlueConfigBasicConnectivity( _columns,
                                                                    _circuit,
                                                                    _neurons,
                                                                    *_blueConfig,
                                                                     _target );
-        NSOL_FOREACH( neuronIt, _neurons )
+        for( int i=0; i < _neurons.size(); i++ )
+//        NSOL_FOREACH( neuronIt, _neurons )
         {
-            const NeuronPtr neuron = (*neuronIt);
+            NeuronPtr neuron = _neurons[i];
             this->loadMorphology( neuron->gid() );
         }
 
-        brain::Circuit brainCircuit( blueConfig_ );
+        brain::Circuit brainCircuit( *_blueConfig );
         brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
         const brain::Synapses& brainSynapses = brainCircuit.
                                           getAfferentSynapses( gidSetBrain );
 
-        NSOL_FOREACH( brainSynapseIt, brainSynapses )
+//        for( brain::Synapses::const_iterator it = brainSynapses.begin();
+//                                             it != brainSynapses.end(); ++it )
+        for( int i = 0; i < brainSynapses.size(); i++)
         {
-            const brain::Synapse* brainSynapse = (*brainSynapseIt);
-            SynapsePtr synapse = synapseMap.find(brainSynapse);
+//            brain::Synapse* brainSynapse = &(*it);
+            brain::Synapse brainSynapse = brainSynapses[i];
+            SynapsePtr synapse = synapseMap.find(brainSynapse.getGID().second)->second;
 
             Neuron* preSynapticNeuron  = synapse->preSynapticNeuron();
             Neuron* postSynapticNeuron = synapse->postSynapticNeuron();
@@ -171,7 +183,7 @@ namespace nsol
 
             bool found = false;
             SectionPtr preSynSection = nullptr;
-            unsigned int brainIDSection = brainSynapse->getPresynapticSectionID();
+            unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
 
             Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
             NSOL_FOREACH( neuriteIt, neuritesPre )
@@ -212,7 +224,7 @@ namespace nsol
             found = false;
 
             SectionPtr postSynSection = nullptr;
-            brainIDSection = brainSynapse->getPostsynapticSectionID();
+            brainIDSection = brainSynapse.getPostsynapticSectionID();
 
             Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
             NSOL_FOREACH( neuriteIt, neuritesPost )
@@ -248,23 +260,25 @@ namespace nsol
 
             // -- Computing synaptic-nodes --
             // To pre-synaptic node...
+
             NodePtr preSynNode = nullptr;
             Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
 
             if(preSynSection != nullptr) nodesPre = preSynSection->nodes();
 
-            Matrix4_4f modelPre = preSynapticNeuron->transform();
+            const Matrix4_4f modelPre = preSynapticNeuron->transform();
+            vmml::Vector3f p_ = brainSynapse.getPresynapticSurfacePosition();
             float distance = 10000000;
-
             NSOL_FOREACH( nodeIt, nodesPre )
             {
                 const NodePtr node = (*nodeIt);
                 Vec3f posNode = node->point();
 
-                Vec4f pt = modelPre * Vec4f(posNode, 1.f);
+                Vec4f pt = modelPre * Vec4f(posNode.x(),
+                                            posNode.y(),
+                                            posNode.z(), 1.f);
                 pt = pt/pt.w();
 
-                vmml::Vector3f p_ = brainPreSynPos;////// CONTINUE
                 float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
                                              pow((p_.y()-pt.y()), 2)+
                                              pow((p_.z()-pt.z()), 2));
@@ -281,17 +295,19 @@ namespace nsol
 
             if(postSynSection != nullptr) nodesPost = postSynSection->nodes();
 
-            Matrix4_4f modelPost = postSynapticNeuron->transform();
+            const Matrix4_4f modelPost = postSynapticNeuron->transform();
+            p_ = brainSynapse.getPostsynapticSurfacePosition();
             distance = 10000000;
             NSOL_FOREACH( nodeIt, nodesPost )
             {
                 const NodePtr node = (*nodeIt);
                 Vec3f posNode = node->point();
 
-                Vec4f pt = modelPost * Vec4f(posNode, 1.f);
+                Vec4f pt = modelPost * Vec4f(posNode.x(),
+                                             posNode.y(),
+                                             posNode.z(), 1.f);
                 pt = pt/pt.w();
 
-                vmml::Vector3f p_ = brainPostSynPos;
                 float distActual = std::sqrt(pow((p_.x()-pt.x()), 2)+
                                              pow((p_.y()-pt.y()), 2)+
                                              pow((p_.z()-pt.z()), 2));
@@ -309,9 +325,8 @@ namespace nsol
                 {
                     SynapseNeuriteToNeurite* _synapse =
                                                     new SynapseNeuriteToNeurite(
-                                                    Synapse::DENDRODENDRITIC,
-                                                    synapse->id());
-
+                                                        Synapse::DENDRODENDRITIC,
+                                                                synapse->id() );
                     _synapse->preSynapticSection( preSynSection );
                     _synapse->postSynapticSection( postSynSection );
 
@@ -412,7 +427,9 @@ namespace nsol
             delete( synapse );
 
             _circuit.addConnection( newSynapse );
-        }
+
+        }// all synapses
+
 
 
 #else
