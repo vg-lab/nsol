@@ -425,13 +425,21 @@ namespace nsol
   {
       this->loadBlueConfigHierarchy( columns_, neurons_, blueConfig_, target_ );
 
+
+      std::cout << "loadBlueConfigBasicConnectivity" <<std::endl;
+
       std::map< unsigned short, SynapsePtr > synapseMap;
 
       brain::Circuit brainCircuit( blueConfig_);
+
+      std::cout << "brain::Circuit" <<std::endl;
+
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
       const brain::Synapses& synapses = brainCircuit.
                                         getAfferentSynapses( gidSetBrain );
+
+      std::cout << "getAfferentSynapses" <<std::endl;
 
       // number of neurons it is the same that afferent synapses
       for ( unsigned int i = 0; i < synapses.size(); i++ )
@@ -439,7 +447,7 @@ namespace nsol
           const brain::Synapse brainSynapse = synapses[i];
           unsigned short gid = brainSynapse.getGID().second;
 
-          Synapse* afferent_synapse = new Synapse( Synapse::UNDEFINED, gid );
+          SynapsePtr afferent_synapse = new Synapse( Synapse::UNDEFINED, gid );
 
           vmml::Vector3f brainPreSynPos  = brainSynapse.
                                             getPresynapticSurfacePosition();
@@ -451,8 +459,8 @@ namespace nsol
           std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
                                           .find(brainSynapse.getPostsynapticGID());
 
-          Neuron* preSynapticNeuron  = nullptr;
-          Neuron* postSynapticNeuron = nullptr;
+          NeuronPtr preSynapticNeuron  = nullptr;
+          NeuronPtr postSynapticNeuron = nullptr;
 
           if (( nitPre  != neurons_.end( ))&&
               ( nitPost != neurons_.end( )))
