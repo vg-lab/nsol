@@ -167,8 +167,8 @@ namespace nsol
             brain::Synapse brainSynapse = brainSynapses[i];
             SynapsePtr synapse = synapseMap.find(brainSynapse.getGID().second)->second;
 
-            Neuron* preSynapticNeuron  = synapse->preSynapticNeuron();
-            Neuron* postSynapticNeuron = synapse->postSynapticNeuron();
+            NeuronPtr preSynapticNeuron  = synapse->preSynapticNeuron();
+            NeuronPtr postSynapticNeuron = synapse->postSynapticNeuron();
 
             if( preSynapticNeuron == nullptr || postSynapticNeuron == nullptr )
                 continue;
@@ -323,7 +323,7 @@ namespace nsol
             {
                 if( isPostDentrite )
                 {
-                    SynapseNeuriteToNeurite* _synapse =
+                    SynapseNeuriteToNeuritePtr _synapse =
                                                     new SynapseNeuriteToNeurite(
                                                         Synapse::DENDRODENDRITIC,
                                                                 synapse->id() );
@@ -424,7 +424,7 @@ namespace nsol
             newSynapse->postSynapticSurfacePosition(synapse->
                                                  postSynapticSurfacePosition());
             _circuit.removeConnection( synapse );
-            delete( synapse );
+//            delete( synapse );
 
             _circuit.addConnection( newSynapse );
 
