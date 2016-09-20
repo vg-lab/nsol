@@ -106,11 +106,9 @@ namespace nsol
         _blueConfig = new brion::BlueConfig( blueConfig_ );
         _target = target_;
 
-        brionReader.loadBlueConfigBasicConnectivity( _columns,
-                                                     _circuit,
-                                                     _neurons,
-                                                     *_blueConfig,
-                                                     _target );
+        brionReader.loadBlueConfigBasicConnectivity( _columns, _neurons,
+                                                     _circuit, _synapses,
+                                                    *_blueConfig, _target );
 #else
     void loadBlueConfigBasicConnectivity( const std::string& /*blueConfig_*/,
                                           const std::string& /*target_*/ )
@@ -141,31 +139,53 @@ namespace nsol
         _blueConfig = new brion::BlueConfig( blueConfig_ );
         _target = target_;
 
-        std::map< unsigned short, SynapsePtr > synapseMap =
-                      brionReader.loadBlueConfigBasicConnectivity( _columns,
-                                                                   _circuit,
-                                                                   _neurons,
-                                                                   *_blueConfig,
-                                                                    _target );
-        for( int i=0; i < _neurons.size(); i++ )
-//        NSOL_FOREACH( neuronIt, _neurons )
-        {
-            NeuronPtr neuron = _neurons[i];
-            this->loadMorphology( neuron->gid() );
-        }
+        brionReader.loadBlueConfigBasicConnectivity( _columns, _neurons,
+                                                     _circuit, _synapses,
+                                                    *_blueConfig, _target );
+
+        brion::GIDSet gidSet = _blueConfig->parseTarget( _target );
+        std::set< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
+        this->loadMorphologies( neuronIds );
 
         brain::Circuit brainCircuit( *_blueConfig );
         brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
         const brain::Synapses& brainSynapses = brainCircuit.
-                                          getAfferentSynapses( gidSetBrain );
-
-//        for( brain::Synapses::const_iterator it = brainSynapses.begin();
-//                                             it != brainSynapses.end(); ++it )
-        for( int i = 0; i < brainSynapses.size(); i++)
+                                          getAfferentSynapses( gidSetBrain,
+                                                brain::SynapsePrefetch::all );
+        bool useGID = false;
+        if( brainSynapses.size() > 0)
         {
-//            brain::Synapse* brainSynapse = &(*it);
-            brain::Synapse brainSynapse = brainSynapses[i];
-            SynapsePtr synapse = synapseMap.find(brainSynapse.getGID().second)->second;
+            try{
+                brainSynapses[0].getGID();
+                useGID = true;
+
+            }catch (...)
+            {
+                useGID = false;
+                std::cerr << "Exception: No synapse index file available"
+                          << std::endl;
+            }
+        }
+
+        unsigned int count = 0;
+        for( auto const & pair : _synapses )
+        {
+            if( _synapses.size() != brainSynapses.size() ) break;
+
+            const brain::Synapse& brainSynapse = brainSynapses[ count ];
+            SynapsePtr synapse = nullptr;
+            if( useGID )
+            {
+                SynapsesMap::iterator it = _synapses.
+                                            find(brainSynapse.getGID().second);
+                if( it == _synapses.end() ) continue;
+
+                synapse = it->second;
+            }
+            else
+            {
+                synapse = pair.second;
+            }
 
             NeuronPtr preSynapticNeuron  = synapse->preSynapticNeuron();
             NeuronPtr postSynapticNeuron = synapse->postSynapticNeuron();
@@ -229,7 +249,8 @@ namespace nsol
             Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
             NSOL_FOREACH( neuriteIt, neuritesPost )
             {
-                if( found ) break;
+                if( found )
+                    break;
 
                 const NeuritePtr neurite = (*neuriteIt);
                 Sections sections = neurite->sections();
@@ -264,7 +285,12 @@ namespace nsol
             NodePtr preSynNode = nullptr;
             Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
 
-            if(preSynSection != nullptr) nodesPre = preSynSection->nodes();
+            if(preSynSection != nullptr)
+            {
+                nodesPre = preSynSection->nodes();
+                nodesPre.push_back(preSynSection->firstNode());
+                nodesPre.push_back(preSynSection->lastNode());
+            }
 
             const Matrix4_4f modelPre = preSynapticNeuron->transform();
             vmml::Vector3f p_ = brainSynapse.getPresynapticSurfacePosition();
@@ -293,7 +319,12 @@ namespace nsol
             NodePtr postSynNode = nullptr;
             Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
 
-            if(postSynSection != nullptr) nodesPost = postSynSection->nodes();
+            if(postSynSection != nullptr)
+            {
+                nodesPost = postSynSection->nodes();
+                nodesPost.push_back(postSynSection->firstNode());
+                nodesPost.push_back(postSynSection->lastNode());
+            }
 
             const Matrix4_4f modelPost = postSynapticNeuron->transform();
             p_ = brainSynapse.getPostsynapticSurfacePosition();
@@ -423,15 +454,13 @@ namespace nsol
                                                  preSynapticSurfacePosition());
             newSynapse->postSynapticSurfacePosition(synapse->
                                                  postSynapticSurfacePosition());
-            _circuit.removeConnection( synapse );
-//            delete( synapse );
 
+            _circuit.removeConnection( synapse );
             _circuit.addConnection( newSynapse );
 
+            count++;
+
         }// all synapses
-
-
-
 #else
     void loadBlueConfigConnectivity( const std::string& /*blueConfig_*/,
                                      const std::string& /*target_*/ )
@@ -792,7 +821,12 @@ namespace nsol
 
     //! Entry for cortical hierarchy in form o a container of cortial columns
     Columns _columns;
+
+    //! Entry for connections of the circuit.
     Circuit _circuit;
+
+    //! Container of synapses by its id
+    SynapsesMap _synapses;
 
     //! Container of neurons by its gid
     NeuronsMap _neurons;

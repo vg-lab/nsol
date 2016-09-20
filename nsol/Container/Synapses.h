@@ -11,17 +11,22 @@
 
 #include <nsol/NsolTypes.h>
 #include <nsol/Synapse.h>
+#include <map>
 
 namespace nsol
 {
 
-  class Synapses : public NsolVector<SynapsePtr>
-  {
+  typedef NsolVector< SynapsePtr > Synapses;
 
-  protected:
+  class SynapsesMap : public std::map< unsigned int, SynapsePtr >
+  {
+  public:
+
+    NSOL_API
+    bool addSynapse( SynapsePtr synapse );
 
   };
 
 }
 
-#endif /* __NSOL_SYNAPSES__ */
+#endif /* __NSOL_SYNAPSES_H_ */
