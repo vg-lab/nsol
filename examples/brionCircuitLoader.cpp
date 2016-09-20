@@ -62,10 +62,9 @@ int main( int argc, char* argv[ ])
 
   DataSet dataSet;
 
-//  dataSet.loadBlueConfigConnectivity( blueConfig, target);
   cout << "Open BlueConfig ..." << endl;
 
-  dataSet.loadBlueConfigBasicConnectivity( blueConfig, target);
+  dataSet.loadBlueConfigConnectivity( blueConfig, target);
 
   cout << " EXECUTING CircuitLoader... " << endl;
   cout << endl; cout << endl; cout << endl;
@@ -134,7 +133,7 @@ int main( int argc, char* argv[ ])
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
                         cout << " postion: "
-                             << postSynNode->point() << endl;
+                             << "[ " << postSynNode->point() << endl;
 
                         break;
                   case	Synapse::AXODENDRITIC:
@@ -266,20 +265,20 @@ int main( int argc, char* argv[ ])
              cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
         switch(preSynNeuron->morphologicalType( ))
-                      {
-                          case 	Neuron::UNDEFINED:
-                                cout << " morphological type: UNDEFINED " << endl;
-                                break;
-                          case	Neuron::INTERNEURON:
-                                cout << " morphological type: INTERNEURON " << endl;
-                                break;
-                          case Neuron::PYRAMIDAL:
-                                cout << " morphological type: PYRAMIDAL " << endl;
-                                break;
-                          default:
-                                cout<< "neuron morphological type not consistent"<< endl;
-                                break;
-                      }
+        {
+            case Neuron::UNDEFINED:
+                  cout << " morphological type: UNDEFINED " << endl;
+                  break;
+            case Neuron::INTERNEURON:
+                  cout << " morphological type: INTERNEURON " << endl;
+                  break;
+            case Neuron::PYRAMIDAL:
+                  cout << " morphological type: PYRAMIDAL " << endl;
+                  break;
+            default:
+                  cout<< "neuron morphological type not consistent"<< endl;
+                  break;
+         }
 #else
       cout << " morphological type: " << int(preSynNeuron->morphologicalType( ))
            << endl;
@@ -287,21 +286,21 @@ int main( int argc, char* argv[ ])
 
 #if 1 TESTING_PRINT_LITERAL
     switch(preSynNeuron->functionalType( ))
-            {
-                case  Neuron::UNDEFINED_FUNCTIONAL_TYPE:
-                    cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
-                         << endl;
-                    break;
-                case Neuron::INHIBITORY:
-                    cout << " functional type: INHIBITORY " << endl;
-                break;
-                case Neuron::EXCITATORY:
-                    cout << " functional type: EXCITATORY " << endl;
-                break;
-                default:
-                    cout<< "neuron functional type not consistent"<< endl;
-                    break;
-            }
+    {
+        case Neuron::UNDEFINED_FUNCTIONAL_TYPE:
+            cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
+                 << endl;
+            break;
+        case Neuron::INHIBITORY:
+            cout << " functional type: INHIBITORY " << endl;
+        break;
+        case Neuron::EXCITATORY:
+            cout << " functional type: EXCITATORY " << endl;
+        break;
+        default:
+            cout<< "neuron functional type not consistent"<< endl;
+            break;
+    }
 #else
       cout << " functional type: " << int(preSynNeuron->functionalType( ))
            << endl;
@@ -309,8 +308,8 @@ int main( int argc, char* argv[ ])
 
       cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid()<< endl;
 #if 1 TESTING_PRINT_LITERAL
-switch(postSynNeuron->morphologicalType( ))
-     {
+    switch(postSynNeuron->morphologicalType( ))
+    {
          case  Neuron::UNDEFINED:
              cout << " morphological type: UNDEFINED " << endl;
              break;
@@ -323,7 +322,7 @@ switch(postSynNeuron->morphologicalType( ))
          default:
              cout<< "neuron morphological type not consistent"<< endl;
              break;
-     }
+    }
 #else
 cout << " morphological type: " << int(postSynNeuron->morphologicalType( ))
     << endl;
@@ -331,27 +330,28 @@ cout << " morphological type: " << int(postSynNeuron->morphologicalType( ))
 
 #if 1 TESTING_PRINT_LITERAL
     switch(postSynNeuron->functionalType( ))
-            {
-                case  Neuron::UNDEFINED_FUNCTIONAL_TYPE:
-                    cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
-                         << endl;
-                    break;
-                case Neuron::INHIBITORY:
-                    cout << " functional type: INHIBITORY " << endl;
-                break;
-                case Neuron::EXCITATORY:
-                    cout << " functional type: EXCITATORY " << endl;
-                break;
-                default:
-                    cout<< "neuron functional type not consistent"<< endl;
-                    break;
-            }
+    {
+        case  Neuron::UNDEFINED_FUNCTIONAL_TYPE:
+            cout << " functional type: UNDEFINED_FUNCTIONAL_TYPE "
+                 << endl;
+            break;
+        case Neuron::INHIBITORY:
+            cout << " functional type: INHIBITORY " << endl;
+        break;
+        case Neuron::EXCITATORY:
+            cout << " functional type: EXCITATORY " << endl;
+        break;
+        default:
+            cout<< "neuron functional type not consistent"<< endl;
+            break;
+    }
 #else
       cout << " functional type: " << int(postSynNeuron->functionalType( ))
            << endl;
 #endif
 
-      cout << " - [Presynaptic Surface Position]: "  << preSynPos<< endl;
+      cout << " - [Presynaptic Surface Position]: [ "  << preSynPos[0]
+           << ", " << preSynPos[1] << ", " << preSynPos[2] << "]" << endl;
       cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;
       cout << endl;
 

@@ -13,11 +13,13 @@
 #include "../Stats/ColumnStats.h"
 #include "../Stats/MiniColumnStats.h"
 #include "../Neuron.h"
+#include "../Synapse.h"
 #include "../Stats/NodeCached.h"
 #include "../Stats/SectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
+#include "../Container/Synapses.h"
 
 #include "../NsolTypes.h"
 
@@ -87,11 +89,20 @@ namespace nsol
       const brion::BlueConfig& blueConfig_,
       const std::string& targetLabel = std::string( "" ));
 
-    std::map< unsigned short, SynapsePtr >
+//    SynapsesMap*
+//    loadBlueConfigBasicConnectivity(
+//      Columns& columns_,
+//      Circuit& circuit_,
+//      NeuronsMap& neurons_,
+//      const brion::BlueConfig& blueConfig_,
+//      const std::string& target_ );
+
+    void
     loadBlueConfigBasicConnectivity(
       Columns& columns_,
-      Circuit& circuit_,
       NeuronsMap& neurons_,
+      Circuit& circuit_,
+      SynapsesMap& synapses_,
       const brion::BlueConfig& blueConfig_,
       const std::string& target_ );
 
@@ -414,38 +425,49 @@ namespace nsol
   }
 
   template < BRION_READER_TEMPLATE_CLASSES >
-  std::map< unsigned short, SynapsePtr >
+  void
   BrionReaderTemplated
   < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
     Columns& columns_,
-    Circuit& circuit_,
     NeuronsMap& neurons_,
+    Circuit& circuit_,
+    SynapsesMap& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
       this->loadBlueConfigHierarchy( columns_, neurons_, blueConfig_, target_ );
 
-
-      std::cout << "loadBlueConfigBasicConnectivity" <<std::endl;
-
-      std::map< unsigned short, SynapsePtr > synapseMap;
-
       brain::Circuit brainCircuit( blueConfig_);
-
-      std::cout << "brain::Circuit" <<std::endl;
-
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
       const brain::Synapses& synapses = brainCircuit.
-                                        getAfferentSynapses( gidSetBrain );
+                                        getAfferentSynapses( gidSetBrain,
+                                                brain::SynapsePrefetch::all );
+      bool useGID = false;
+      if( synapses.size() > 0)
+      {
+          try{
+              synapses[0].getGID();
+              useGID = true;
 
-      std::cout << "getAfferentSynapses" <<std::endl;
+          }catch (...)
+          {
+              useGID = false;
+              std::cerr << "Exception: No synapse index file available"
+                        << std::endl;
+          }
+      }
 
       // number of neurons it is the same that afferent synapses
       for ( unsigned int i = 0; i < synapses.size(); i++ )
       {
-          const brain::Synapse brainSynapse = synapses[i];
-          unsigned short gid = brainSynapse.getGID().second;
+          const brain::Synapse& brainSynapse = synapses[i];
+
+          unsigned int gid = i;
+          if( useGID )
+          {
+              gid = brainSynapse.getGID().second;
+          }
 
           SynapsePtr afferent_synapse = new Synapse( Synapse::UNDEFINED, gid );
 
@@ -481,11 +503,9 @@ namespace nsol
                                                         brainPostSynPos.z()));
           circuit_.addConnection(afferent_synapse);
 
-          synapseMap.insert(std::pair< unsigned short, SynapsePtr>
-                            ( gid, afferent_synapse ));
-      }// for all synapses
+          synapses_[ gid ] = afferent_synapse;
 
-      return synapseMap;
+      }// for all synapses
   }
 }
 
