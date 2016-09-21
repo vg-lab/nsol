@@ -11,6 +11,9 @@
 
 #include <nsol/api.h>
 #include "Container/Synapses.h"
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
 #include <iostream>
 #include <set>
 
@@ -169,6 +172,14 @@ namespace nsol
      */
     NSOL_API
     void clearEfferentSynapses( NeuronPtr neuron );
+
+    /**
+     * Method to obtain the sparse matrix with the relationships
+     * between each pair of neurons.
+     * @param neurons
+     */
+    NSOL_API
+    Eigen::SparseMatrix< float > contactsNeurons( NeuronsMap neurons );
 
      ///@}
 

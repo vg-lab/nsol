@@ -10,6 +10,7 @@
 #define TESTING_PRINT_LITERAL
 
 #include <nsol/nsol.h>
+#include <nsol/DataSet.h>
 
 #include <assert.h>
 

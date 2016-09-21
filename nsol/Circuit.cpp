@@ -170,5 +170,48 @@ namespace nsol
     effSynapses.clear( );
   }
 
+  Eigen::SparseMatrix< float > Circuit::contactsNeurons( NeuronsMap neurons )
+  {
+    unsigned int dim = neurons.size();
+
+    Eigen::SparseMatrix< float > contacts;
+
+    contacts.resize(dim, dim);
+    contacts.setZero();
+
+    for( unsigned int i = 0; i < neurons.size(); i++ )
+        contacts.insert(i, i) = 1.f;
+
+    bool success = true;
+    Eigen::SparseMatrix< float > C = contacts;
+
+    for( std::set<SynapsePtr>::iterator it=_connections.begin();
+         it != _connections.end(); ++it )
+    {
+        SynapsePtr connection = (*it);
+        NeuronPtr nPre  = connection->preSynapticNeuron();
+        NeuronPtr nPost = connection->postSynapticNeuron();
+
+        NeuronsMap::iterator itNeuronPre  = neurons.find( nPre->gid() );
+        NeuronsMap::iterator itNeuronPost = neurons.find( nPost->gid() );
+
+        if( itNeuronPre == neurons.end() || itNeuronPost == neurons.end() )
+        {
+            success = false;
+            break;
+        }
+
+        C.insert( nPre->gid()-1, nPost->gid()-1 ) = 1.f;
+        C.insert( nPost->gid()-1, nPre->gid()-1 ) = 1.f;
+    }
+
+    if( !success )
+        return contacts;
+
+    contacts.swap( C );
+
+    return contacts;
+  }
+
 
 } // namespace nsol
