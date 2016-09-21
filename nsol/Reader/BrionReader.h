@@ -458,7 +458,7 @@ namespace nsol
           }
       }
 
-      // number of neurons it is the same that afferent synapses
+      // number of efferent synapses it is the same that afferent synapses
       for ( unsigned int i = 0; i < synapses.size(); i++ )
       {
           const brain::Synapse& brainSynapse = synapses[i];

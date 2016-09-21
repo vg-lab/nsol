@@ -7,6 +7,9 @@ if(BRION_FOUND)
 
   add_executable(nsolBrionCircuitLoader brionCircuitLoader.cpp)
   target_link_libraries(nsolBrionCircuitLoader nsol)
+
+  add_executable(nsolBrionCircuitLoader2 brionCircuitLoader2.cpp)
+  target_link_libraries(nsolBrionCircuitLoader2 nsol)
 endif()
 
 if (BBPSDK_FOUND)
