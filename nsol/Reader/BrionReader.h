@@ -89,17 +89,8 @@ namespace nsol
       const brion::BlueConfig& blueConfig_,
       const std::string& targetLabel = std::string( "" ));
 
-//    SynapsesMap*
-//    loadBlueConfigBasicConnectivity(
-//      Columns& columns_,
-//      Circuit& circuit_,
-//      NeuronsMap& neurons_,
-//      const brion::BlueConfig& blueConfig_,
-//      const std::string& target_ );
-
     void
     loadBlueConfigBasicConnectivity(
-      Columns& columns_,
       NeuronsMap& neurons_,
       Circuit& circuit_,
       SynapsesMap& synapses_,
@@ -428,14 +419,16 @@ namespace nsol
   void
   BrionReaderTemplated
   < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
-    Columns& columns_,
     NeuronsMap& neurons_,
     Circuit& circuit_,
     SynapsesMap& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
-      this->loadBlueConfigHierarchy( columns_, neurons_, blueConfig_, target_ );
+//      this->loadBlueConfigHierarchy( columns_,
+//                                     neurons_,
+//                                     blueConfig_,
+//                                     target_ );
 
       brain::Circuit brainCircuit( blueConfig_);
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );

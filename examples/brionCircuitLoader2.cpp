@@ -68,7 +68,9 @@ int main( int argc, char* argv[ ])
 
   cout << "Open BlueConfig ..." << endl;
 
-  dataSet.loadBlueConfigConnectivity( blueConfig, target);
+  dataSet.loadBlueConfigHierarchy( blueConfig, target );
+  dataSet.loadAllMorphologies( );
+  dataSet.loadBlueConfigConnectivity( );
 
   cout << " EXECUTING CircuitLoader... " << endl;
   cout << endl; cout << endl; cout << endl;

@@ -95,23 +95,20 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigBasicConnectivity( const std::string& blueConfig_,
-                                          const std::string& target_ )
+    void loadBlueConfigBasicConnectivity( )
     {
-        close( );
+        if( !_blueConfig || _target.empty() )
+          return;
+
         BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                               SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                               COLUMN > brionReader;
 
-        _blueConfig = new brion::BlueConfig( blueConfig_ );
-        _target = target_;
-
-        brionReader.loadBlueConfigBasicConnectivity( _columns, _neurons,
+        brionReader.loadBlueConfigBasicConnectivity( _neurons,
                                                      _circuit, _synapses,
                                                     *_blueConfig, _target );
 #else
-    void loadBlueConfigBasicConnectivity( const std::string& /*blueConfig_*/,
-                                          const std::string& /*target_*/ )
+    void loadBlueConfigBasicConnectivity( )
     {
       NSOL_THROW( std::string( "Brion not supported" ));
 #endif
@@ -128,27 +125,33 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigConnectivity( const std::string& blueConfig_,
-                                     const std::string& target_ )
+    void loadBlueConfigConnectivity( )
     {
-        close( );
-        BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
-                              COLUMN > brionReader;
+        if( !_blueConfig || _target.empty())
+          return;
 
-        _blueConfig = new brion::BlueConfig( blueConfig_ );
-        _target = target_;
+        this->loadBlueConfigBasicConnectivity< nsol::Node,
+                                               nsol::Section,
+                                               nsol::Dendrite,
+                                               nsol::Axon,
+                                               nsol::Soma,
+                                               nsol::NeuronMorphology,
+                                               nsol::Neuron,
+                                               nsol::MiniColumn,
+                                               nsol::Column >( );
+//        this->loadAllMorphologies< nsol::Node,
+//                                    nsol::Section,
+//                                    nsol::Dendrite,
+//                                    nsol::Axon,
+//                                    nsol::Soma,
+//                                    NeuronMorphology,
+//                                    Neuron,
+//                                    nsol::MiniColumn,
+//                                    nsol::Column >( );
 
-        brionReader.loadBlueConfigBasicConnectivity( _columns, _neurons,
-                                                     _circuit, _synapses,
-                                                    *_blueConfig, _target );
-
-        brion::GIDSet gidSet = _blueConfig->parseTarget( _target );
-        std::set< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
-        this->loadMorphologies( neuronIds );
 
         brain::Circuit brainCircuit( *_blueConfig );
-        brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+        brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
         const brain::Synapses& brainSynapses = brainCircuit.
                                           getAfferentSynapses( gidSetBrain,
                                                 brain::SynapsePrefetch::all );
@@ -462,8 +465,7 @@ namespace nsol
 
         }// all synapses
 #else
-    void loadBlueConfigConnectivity( const std::string& /*blueConfig_*/,
-                                     const std::string& /*target_*/ )
+    void loadBlueConfigConnectivity( )
     {
       NSOL_THROW( std::string( "Brion not supported" ));
 #endif
