@@ -13,7 +13,7 @@ namespace nsol
 {
   //! Default constructor and destructor
   Synapse::Synapse( TSynapseType synapseType_,
-                    const unsigned short initId )
+                    const unsigned int initId )
     : _id( initId )
     , _preSynapticNeuron( nullptr )
     , _postSynapticNeuron( nullptr )
@@ -38,12 +38,12 @@ namespace nsol
   }
 
   //! Get the type of synapse
-  unsigned short & Synapse::id( void )
+  unsigned int & Synapse::id( void )
   {
     return _id;
   }
 
-  unsigned short Synapse::id( void ) const
+  unsigned int Synapse::id( void ) const
   {
     return _id;
   }

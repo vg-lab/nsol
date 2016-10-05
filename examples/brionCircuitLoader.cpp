@@ -82,6 +82,15 @@ int main( int argc, char* argv[ ])
       //cout << "Circuit with id" << circuit.id() << endl;
       set<SynapsePtr> synapses = circuit.connections();
 
+      set<SynapsePtr>::iterator it = synapses.begin();
+      SynapsePtr f = (*it);
+      std::cout << "connections[0] = "<< f->id() << std::endl;
+
+      set<SynapsePtr>::iterator it2 = synapses.end();
+      --it2;
+      SynapsePtr l = (*it2);
+      std::cout << "connections[N-1] = "<< l->id() << std::endl;
+
       int numberSynapse = 0;
       NSOL_FOREACH( synapseIt, synapses )
       {
@@ -131,12 +140,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << "[ " << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   case	Synapse::AXODENDRITIC:
@@ -159,12 +174,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   case	Synapse::AXOAXONIC:
@@ -187,12 +208,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   case	Synapse::SOMATOSOMAL:
@@ -203,12 +230,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   case	Synapse::AXOSOMATIC:
@@ -226,12 +259,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   case	Synapse::DENDROSOMATIC:
@@ -249,12 +288,18 @@ int main( int argc, char* argv[ ])
 
                         cout << " - [Presynaptic Node] id: "
                              << preSynNode->id() << endl;
-                        cout << " postion: "
-                             << preSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << preSynNode->point().x()
+                             <<" ,"<< preSynNode->point().y()
+                             <<" ,"<< preSynNode->point().z()
+                             << " ]" << endl;
                         cout << " - [Postsynaptic Node] id: "
                              << postSynNode->id() << endl;
-                        cout << " postion: "
-                             << postSynNode->point() << endl;
+                        cout << " postion: [ "
+                                   << postSynNode->point().x()
+                             <<" ,"<< postSynNode->point().y()
+                             <<" ,"<< postSynNode->point().z()
+                             << " ]" << endl;
 
                         break;
                   default:
@@ -353,9 +398,10 @@ cout << " morphological type: " << int(postSynNeuron->morphologicalType( ))
            << endl;
 #endif
 
-      cout << " - [Presynaptic Surface Position]: [ "  << preSynPos[0]
-           << ", " << preSynPos[1] << ", " << preSynPos[2] << "]" << endl;
-      cout << " - [Postsynaptic Surface Position]: " << postSynPos<< endl;
+      cout << " - [Presynaptic Surface Position]: [ "  << preSynPos.x()
+           << ", " << preSynPos.y() << ", " << preSynPos.z() << "]" << endl;
+      cout << " - [Postsynaptic Surface Position]: [ "  << postSynPos.x()
+           << ", " << postSynPos.y() << ", " << postSynPos.z() << "]" << endl;
       cout << endl;
 
        numberSynapse++;

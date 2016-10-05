@@ -14,7 +14,7 @@ namespace nsol
 
   SynapseNeuriteToSoma::SynapseNeuriteToSoma (
     TSynapseType synapseType_,
-    const unsigned short initId )
+    const unsigned int initId )
     : Synapse( synapseType_, initId )
     , _preSynapticSection( nullptr )
     , _preSynapticNode( nullptr )
