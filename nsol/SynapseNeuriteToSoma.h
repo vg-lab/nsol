@@ -36,7 +36,7 @@ namespace nsol
     NSOL_API
     SynapseNeuriteToSoma( const TSynapseType synapseType_ =
                           Synapse::DENDROSOMATIC,
-                          const unsigned short id = 0 );
+                          const unsigned int id = 0 );
 
     /**
      * Copy constructor

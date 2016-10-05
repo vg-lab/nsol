@@ -35,7 +35,7 @@ namespace nsol
     NSOL_API
     SynapseNeuriteToNeurite ( const TSynapseType synapseType_ =
                               Synapse::AXODENDRITIC,
-                              const unsigned short id = 0 );
+                              const unsigned int id = 0 );
 
     /**
      * Copy constructor

@@ -53,7 +53,7 @@ namespace nsol
      */
     NSOL_API
     Synapse ( const TSynapseType synapseType = AXODENDRITIC,
-              const unsigned short id = 0 );
+              const unsigned int id = 0 );
 
     /**
      * Copy constructor
@@ -78,14 +78,14 @@ namespace nsol
      * @return reference to synapse id
      */
     NSOL_API
-    unsigned short & id( void );
+    unsigned int & id( void );
 
     /**
      * Method to get the synapse id as const.
      * @return id of the synapse
      */
     NSOL_API
-    unsigned short id( void ) const;
+    unsigned int id( void ) const;
 
     ///@}
 
@@ -182,7 +182,7 @@ namespace nsol
   protected:
 
     //! id of this synapse
-    unsigned short _id;
+    unsigned int _id;
 
     //! Presynaptic neuron
     NeuronPtr _preSynapticNeuron;

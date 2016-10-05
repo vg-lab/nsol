@@ -34,7 +34,7 @@ namespace nsol
      * TODO: construct protected objects
      */
     NSOL_API
-    SynapseSomaToSoma ( const unsigned short id = 0 );
+    SynapseSomaToSoma ( const unsigned int id = 0 );
 
     /**
      * Copy constructor
