@@ -156,88 +156,23 @@ namespace nsol
         const brain::Synapses& brainSynapses = brainCircuit.
                                           getAfferentSynapses( gidSetBrain,
                                                 brain::SynapsePrefetch::all );
-        bool useGID = false;
-        if( brainSynapses.size() > 0)
-        {
-            try{
-                brainSynapses[0].getGID();
-                useGID = true;
-
-            }catch (...)
-            {
-                useGID = false;
-                std::cerr << "Exception: No synapse index file available"
-                          << std::endl;
-            }
-        }
-#if 1
-
-// <<<<<<<<<<<<<<<<
-        unsigned int n = _synapses.size();
-        unsigned int m = brainSynapses.size();
-
-        std::cout << "_synapses.size() = " << n << std::endl;
-        std::cout << "brainSynapses.size() = " << m << std::endl;
-        std::cout << "_circuit.connections().size() = " << _circuit.connections().size()
-                  << std::endl;
-
-        std::set<SynapsePtr> connections = _circuit.connections();
-        std::set<SynapsePtr>::iterator nit = connections.begin();
-        SynapsePtr s = (*nit);
-
-        std::cout << " _circuit.connections().begin() = " << s->id() << std::endl;
-        std::cout << "_synapses[0]->id() = " << _synapses[0]->id() << std::endl;
-
-        std::set<SynapsePtr>::iterator nit2 = connections.find( _synapses[0] );
-        if( nit2 != connections.end() )
-        {
-            std::cout << "FIND! " << std::endl;
-        }
-
-
-// >>>>>>>>>>>>>>
         nsol::Circuit circuit;
 
-        std::cout << "circuit.size = " << circuit.connections().size() << std::endl;
-
-        unsigned int count = 0;
-//        for( auto const & pair : _synapses )
-//        std::set<SynapsePtr> nsolSynapses =  _circuit.connections();
-//        for(std::set<SynapsePtr>::iterator synapseIt = nsolSynapses.begin();
-//            synapseIt != nsolSynapses.end(); synapseIt++)
-
-        SynapsePtr aux_synapse = nullptr;
-        for(unsigned int i = 0; i < _synapses.size(); i++)
+        for( auto const & pair : _synapses )
         {
             if( _synapses.size() != brainSynapses.size() )
                 break;
 
-//            std::cout << "count = "<< count << std::endl;
 //            std::cout << "pair.first = "<< pair.first << std::endl;
 //            std::cout << "pair.second.id" << pair.second->id() << std::endl;
 
-            const brain::Synapse& brainSynapse = brainSynapses[ count /*pair.first*/ ];
+            SynapsesMap::iterator it = _synapses.find( pair.first );
 
-            SynapsePtr synapse = /*(*synapseIt); */nullptr;
+            if( it == _synapses.end() ) continue;
 
-            if( useGID )
-            {
-                SynapsesMap::iterator it = _synapses.
-                                            find( brainSynapse.getGID().second);
-                if( it == _synapses.end() ) continue;
+            const brain::Synapse& brainSynapse = brainSynapses[ pair.first ];
+            SynapsePtr synapse = pair.second;
 
-                synapse = it->second;
-            }
-            else
-            {
-//                synapse = pair.second;
-                synapse = _synapses[i];
-                if( i == _synapses.size()-1 )
-                {
-                    std::cout << "_synapses[n] = "<< synapse->id() << std::endl;
-                }
-//                synapse = nsolSynapses.at(i);
-            }
 
             NeuronPtr preSynapticNeuron  = synapse->preSynapticNeuron();
             NeuronPtr postSynapticNeuron = synapse->postSynapticNeuron();
@@ -507,43 +442,11 @@ namespace nsol
             newSynapse->postSynapticSurfacePosition(synapse->
                                                  postSynapticSurfacePosition());
 
-//            std::cout << "newSynapse->id()" << newSynapse->id() << std::endl;
-
-//            _circuit.removeConnection( synapse );
-//            _circuit.addConnection( newSynapse );
-
             circuit.addConnection( newSynapse );
-
-            if( /*count*/_synapses[_synapses.size()-1]->id() ==
-                    newSynapse->id()/*_synapses.size()-1*/)
-            {
-                aux_synapse = newSynapse;
-            }
-
-            count++;
 
         }// all synapses
 
         _circuit = circuit;
-
-#if 1
-        if( aux_synapse != nullptr)
-        {
-            std::cout << "aux_synapse.id() = " << aux_synapse->id() << std::endl;
-            std::set<SynapsePtr>::iterator it_ = _circuit.connections().
-                                                find( aux_synapse );
-
-            if( it_ != _circuit.connections().end() )
-            {
-                SynapsePtr s = (*it_);
-
-                std::cout << "FIND !!!!!!!!!!!!!!!!" << std::endl;
-                std::cout << " s.id() = "<< s->id() << std::endl;
-            }
-        }
-#endif
-
-#endif
 
 #else
     void loadBlueConfigConnectivity( )

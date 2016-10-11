@@ -94,8 +94,6 @@ namespace nsol
       NeuronsMap& neurons_,
       Circuit& circuit_,
       SynapsesMap& synapses_,
-      /*std::map< unsigned short, const brain::Synapse& >*/
-//      std::map< unsigned short, const SynapsePtr >& synapsesMap,
       const brion::BlueConfig& blueConfig_,
       const std::string& target_ );
 
@@ -424,8 +422,6 @@ namespace nsol
     NeuronsMap& neurons_,
     Circuit& circuit_,
     SynapsesMap& synapses_,
-    /*std::map< unsigned short, const brain::Synapse& >*/
-//    std::map< unsigned short, const SynapsePtr >& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
@@ -435,7 +431,7 @@ namespace nsol
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
       const brain::Synapses& brainSynapses = brainCircuit.
-                                        getAfferentSynapses( gidSetBrain,
+                                             getAfferentSynapses( gidSetBrain,
                                                 brain::SynapsePrefetch::all );
       bool useGID = false;
       if( brainSynapses.size() > 0)
@@ -457,12 +453,10 @@ namespace nsol
 
       unsigned int id = 1;
       unsigned int gid = 0;
-      for ( unsigned int i = 0; i < brainSynapses.size(); i++ )
-      // for(brain::Synapses::const_iterator it = synapses.begin();
-      // it != synapses.end(); ++it)
+      for( brain::Synapses::const_iterator it = brainSynapses.begin();
+       it != brainSynapses.end(); ++it)
       {
-          const brain::Synapse& brainSynapse = brainSynapses[i];
-//         const brain::Synapse& brainSynapse = (*it);
+         const brain::Synapse& brainSynapse = (*it);
 
           if( useGID )
           {
@@ -478,9 +472,9 @@ namespace nsol
                                             getPostsynapticSurfacePosition();
 
           std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
-                                          .find(brainSynapse.getPresynapticGID());// review
+                                          .find(brainSynapse.getPresynapticGID());
           std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
-                                          .find(brainSynapse.getPostsynapticGID());// review
+                                          .find(brainSynapse.getPostsynapticGID());
 
           NeuronPtr preSynapticNeuron  = nullptr;
           NeuronPtr postSynapticNeuron = nullptr;
@@ -502,12 +496,6 @@ namespace nsol
                                                         brainPostSynPos.x(),
                                                         brainPostSynPos.y(),
                                                         brainPostSynPos.z()));
-
-//          synapsesMap[ id ] = afferent_synapse;
-//          synapsesMap.insert( std::pair<unsigned short, const SynapsePtr >
-//                                                           ( id, afferent_synapse ));
-//          synapsesMap.insert( std::pair<unsigned short, const brain::Synapse& >
-//                             ( id, (*it) ));
           synapses_[ gid ] = afferent_synapse;
 
           circuit_.addConnection(afferent_synapse);
@@ -533,7 +521,6 @@ namespace nsol
       {
           std::cout << "FIND! = " << (*synapseIt)->id() << std::endl;
       }
-
   }
 }
 

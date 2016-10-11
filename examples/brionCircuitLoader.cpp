@@ -82,15 +82,6 @@ int main( int argc, char* argv[ ])
       //cout << "Circuit with id" << circuit.id() << endl;
       set<SynapsePtr> synapses = circuit.connections();
 
-      set<SynapsePtr>::iterator it = synapses.begin();
-      SynapsePtr f = (*it);
-      std::cout << "connections[0] = "<< f->id() << std::endl;
-
-      set<SynapsePtr>::iterator it2 = synapses.end();
-      --it2;
-      SynapsePtr l = (*it2);
-      std::cout << "connections[N-1] = "<< l->id() << std::endl;
-
       int numberSynapse = 0;
       NSOL_FOREACH( synapseIt, synapses )
       {
@@ -310,7 +301,33 @@ int main( int argc, char* argv[ ])
              cout << " - Type : " <<  int(synapse->synapseType())<< endl;
 #endif
 
+             Matrix4_4f model_pre = preSynNeuron->transform();
              cout << " - [Presynaptic Neuron] id: " << preSynNeuron->gid()<< endl;
+             cout << " - [Presynaptic Neuron] transform:" << endl << "[ " <<
+                     model_pre(0,0) << ", " <<
+                     model_pre(0,1) << ", " <<
+                     model_pre(0,2) << ", " <<
+                     model_pre(0,3) << " ]" <<
+                     endl;
+                     cout << "[ " <<
+                     model_pre(1,0) << ", " <<
+                     model_pre(1,1) << ", " <<
+                     model_pre(1,2) << ", " <<
+                     model_pre(1,3) << " ]" <<
+                     endl;
+                     cout << "[ " <<
+                     model_pre(2,0) << ", " <<
+                     model_pre(2,1) << ", " <<
+                     model_pre(2,2) << ", " <<
+                     model_pre(2,3) << " ]" <<
+                     endl;
+                     cout << "[ " <<
+                     model_pre(3,0) << ", " <<
+                     model_pre(3,1) << ", " <<
+                     model_pre(3,2) << ", " <<
+                     model_pre(3,3) << " ]" <<
+                     endl;
+
 #if 1 TESTING_PRINT_LITERAL
         switch(preSynNeuron->morphologicalType( ))
         {
@@ -354,7 +371,33 @@ int main( int argc, char* argv[ ])
            << endl;
 #endif
 
+      Matrix4_4f model_post = postSynNeuron->transform();
       cout << " - [Postsynaptic Neuron] id: " << postSynNeuron->gid()<< endl;
+      cout << " - [Postsynaptic Neuron] transform:" << endl << "[ " <<
+             model_post(0,0) << ", " <<
+             model_post(0,1) << ", " <<
+             model_post(0,2) << ", " <<
+             model_post(0,3) << " ]" <<
+             endl;
+             cout << "[ " <<
+             model_post(1,0) << ", " <<
+             model_post(1,1) << ", " <<
+             model_post(1,2) << ", " <<
+             model_post(1,3) << " ]" <<
+             endl;
+             cout << "[ " <<
+             model_post(2,0) << ", " <<
+             model_post(2,1) << ", " <<
+             model_post(2,2) << ", " <<
+             model_post(2,3) << " ]" <<
+             endl;
+             cout << "[ " <<
+             model_post(3,0) << ", " <<
+             model_post(3,1) << ", " <<
+             model_post(3,2) << ", " <<
+             model_post(3,3) << " ]" <<
+             endl;
+
 #if 1 TESTING_PRINT_LITERAL
     switch(postSynNeuron->morphologicalType( ))
     {
