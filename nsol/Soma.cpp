@@ -118,7 +118,21 @@ namespace nsol
       return;
     }
 
-    for( auto node: _nodes )
+    if( _nodes.size( ) == 3 )
+    {
+      float centerDiff = ( _nodes[0]->point( ) -
+                           ( _nodes[1]->point( ) + _nodes[2]->point( )) / 2.0f
+                         ).norm( );
+      if ( std::fabs( centerDiff ) < 0.0001f )
+      {
+        _maxRadius = _nodes[0]->radius( );
+        _meanRadius = _maxRadius;
+        _minRadius = _maxRadius;
+        return;
+      }
+    }
+
+    for( const auto node: _nodes )
     {
       float radius = ( _center - node->point( )).norm( );
       if ( radius > _maxRadius )
