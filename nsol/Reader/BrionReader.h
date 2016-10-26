@@ -308,13 +308,15 @@ namespace nsol
 
     std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
 
+    float toRadians = (M_PI/180.f);
+
     for ( unsigned int i = 0; i < gidSet.size( ); i++ )
     {
       unsigned int gid = neuronIds[i];
       Matrix4_4f transform = Matrix4_4fIdentity;
 
       float yRotation =
-        boost::lexical_cast< float >( data[i][7] ) * (M_PI*1280.0f);
+                      boost::lexical_cast< float >( data[i][7] ) * (toRadians);
       transform( 0, 0 ) = cos( yRotation );
       transform( 0, 2 ) = sin( yRotation );
       transform( 2, 0 ) = -sin( yRotation );
