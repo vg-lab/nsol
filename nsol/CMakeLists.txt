@@ -90,6 +90,7 @@ set(NSOL_SOURCES
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
+  Synapse.cpp
   Writer/XmlSceneWriter.cpp
   )
 
