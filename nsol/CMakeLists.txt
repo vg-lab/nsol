@@ -10,6 +10,9 @@ set(NSOL_PUBLIC_HEADERS
   Container/Neurons.h
   Container/Nodes.h
   Container/Sections.h
+  Container/Synapses.h
+  Container/CompartmentSynapses.h
+  Container/Circuits.h
   DataSet.h
   Dendrite.h
   error.h
@@ -44,7 +47,9 @@ set(NSOL_PUBLIC_HEADERS
   Stats/SectionCachedStats.h
   Stats/SegmentStats.h
   Stats/SomaStats.h
-  Synapse.h
+  Synapse.h  
+  CompartmentSynapse.h
+  Circuit.h
   # templated classes at last
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
@@ -91,6 +96,8 @@ set(NSOL_SOURCES
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
   Synapse.cpp
+  CompartmentSynapse.cpp
+  Circuit.cpp
   Writer/XmlSceneWriter.cpp
   )
 

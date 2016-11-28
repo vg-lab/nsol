@@ -30,6 +30,16 @@ namespace nsol
    {
    }
 
+   unsigned int & Synapse::id( void )
+   {
+     return _id;
+   }
+
+   unsigned int Synapse::id( void ) const
+   {
+     return _id;
+   }
+
    void Synapse::preSynapticNeuron( const unsigned int neuron )
    {
        _preSynapticNeuron = neuron;
@@ -62,11 +72,7 @@ namespace nsol
 
    Synapse::TSynapseType Synapse::getType( void ) const
    {
-       Synapse::TSynapseType synapseType = Synapse::UNDEFINED;
-
-       // TODO: calculate type of synapse
-
-       return synapseType;
+       return Synapse::UNDEFINED;
    }
 
    Synapse& Synapse::operator = ( const Synapse& other )

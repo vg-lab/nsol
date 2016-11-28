@@ -63,6 +63,25 @@ namespace nsol
 
         ///@}
 
+        /** @name Id related methods */
+        ///@{
+
+        /**
+         * Method to get the synapse id.
+         * @return reference to synapse id
+         */
+        NSOL_API
+        unsigned int & id( void );
+
+        /**
+         * Method to get the synapse id as const.
+         * @return id of the synapse
+         */
+        NSOL_API
+        unsigned int id( void ) const;
+
+        ///@}
+
         /** @name getters and setters methods */
         ///@{
 
@@ -112,7 +131,7 @@ namespace nsol
 
         NSOL_API
         //! Get the type of synapse
-        TSynapseType getType( void ) const;
+        virtual TSynapseType getType( void ) const;
 
         ///@}
 
@@ -131,6 +150,9 @@ namespace nsol
         ///@}
 
     protected:
+
+        //! id of this synapse
+        unsigned int _id;
 
         //! GID Presynaptic neuron
         unsigned int _preSynapticNeuron;

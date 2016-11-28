@@ -72,6 +72,9 @@ namespace nsol
   class Properties;
   class Section;
   class Soma;
+  class Circuit;
+  class Synapse;
+  class CompartmentSynapse;
 
   class NodeCached;
 
@@ -90,6 +93,9 @@ namespace nsol
   typedef std::shared_ptr< Properties > PropertiesPtr;
   typedef std::shared_ptr< Section > SectionPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
+  typedef std::shared_ptr< Circuit > CircuitPtr;
+  typedef std::shared_ptr< Synapse > SynapsePtr;
+  typedef std::shared_ptr< CompartmentSynapse > CompartmentSynapsePtr;
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
 
 
@@ -120,6 +126,9 @@ namespace nsol
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Soma* SomaPtr;
+  typedef Circuit* CircuitPtr;
+  typedef Synapse* SynapsePtr;
+  typedef CompartmentSynapse* CompartmentSynapsePtr;
   typedef NodeCached* NodeCachedPtr;
 
 

@@ -33,6 +33,83 @@ namespace nsol
   {
   }
 
+  Synapse::TSynapseType CompartmentSynapse::getType( void ) const
+  {
+      Synapse::TSynapseType synapseType = Synapse::UNDEFINED;
+
+      if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
+      {
+          return Synapse::SOMATOSOMAL;
+      }
+
+      bool isPreDentrite, isPreAxon;
+      isPreDentrite = isPreAxon = false;
+
+      if( _preSynapticSection != nullptr )
+      {
+        NeuritePtr neurite = _preSynapticSection->neurite();
+
+        switch(neurite->neuriteType())
+        {
+            case Neurite::DENDRITE:  isPreDentrite = true;
+                                     break;
+            case Neurite::AXON: isPreAxon = true;
+                                break;
+            default: break;
+        }
+      }
+
+      bool isPostDentrite, isPostAxon, isPostSoma;
+      isPostDentrite = isPostAxon = false;
+      isPostSoma = true;
+
+      if( _postSynapticSection != nullptr )
+      {
+          NeuritePtr neurite = _preSynapticSection->neurite();
+
+          switch(neurite->neuriteType())
+          {
+              case Neurite::DENDRITE:  isPostDentrite = true;
+                                       isPostSoma = false;
+              break;
+              case Neurite::AXON: isPostAxon = true;
+                                  isPostSoma = false;
+              break;
+              default: break;
+          }
+      }
+
+      if( isPreDentrite ) // 1º Checkup
+      {
+          if( isPostDentrite )
+          {
+              return Synapse::DENDRODENDRITIC;
+          }
+          if( isPostSoma )
+          {
+               return Synapse::DENDROSOMATIC;
+           }
+      }
+
+      if( isPreAxon ) // 2º Checkup
+      {
+          if( isPostDentrite )
+          {
+              return Synapse::AXODENDRITIC;
+          }
+          if( isPostAxon )
+          {
+              return Synapse::AXOAXONIC;
+          }
+          if( isPostSoma )
+          {
+              return Synapse::AXOSOMATIC;
+          }
+      }
+
+      return synapseType;
+  }
+
   void CompartmentSynapse::preSynapticSurfacePosition( const Vec3f position )
   {
     _preSynapticSurfacePosition = position;
