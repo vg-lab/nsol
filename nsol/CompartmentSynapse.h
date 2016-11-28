@@ -12,12 +12,13 @@
 #include <nsol/api.h>
 #include <nsol/NsolTypes.h>
 #include <nsol/Neuron.h>
+#include <nsol/Synapse.h>
 
 
 namespace nsol
 {
 
-    class CompartmentSynapse
+    class CompartmentSynapse : public virtual Synapse
     {
 
     public:
@@ -48,6 +49,12 @@ namespace nsol
 
         /** @name getters and setters methods */
         ///@{
+
+        /**
+        * Method to get the type of the synapse.
+        */
+        NSOL_API
+        virtual TSynapseType getType( void ) const;
 
         /**
         * Method to get the presynaptic surface position.
