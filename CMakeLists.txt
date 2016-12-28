@@ -39,6 +39,9 @@ set(VERSION_ABI 1)
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
 set(COMMON_PROJECT_DOMAIN gmrv.es)
 
+option( NSOL_WITH_EXAMPLES "NSOL_WITH_EXAMPLES" ON )
+option( NSOL_WITH_TESTS "NSOL_WITH_TESTS" ON )
+
 # Option to build with shared pointers or raw pointers
 option(NSOL_WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 option(NSOL_WITH_BBPSDK "WITH_BBPSDK" OFF)
