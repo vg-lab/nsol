@@ -1,6 +1,6 @@
 /**
  * @file    Synapses.h
- * @brief   Test for class nsol::SynapsePtr
+ * @brief   Container for class nsol::SynapsePtr
  * @author  Raquel Jarillo Pellon <r.jarillo@alumnos.urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.

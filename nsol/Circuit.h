@@ -49,7 +49,6 @@ namespace nsol
 
     /**
      * Default destructor
-     * @param id id of the circuit.
      */
     NSOL_API
     virtual ~Circuit( void ) ;

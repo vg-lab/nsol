@@ -1,6 +1,6 @@
 /**
  * @file    Circuits.h
- * @brief   Test for class nsol::CircuitPtr
+ * @brief   Container for class nsol::CircuitPtr
  * @author  Raquel Jarillo Pellon <r.jarillo@alumnos.urjc.es>
  * @date
  * @remarks Copyright (c) GMRV/URJC. All rights reserved.
