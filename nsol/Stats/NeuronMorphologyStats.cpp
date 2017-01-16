@@ -160,7 +160,7 @@ namespace nsol
 
     // Computation for neurite based
     float value = 0.0f;
-    float mean;
+    float mean = 0.0f;
 
     if ( agg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
