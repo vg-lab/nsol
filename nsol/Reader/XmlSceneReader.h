@@ -61,10 +61,17 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
+#ifdef NSOL_USE_QT5CORE
     static void loadXml(
       const std::string& xmlSceneFile,
       Columns& columns, NeuronsMap& neuronsMap,
-      std::map< std::string, NeuronMorphologyPtr >& morphologies )
+      std::map< std::string, NeuronMorphologyPtr >& morphologies)
+#else
+    static void loadXml(
+      const std::string& xmlSceneFile,
+      Columns&, NeuronsMap&,
+      std::map< std::string, NeuronMorphologyPtr >&)
+#endif
     {
 
 #ifdef NSOL_USE_QT5CORE
