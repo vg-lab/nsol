@@ -12,6 +12,7 @@
 
 #include <nsol/api.h>
 #include "Synapse.h"
+#include "Container/Synapses.h"
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -29,6 +30,14 @@ namespace nsol
   {
 
   public:
+
+      //! Possible types of data to get
+      typedef enum
+      {
+        ALL = 0,
+        PRESYNAPTICCONNECTIONS,
+        POSTSYNAPTICCONNECTIONS
+      } TDataType;
 
     /** @name Constructors and destructors  */
     ///@{
@@ -52,34 +61,26 @@ namespace nsol
     ///@{
 
     /**
-     * Method to add a connection.
+     * Method to add a connection into the cirtuit.
      * @param synapse to add to this circuit
      * @return true if connection added false otherwise
      */
     NSOL_API
-    virtual void addConnection( SynapsePtr synapse );
-
-    /**
-     * Method to remove a connection.
-     * @param synapse to be removed
-     * @return true if the connection removed false otherwise
-     */
-    NSOL_API
-    virtual bool removeConnection( SynapsePtr synapse );
+    virtual void addSynapse( SynapsePtr synapse );
 
     /**
      * Method to clear all the connections
      * of all the circuit.
      */
     NSOL_API
-    virtual void clearConnections( void );
+    virtual void clearSynapses( void );
 
     /**
      * Method to get the total number of connections of the circuit.
-     * @return total numbers of connections
+     * @return total numbers of synapses
      */
     NSOL_API
-    virtual unsigned int numberOfConnections( void ) const;
+    virtual unsigned int numberOfSynapses( void ) const;
 
     ///@}
 
@@ -87,44 +88,28 @@ namespace nsol
     ///@{
 
     /**
-     * Method to get the afferent (incoming) synapses projecting onto a neuron.
-     * @param neuron
-     * @return afferent synapses of this neuron.
+     * Method to get all the synapses from the circuit.
+     * @return subset with all the synapses
      */
     NSOL_API
-    std::set< SynapsePtr> afferentSynapses( NeuronPtr neuron );
+    std::set<SynapsePtr> synapses( TDataType dataType );
 
     /**
-     * Method to get the efferent (outgoing) synapses projecting onto a neuron.
-     * @param neuron
-     * @return efferent synapses of this neuron.
+     * Method to get all the sinapses of the neuron into the circuit.
+     * @param neuron id
+     * @return all the synapses of this neuron.
      */
     NSOL_API
-    std::set< SynapsePtr> efferentSynapses( NeuronPtr neuron );
+    std::set<SynapsePtr> synapses( unsigned int neuronGID, TDataType dataType );
 
     /**
-     * Method to clear the afferent (incoming) synapses
-     * projecting onto a neuron.
-     * @param neuron
+     * Method to get all the sinapses from a subset of neurons.
+     * @param subset of ids neurons
+     * @return all the synapses of this subset of neurons.
      */
     NSOL_API
-    void clearAfferentSynapses( NeuronPtr neuron );
-
-    /**
-     * Method to clear the efferent (incoming) synapses
-     * projecting onto a neuron.
-     * @param neuron
-     */
-    NSOL_API
-    void clearEfferentSynapses( NeuronPtr neuron );
-
-    /**
-     * Method to obtain the sparse matrix with the relationships
-     * between each pair of neurons.
-     * @param neurons
-     */
-    NSOL_API
-    Eigen::SparseMatrix< float > contactsNeurons( NeuronsMap neurons );
+    std::set<SynapsePtr> synapses( std::set< unsigned int > gidsNeurons,
+                                   TDataType dataType );
 
     ///@}
 
@@ -132,13 +117,13 @@ namespace nsol
   protected:
 
     //! Container with all the connections between neurons
-    std::vector< Synapse > _synapses;
+    std::vector< SynapsePtr > _synapses;
 
     //! Container with all the efferents connections into the circuit
-    std::unordered_multimap< unsigned int, SynapsePtr> _preSynapticConnections;
+    SynapsesMap _preSynapticConnections;
 
     //! Container with all the afferents connections into the circuit
-    std::unordered_multimap< unsigned int, SynapsePtr> _postSynapticConnections;
+    SynapsesMap _postSynapticConnections;
 
 
   }; // class Circuit

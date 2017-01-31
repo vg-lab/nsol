@@ -23,6 +23,18 @@ namespace nsol
 
     public:
 
+        //! Possible types of synapse
+        typedef enum
+        {
+          UNDEFINED = 0,
+          DENDRODENDRITIC,
+          AXODENDRITIC,
+          AXOAXONIC,
+          SOMATOSOMAL,
+          AXOSOMATIC,
+          DENDROSOMATIC
+        } TSynapseType;
+
         /** @name Constructors and destructors  */
         ///@{
 
@@ -54,7 +66,7 @@ namespace nsol
         * Method to get the type of the synapse.
         */
         NSOL_API
-        virtual TSynapseType getType( void ) const;
+        TSynapseType synapseType( void ) const;
 
         /**
         * Method to get the presynaptic surface position.
@@ -68,7 +80,8 @@ namespace nsol
         * @param presynaptic surface position.
         */
         NSOL_API
-        void preSynapticSurfacePosition( const Vec3f presynaptic_surface_position );
+        void
+        preSynapticSurfacePosition( const Vec3f presynaptic_surface_position );
 
         /**
         * Method to get the postsynaptic surface position.
@@ -82,7 +95,8 @@ namespace nsol
         * @param postsynaptic surface position.
         */
         NSOL_API
-        void postSynapticSurfacePosition( const Vec3f postsynaptic_surface_position );
+        void
+        postSynapticSurfacePosition( const Vec3f postsynaptic_surface_position );
 
         /**
          * Method to add a presynaptic section to the synapse.

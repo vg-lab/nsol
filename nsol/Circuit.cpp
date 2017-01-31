@@ -28,10 +28,9 @@ namespace nsol
     //
     // Connections methods
     //
-    void Circuit::addConnection( SynapsePtr synapse )
+    void Circuit::addSynapse( SynapsePtr synapse )
     {
-        Synapse synapse_ = ( *synapse );
-        _synapses.push_back( synapse_ );
+        _synapses.push_back( synapse );
 
         std::pair< unsigned int, SynapsePtr> preSynapticConnection(
                                        synapse->preSynapticNeuron( ), synapse );
@@ -43,60 +42,7 @@ namespace nsol
         _postSynapticConnections.insert( postSynapticConnection );
     }
 
-    bool Circuit::removeConnection( SynapsePtr synapse )
-    {
-
-        bool existSynapse = false;
-
-        for( auto it = _synapses.begin(); it != _synapses.end(); ++it )
-        {
-            if( it->id( ) == synapse->id( ))
-            {
-                _synapses.erase( it );
-                existSynapse = true;
-                break;
-            }
-        }
-
-        for( auto itMap= _preSynapticConnections.begin();
-                  itMap != _preSynapticConnections.end(); ++itMap )
-        {
-            unsigned int idNeuron = itMap->first;
-
-            auto synapses = _preSynapticConnections.equal_range( idNeuron );
-            for( auto it = synapses.first; it != synapses.second; ++it )
-            {
-                SynapsePtr s = it->second;
-                if( s->id( ) == synapse->id( ))
-                {
-                    _preSynapticConnections.erase( it );
-                    break;
-                }
-            }
-        }
-
-        for( auto itMap= _postSynapticConnections.begin();
-                  itMap != _postSynapticConnections.end(); ++itMap )
-        {
-            unsigned int idNeuron = itMap->first;
-
-            auto synapses = _postSynapticConnections.equal_range( idNeuron );
-            for( auto it = synapses.first; it != synapses.second; ++it )
-            {
-                SynapsePtr s = it->second;
-                if( s->id( ) == synapse->id( ))
-                {
-                    _postSynapticConnections.erase( it );
-                    break;
-                }
-            }
-        }
-
-        return existSynapse = true;;
-
-    }
-
-    void Circuit::clearConnections( void )
+    void Circuit::clearSynapses( void )
     {
         _preSynapticConnections.clear( );
         _postSynapticConnections.clear( );
@@ -104,110 +50,132 @@ namespace nsol
         _synapses.clear( );
     }
 
-    unsigned int Circuit::numberOfConnections( void ) const
+    unsigned int Circuit::numberOfSynapses( void ) const
     {
         return _synapses.size( );
     }
 
-    std::set< SynapsePtr> Circuit::afferentSynapses( NeuronPtr neuron )
+
+    /** Efferents and afferents synapses **/
+    std::set<SynapsePtr> Circuit::synapses( TDataType dataType )
     {
-       std::set< SynapsePtr> synapses;
+       std::set<SynapsePtr> synapses_;
 
-       auto search = _postSynapticConnections.find( neuron->gid( ));
-
-       if( search != _postSynapticConnections.end( ))
+       switch( dataType )
        {
-           auto values = _postSynapticConnections.equal_range( neuron->gid( ));
-           for( auto it = values.first; it != values.second; ++it )
+           case ALL:
            {
-               SynapsePtr synapse = it->second;
-               synapses.insert( synapse );
+               for( auto synapse: _synapses )
+                  synapses_.insert( synapse );
            }
+           break;
+           case PRESYNAPTICCONNECTIONS:
+           {
+               for( auto it = _preSynapticConnections.begin();
+                         it != _preSynapticConnections.end(); it++ )
+               {
+                   synapses_.insert( it->second );
+               }
+           }
+           break;
+           case POSTSYNAPTICCONNECTIONS:
+           {
+              for( auto it = _postSynapticConnections.begin();
+                        it != _postSynapticConnections.end(); it++ )
+              {
+                  synapses_.insert( it->second );
+              }
+           }
+           break;
+           default:
+           break;
        }
 
-       return std::move( synapses );
+       return std::move( synapses_ );
     }
 
-    std::set< SynapsePtr > Circuit::efferentSynapses( NeuronPtr neuron )
+    std::set<SynapsePtr> Circuit::synapses( unsigned int neuronGID,
+                                            TDataType dataType )
     {
-        std::set< SynapsePtr> synapses;
+       std::set<SynapsePtr> synapses_;
 
-        auto search = _preSynapticConnections.find( neuron->gid( ));
-
-        if( search != _preSynapticConnections.end( ))
-        {
-            auto values = _preSynapticConnections.equal_range( neuron->gid( ));
-            for( auto it = values.first; it != values.second; ++it )
-            {
-                SynapsePtr synapse = it->second;
-                synapses.insert( synapse );
-            }
-        }
-
-        return std::move( synapses );
-    }
-
-    void Circuit::clearAfferentSynapses( NeuronPtr neuron )
-    {
-        auto synapses = _postSynapticConnections.equal_range( neuron->gid( ));
-        for( auto synapse = synapses.first; synapse != synapses.second; )
-        {
-            synapse = _postSynapticConnections.erase( synapse );
-        }
-    }
-
-    void Circuit::clearEfferentSynapses( NeuronPtr neuron )
-    {
-        auto synapses = _preSynapticConnections.equal_range( neuron->gid( ));
-        for( auto synapse = synapses.first; synapse != synapses.second; )
-        {
-            synapse = _preSynapticConnections.erase( synapse );
-        }
-    }
-
-    Eigen::SparseMatrix< float > Circuit::contactsNeurons( NeuronsMap neurons )
-    {
-        unsigned int dim = neurons.size();
-
-        Eigen::SparseMatrix< float > contacts;
-
-        contacts.resize(dim, dim);
-        contacts.setZero();
-
-        for( unsigned int i = 0; i < neurons.size(); i++ )
-            contacts.insert(i, i) = 1.f;
-
-        bool success = true;
-        Eigen::SparseMatrix< float > C = contacts;
-
-        for( auto neuron: neurons )
-        {
-            std::set<SynapsePtr> efferents = this->efferentSynapses
-                                                              ( neuron.second );
-            if( !efferents.empty( ))
-            {
-                for( auto synapse: efferents )
+       switch( dataType )
+       {
+          case PRESYNAPTICCONNECTIONS:
+          {
+             auto search = _preSynapticConnections.find( neuronGID );
+             if( search != _preSynapticConnections.end( ))
+             {
+                auto values = _preSynapticConnections.equal_range( neuronGID );
+                for( auto it = values.first; it != values.second; ++it )
                 {
-                    unsigned int nPre  = synapse->preSynapticNeuron();
-                    unsigned int nPost = synapse->postSynapticNeuron();
-
-                    C.insert( nPre - 1, nPost - 1 ) += 1.f;
-                    C.insert( nPost - 1, nPre - 1 ) += 1.f;
+                   SynapsePtr synapse = it->second;
+                   synapses_.insert( synapse );
                 }
+             }
+           }
+           break;
+           case POSTSYNAPTICCONNECTIONS:
+           {
+              auto search = _postSynapticConnections.find( neuronGID );
+              if( search != _postSynapticConnections.end( ))
+              {
+                 auto values = _postSynapticConnections.equal_range( neuronGID );
+                 for( auto it = values.first; it != values.second; ++it )
+                 {
+                    SynapsePtr synapse = it->second;
+                    synapses_.insert( synapse );
+                 }
+               }
             }
-            else
+            break;
+
+            case ALL:
             {
-                success = false;
+              auto search = _preSynapticConnections.find( neuronGID );
+              if( search != _preSynapticConnections.end( ))
+              {
+                 auto values = _preSynapticConnections.equal_range( neuronGID );
+                 for( auto it = values.first; it != values.second; ++it )
+                 {
+                    SynapsePtr synapse = it->second;
+                    synapses_.insert( synapse );
+                 }
+              }
+
+              search = _postSynapticConnections.find( neuronGID );
+              if( search != _postSynapticConnections.end( ))
+              {
+                 auto values = _postSynapticConnections.equal_range( neuronGID );
+                 for( auto it = values.first; it != values.second; ++it )
+                 {
+                    SynapsePtr synapse = it->second;
+                    synapses_.insert( synapse );
+                 }
+               }
             }
+            break;
+            default:
+            break;
         }
 
-        if( !success )
-            return contacts;
+        return std::move( synapses_ );
+    }
 
-        contacts.swap( C );
+    std::set<SynapsePtr> Circuit::synapses( std::set<unsigned int> gidsNeurons,
+                                            TDataType dataType )
+    {
+        std::set<SynapsePtr> synapses_;
 
-        return contacts;
+        for( auto it = gidsNeurons.begin(); it != gidsNeurons.end(); it++ )
+        {
+            std::set<SynapsePtr> aux = this->synapses( *it, dataType );
 
+            for( auto synapse: aux )
+              synapses_.insert( synapse );
+        }
+
+        return std::move( synapses_ );
     }
 
 

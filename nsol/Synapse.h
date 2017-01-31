@@ -27,18 +27,6 @@ namespace nsol
 
     public:
 
-        //! Possible types of synapse
-        typedef enum
-        {
-          UNDEFINED = 0,
-          DENDRODENDRITIC,
-          AXODENDRITIC,
-          AXOAXONIC,
-          SOMATOSOMAL,
-          AXOSOMATIC,
-          DENDROSOMATIC
-        } TSynapseType;
-
         /** @name Constructors and destructors  */
         ///@{
 
@@ -63,25 +51,6 @@ namespace nsol
 
         ///@}
 
-        /** @name Id related methods */
-        ///@{
-
-        /**
-         * Method to get the synapse id.
-         * @return reference to synapse id
-         */
-        NSOL_API
-        unsigned int & id( void );
-
-        /**
-         * Method to get the synapse id as const.
-         * @return id of the synapse
-         */
-        NSOL_API
-        unsigned int id( void ) const;
-
-        ///@}
-
         /** @name getters and setters methods */
         ///@{
 
@@ -98,7 +67,7 @@ namespace nsol
          * @see Neuron
          */
         NSOL_API
-        void preSynapticNeuron( const unsigned int neuron );
+        void preSynapticNeuron( const unsigned int neuronID );
 
         /**
          * Method to get the gid of the postsynaptic neuron.
@@ -113,25 +82,21 @@ namespace nsol
          * @see Neuron
          */
         NSOL_API
-        void postSynapticNeuron(const unsigned int neuron );
+        void postSynapticNeuron( const unsigned int neuronID );
 
         /**
          * Method to set the synaptic weight.
          * @param synaptic weight.
          */
         NSOL_API
-        void setWeight( const float weight );
+        void weight( const float weight_ );
 
         /**
          * Method to get the synaptic weight.
          * @return synaptic weight.
          */
         NSOL_API
-        float getWeight( void ) const;
-
-        NSOL_API
-        //! Get the type of synapse
-        virtual TSynapseType getType( void ) const;
+        float weight( void ) const;
 
         ///@}
 
@@ -150,9 +115,6 @@ namespace nsol
         ///@}
 
     protected:
-
-        //! id of this synapse
-        unsigned int _id;
 
         //! GID Presynaptic neuron
         unsigned int _preSynapticNeuron;
