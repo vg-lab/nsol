@@ -22,7 +22,7 @@ namespace nsol
    Synapse::Synapse( const Synapse& other )
    : _preSynapticNeuron( other.preSynapticNeuron( ))
    , _postSynapticNeuron( other.postSynapticNeuron( ))
-   , _weight( other.getWeight( ))
+   , _weight( other.weight( ))
     {
     }
 
@@ -30,19 +30,9 @@ namespace nsol
    {
    }
 
-   unsigned int & Synapse::id( void )
+   void Synapse::preSynapticNeuron(const unsigned int neuronID )
    {
-     return _id;
-   }
-
-   unsigned int Synapse::id( void ) const
-   {
-     return _id;
-   }
-
-   void Synapse::preSynapticNeuron( const unsigned int neuron )
-   {
-       _preSynapticNeuron = neuron;
+       _preSynapticNeuron = neuronID;
    }
 
    unsigned int Synapse::preSynapticNeuron( void ) const
@@ -50,9 +40,9 @@ namespace nsol
        return _preSynapticNeuron;
    }
 
-   void Synapse::postSynapticNeuron( const unsigned int neuron )
+   void Synapse::postSynapticNeuron(const unsigned int neuronID )
    {
-       _postSynapticNeuron = neuron;
+       _postSynapticNeuron = neuronID;
    }
 
    unsigned int Synapse::postSynapticNeuron( void ) const
@@ -60,19 +50,14 @@ namespace nsol
        return _postSynapticNeuron;
    }
 
-   void Synapse::setWeight( const float weight )
+   void Synapse::weight( const float weight_ )
    {
-       _weight = weight;
+       _weight = weight_;
    }
 
-   float Synapse::getWeight( void ) const
+   float Synapse::weight( void ) const
    {
        return _weight;
-   }
-
-   Synapse::TSynapseType Synapse::getType( void ) const
-   {
-       return Synapse::UNDEFINED;
    }
 
    Synapse& Synapse::operator = ( const Synapse& other )
@@ -81,7 +66,7 @@ namespace nsol
      {
        this->preSynapticNeuron( other.preSynapticNeuron( ));
        this->postSynapticNeuron( other.postSynapticNeuron( ));
-       this->setWeight( other.getWeight( ));
+       this->weight( other.weight( ));
      }
 
      return *this;
@@ -91,7 +76,7 @@ namespace nsol
    {
      return (( this->preSynapticNeuron( ) == other.preSynapticNeuron( )) &&
              ( this->postSynapticNeuron( ) == other.postSynapticNeuron( )) &&
-             ( this->getWeight( ) == other.getWeight( )));
+             ( this->weight( ) == other.weight( )));
    }
 
    bool Synapse::operator != ( const Synapse& other )

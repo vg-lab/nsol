@@ -33,17 +33,20 @@ namespace nsol
   {
   }
 
-  Synapse::TSynapseType CompartmentSynapse::getType( void ) const
+  CompartmentSynapse::TSynapseType CompartmentSynapse::synapseType( void ) const
   {
-      Synapse::TSynapseType synapseType = Synapse::UNDEFINED;
+      // -- Treatment of synapse type: -- //
+      CompartmentSynapse::TSynapseType synapseType =
+                                                  CompartmentSynapse::UNDEFINED;
 
       if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
       {
-          return Synapse::SOMATOSOMAL;
+          return CompartmentSynapse::SOMATOSOMAL;
       }
 
-      bool isPreDentrite, isPreAxon;
-      isPreDentrite = isPreAxon = false;
+      // Computing pre-synaptic section..
+      bool isPreDendrite, isPreAxon;
+      isPreDendrite = isPreAxon = false;
 
       if( _preSynapticSection != nullptr )
       {
@@ -51,7 +54,7 @@ namespace nsol
 
         switch(neurite->neuriteType())
         {
-            case Neurite::DENDRITE:  isPreDentrite = true;
+            case Neurite::DENDRITE:  isPreDendrite = true;
                                      break;
             case Neurite::AXON: isPreAxon = true;
                                 break;
@@ -59,8 +62,9 @@ namespace nsol
         }
       }
 
-      bool isPostDentrite, isPostAxon, isPostSoma;
-      isPostDentrite = isPostAxon = false;
+      // Computing post-synaptic section..
+      bool isPostDendrite, isPostAxon, isPostSoma;
+      isPostDendrite = isPostAxon = false;
       isPostSoma = true;
 
       if( _postSynapticSection != nullptr )
@@ -69,7 +73,7 @@ namespace nsol
 
           switch(neurite->neuriteType())
           {
-              case Neurite::DENDRITE:  isPostDentrite = true;
+              case Neurite::DENDRITE:  isPostDendrite = true;
                                        isPostSoma = false;
               break;
               case Neurite::AXON: isPostAxon = true;
@@ -79,31 +83,32 @@ namespace nsol
           }
       }
 
-      if( isPreDentrite ) // 1º Checkup
+      // Checking type of synapse...
+      if( isPreDendrite ) // 1º Checkup
       {
-          if( isPostDentrite )
+          if( isPostDendrite )
           {
-              return Synapse::DENDRODENDRITIC;
+              return CompartmentSynapse::DENDRODENDRITIC;
           }
           if( isPostSoma )
           {
-               return Synapse::DENDROSOMATIC;
+               return CompartmentSynapse::DENDROSOMATIC;
            }
       }
 
       if( isPreAxon ) // 2º Checkup
       {
-          if( isPostDentrite )
+          if( isPostDendrite )
           {
-              return Synapse::AXODENDRITIC;
+              return CompartmentSynapse::AXODENDRITIC;
           }
           if( isPostAxon )
           {
-              return Synapse::AXOAXONIC;
+              return CompartmentSynapse::AXOAXONIC;
           }
           if( isPostSoma )
           {
-              return Synapse::AXOSOMATIC;
+              return CompartmentSynapse::AXOSOMATIC;
           }
       }
 
@@ -155,6 +160,10 @@ namespace nsol
   {
     if (this != &other)
     {
+      this->preSynapticNeuron( other.preSynapticNeuron( ));
+      this->postSynapticNeuron( other.postSynapticNeuron( ));
+      this->weight( other.weight( ));
+
       this->preSynapticSurfacePosition( other.preSynapticSurfacePosition( ));
       this->postSynapticSurfacePosition( other.postSynapticSurfacePosition( ));
       this->preSynapticSection( other.preSynapticSection( ));
@@ -166,7 +175,10 @@ namespace nsol
 
    bool CompartmentSynapse::operator == ( const CompartmentSynapse& other )
    {
-     return (( this->preSynapticSection( ) == other.preSynapticSection( )) &&
+     return (( this->preSynapticNeuron( ) == other.preSynapticNeuron( )) &&
+             ( this->postSynapticNeuron( ) == other.postSynapticNeuron( )) &&
+             ( this->weight( ) == other.weight( )) &&
+             ( this->preSynapticSection( ) == other.preSynapticSection( )) &&
              ( this->postSynapticSection( ) == other.postSynapticSection( )) &&
              ( this->preSynapticSurfacePosition( ) ==
                other.preSynapticSurfacePosition( )) &&

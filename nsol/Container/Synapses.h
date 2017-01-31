@@ -18,13 +18,12 @@ namespace nsol
 
   typedef NsolVector< SynapsePtr > Synapses;
 
-  class SynapsesMap : public std::map< unsigned int, SynapsePtr >
+  class SynapsesMap : public std::unordered_multimap< unsigned int, SynapsePtr >
   {
   public:
 
     NSOL_API
-    bool addSynapse( SynapsePtr synapse );
-
+    bool addSynapse( NeuronPtr neuron, SynapsePtr synapse );
   };
 
 }

@@ -18,14 +18,14 @@ namespace nsol
 
   typedef NsolVector< CompartmentSynapsePtr > CompartmentSynapses;
 
-  class CompartmentSynapsesMap : public std::map< unsigned int,
-                                                  CompartmentSynapsePtr >
+  class CompartmentSynapsesMap : public std::unordered_multimap< unsigned int,
+                                                        CompartmentSynapsePtr >
   {
   public:
 
     NSOL_API
-    bool addCompartmentSynapse( CompartmentSynapsePtr compartmentSynapse );
-
+    bool addCompartmentSynapse( NeuronPtr neuron,
+                                CompartmentSynapsePtr compartmentSynapse );
   };
 
 }

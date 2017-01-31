@@ -66,6 +66,8 @@ set(NSOL_SOURCES
   Axon.cpp
   Column.cpp
   Container/Neurons.cpp
+  Container/Synapses.cpp
+  Container/CompartmentSynapses.cpp
   DataSet.cpp
   Dendrite.cpp
   ImportanceNode.cpp
