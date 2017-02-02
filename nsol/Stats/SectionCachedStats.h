@@ -65,7 +65,7 @@ namespace nsol
      * TSectionCachedValues (checked only on debug compiling).
      */
     NSOL_API
-    virtual void setAndPropagateDirty( unsigned int id );
+    virtual void setAndPropagateDirty(unsigned int id_ );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent neurite

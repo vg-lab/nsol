@@ -50,7 +50,7 @@ namespace nsol
      * @param gid
      */
     NSOL_API
-    void id ( unsigned int id );
+    void id (unsigned int id_ );
 
     /**
      * Gets the parent Neurite of the Section

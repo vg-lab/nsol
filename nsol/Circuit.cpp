@@ -42,7 +42,7 @@ namespace nsol
         _postSynapticConnections.insert( postSynapticConnection );
     }
 
-    void Circuit::clearSynapses( void )
+    void Circuit::clear( void )
     {
         _preSynapticConnections.clear( );
         _postSynapticConnections.clear( );
@@ -50,7 +50,7 @@ namespace nsol
         _synapses.clear( );
     }
 
-    unsigned int Circuit::numberOfSynapses( void ) const
+    size_t Circuit::numberOfSynapses( void ) const
     {
         return _synapses.size( );
     }
