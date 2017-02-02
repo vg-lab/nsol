@@ -13,6 +13,8 @@
 #include "../Stats/ColumnStats.h"
 #include "../Stats/MiniColumnStats.h"
 #include "../Neuron.h"
+#include "../CompartmentSynapse.h"
+#include "../Circuit.h"
 #include "../Stats/NodeCached.h"
 #include "../Stats/SectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
@@ -21,6 +23,8 @@
 
 #include "../NsolTypes.h"
 
+
+#include <brain/brain.h>
 #include <brion/brion.h>
 
 #include <string>
@@ -84,6 +88,13 @@ namespace nsol
       NeuronsMap& neurons_,
       const brion::BlueConfig& blueConfig_,
       const std::string& targetLabel = std::string( "" ));
+
+    void
+    loadBlueConfigBasicConnectivity(
+      NeuronsMap& neurons_,
+      Circuit& circuit_,
+      const brion::BlueConfig& blueConfig_,
+      const std::string& target_ );
 
 
   }; // BrionReaderTemplated
@@ -169,6 +180,7 @@ namespace nsol
       else
       {
         nsolSection = new SECTION( );
+        nsolSection->id( sectId );
         nsolSections[sectId] = nsolSection;
         if ( sectType != fatherSectType )
         {
@@ -402,6 +414,65 @@ namespace nsol
       neurons_[ gid ] = neuron;
     }
   }
+
+  template < BRION_READER_TEMPLATE_CLASSES >
+  void
+  BrionReaderTemplated
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
+    NeuronsMap& neurons_,
+    Circuit& circuit_,
+    const brion::BlueConfig& blueConfig_,
+    const std::string& target_ )
+  {
+      brain::Circuit brainCircuit( blueConfig_);
+      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+
+      const brain::Synapses& brainSynapses = brainCircuit.
+                                             getAfferentSynapses( gidSetBrain,
+                                                brain::SynapsePrefetch::all );
+      if( brainSynapses.size() > 0)
+      {
+          try{
+              brainSynapses[0].getGID();
+
+          }catch (...)
+          {
+              std::cerr << "Exception: No synapse index file available"
+                        << std::endl;
+          }
+      }
+
+      // number of efferent synapses it is the same that afferent synapses
+      for( brain::Synapses::const_iterator it = brainSynapses.begin();
+                                           it != brainSynapses.end(); ++it)
+      {
+         const brain::Synapse& brainSynapse = (*it);
+
+         CompartmentSynapsePtr afferent_synapse = CompartmentSynapsePtr(
+                                                     new CompartmentSynapse( ));
+
+         std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
+                                         .find(brainSynapse.getPresynapticGID());
+         std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
+                                         .find(brainSynapse.getPostsynapticGID());
+
+         if (( nitPre  == neurons_.end( ))||
+             ( nitPost == neurons_.end( )))
+             break;
+
+         NeuronPtr preSynapticNeuron  = nitPre->second;
+         NeuronPtr postSynapticNeuron = nitPost->second;
+
+         afferent_synapse->preSynapticNeuron( preSynapticNeuron->gid( ));
+         afferent_synapse->postSynapticNeuron( postSynapticNeuron->gid( ));
+
+         afferent_synapse->weight( 0.0f );
+
+         circuit_.addSynapse( afferent_synapse );
+
+      }
+  }
+
 }
 
 #endif // __NSOL_BRION_READER__

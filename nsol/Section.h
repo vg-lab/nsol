@@ -39,6 +39,20 @@ namespace nsol
     virtual ~Section( );
 
     /**
+     * Method to get the gid of the section.
+     * @return gid
+     */
+    NSOL_API
+    unsigned int id( void );
+
+    /**
+     * Method to set the gid of the section.
+     * @param gid
+     */
+    NSOL_API
+    void id ( unsigned int id );
+
+    /**
      * Gets the parent Neurite of the Section
      * @return pointer to the parent Neurite
      */
@@ -146,6 +160,9 @@ namespace nsol
     }
 
   protected:
+
+    //! Unique id
+    unsigned int _id = 0;
 
     //! Parent neurite of the section
     NeuritePtr _neurite;

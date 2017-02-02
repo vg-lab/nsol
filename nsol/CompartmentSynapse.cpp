@@ -36,7 +36,7 @@ namespace nsol
   CompartmentSynapse::TSynapseType CompartmentSynapse::synapseType( void ) const
   {
       // -- Treatment of synapse type: -- //
-      CompartmentSynapse::TSynapseType synapseType =
+      CompartmentSynapse::TSynapseType synapseType_ =
                                                   CompartmentSynapse::UNDEFINED;
 
       if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
@@ -112,7 +112,7 @@ namespace nsol
           }
       }
 
-      return synapseType;
+      return synapseType_;
   }
 
   void CompartmentSynapse::preSynapticSurfacePosition( const Vec3f position )
