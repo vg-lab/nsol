@@ -33,14 +33,14 @@ namespace nsol
     {
     }
 
-    bool dirty( unsigned int id ) const
+    bool dirty( unsigned int id_ ) const
     {
-      return ( _values.find( id ) == _values.end( ));
+      return ( _values.find( id_ ) == _values.end( ));
     }
 
-    void setDirty( unsigned int id )
+    void setDirty( unsigned int id_ )
     {
-      _values.erase( id );
+      _values.erase( id_ );
     }
 
     void setDirty( void )
@@ -48,9 +48,9 @@ namespace nsol
       _values.clear( );
     }
 
-    virtual void setAndPropagateDirty( unsigned int id )
+    virtual void setAndPropagateDirty( unsigned int id_ )
     {
-      this->setDirty( id );
+      this->setDirty( id_ );
       // Note: propagation has to be reimplemented if needed
     }
 

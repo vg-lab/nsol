@@ -24,14 +24,14 @@ namespace nsol
   {
   }
 
-  void SectionCachedStats::setAndPropagateDirty( unsigned int id )
+  void SectionCachedStats::setAndPropagateDirty( unsigned int id_ )
   {
-    NSOL_DEBUG_CHECK( id < SECTION_NUM_STATS, "id not valid" );
+    NSOL_DEBUG_CHECK( id_ < SECTION_NUM_STATS, "id not valid" );
 
-    this->Cached::setAndPropagateDirty( id );
+    this->Cached::setAndPropagateDirty( id_ );
     auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
     if ( cached )
-      cached->setAndPropagateDirty( id );
+      cached->setAndPropagateDirty( id_ );
   }
 
   void SectionCachedStats::setAndPropagateDirty( void )

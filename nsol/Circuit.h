@@ -73,14 +73,14 @@ namespace nsol
      * of all the circuit.
      */
     NSOL_API
-    virtual void clearSynapses( void );
+    void clear( void );
 
     /**
      * Method to get the total number of connections of the circuit.
      * @return total numbers of synapses
      */
     NSOL_API
-    virtual unsigned int numberOfSynapses( void ) const;
+    virtual size_t numberOfSynapses( void ) const;
 
     ///@}
 

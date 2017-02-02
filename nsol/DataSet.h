@@ -14,6 +14,7 @@
 #include "Log.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
+#include "Circuit.h"
 #include "Container/Columns.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/XmlSceneReader.h"

@@ -33,9 +33,9 @@ namespace nsol
       return _id;
   }
 
-  void Section::id ( unsigned int id )
+  void Section::id ( unsigned int id_ )
   {
-      _id = id;
+      _id = id_;
   }
 
   NeuritePtr Section::neurite( void )
