@@ -13,7 +13,8 @@ namespace nsol
 {
 
   Section::Section( void )
-    : _neurite( nullptr )
+    : _id( 0 )
+    , _neurite( nullptr )
     , _parent( nullptr )
   {
     _nodes.clear( );
@@ -25,6 +26,16 @@ namespace nsol
       delete _nodes[i];
 
     _nodes.clear( );
+  }
+
+  unsigned int Section::id( void )
+  {
+      return _id;
+  }
+
+  void Section::id ( unsigned int id )
+  {
+      _id = id;
   }
 
   NeuritePtr Section::neurite( void )
