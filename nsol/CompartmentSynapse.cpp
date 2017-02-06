@@ -69,7 +69,7 @@ namespace nsol
 
       if( _postSynapticSection != nullptr )
       {
-          NeuritePtr neurite = _preSynapticSection->neurite();
+          NeuritePtr neurite = _postSynapticSection->neurite();
 
           switch(neurite->neuriteType())
           {

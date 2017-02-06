@@ -14,8 +14,15 @@
 #include "Log.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
+#include "NeuronMorphology.h"
+#include "Neurite.h"
+#include "Axon.h"
+#include "Section.h"
 #include "Circuit.h"
+#include "Synapse.h"
+#include "CompartmentSynapse.h"
 #include "Container/Columns.h"
+#include "Container/Sections.h"
 #include "Reader/BBPSDKReader.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
@@ -97,6 +104,7 @@ namespace nsol
 
         brionReader.loadBlueConfigBasicConnectivity( _neurons,
                                                      _circuit,
+                                                     _synapses,
                                                     *_blueConfig, _target );
 #else
     void loadBlueConfigBasicConnectivity( )
@@ -136,14 +144,14 @@ namespace nsol
                                           getAfferentSynapses( gidSetBrain,
                                                 brain::SynapsePrefetch::all );
 
-        for( unsigned int i = 0; i < _circuit._synapses.size(); ++i )
+        for( unsigned int i = 0; i < _synapses.size(); ++i )
         {
-            if( _circuit._synapses.size() != brainSynapses.size() )
+            if( _synapses.size() != brainSynapses.size() )
                 break;
 
             const brain::Synapse& brainSynapse = brainSynapses[ i ];
             CompartmentSynapsePtr synapse =
-                NSOL_DYNAMIC_CAST(CompartmentSynapsePtr, _circuit._synapses[i]);
+                            dynamic_cast<CompartmentSynapsePtr>( _synapses[i] );
 
             vmml::Vector3f brainPreSynPos  = brainSynapse.
                                               getPresynapticSurfacePosition();
@@ -383,6 +391,12 @@ namespace nsol
     const Columns& columns( void ) const;
 
     NSOL_API
+    Circuit& circuit( void );
+
+    NSOL_API
+    const Circuit& circuit( void ) const;
+
+    NSOL_API
     NeuronsMap& neurons( void );
 
     NSOL_API
@@ -588,6 +602,9 @@ namespace nsol
 
     //! Entry for connections of the circuit.
     Circuit _circuit;
+
+    //! Container of synapses by its id
+    std::vector<SynapsePtr> _synapses;
 
     //! Container of neurons by its gid
     NeuronsMap _neurons;
