@@ -56,7 +56,8 @@ namespace nsol
     }
 
     _columns.clear( );
-    _circuit.clear();
+    _circuit.clear( );
+    _synapses.clear( );
     _neurons.clear( );
     _morphologies.clear( );
 
@@ -81,6 +82,16 @@ namespace nsol
   const Columns& DataSet::columns( void ) const
   {
     return _columns;
+  }
+
+  Circuit& DataSet::circuit( void )
+  {
+      return _circuit;
+  }
+
+  const Circuit& DataSet::circuit( void ) const
+  {
+      return _circuit;
   }
 
   NeuronsMap& DataSet::neurons( void )

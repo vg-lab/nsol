@@ -13,21 +13,21 @@
 #include "../Stats/ColumnStats.h"
 #include "../Stats/MiniColumnStats.h"
 #include "../Neuron.h"
-#include "../CompartmentSynapse.h"
-#include "../Circuit.h"
+#include "../Synapse.h"
 #include "../Stats/NodeCached.h"
 #include "../Stats/SectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
+#include "../Container/Synapses.h"
 
 #include "../NsolTypes.h"
-
 
 #include <brain/brain.h>
 #include <brion/brion.h>
 
 #include <string>
+#include <vmmlib/vmmlib.h>
 
 namespace nsol
 {
@@ -93,6 +93,7 @@ namespace nsol
     loadBlueConfigBasicConnectivity(
       NeuronsMap& neurons_,
       Circuit& circuit_,
+      std::vector<SynapsePtr>& synapses_,
       const brion::BlueConfig& blueConfig_,
       const std::string& target_ );
 
@@ -421,9 +422,12 @@ namespace nsol
   < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
     NeuronsMap& neurons_,
     Circuit& circuit_,
+    std::vector<SynapsePtr>& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
+      synapses_.clear();
+
       brain::Circuit brainCircuit( blueConfig_);
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
@@ -470,6 +474,7 @@ namespace nsol
 
          circuit_.addSynapse( afferent_synapse );
 
+         synapses_.push_back( afferent_synapse );
       }
   }
 
