@@ -6,6 +6,8 @@
 
 #include <stack>
 
+#define EPSILON 0.00001f
+
 namespace nsol
 {
 
@@ -22,11 +24,11 @@ namespace nsol
   NeuronMorphologyPtr Simplifier::simplify( NeuronMorphologyPtr morpho_,
                                             TSimplificationMethod simplMethod_,
                                             float tolerance_,
-                                            bool clone )
+                                            bool clone_ )
   {
     NeuronMorphologyPtr morpho = morpho_;
 
-    if ( clone )
+    if ( clone_ )
       morpho = morpho->clone( );
 
     typedef void (*func)( SectionPtr, float ) ;
@@ -40,6 +42,12 @@ namespace nsol
       break;
     case 1:
       function = Simplifier::_simplSecDistNodes;
+      break;
+    case 2:
+      function = Simplifier::_simplSecDistNodesRadius;
+      break;
+    case 3:
+      function = Simplifier::_simplSecMinAngle;
       break;
     default:
       function = Simplifier::_simplSecDeleteAll;
@@ -58,11 +66,11 @@ namespace nsol
   }
 
   NeuronMorphologyPtr Simplifier::adaptSoma( NeuronMorphologyPtr morpho_,
-                                             bool clone )
+                                             bool clone_ )
   {
     NeuronMorphologyPtr morpho = morpho_;
 
-    if ( clone )
+    if ( clone_ )
       morpho = morpho->clone( );
 
     Vec3f somaCenter = morpho->soma( )->center( );
@@ -102,8 +110,72 @@ namespace nsol
     return morpho;
   }
 
+  NeuronMorphologyPtr Simplifier::adaptBifurcations(
+    NeuronMorphologyPtr morpho_,
+    float tolerance_,
+    bool clone_ )
+  {
+    NeuronMorphologyPtr morpho = morpho_;
+
+    if ( clone_ )
+      morpho = morpho->clone( );
+
+    for ( auto neurite: morpho->neurites( ))
+    {
+      for ( auto section: neurite->sections( ))
+      {
+        if ( section->children( ).size( ) == 2 )
+        {
+          NodePtr bifurcation = section->lastNode( );
+          NodePtr child0 = section->children( )[0]->nodes( )[1];
+          NodePtr child1 = section->children( )[1]->nodes( )[1];
+
+          Eigen::Vector3f v0 = child0->point( ) - bifurcation->point( );
+          float v0Norm = v0.norm( );
+          v0.normalize( );
+          Eigen::Vector3f v1 = child1->point( ) - bifurcation->point( );
+          float v1Norm = v1.norm( );
+          v1.normalize( );
+          Eigen::Vector3f tangent = ( v0 + v1 ).normalized( );
+          Eigen::Vector3f previousTangent =
+            ( bifurcation->point( ) - section->nodes( )[
+              section->nodes( ).size( )-2 ]->point( )).normalized( );
+
+          if ( tangent.norm( ) < EPSILON )
+          {
+            tangent = previousTangent - ( previousTangent.dot( v0 ) * v0 );
+            tangent.normalized( );
+          }
+
+          if( tangent.norm( ) < EPSILON )
+          {
+            tangent = previousTangent;
+          }
+
+          float alpha2 = acos( v0.dot( tangent ));
+
+
+          if ( alpha2 > M_PI * 0.5f * tolerance_ )
+          {
+            float correctionAngle = alpha2 - M_PI * 0.5f * tolerance_;
+            Eigen::Vector3f exe = tangent.cross( v0 );
+            Eigen::Quaternionf q ( Eigen::AngleAxisf( -correctionAngle, exe ));
+            Eigen::Vector3f dir = q._transformVector( v0 );
+            child0->point( bifurcation->point( ) + dir * v0Norm );
+
+            q = Eigen::Quaternionf( Eigen::AngleAxisf( correctionAngle, exe ));
+            dir = q._transformVector( v1 );
+            child1->point( bifurcation->point( ) + dir * v1Norm );
+          }
+        }
+      }
+    }
+
+    return morpho;
+  }
+
   NeuronMorphologyPtr Simplifier::cutout( NeuronMorphologyPtr morpho_,
-                                          bool clone )
+                                          bool clone_ )
   {
     NeuronMorphologyPtr morpho = morpho_;
 
@@ -121,7 +193,7 @@ namespace nsol
       return morpho;
     }
 
-    if ( clone )
+    if ( clone_ )
       morpho = morpho->clone( );
 
     for ( unsigned int i = 0; morpho->neurites( ).size( ); i++ )
@@ -233,6 +305,52 @@ namespace nsol
       float distance =
         ((*nodes)[i-1]->point( ) - (*nodes)[i]->point( )).norm( );
       if ( distance < tolerance_ )
+      {
+        delete (*nodes)[i];
+        nodes->erase( nodes->begin( ) + i );
+        i--;
+      }
+    }
+  }
+
+  void Simplifier::_simplSecDistNodesRadius( SectionPtr section_,
+                                             float /*tolerance_*/ )
+  {
+    Nodes* nodes = &section_->nodes( );
+    float distancePre = ((*nodes)[0]->point( ) - (*nodes)[1]->point( )).norm( );
+    float distancePost;
+    float maxRadiusPre =
+      std::max((*nodes)[0]->radius( ), (*nodes)[1]->radius( ));
+    float maxRadiusPost;
+    for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
+    {
+      distancePost = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
+      maxRadiusPost =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i+1]->radius( ));
+
+      if (( distancePre < maxRadiusPre ) || ( distancePost < maxRadiusPost ))
+      {
+        delete (*nodes)[i];
+        nodes->erase( nodes->begin( ) + i );
+        i--;
+      }
+      distancePre = distancePost;
+      maxRadiusPre = maxRadiusPost;
+    }
+  }
+
+  void Simplifier::_simplSecMinAngle( SectionPtr section_,
+                                      float tolerance_ )
+  {
+    Nodes* nodes = &section_->nodes( );
+    for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
+    {
+      Vec3f exe0 =
+        ((*nodes)[i-1]->point( ) - (*nodes)[i]->point( )).normalized( );
+      Vec3f exe1 =
+        ((*nodes)[i+1]->point( ) - (*nodes)[i]->point( )).normalized( );
+      float angle = std::acos( exe0.dot( exe1 ));
+      if ( angle <= tolerance_ )
       {
         delete (*nodes)[i];
         nodes->erase( nodes->begin( ) + i );
