@@ -90,8 +90,8 @@ namespace nsol
     MiniColumnStats::TMiniColumnStat nStat =
       toMiniColumnStat( stat );
 
-    float value = 0;
-    float mean;
+    float value = 0.f;
+    float mean = 0.f;
 
     if ( miniColAgg == /*TAggregation::*/STD_DEV )
       return sqrt( this->getStat( stat, /*TAggregation::*/VARIANCE ));
