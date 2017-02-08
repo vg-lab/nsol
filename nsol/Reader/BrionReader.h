@@ -80,7 +80,7 @@ namespace nsol
       const Matrix4_4f transform_ = Matrix4_4fIdentity,
       const Neuron::TMorphologicalType morphologicalType_ = Neuron::PYRAMIDAL,
       const Neuron::TFunctionalType functionalType_ = Neuron::EXCITATORY,
-      bool reposition_ = true );
+      bool reposition_ = false );
 
     void
     loadBlueConfigHierarchy(
@@ -230,6 +230,8 @@ namespace nsol
 
       for ( auto node: soma->nodes( ))
         node->point( node->point( ) - center );
+
+      soma->center( Vec3f( 0.0f, 0.0f, 0.0f ));
 
       for ( auto neurite: nsolMorpho->neurites( ))
       {
