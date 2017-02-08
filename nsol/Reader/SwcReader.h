@@ -57,13 +57,13 @@ namespace nsol
   public:
 
     NeuronPtr readNeuron( const char *fileName,
-        bool reposition_ = true );
+        bool reposition_ = false );
     NeuronPtr readNeuron( const std::string fileName,
-        bool reposition_ = true );
+        bool reposition_ = false );
     NeuronMorphologyPtr readMorphology( const char *fileName,
-        bool reposition_ = true );
+        bool reposition_ = false );
     NeuronMorphologyPtr readMorphology( const std::string fileName,
-        bool reposition_ = true );
+        bool reposition_ = false );
 
 
   protected:
