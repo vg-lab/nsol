@@ -17,115 +17,115 @@
 namespace nsol
 {
 
-    /*! \class Synapse
-      \brief A class to represent synapses.
+  /*! \class Synapse
+    \brief A class to represent synapses.
 
-      TODO: extend long description
-    */
-    class Synapse
-    {
+    TODO: extend long description
+  */
+  class Synapse
+  {
 
-    public:
+  public:
 
-        /** @name Constructors and destructors  */
-        ///@{
+    /** @name Constructors and destructors  */
+    ///@{
 
-        /**
-         * Default Synapse constructor
-         */
-        NSOL_API
-        Synapse( void );
+    /**
+     * Default Synapse constructor
+     */
+    NSOL_API
+    Synapse( void );
 
-        /**
-         * Copy constructor
-         * @param other synapse to be copied
-         */
-        NSOL_API
-        Synapse( const Synapse& other );
+    /**
+     * Copy constructor
+     * @param other synapse to be copied
+     */
+    NSOL_API
+    Synapse( const Synapse& other );
 
-        /**
-         * Default destructor
-         */
-        NSOL_API
-        virtual ~Synapse( void );
+    /**
+     * Default destructor
+     */
+    NSOL_API
+    virtual ~Synapse( void );
 
-        ///@}
+    ///@}
 
-        /** @name getters and setters methods */
-        ///@{
+    /** @name getters and setters methods */
+    ///@{
 
-        /**
-         * Method to get the gid of the presynaptic neuron.
-         * @return gid of the presynaptic neuron.
-         */
-        NSOL_API
-        unsigned int preSynapticNeuron( void ) const;
+    /**
+     * Method to get the gid of the presynaptic neuron.
+     * @return gid of the presynaptic neuron.
+     */
+    NSOL_API
+    unsigned int preSynapticNeuron( void ) const;
 
-        /**
-         * Method to add a presynaptic neuron to the synapse.
-         * @param gid of the presynaptic neuron.
-         * @see Neuron
-         */
-        NSOL_API
-        void preSynapticNeuron( const unsigned int neuronID );
+    /**
+     * Method to add a presynaptic neuron to the synapse.
+     * @param gid of the presynaptic neuron.
+     * @see Neuron
+     */
+    NSOL_API
+    void preSynapticNeuron( const unsigned int neuronID );
 
-        /**
-         * Method to get the gid of the postsynaptic neuron.
-         * @return gid of the postsynaptic neuron.
-         */
-        NSOL_API
-        unsigned int postSynapticNeuron( void ) const;
+    /**
+      * Method to get the gid of the postsynaptic neuron.
+      * @return gid of the postsynaptic neuron.
+      */
+    NSOL_API
+    unsigned int postSynapticNeuron( void ) const;
 
-        /**
-         * Method to add a postsynaptic neuron to the synapse.
-         * @param gid of the postsynaptic neuron.
-         * @see Neuron
-         */
-        NSOL_API
-        void postSynapticNeuron( const unsigned int neuronID );
+    /**
+     * Method to add a postsynaptic neuron to the synapse.
+     * @param gid of the postsynaptic neuron.
+     * @see Neuron
+     */
+    NSOL_API
+    void postSynapticNeuron( const unsigned int neuronID );
 
-        /**
-         * Method to set the synaptic weight.
-         * @param synaptic weight.
-         */
-        NSOL_API
-        void weight( const float weight_ );
+    /**
+     * Method to set the synaptic weight.
+     * @param synaptic weight.
+     */
+    NSOL_API
+    void weight( const float weight_ );
 
-        /**
-         * Method to get the synaptic weight.
-         * @return synaptic weight.
-         */
-        NSOL_API
-        float weight( void ) const;
+    /**
+     * Method to get the synaptic weight.
+     * @return synaptic weight.
+     */
+    NSOL_API
+    float weight( void ) const;
 
-        ///@}
+    ///@}
 
-        /** @name Operators */
-        ///@{
+    /** @name Operators */
+    ///@{
 
-        NSOL_API
-        virtual Synapse& operator = ( const Synapse& other );
+    NSOL_API
+    virtual Synapse& operator = ( const Synapse& other );
 
-        NSOL_API
-        virtual bool operator == ( const Synapse& other );
+    NSOL_API
+    virtual bool operator == ( const Synapse& other );
 
-        NSOL_API
-        virtual bool operator != ( const Synapse& other );
+    NSOL_API
+    virtual bool operator != ( const Synapse& other );
 
-        ///@}
+    ///@}
 
-    protected:
+  protected:
 
-        //! GID Presynaptic neuron
-        unsigned int _preSynapticNeuron;
+    //! GID Presynaptic neuron
+    unsigned int _preSynapticNeuron;
 
-        //! GID Postsynaptic neuron
-        unsigned int _postSynapticNeuron;
+    //! GID Postsynaptic neuron
+    unsigned int _postSynapticNeuron;
 
-        //! The synaptic weight
-        float _weight;
+    //! The synaptic weight
+    float _weight;
 
-    };
+  };
 
 } // namespace nsol
 

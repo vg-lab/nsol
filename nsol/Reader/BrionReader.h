@@ -428,56 +428,56 @@ namespace nsol
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
-      synapses_.clear();
+    synapses_.clear();
 
-      brain::Circuit brainCircuit( blueConfig_);
-      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+    brain::Circuit brainCircuit( blueConfig_);
+    brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
-      const brain::Synapses& brainSynapses = brainCircuit.
-                                             getAfferentSynapses( gidSetBrain,
-                                                brain::SynapsePrefetch::all );
-      if( brainSynapses.size() > 0)
-      {
-          try{
-              brainSynapses[0].getGID();
+    const brain::Synapses& brainSynapses = brainCircuit.
+                                           getAfferentSynapses( gidSetBrain,
+                                              brain::SynapsePrefetch::all );
+    if( brainSynapses.size() > 0)
+    {
+      try{
+           brainSynapses[0].getGID();
 
-          }catch (...)
-          {
-              std::cerr << "Exception: No synapse index file available"
-                        << std::endl;
-          }
-      }
+         }catch (...)
+         {
+           std::cerr << "Exception: No synapse index file available"
+                     << std::endl;
+         }
+    }
 
-      // number of efferent synapses it is the same that afferent synapses
-      for( brain::Synapses::const_iterator it = brainSynapses.begin();
+    // number of efferent synapses it is the same that afferent synapses
+    for( brain::Synapses::const_iterator it = brainSynapses.begin();
                                            it != brainSynapses.end(); ++it)
-      {
-         const brain::Synapse& brainSynapse = (*it);
+    {
+      const brain::Synapse& brainSynapse = (*it);
 
-         CompartmentSynapsePtr afferent_synapse = CompartmentSynapsePtr(
+      CompartmentSynapsePtr afferent_synapse = CompartmentSynapsePtr(
                                                      new CompartmentSynapse( ));
 
-         std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
+      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
                                          .find(brainSynapse.getPresynapticGID());
-         std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
+      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
                                          .find(brainSynapse.getPostsynapticGID());
 
-         if (( nitPre  == neurons_.end( ))||
-             ( nitPost == neurons_.end( )))
-             break;
+      if (( nitPre  == neurons_.end( ))||
+          ( nitPost == neurons_.end( )))
+          break;
 
-         NeuronPtr preSynapticNeuron  = nitPre->second;
-         NeuronPtr postSynapticNeuron = nitPost->second;
+      NeuronPtr preSynapticNeuron  = nitPre->second;
+      NeuronPtr postSynapticNeuron = nitPost->second;
 
-         afferent_synapse->preSynapticNeuron( preSynapticNeuron->gid( ));
-         afferent_synapse->postSynapticNeuron( postSynapticNeuron->gid( ));
+      afferent_synapse->preSynapticNeuron( preSynapticNeuron->gid( ));
+      afferent_synapse->postSynapticNeuron( postSynapticNeuron->gid( ));
 
-         afferent_synapse->weight( 0.0f );
+      afferent_synapse->weight( 0.0f );
 
-         circuit_.addSynapse( afferent_synapse );
+      circuit_.addSynapse( afferent_synapse );
 
-         synapses_.push_back( afferent_synapse );
-      }
+      synapses_.push_back( afferent_synapse );
+    }
   }
 
 }

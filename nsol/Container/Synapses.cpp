@@ -30,11 +30,11 @@ namespace nsol
   {
     if( this->find( neuron->gid( )) != this->end( ))
     {
-        Log::log( std::string( "Warning: synapse with neuron gid " ) +
-                  std::to_string( neuron->gid( )) +
-                  std::string( "already exists in the dataset" ),
-                  LOG_LEVEL_WARNING );
-        return false;
+      Log::log( std::string( "Warning: synapse with neuron gid " ) +
+                std::to_string( neuron->gid( )) +
+                std::string( "already exists in the dataset" ),
+                LOG_LEVEL_WARNING );
+      return false;
     }
 
     std::pair<unsigned int, SynapsePtr> pair ( neuron->gid(), synapse );

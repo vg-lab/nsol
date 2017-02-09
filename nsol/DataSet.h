@@ -95,17 +95,17 @@ namespace nsol
 #ifdef NSOL_USE_BRION
     void loadBlueConfigBasicConnectivity( void )
     {
-        if( !_blueConfig || _target.empty() )
-          return;
+      if( !_blueConfig || _target.empty() )
+       return;
 
-        BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
-                              COLUMN > brionReader;
+       BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                             COLUMN > brionReader;
 
-        brionReader.loadBlueConfigBasicConnectivity( _neurons,
-                                                     _circuit,
-                                                     _synapses,
-                                                    *_blueConfig, _target );
+       brionReader.loadBlueConfigBasicConnectivity( _neurons,
+                                                    _circuit,
+                                                    _synapses,
+                                                   *_blueConfig, _target );
 #else
     void loadBlueConfigBasicConnectivity( )
     {
@@ -125,117 +125,117 @@ namespace nsol
 #ifdef NSOL_USE_BRION
     void loadBlueConfigConnectivity( )
     {
-        if( !_blueConfig || _target.empty())
-          return;
+      if( !_blueConfig || _target.empty())
+       return;
 
-        this->loadBlueConfigBasicConnectivity< nsol::Node,
-                                               nsol::Section,
-                                               nsol::Dendrite,
-                                               nsol::Axon,
-                                               nsol::Soma,
-                                               nsol::NeuronMorphology,
-                                               nsol::Neuron,
-                                               nsol::MiniColumn,
-                                               nsol::Column >( );
+      this->loadBlueConfigBasicConnectivity< nsol::Node,
+                                             nsol::Section,
+                                             nsol::Dendrite,
+                                             nsol::Axon,
+                                             nsol::Soma,
+                                             nsol::NeuronMorphology,
+                                             nsol::Neuron,
+                                             nsol::MiniColumn,
+                                             nsol::Column >( );
 
-        brain::Circuit brainCircuit( *_blueConfig );
-        brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
-        const brain::Synapses& brainSynapses = brainCircuit.
-                                          getAfferentSynapses( gidSetBrain,
-                                                brain::SynapsePrefetch::all );
+      brain::Circuit brainCircuit( *_blueConfig );
+      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
+      const brain::Synapses& brainSynapses = brainCircuit.
+                                        getAfferentSynapses( gidSetBrain,
+                                              brain::SynapsePrefetch::all );
 
-        for( unsigned int i = 0; i < _synapses.size(); ++i )
-        {
-            if( _synapses.size() != brainSynapses.size() )
-                break;
+      for( unsigned int i = 0; i < _synapses.size(); ++i )
+      {
+        if( _synapses.size() != brainSynapses.size() )
+         break;
 
-            const brain::Synapse& brainSynapse = brainSynapses[ i ];
-            CompartmentSynapsePtr synapse =
+        const brain::Synapse& brainSynapse = brainSynapses[ i ];
+        CompartmentSynapsePtr synapse =
                             dynamic_cast<CompartmentSynapsePtr>( _synapses[i] );
 
-            vmml::Vector3f brainPreSynPos  = brainSynapse.
+        vmml::Vector3f brainPreSynPos  = brainSynapse.
                                               getPresynapticSurfacePosition();
-            vmml::Vector3f brainPostSynPos = brainSynapse.
+        vmml::Vector3f brainPostSynPos = brainSynapse.
                                               getPostsynapticSurfacePosition();
 
-            synapse->preSynapticSurfacePosition( Vec3f( brainPreSynPos.x(),
+        synapse->preSynapticSurfacePosition( Vec3f( brainPreSynPos.x(),
                                                         brainPreSynPos.y(),
                                                         brainPreSynPos.z()));
-            synapse->postSynapticSurfacePosition( Vec3f( brainPostSynPos.x(),
+        synapse->postSynapticSurfacePosition( Vec3f( brainPostSynPos.x(),
                                                          brainPostSynPos.y(),
                                                          brainPostSynPos.z()));
 
-            std::unordered_map< unsigned int, NeuronPtr >::const_iterator
+        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
                          nitPre = _neurons.find( synapse->preSynapticNeuron( ));
-            std::unordered_map< unsigned int, NeuronPtr >::const_iterator
+        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
                         nitPost = _neurons.find( synapse->postSynapticNeuron( ));
 
-            if (( nitPre  == _neurons.end( ))||
-                ( nitPost == _neurons.end( )))
-                continue;
+        if (( nitPre  == _neurons.end( ))||
+            ( nitPost == _neurons.end( )))
+         continue;
 
-            NeuronPtr preSynapticNeuron = nitPre->second;
-            NeuronPtr postSynapticNeuron = nitPost->second;
+        NeuronPtr preSynapticNeuron = nitPre->second;
+        NeuronPtr postSynapticNeuron = nitPost->second;
 
-            // Computing pre-synaptic section..
-            bool found = false;
-            SectionPtr preSynSection = nullptr;
-            unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
+        // Computing pre-synaptic section..
+        bool found = false;
+        SectionPtr preSynSection = nullptr;
+        unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
 
-            Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
-            NSOL_FOREACH( neuriteIt, neuritesPre )
+        Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
+        NSOL_FOREACH( neuriteIt, neuritesPre )
+        {
+          if( found ) break;
+
+          const NeuritePtr neurite = (*neuriteIt);
+          Sections sections = neurite->sections();
+
+          NSOL_FOREACH( sectionIt, sections )
+          {
+            const SectionPtr section = (*sectionIt);
+            if( section->id() == brainIDSection )
             {
-                if( found ) break;
+              found = true;
+              preSynSection = section;
 
-                const NeuritePtr neurite = (*neuriteIt);
-                Sections sections = neurite->sections();
-
-                NSOL_FOREACH( sectionIt, sections )
-                {
-                   const SectionPtr section = (*sectionIt);
-                   if( section->id() == brainIDSection )
-                   {
-                       found = true;
-                       preSynSection = section;
-
-                       break;
-                    }
-                 }// for all sections of one neurite
-              }// for all neurites
+              break;
+            }
+          }// for all sections of one neurite
+        }// for all neurites
 
 
-            // Computing post-synaptic section..
-            found = false;
+        // Computing post-synaptic section..
+        found = false;
 
-            SectionPtr postSynSection = nullptr;
-            brainIDSection = brainSynapse.getPostsynapticSectionID();
+        SectionPtr postSynSection = nullptr;
+        brainIDSection = brainSynapse.getPostsynapticSectionID();
 
-            Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
-            NSOL_FOREACH( neuriteIt, neuritesPost )
+        Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
+        NSOL_FOREACH( neuriteIt, neuritesPost )
+        {
+          if( found ) break;
+
+          const NeuritePtr neurite = (*neuriteIt);
+          Sections sections = neurite->sections();
+
+          NSOL_FOREACH( sectionIt, sections )
+          {
+            const SectionPtr section = (*sectionIt);
+
+            if( section->id() == brainIDSection )
             {
-                if( found ) break;
+              found = true;
+              postSynSection = section;
 
-                const NeuritePtr neurite = (*neuriteIt);
-                Sections sections = neurite->sections();
+              break;
+            }
+          }// for all sections of one neurite
+        }// for all neurites
 
-                NSOL_FOREACH( sectionIt, sections )
-                {
-                    const SectionPtr section = (*sectionIt);
+        synapse->preSynapticSection( preSynSection );
+        synapse->postSynapticSection( postSynSection );
 
-                    if( section->id() == brainIDSection )
-                    {
-                        found = true;
-                        postSynSection = section;
-
-                        break;
-                    }
-                }// for all sections of one neurite
-            }// for all neurites
-
-            synapse->preSynapticSection( preSynSection );
-            synapse->postSynapticSection( postSynSection );
-
-        }// all synapses
+      }// all synapses
 
 #else
     void loadBlueConfigConnectivity( )

@@ -25,7 +25,6 @@ namespace nsol
     NSOL_API
     bool addSynapse( NeuronPtr neuron, SynapsePtr synapse );
   };
-
 }
 
 #endif // __NSOL_SYNAPSES_H_

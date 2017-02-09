@@ -31,13 +31,13 @@ namespace nsol
 
   public:
 
-      //! Possible types of data to get
-      typedef enum
-      {
-        ALL = 0,
-        PRESYNAPTICCONNECTIONS,
-        POSTSYNAPTICCONNECTIONS
-      } TDataType;
+    //! Possible types of data to get
+    typedef enum
+    {
+      ALL = 0,
+      PRESYNAPTICCONNECTIONS,
+      POSTSYNAPTICCONNECTIONS
+    }TDataType;
 
     /** @name Constructors and destructors  */
     ///@{
