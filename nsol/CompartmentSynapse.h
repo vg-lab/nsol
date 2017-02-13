@@ -30,10 +30,17 @@ namespace nsol
       DENDRODENDRITIC,
       AXODENDRITIC,
       AXOAXONIC,
-      SOMATOSOMAL,
+      SOMATOSOMATIC,
       AXOSOMATIC,
       DENDROSOMATIC
     }TSynapseType;
+
+    //! Possible types of synaptic section
+    typedef enum
+    {
+      PRESYNAPTICSECTION = 0,
+      POSTSYNAPTICSECTION
+    } TSynapticSectionType;
 
     /** @name Constructors and destructors  */
     ///@{
@@ -81,7 +88,7 @@ namespace nsol
      */
     NSOL_API
     void
-    preSynapticSurfacePosition( const Vec3f presynaptic_surface_position );
+    preSynapticSurfacePosition( const Vec3f& presynaptic_surface_position );
 
     /**
      * Method to get the postsynaptic surface position.
@@ -96,7 +103,7 @@ namespace nsol
      */
     NSOL_API
     void
-    postSynapticSurfacePosition( const Vec3f postsynaptic_surface_position );
+    postSynapticSurfacePosition( const Vec3f& postsynaptic_surface_position );
 
     /**
      * Method to add a presynaptic section to the synapse.
@@ -146,6 +153,41 @@ namespace nsol
     virtual bool operator != ( const CompartmentSynapse& other );
 
     ///@}
+
+
+  private:
+
+    int
+    _calculateSynapticSection( Neurite::TNeuriteType& neuriteType,
+                               TSynapticSectionType synapticSectionType ) const
+    {
+      NeuritePtr neurite = nullptr;
+
+      switch( synapticSectionType )
+      {
+        case CompartmentSynapse::PRESYNAPTICSECTION:
+         {
+          if( _preSynapticSection == nullptr )
+           return -1;
+          neurite = _preSynapticSection->neurite( );
+         }
+         break;
+        case CompartmentSynapse::POSTSYNAPTICSECTION:
+         {
+          if( _postSynapticSection == nullptr )
+           return -1;
+          neurite = _postSynapticSection->neurite( );
+         }
+         break;
+        default:
+         return -1;
+      }
+
+      neuriteType = neurite->neuriteType();
+
+      return 0;
+    }
+
 
 
   protected:

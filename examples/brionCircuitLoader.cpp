@@ -308,8 +308,8 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::SOMATOSOMAL:
-                    cout << " - Type: SOMATOSOMAL" << endl;
+                case CompartmentSynapse::SOMATOSOMATIC:
+                    cout << " - Type: SOMATOSOMATIC" << endl;
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
