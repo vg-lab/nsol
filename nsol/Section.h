@@ -162,7 +162,7 @@ namespace nsol
   protected:
 
     //! Unique id
-    unsigned int _id = 0;
+    unsigned int _id;
 
     //! Parent neurite of the section
     NeuritePtr _neurite;

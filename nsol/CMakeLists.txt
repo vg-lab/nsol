@@ -3,6 +3,7 @@ source_group(\\ FILES CMakeLists.txt)
 set(NSOL_PUBLIC_HEADERS
   Axon.h
   Column.h
+  Container/Circuits.h
   Container/Columns.h
   Container/Dendrites.h
   Container/MiniColumns.h
@@ -11,8 +12,6 @@ set(NSOL_PUBLIC_HEADERS
   Container/Nodes.h
   Container/Sections.h
   Container/Synapses.h
-  Container/CompartmentSynapses.h
-  Container/Circuits.h
   DataSet.h
   Dendrite.h
   error.h
@@ -48,7 +47,7 @@ set(NSOL_PUBLIC_HEADERS
   Stats/SegmentStats.h
   Stats/SomaStats.h
   Synapse.h  
-  CompartmentSynapse.h
+  MorphologySynapse.h
   Circuit.h
   # templated classes at last
   Writer/SwcWriter.h
@@ -67,7 +66,6 @@ set(NSOL_SOURCES
   Column.cpp
   Container/Neurons.cpp
   Container/Synapses.cpp
-  Container/CompartmentSynapses.cpp
   DataSet.cpp
   Dendrite.cpp
   ImportanceNode.cpp
@@ -98,7 +96,7 @@ set(NSOL_SOURCES
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
   Synapse.cpp
-  CompartmentSynapse.cpp
+  MorphologySynapse.cpp
   Circuit.cpp
   Writer/XmlSceneWriter.cpp
   )

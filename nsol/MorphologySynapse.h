@@ -18,7 +18,7 @@
 namespace nsol
 {
 
-  class CompartmentSynapse : public virtual Synapse
+  class MorphologySynapse : public virtual Synapse
   {
 
   public:
@@ -49,20 +49,20 @@ namespace nsol
      * Default CompartmentSynapse constructor
      */
     NSOL_API
-    CompartmentSynapse( void );
+    MorphologySynapse( void );
 
     /**
      * Copy constructor
      * @param other comparment synapse to be copied
      */
     NSOL_API
-    CompartmentSynapse( const CompartmentSynapse& other );
+    MorphologySynapse( const MorphologySynapse& other_ );
 
     /**
      * Default destructor
      */
     NSOL_API
-    virtual ~CompartmentSynapse( void );
+    virtual ~MorphologySynapse( void );
 
     ///@}
 
@@ -88,7 +88,7 @@ namespace nsol
      */
     NSOL_API
     void
-    preSynapticSurfacePosition( const Vec3f& presynaptic_surface_position );
+    preSynapticSurfacePosition( const Vec3f& presynaptic_surface_position_ );
 
     /**
      * Method to get the postsynaptic surface position.
@@ -103,7 +103,7 @@ namespace nsol
      */
     NSOL_API
     void
-    postSynapticSurfacePosition( const Vec3f& postsynaptic_surface_position );
+    postSynapticSurfacePosition(const Vec3f& position_ );
 
     /**
      * Method to add a presynaptic section to the synapse.
@@ -112,7 +112,7 @@ namespace nsol
      * @return pointer to the presynaptic section added
      */
     NSOL_API
-    void preSynapticSection( const SectionPtr preSynapticSection);
+    void preSynapticSection( const SectionPtr preSynapticSection_ );
 
     /**
      * Method to get the presynaptic section.
@@ -128,7 +128,7 @@ namespace nsol
      * @return pointer to the postsynaptic section added
      */
     NSOL_API
-    void postSynapticSection( const SectionPtr postSynapticSection);
+    void postSynapticSection(const SectionPtr section_ );
 
     /**
      * Method to get the postsynaptic section.
@@ -143,14 +143,14 @@ namespace nsol
     ///@{
 
     NSOL_API
-    virtual CompartmentSynapse& operator =
-    ( const CompartmentSynapse& other );
+    virtual MorphologySynapse& operator =
+    ( const MorphologySynapse& other_ );
 
     NSOL_API
-    virtual bool operator == ( const CompartmentSynapse& other );
+    virtual bool operator == (const MorphologySynapse& other_ );
 
     NSOL_API
-    virtual bool operator != ( const CompartmentSynapse& other );
+    virtual bool operator != ( const MorphologySynapse& other_ );
 
     ///@}
 
@@ -158,21 +158,21 @@ namespace nsol
   private:
 
     int
-    _calculateSynapticSection( Neurite::TNeuriteType& neuriteType,
-                               TSynapticSectionType synapticSectionType ) const
+    _calculateSynapticSection( Neurite::TNeuriteType& neuriteType_,
+                               TSynapticSectionType synapticSectionType_ ) const
     {
       NeuritePtr neurite = nullptr;
 
-      switch( synapticSectionType )
+      switch( synapticSectionType_ )
       {
-        case CompartmentSynapse::PRESYNAPTICSECTION:
+        case MorphologySynapse::PRESYNAPTICSECTION:
          {
           if( _preSynapticSection == nullptr )
            return -1;
           neurite = _preSynapticSection->neurite( );
          }
          break;
-        case CompartmentSynapse::POSTSYNAPTICSECTION:
+        case MorphologySynapse::POSTSYNAPTICSECTION:
          {
           if( _postSynapticSection == nullptr )
            return -1;
@@ -183,7 +183,7 @@ namespace nsol
          return -1;
       }
 
-      neuriteType = neurite->neuriteType();
+      neuriteType_ = neurite->neuriteType();
 
       return 0;
     }

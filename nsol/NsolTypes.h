@@ -74,7 +74,7 @@ namespace nsol
   class Soma;
   class Circuit;
   class Synapse;
-  class CompartmentSynapse;
+  class MorphologySynapse;
 
   class NodeCached;
 
@@ -95,7 +95,7 @@ namespace nsol
   typedef std::shared_ptr< Soma > SomaPtr;
   typedef std::shared_ptr< Circuit > CircuitPtr;
   typedef std::shared_ptr< Synapse > SynapsePtr;
-  typedef std::shared_ptr< CompartmentSynapse > CompartmentSynapsePtr;
+  typedef std::shared_ptr< MorphologySynapse > MorphologySynapsePtr;
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
 
 
@@ -128,7 +128,7 @@ namespace nsol
   typedef Soma* SomaPtr;
   typedef Circuit* CircuitPtr;
   typedef Synapse* SynapsePtr;
-  typedef CompartmentSynapse* CompartmentSynapsePtr;
+  typedef MorphologySynapse* CompartmentSynapsePtr;
   typedef NodeCached* NodeCachedPtr;
 
 

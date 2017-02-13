@@ -26,22 +26,32 @@
 namespace nsol
 {
 
-  bool SynapsesMap::addSynapse( Neuron* neuron, Synapse* synapse )
+  bool SynapsesMap::_checkSynapseRepeated( unsigned int neuronGID_,
+                                           Synapse* synapse_ )
   {
-    if( this->find( neuron->gid( )) != this->end( ))
+    auto values = this->equal_range( neuronGID_ );
+    for( auto value : as_range( values ))
     {
-      Log::log( std::string( "Warning: synapse with neuron gid " ) +
-                std::to_string( neuron->gid( )) +
-                std::string( "already exists in the dataset" ),
-                LOG_LEVEL_WARNING );
-      return false;
+      if( value.second == synapse_ )
+      {
+        NSOL_THROW( std::string( "Warning: synapse with neuron gid " ) +
+                    std::to_string( neuronGID_ ) +
+                    std::string( "already exists in the dataset" ) );
+        return false;
+      }
     }
 
-    std::pair<unsigned int, SynapsePtr> pair ( neuron->gid(), synapse );
-
-    ( *this ).insert( pair );
-
     return true;
+  }
+
+  void SynapsesMap::addSynapse( unsigned int neuronGID_, Synapse* synapse_ )
+  {
+
+    NSOL_DEBUG_CHECK( _checkSynapseRepeated( neuronGID_, synapse_ ),
+                      "The synapse already exists into the dataset." );
+
+    this->insert( std::make_pair( neuronGID_, synapse_ ));
+
   }
 
 } // namespace nsol
