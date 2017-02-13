@@ -41,7 +41,7 @@ namespace nsol
      * @param other synapse to be copied
      */
     NSOL_API
-    Synapse( const Synapse& other );
+    Synapse( const Synapse& other_ );
 
     /**
      * Default destructor
@@ -67,7 +67,7 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void preSynapticNeuron( const unsigned int neuronID );
+    void preSynapticNeuron(const unsigned int neuronID_ );
 
     /**
       * Method to get the gid of the postsynaptic neuron.
@@ -82,7 +82,7 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void postSynapticNeuron( const unsigned int neuronID );
+    void postSynapticNeuron(const unsigned int neuronID_ );
 
     /**
      * Method to set the synaptic weight.
@@ -104,13 +104,13 @@ namespace nsol
     ///@{
 
     NSOL_API
-    virtual Synapse& operator = ( const Synapse& other );
+    virtual Synapse& operator = (const Synapse& other_ );
 
     NSOL_API
-    virtual bool operator == ( const Synapse& other );
+    virtual bool operator == ( const Synapse& other_ );
 
     NSOL_API
-    virtual bool operator != ( const Synapse& other );
+    virtual bool operator != ( const Synapse& other_ );
 
     ///@}
 

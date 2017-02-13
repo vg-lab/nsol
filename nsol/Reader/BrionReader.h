@@ -455,7 +455,7 @@ namespace nsol
       const brain::Synapse& brainSynapse = (*it);
 
       CompartmentSynapsePtr afferent_synapse = CompartmentSynapsePtr(
-                                                     new CompartmentSynapse( ));
+                                                     new MorphologySynapse( ));
 
       std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
                                          .find(brainSynapse.getPresynapticGID());
@@ -466,11 +466,8 @@ namespace nsol
           ( nitPost == neurons_.end( )))
           break;
 
-      NeuronPtr preSynapticNeuron  = nitPre->second;
-      NeuronPtr postSynapticNeuron = nitPost->second;
-
-      afferent_synapse->preSynapticNeuron( preSynapticNeuron->gid( ));
-      afferent_synapse->postSynapticNeuron( postSynapticNeuron->gid( ));
+      afferent_synapse->preSynapticNeuron( nitPre->second->gid( ));
+      afferent_synapse->postSynapticNeuron( nitPost->second->gid( ));
 
       afferent_synapse->weight( 0.0f );
 

@@ -20,7 +20,7 @@
 #include "Section.h"
 #include "Circuit.h"
 #include "Synapse.h"
-#include "CompartmentSynapse.h"
+#include "MorphologySynapse.h"
 #include "Container/Columns.h"
 #include "Container/Sections.h"
 #include "Reader/BBPSDKReader.h"

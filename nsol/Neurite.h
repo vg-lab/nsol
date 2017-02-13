@@ -41,8 +41,7 @@ namespace nsol {
     //! Possible types of neurite
     typedef enum
     {
-      UNDEFINED = 0,
-      DENDRITE,
+      DENDRITE = 0,
       AXON
     } TNeuriteType;
 

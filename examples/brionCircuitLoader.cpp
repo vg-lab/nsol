@@ -210,12 +210,12 @@ int main( int argc, char* argv[ ])
                                              postSynapticNeuron,
                                       preSynNode, postSynNode );
 
-            CompartmentSynapse::TSynapseType synapseType;
+            MorphologySynapse::TSynapseType synapseType;
             synapseType = synapse->synapseType();
 
             switch( synapseType )
             {
-                case CompartmentSynapse::DENDRODENDRITIC:
+                case MorphologySynapse::DENDRODENDRITIC:
                     cout << " - Type: DENDRODENDRITIC" << endl;
 
                     preSynSection = synapse->preSynapticSection();
@@ -246,7 +246,7 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::AXODENDRITIC:
+                case MorphologySynapse::AXODENDRITIC:
                     cout << " - Type: AXODENDRITIC" << endl;
 
                     preSynSection = synapse->preSynapticSection();
@@ -277,7 +277,7 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::AXOAXONIC:
+                case MorphologySynapse::AXOAXONIC:
                     cout << " - Type: AXOAXONIC" << endl;
 
                     preSynSection = synapse->preSynapticSection();
@@ -308,7 +308,7 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::SOMATOSOMATIC:
+                case MorphologySynapse::SOMATOSOMATIC:
                     cout << " - Type: SOMATOSOMATIC" << endl;
 
                     cout << " - [Presynaptic Node] id: "
@@ -327,7 +327,7 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::AXOSOMATIC:
+                case MorphologySynapse::AXOSOMATIC:
                     cout << " - Type: AXOSOMATIC" << endl;
 
                     preSynSection = synapse->preSynapticSection();
@@ -353,7 +353,7 @@ int main( int argc, char* argv[ ])
                          << " ]" << endl;
 
                     break;
-                case CompartmentSynapse::DENDROSOMATIC:
+                case MorphologySynapse::DENDROSOMATIC:
                     cout << " - Type: DENDROSOMATIC" << endl;
 
                     preSynSection = synapse->preSynapticSection();

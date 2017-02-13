@@ -22,6 +22,7 @@ namespace nsol
   Circuit::~Circuit( void )
   {
     _synapses.clear();
+
     _preSynapticConnections.clear( );
     _postSynapticConnections.clear( );
   }
@@ -29,40 +30,40 @@ namespace nsol
   //
   // Connections methods
   //
-  void Circuit::addSynapse( SynapsePtr synapse )
+  void Circuit::addSynapse( SynapsePtr synapse_ )
   {
-    _synapses.push_back( synapse );
+    _synapses.push_back( synapse_ );
 
-    std::pair< unsigned int, SynapsePtr> preSynapticConnection(
-                                       synapse->preSynapticNeuron( ), synapse );
-
-    std::pair< unsigned int, SynapsePtr> postSynapticConnection(
-                                      synapse->postSynapticNeuron( ), synapse );
-
-    _preSynapticConnections.insert( preSynapticConnection );
-    _postSynapticConnections.insert( postSynapticConnection );
+    _preSynapticConnections.insert( std::make_pair(
+                                    synapse_->preSynapticNeuron( ), synapse_ ));
+    _postSynapticConnections.insert( std::make_pair(
+                                   synapse_->postSynapticNeuron( ), synapse_ ));
   }
 
   void Circuit::clear( void )
   {
     _preSynapticConnections.clear( );
-    _postSynapticConnections.clear( );
+    _postSynapticConnections.clear( );    
 
+    for( auto synapse: _synapses )
+    {
+      delete( synapse );
+    }
     _synapses.clear( );
   }
 
-  size_t Circuit::numberOfSynapses( void ) const
+  unsigned int Circuit::numberOfSynapses( void ) const
   {
-    return _synapses.size( );
+    return (( unsigned int )_synapses.size( ));
   }
 
 
   /** Efferents and afferents synapses **/
-  std::set<SynapsePtr> Circuit::synapses( TDataType dataType ) const
+  std::set<SynapsePtr> Circuit::synapses( TDataType dataType_ ) const
   {
     std::set<SynapsePtr> synapses_;
 
-    switch( dataType )
+    switch( dataType_ )
     {
       case ALL:
       {
@@ -93,29 +94,29 @@ namespace nsol
     return std::move( synapses_ );
   }
 
-  std::set<SynapsePtr> Circuit::synapses( unsigned int neuronGID,
-                                          TDataType dataType ) const
+  std::set<SynapsePtr> Circuit::synapses( unsigned int neuronGID_,
+                                          TDataType dataType_ ) const
   {
     std::set<SynapsePtr> synapses_;
 
-    switch( dataType )
+    switch( dataType_ )
     {
       case PRESYNAPTICCONNECTIONS:
 
-        this->_calculatePresynapticConnections( neuronGID, synapses_ );
+        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
 
       break;
       case POSTSYNAPTICCONNECTIONS:
 
-        this->_calculatePostsynapticConnections( neuronGID, synapses_ );
+        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
 
       break;
 
       case ALL:
       {
-        this->_calculatePresynapticConnections( neuronGID, synapses_ );
+        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
 
-        this->_calculatePostsynapticConnections( neuronGID, synapses_ );
+        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
       }
       break;
       default:
@@ -126,14 +127,14 @@ namespace nsol
   }
 
   std::set<SynapsePtr>
-  Circuit::synapses( const std::set<unsigned int>& gidsNeurons,
-                     TDataType dataType ) const
+  Circuit::synapses( const std::set<unsigned int>& gidsNeurons_,
+                     TDataType dataType_ ) const
   {
     std::set<SynapsePtr> synapses_;
 
-    for( auto gid: gidsNeurons )
+    for( auto gid: gidsNeurons_ )
     {
-      std::set<SynapsePtr> aux = this->synapses( gid, dataType );
+      std::set<SynapsePtr> aux = this->synapses( gid, dataType_ );
 
       for( auto synapse: aux )
         synapses_.insert( synapse );
