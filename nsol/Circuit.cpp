@@ -11,6 +11,7 @@
 
 namespace nsol
 {
+
   //
   // Constructors and destructors
   //
@@ -57,7 +58,7 @@ namespace nsol
 
 
   /** Efferents and afferents synapses **/
-  std::set<SynapsePtr> Circuit::synapses( TDataType dataType )
+  std::set<SynapsePtr> Circuit::synapses( TDataType dataType ) const
   {
     std::set<SynapsePtr> synapses_;
 
@@ -71,19 +72,17 @@ namespace nsol
       break;
       case PRESYNAPTICCONNECTIONS:
       {
-        for( auto it = _preSynapticConnections.begin();
-                  it != _preSynapticConnections.end(); it++ )
+        for( const auto& connection: _preSynapticConnections )
         {
-          synapses_.insert( it->second );
+          synapses_.insert( connection.second );
         }
       }
       break;
       case POSTSYNAPTICCONNECTIONS:
       {
-        for( auto it = _postSynapticConnections.begin();
-                  it != _postSynapticConnections.end(); it++ )
+        for( const auto& connection: _postSynapticConnections )
         {
-          synapses_.insert( it->second );
+          synapses_.insert( connection.second );
         }
       }
       break;
@@ -95,64 +94,28 @@ namespace nsol
   }
 
   std::set<SynapsePtr> Circuit::synapses( unsigned int neuronGID,
-                                            TDataType dataType )
+                                          TDataType dataType ) const
   {
     std::set<SynapsePtr> synapses_;
 
     switch( dataType )
     {
       case PRESYNAPTICCONNECTIONS:
-      {
-        auto search = _preSynapticConnections.find( neuronGID );
-        if( search != _preSynapticConnections.end( ))
-        {
-          auto values = _preSynapticConnections.equal_range( neuronGID );
-          for( auto it = values.first; it != values.second; ++it )
-          {
-            SynapsePtr synapse = it->second;
-            synapses_.insert( synapse );
-          }
-        }
-      }
+
+        this->_calculatePresynapticConnections( neuronGID, synapses_ );
+
       break;
       case POSTSYNAPTICCONNECTIONS:
-      {
-        auto search = _postSynapticConnections.find( neuronGID );
-        if( search != _postSynapticConnections.end( ))
-        {
-          auto values = _postSynapticConnections.equal_range( neuronGID );
-          for( auto it = values.first; it != values.second; ++it )
-          {
-            SynapsePtr synapse = it->second;
-            synapses_.insert( synapse );
-          }
-        }
-      }
+
+        this->_calculatePostsynapticConnections( neuronGID, synapses_ );
+
       break;
 
       case ALL:
       {
-        auto search = _preSynapticConnections.find( neuronGID );
-        if( search != _preSynapticConnections.end( ))
-        {
-          auto values = _preSynapticConnections.equal_range( neuronGID );
-          for( auto it = values.first; it != values.second; ++it )
-          {
-            SynapsePtr synapse = it->second;
-            synapses_.insert( synapse );
-          }
-        }
+        this->_calculatePresynapticConnections( neuronGID, synapses_ );
 
-        search = _postSynapticConnections.find( neuronGID );
-        if( search != _postSynapticConnections.end( ))
-        {
-          auto values = _postSynapticConnections.equal_range( neuronGID );
-          for( auto it = values.first; it != values.second; ++it )
-          {
-            SynapsePtr synapse = it->second;
-            synapses_.insert( synapse );
-          }
-        }
+        this->_calculatePostsynapticConnections( neuronGID, synapses_ );
       }
       break;
       default:
@@ -162,14 +125,15 @@ namespace nsol
     return std::move( synapses_ );
   }
 
-  std::set<SynapsePtr> Circuit::synapses( std::set<unsigned int> gidsNeurons,
-                                            TDataType dataType )
+  std::set<SynapsePtr>
+  Circuit::synapses( const std::set<unsigned int>& gidsNeurons,
+                     TDataType dataType ) const
   {
     std::set<SynapsePtr> synapses_;
 
-    for( auto it = gidsNeurons.begin(); it != gidsNeurons.end(); it++ )
+    for( auto gid: gidsNeurons )
     {
-      std::set<SynapsePtr> aux = this->synapses( *it, dataType );
+      std::set<SynapsePtr> aux = this->synapses( gid, dataType );
 
       for( auto synapse: aux )
         synapses_.insert( synapse );

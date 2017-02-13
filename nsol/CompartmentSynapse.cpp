@@ -42,72 +42,42 @@ namespace nsol
 
     if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
     {
-      return CompartmentSynapse::SOMATOSOMAL;
+      return CompartmentSynapse::SOMATOSOMATIC;
     }
 
-      // Computing pre-synaptic section..
-    bool isPreDendrite, isPreAxon;
-    isPreDendrite = isPreAxon = false;
+    Neurite::TNeuriteType neuritePresynaptic, neuritePostsynaptic;
+    neuritePresynaptic  = Neurite::UNDEFINED;
+    neuritePostsynaptic = Neurite::UNDEFINED;
 
-    if( _preSynapticSection != nullptr )
-    {
-      NeuritePtr neurite = _preSynapticSection->neurite();
-
-      switch(neurite->neuriteType( ))
-      {
-        case Neurite::DENDRITE: isPreDendrite = true;
-                                     break;
-        case Neurite::AXON: isPreAxon = true;
-                                break;
-        default: break;
-      }
-    }
-
-    // Computing post-synaptic section..
-    bool isPostDendrite, isPostAxon, isPostSoma;
-    isPostDendrite = isPostAxon = false;
-    isPostSoma = true;
-
-    if( _postSynapticSection != nullptr )
-    {
-      NeuritePtr neurite = _postSynapticSection->neurite();
-
-      switch(neurite->neuriteType())
-      {
-        case Neurite::DENDRITE:  isPostDendrite = true;
-                                 isPostSoma = false;
-        break;
-        case Neurite::AXON: isPostAxon = true;
-                            isPostSoma = false;
-        break;
-        default: break;
-      }
-    }
+    this->_calculateSynapticSection( neuritePresynaptic,
+                                     CompartmentSynapse::PRESYNAPTICSECTION );
+    int isSoma = this->_calculateSynapticSection( neuritePostsynaptic,
+                                     CompartmentSynapse::POSTSYNAPTICSECTION );
 
     // Checking type of synapse...
-    if( isPreDendrite ) // 1º Checkup
+    if( neuritePresynaptic == Neurite::DENDRITE ) // 1º Checkup
     {
-      if( isPostDendrite )
+      if( neuritePostsynaptic == Neurite::DENDRITE )
       {
         return CompartmentSynapse::DENDRODENDRITIC;
       }
-      if( isPostSoma )
+      if( isSoma == -1 )
       {
         return CompartmentSynapse::DENDROSOMATIC;
       }
     }
 
-    if( isPreAxon ) // 2º Checkup
+    if( neuritePresynaptic == Neurite::AXON ) // 2º Checkup
     {
-      if( isPostDendrite )
+      if( neuritePostsynaptic == Neurite::DENDRITE )
       {
         return CompartmentSynapse::AXODENDRITIC;
       }
-      if( isPostAxon )
+      if( neuritePostsynaptic == Neurite::AXON )
       {
         return CompartmentSynapse::AXOAXONIC;
       }
-      if( isPostSoma )
+      if( isSoma == -1 )
       {
         return CompartmentSynapse::AXOSOMATIC;
       }
@@ -116,7 +86,7 @@ namespace nsol
     return synapseType_;
   }
 
-  void CompartmentSynapse::preSynapticSurfacePosition( const Vec3f position )
+  void CompartmentSynapse::preSynapticSurfacePosition( const Vec3f& position )
   {
     _preSynapticSurfacePosition = position;
   }
@@ -126,7 +96,7 @@ namespace nsol
     return _preSynapticSurfacePosition;
   }
 
-  void CompartmentSynapse::postSynapticSurfacePosition( const Vec3f position )
+  void CompartmentSynapse::postSynapticSurfacePosition( const Vec3f& position )
   {
     _postSynapticSurfacePosition = position;
   }
