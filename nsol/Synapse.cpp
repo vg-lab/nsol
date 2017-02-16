@@ -31,7 +31,7 @@ namespace nsol
   {
   }
 
-  void Synapse::preSynapticNeuron(const unsigned int neuronID_ )
+  void Synapse::preSynapticNeuron( const unsigned int neuronID_ )
   {
     _preSynapticNeuron = neuronID_;
   }
@@ -41,7 +41,7 @@ namespace nsol
     return _preSynapticNeuron;
   }
 
-  void Synapse::postSynapticNeuron(const unsigned int neuronID_ )
+  void Synapse::postSynapticNeuron( const unsigned int neuronID_ )
   {
     _postSynapticNeuron = neuronID_;
   }
@@ -73,14 +73,14 @@ namespace nsol
     return *this;
   }
 
-  bool Synapse::operator == (const Synapse& other_ )
+  bool Synapse::operator == ( const Synapse& other_ )
   {
     return (( this->preSynapticNeuron( ) == other_.preSynapticNeuron( )) &&
             ( this->postSynapticNeuron( ) == other_.postSynapticNeuron( )) &&
             ( this->weight( ) == other_.weight( )));
   }
 
-  bool Synapse::operator != (const Synapse& other_ )
+  bool Synapse::operator != ( const Synapse& other_ )
   {
     return !( *this == other_ );
   }

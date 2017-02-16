@@ -30,9 +30,9 @@ namespace nsol
                                            Synapse* synapse_ )
   {
     auto values = this->equal_range( neuronGID_ );
-    for( auto value : as_range( values ))
+    for( auto value = values.first; value != values.second; ++value )
     {
-      if( value.second == synapse_ )
+      if( value->second == synapse_ )
       {
         NSOL_THROW( std::string( "Warning: synapse with neuron gid " ) +
                     std::to_string( neuronGID_ ) +

@@ -36,7 +36,7 @@ namespace nsol
 
   MorphologySynapse::TSynapseType MorphologySynapse::synapseType( void ) const
   {
-    // -- Treatment of synapse type: -- //
+    // -- Treatment of synapse type -- //
     MorphologySynapse::TSynapseType synapseType_ =
                                                   MorphologySynapse::UNDEFINED;
 
@@ -59,7 +59,7 @@ namespace nsol
                                      MorphologySynapse::POSTSYNAPTICSECTION );
 
     // Checking type of synapse...
-    if( neuritePresynaptic == Neurite::DENDRITE ) // 1º Checkup
+    if( neuritePresynaptic == Neurite::DENDRITE ) // 1st Checkup
     {
       if( _postSynapticSection == nullptr )
       {
@@ -71,7 +71,7 @@ namespace nsol
       }
     }
 
-    if( neuritePresynaptic == Neurite::AXON ) // 2º Checkup
+    if( neuritePresynaptic == Neurite::AXON ) // 2nd Checkup
     {
       if( _postSynapticSection == nullptr )
       {

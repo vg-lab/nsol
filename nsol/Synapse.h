@@ -67,7 +67,7 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void preSynapticNeuron(const unsigned int neuronID_ );
+    void preSynapticNeuron( const unsigned int neuronID_ );
 
     /**
       * Method to get the gid of the postsynaptic neuron.
@@ -82,7 +82,7 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void postSynapticNeuron(const unsigned int neuronID_ );
+    void postSynapticNeuron( const unsigned int neuronID_ );
 
     /**
      * Method to set the synaptic weight.

@@ -95,8 +95,11 @@ namespace nsol
 #ifdef NSOL_USE_BRION
     void loadBlueConfigBasicConnectivity( void )
     {
-      if( !_blueConfig || _target.empty() )
-       return;
+      if( !_blueConfig || _target.empty( ))
+      {
+        Log::log("BlueConfig not open or target empty", LOG_LEVEL_WARNING );
+        return;
+      }
 
        BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
@@ -126,7 +129,10 @@ namespace nsol
     void loadBlueConfigConnectivity( )
     {
       if( !_blueConfig || _target.empty())
-       return;
+      {
+        Log::log("BlueConfig not open or target empty", LOG_LEVEL_WARNING );
+        return;
+      }
 
       this->loadBlueConfigBasicConnectivity< nsol::Node,
                                              nsol::Section,
@@ -147,7 +153,11 @@ namespace nsol
       for( unsigned int i = 0; i < _synapses.size(); ++i )
       {
         if( _synapses.size() != brainSynapses.size() )
-         break;
+        {
+          Log::log("Not exist correspondence of the neurons data "
+                   "between NSOL and BRION", LOG_LEVEL_WARNING );
+          break;
+        }
 
         const brain::Synapse& brainSynapse = brainSynapses[ i ];
         CompartmentSynapsePtr synapse =
