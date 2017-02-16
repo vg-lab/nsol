@@ -31,31 +31,6 @@ namespace nsol
 
   public:
 
-    template<class Iter>
-    struct iter_pair_range : std::pair<Iter,Iter>
-    {
-      iter_pair_range(std::pair<Iter,Iter> const& pair_)
-      : std::pair<Iter,Iter>( pair_ )
-      {
-      }
-
-      Iter begin( void ) const
-      {
-        return this->first;
-      }
-      Iter end( void ) const
-      {
-        return this->second;
-      }
-    };
-
-    template<class Iter>
-    inline iter_pair_range<Iter>
-    as_range( std::pair<Iter,Iter> const& pair_ ) const
-    {
-      return iter_pair_range<Iter>( pair_ );
-    }
-
     //! Possible types of data to get
     typedef enum
     {
@@ -117,7 +92,7 @@ namespace nsol
      * @return subset with all the synapses
      */
     NSOL_API
-    std::set<SynapsePtr> synapses( TDataType dataType_ ) const;
+    std::set< SynapsePtr > synapses( TDataType dataType_ ) const;
 
     /**
      * Method to get all the sinapses of the neuron into the circuit.
@@ -125,7 +100,7 @@ namespace nsol
      * @return all the synapses of this neuron.
      */
     NSOL_API
-    std::set<SynapsePtr>
+    std::set< SynapsePtr >
     synapses( unsigned int neuronGID_, TDataType dataType_ ) const;
 
     /**
@@ -134,8 +109,9 @@ namespace nsol
      * @return all the synapses of this subset of neurons.
      */
     NSOL_API
-    std::set<SynapsePtr> synapses(const std::set<unsigned int>& gidsNeurons_,
-                                   TDataType dataType_ ) const;
+    std::set< SynapsePtr >
+    synapses( const std::set< unsigned int >& gidsNeurons_,
+              TDataType dataType_ ) const;
 
     ///@}
 
@@ -143,24 +119,24 @@ namespace nsol
 
     void
     _calculatePresynapticConnections( unsigned int& neuronGID_,
-                                      std::set<SynapsePtr>& synapses_ ) const
+                                      std::set< SynapsePtr >& synapses_ ) const
     {
       auto values = _preSynapticConnections.equal_range( neuronGID_ );
-      for( const auto& value : as_range( values ))
+      for( auto value = values.first; value != values.second; ++value )
       {
-        SynapsePtr synapse = value.second;
+        SynapsePtr synapse = value->second;
         synapses_.insert( synapse );
       }
     }
 
     void
     _calculatePostsynapticConnections( unsigned int& neuronGID_,
-                                       std::set<SynapsePtr>& synapses_ ) const
+                                       std::set< SynapsePtr >& synapses_ ) const
     {
       auto values = _postSynapticConnections.equal_range( neuronGID_ );
-      for( const auto& value : as_range( values ))
+      for( auto value = values.first; value != values.second; ++value )
       {
-        SynapsePtr synapse = value.second;
+        SynapsePtr synapse = value->second;
         synapses_.insert( synapse );
       }
     }

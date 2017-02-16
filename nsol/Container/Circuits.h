@@ -15,7 +15,7 @@
 namespace nsol
 {
 
-  class Circuits : public NsolVector<CircuitPtr>
+  class Circuits : public NsolVector< CircuitPtr >
   {
 
   protected:

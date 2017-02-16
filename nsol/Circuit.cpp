@@ -59,9 +59,9 @@ namespace nsol
 
 
   /** Efferents and afferents synapses **/
-  std::set<SynapsePtr> Circuit::synapses( TDataType dataType_ ) const
+  std::set< SynapsePtr > Circuit::synapses( TDataType dataType_ ) const
   {
-    std::set<SynapsePtr> synapses_;
+    std::set< SynapsePtr > synapses_;
 
     switch( dataType_ )
     {
@@ -91,13 +91,13 @@ namespace nsol
       break;
     }
 
-    return std::move( synapses_ );
+    return synapses_;
   }
 
-  std::set<SynapsePtr> Circuit::synapses( unsigned int neuronGID_,
+  std::set< SynapsePtr > Circuit::synapses( unsigned int neuronGID_,
                                           TDataType dataType_ ) const
   {
-    std::set<SynapsePtr> synapses_;
+    std::set< SynapsePtr > synapses_;
 
     switch( dataType_ )
     {
@@ -123,24 +123,24 @@ namespace nsol
       break;
     }
 
-    return std::move( synapses_ );
+    return synapses_;
   }
 
-  std::set<SynapsePtr>
-  Circuit::synapses( const std::set<unsigned int>& gidsNeurons_,
+  std::set< SynapsePtr >
+  Circuit::synapses( const std::set< unsigned int >& gidsNeurons_,
                      TDataType dataType_ ) const
   {
-    std::set<SynapsePtr> synapses_;
+    std::set< SynapsePtr > synapses_;
 
     for( auto gid: gidsNeurons_ )
     {
-      std::set<SynapsePtr> aux = this->synapses( gid, dataType_ );
+      std::set< SynapsePtr > aux = std::move(this->synapses( gid, dataType_ ));
 
       for( auto synapse: aux )
         synapses_.insert( synapse );
     }
 
-    return std::move( synapses_ );
+    return synapses_;
   }
 
 
