@@ -51,6 +51,7 @@ set(NSOL_PUBLIC_HEADERS
   Factory.h
   Reader/BBPSDKReader.h
   Reader/BrionReader.h
+  Reader/ImarisVRMLReader.h
   Reader/SwcReader.h
   Reader/XmlSceneReader.h
   )

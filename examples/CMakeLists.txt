@@ -15,6 +15,9 @@ endif()
 add_executable(nsolExtractNeuronStats nsolExtractNeuronStats.cpp)
 target_link_libraries(nsolExtractNeuronStats nsol)
 
+add_executable(nsolImarisVRMLReaderFile ImarisVRMLReaderFile.cpp)
+target_link_libraries(nsolImarisVRMLReaderFile nsol)
+
 add_executable(nsolExample1 example1.cpp)
 target_link_libraries(nsolExample1 nsol)
 
