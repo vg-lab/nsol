@@ -172,26 +172,27 @@ namespace nsol
     return ltrim(rtrim(s));
   }
 
-  typedef struct
+  struct TImarisVRMLVec3
   {
     float x;
     float y;
     float z;
-    TImarisVRMLVec3(float _x, float _y, float _z)
+    TImarisVRMLVec3( float _x, float _y, float _z )
     {
       this->x = _x;
       this->y = _y;
       this->z = _z;
     }
-  } TImarisVRMLVec3;
+    TImarisVRMLVec3(): x(0.0f), y(0.0f), z(0.0f) {}
+  };
 
 
-  /*int ComputeSoma( unsigned int nbBasals )
+  /*static void ComputeSoma( unsigned int nbBasals )
   {
-    float x, y, z;
-    TImarisVRMLVec3 someApical( x, y, z );
+    //float x, y, z;
+    //TImarisVRMLVec3 someApical( x, y, z );
 
-    TImarisVRMLVec3 somaBasal( 0.0f, 0.0f, 0.0f );
+//    TImarisVRMLVec3 somaBasal;
     for ( unsigned int i = 0; i < nbBasals; ++i )
     {
 
@@ -202,7 +203,7 @@ namespace nsol
   template < IMARIS_VRML_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
   ImarisVRMLReaderTemplated< IMARIS_VRML_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
-    const std::string fileName, bool  )
+    const std::string fileName, bool /*reposition_*/ )
   {
     std::cout << fileName << std::endl;
     std::ifstream inFile;
@@ -224,27 +225,27 @@ namespace nsol
     TImarisVRMLState state = TImarisVRMLState::Find;
 
     std::vector< std::string > sections;
-
-    std::string aux;
-
+    
     TImarisVRMLMesh mesh;
 
     unsigned int counter;
 
-    //while ( inFile )
-    while ( std::getline( inFile, aux ) )
-    {
-      if ( aux.length( ) == 0 )
-        continue;
-      //lineString += std::string("\n") + aux;
+    std::vector< TImarisVRMLMesh > meshes;
 
-      //std::cout << aux << std::endl;
+    //while ( inFile )
+    while ( std::getline( inFile, lineString ) )
+    {
+      if ( lineString.length( ) == 0 )
+        continue;
+      //lineString += std::string("\n") + lineString;
+
+      //std::cout << lineString << std::endl;
       if ( state == TImarisVRMLState::Find )
       {
-        //std::cout << aux << std::endl;
+        //std::cout << lineString << std::endl;
         std::regex rgx( rexMeshHeader );
         std::smatch result;
-        if (std::regex_search(aux, result, rgx))
+        if (std::regex_search(lineString, result, rgx))
         {
           state = TImarisVRMLState::Capt;
 
@@ -261,14 +262,14 @@ namespace nsol
       }
       else if ( state == TImarisVRMLState::Capt )
       {
-        trim( aux );
-        if ( aux.find( "Coordinate" ) == 0 )
+        trim( lineString );
+        if ( lineString.find( "Coordinate" ) == 0 )
         {
           state = TImarisVRMLState::Coord;
           mesh.vertices.push_back( std::vector< float >( ) );
           ++counter;
         }
-        for( char& ch : aux )
+        for( char& ch : lineString )
         {
           if ( ch == '{' )
           {
@@ -292,6 +293,7 @@ namespace nsol
           if ( mesh.relativeID.find( std::string( "6" )) == 0 )
           {
             std::cout << "Is dendrite" << std::endl;
+            meshes.push_back( mesh );
           }
           else if ( mesh.relativeID.find( std::string( "7" )) == 0 )
           {
@@ -311,13 +313,13 @@ namespace nsol
       }
       else if ( state == TImarisVRMLState::Coord )
       {
-        if ( aux.find( std::string( "[" )) != std::string::npos )
+        if ( lineString.find( std::string( "[" )) != std::string::npos )
         {
           sections.push_back( std::string( "[" ) );
         }
         std::regex rgx2( rexCoordinates );
         std::smatch result2;
-        if (std::regex_search(aux, result2, rgx2))
+        if (std::regex_search(lineString, result2, rgx2))
         {
           std::string submatch(result2[1].first, result2[1].second);
           mesh.vertices[counter].push_back( ::atof( submatch.c_str( ) ) );
@@ -331,9 +333,9 @@ namespace nsol
           mesh.vertices[counter].push_back( ::atof( submatch3.c_str( ) ) );
           //std::cout << submatch3 << std::endl;
         }
-        if ( ((aux.find( std::string( "}" )) != std::string::npos)
+        if ( ((lineString.find( std::string( "}" )) != std::string::npos)
                     && (sections.back( ) == std::string( "{" ))) ||
-              ((aux.find( std::string( "]" )) != std::string::npos)
+              ((lineString.find( std::string( "]" )) != std::string::npos)
                     && (sections.back( ) == std::string( "[" )))      
           )
         {
@@ -345,6 +347,8 @@ namespace nsol
     }
 
     std::cout << "FIN" << std::endl;
+
+    std::cout << meshes.size( ) << std::endl;
 
     //inFile.close( );
   }
