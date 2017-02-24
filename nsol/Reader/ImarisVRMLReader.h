@@ -34,10 +34,10 @@
 #define rexFullName rexCollection ## rexIdPattern ## rexFiletype
 #define rexColId "(?:" + rexCollection + ")*" ## rexIdPattern + rexPointName
 #define rexMatrix '"?\\s*(?P<name>[a-zA-Z]+)\\-(?P<row>[0-9]){1}(?P<col>[0-9]){1}\\s*"?'
-#define rexMeshHeader "DEF\\s*FilamentSegment((?:6|7)[0-9]+)"
+#define rexCollection "\\s*(?P<collection>(?:soma|apical|bas|basal)[0-9]*)\\s*"
 */
 
-#define rexCollection "\\s*(?P<collection>(?:soma|apical|bas|basal)[0-9]*)\\s*"
+#define rexMeshHeader "DEF\\s*FilamentSegment((?:6|7)[0-9]+)"
 #define rexCoordinates "\\s*(?:[a-zA-Z]+\\s*\\[)?\\s*"  \
                  "([\\-0-9]+\\.[0-9]+)\\s*"             \
                  "([\\-0-9]+\\.[0-9e\\-]+)\\s*"         \
@@ -80,8 +80,6 @@ namespace nsol
     NeuronMorphologyPtr readMorphology( const std::string fileName,
         bool reposition_ = true );
   };
-
-
 
   typedef ImarisVRMLReaderTemplated<  Node,
                                       Section,
@@ -141,6 +139,12 @@ namespace nsol
     return this->readMorphology(std::string(fileName), reposition_ );
   }
 
+  typedef struct
+  {
+    std::string relativeID;
+    std::vector< std::vector< float > > vertices;
+  } TImarisVRMLMesh;
+
   typedef enum
   {
     Find = 0,
@@ -194,11 +198,11 @@ namespace nsol
 
     std::vector< std::string > sections;
 
-    std::string relativeID;
-
     std::string aux;
 
-    std::vector< std::vector
+    TImarisVRMLMesh mesh;
+
+    unsigned int counter;
 
     //while ( inFile )
     while ( std::getline( inFile, aux ) )
@@ -215,37 +219,41 @@ namespace nsol
         std::smatch result;
         if (std::regex_search(aux, result, rgx))
         {
+          state = TImarisVRMLState::Capt;
+
           std::string submatch(result[1].first, result[1].second);
           std::cout << submatch << std::endl;
 
-          relativeID = submatch;
+          mesh = TImarisVRMLMesh( );
 
-          state = TImarisVRMLState::Capt;
+          mesh.relativeID = submatch;
+
+          counter = -1;
+          sections.clear( );
         }
       }
       else if ( state == TImarisVRMLState::Capt )
       {
-        //std::cout << aux << std::endl;
         trim( aux );
         if ( aux.find( "Coordinate" ) == 0 )
         {
-          //std::cout << aux << std::endl;
           state = TImarisVRMLState::Coord;
-          //state = TImarisVRMLState::Find;
+          mesh.vertices.push_back( std::vector< float >( ) );
+          ++counter;
         }
-        for( char& c : aux )
+        for( char& ch : aux )
         {
-          if ( c == '{' )
+          if ( ch == '{' )
           {
             sections.push_back( std::string( "{" ) );
           }
-          else if ( c == '[' )
+          else if ( ch == '[' )
           {
             sections.push_back( std::string( "[" ) );
           }
-          else if ( ( ( c == '}')
+          else if ( ( ( ch == '}')
                     && (sections.back( ) == std::string( "{" ))) ||
-                  ( ( c == ']' )
+                  ( ( ch == ']' )
                     && (sections.back( ) == std::string( "[" )))      
           )
           {
@@ -254,15 +262,23 @@ namespace nsol
         }
         if ( sections.empty( ) )
         {
-          if ( relativeID.find( std::string( "6" )) == 0 )
+          if ( mesh.relativeID.find( std::string( "6" )) == 0 )
           {
             std::cout << "Is dendrite" << std::endl;
           }
-          else if ( relativeID.find( std::string( "7" )) == 0 )
+          else if ( mesh.relativeID.find( std::string( "7" )) == 0 )
           {
             std::cout << "Is spine" << std::endl;
           }
-          //std::cout << "Finish capt" << std::endl;
+
+          for ( auto v: mesh.vertices )
+          {
+            if ( v.empty( ) )
+            {
+              std::cout << "Mesh vertices not found" << std::endl;
+            }
+          }
+
           state = TImarisVRMLState::Find;
         }
       }
@@ -277,12 +293,15 @@ namespace nsol
         if (std::regex_search(aux, result2, rgx2))
         {
           std::string submatch(result2[1].first, result2[1].second);
+          mesh.vertices[counter].push_back( ::atof( submatch.c_str( ) ) );
           //std::cout << submatch << std::endl;
 
           std::string submatch2(result2[2].first, result2[2].second);
+          mesh.vertices[counter].push_back( ::atof( submatch2.c_str( ) ) );
           //std::cout << submatch2 << std::endl;
 
           std::string submatch3(result2[3].first, result2[3].second);
+          mesh.vertices[counter].push_back( ::atof( submatch3.c_str( ) ) );
           //std::cout << submatch3 << std::endl;
         }
         if ( ((aux.find( std::string( "}" )) != std::string::npos)
@@ -298,7 +317,7 @@ namespace nsol
       }
     }
 
-    //std::cout << lineString << std::endl;
+    std::cout << "FIN" << std::endl;
 
     //inFile.close( );
   }
