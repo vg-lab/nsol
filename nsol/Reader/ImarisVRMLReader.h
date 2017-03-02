@@ -199,6 +199,35 @@ namespace nsol
     }
   }*/
 
+  static inline void generateSWC( )
+  {
+    #define SWC_SOMA 1
+    #define SWC_APICAL 4
+    #define SWC_BASAL 3
+
+    std::vector<float> somaPos;
+    somaPos.push_back(1.0f);    somaPos.push_back(2.0f);    somaPos.push_back(3.0f);
+
+    std::ofstream skelFile;
+
+    skelFile.open("skel.swc", std::ios::out);
+    skelFile << "1 " << SWC_SOMA << " " 
+      << somaPos[0] << " " 
+      << somaPos[1] << " " 
+      << somaPos[2] << " " 
+      << somaRadius 
+      << " -1" << endl;
+
+    skelFile.close( );
+  }
+
+  static inline void ComputeSoma( )
+  {
+    //TImarisVRMLVec3 somaApical()
+  }
+
+
+
 
   template < IMARIS_VRML_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
@@ -232,8 +261,10 @@ namespace nsol
 
     std::vector< TImarisVRMLMesh > meshes;
 
+    generateSWC( );
+
     //while ( inFile )
-    while ( std::getline( inFile, lineString ) )
+    /*while ( std::getline( inFile, lineString ) )
     {
       if ( lineString.length( ) == 0 )
         continue;
@@ -350,7 +381,7 @@ namespace nsol
 
     std::cout << meshes.size( ) << std::endl;
 
-    //inFile.close( );
+    //inFile.close( );*/
   }
 }
 
