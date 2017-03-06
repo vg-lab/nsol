@@ -30,7 +30,7 @@ void usageMessage( char* programName )
 }
 
 /** -- Computing synaptic-nodes -- **/
-void calculateSynapticNodes( CompartmentSynapsePtr synapse,
+void calculateSynapticNodes( MorphologySynapsePtr synapse,
                                NeuronPtr preSynapticNeuron,
                                NeuronPtr postSynapticNeuron,
                                NodePtr& preSynNode,
@@ -175,8 +175,8 @@ int main( int argc, char* argv[ ])
         NSOL_FOREACH( synapseIt, synapses )
         {
             SynapsePtr synapse_ = (*synapseIt);
-            CompartmentSynapsePtr synapse = dynamic_cast
-                                            <CompartmentSynapsePtr>( synapse_ );
+            MorphologySynapsePtr synapse = dynamic_cast
+                                            <MorphologySynapsePtr>( synapse_ );
             NeuronPtr preSynapticNeuron  = nullptr;
             NeuronPtr postSynapticNeuron = nullptr;
 
