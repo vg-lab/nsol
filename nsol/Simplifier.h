@@ -33,6 +33,8 @@ namespace nsol
     {
       DELETE_ALL = 0,
       DIST_NODES,
+      DIST_NODES_RADIUS,
+      ANGLE_MIN
     } TSimplificationMethod;
 
     /**
@@ -49,7 +51,7 @@ namespace nsol
      * @param morpho_ neuronal morphology to simplify
      * @param simplMethod_ to select the function used to simplify
      * @param tolerance_ used for different simplification function
-     * @param clone if true the morphology is clone before the simplification
+     * @param clone_ if true the morphology is clone before the simplification
      *        if false the simplification is made over the orignal morphology
      */
     NSOL_API
@@ -57,32 +59,46 @@ namespace nsol
       NeuronMorphologyPtr morpho_,
       TSimplificationMethod simplMethod_ = DELETE_ALL,
       float tolerance_ = 0.1,
-      bool clone = false );
+      bool clone_ = false );
 
 
     /**
-     * Mehod to correct the neuronal morphology to avoid errors in the
+     * Method to correct the neuronal morphology to avoid errors in the
      * generation of the neuronal soma mesh
      * @param morpho_ neuronal morphology to correct
-     * @param clone if true the morphology is clone before the correction
+     * @param clone_ if true the morphology is clone before the correction
      *        if false the correction is made over the orignal morphology
      */
     NSOL_API
     NeuronMorphologyPtr adaptSoma(
       NeuronMorphologyPtr morpho_,
-      bool clone = false );
-
+      bool clone_ = false );
 
     /**
-     * Mehod to cutout the neuronal morphology based in the nodes importances
+     * Method to correct the neuronal morphology to fix the intersecting
+     * bifurcations
+     * @param morpho_ neuronal morphology to correct
+     * @param tolerance_ used to determine the maximum opening angle of a
+     *        bifurcation
+     * @param clone_ if true the morphology is clone before the correction
+     *        if false the correction is made over the orignal morphology
+     */
+    NSOL_API
+    NeuronMorphologyPtr adaptBifurcations(
+      NeuronMorphologyPtr morpho_,
+      float tolerance_ = 0.9f,
+      bool clone_ = false );
+
+    /**
+     * Method to cutout the neuronal morphology based in the nodes importances
      * @param morpho_ neuronal morphology to cutout
-     * @param clone if true the morphology is clone before the cutout
+     * @param clone_ if true the morphology is clone before the cutout
      *        if false the cutout is made over the orignal morphology
      */
     NSOL_API
     NeuronMorphologyPtr cutout(
       NeuronMorphologyPtr morpho_,
-      bool clone = false );
+      bool clone_ = false );
 
     NSOL_API
     Simplifier( Simplifier const& ) = delete;
@@ -107,6 +123,13 @@ namespace nsol
 
     static void _simplSecDistNodes( SectionPtr section_,
                                     float tolerance_ );
+
+    static void _simplSecDistNodesRadius( SectionPtr section_,
+                                    float tolerance_ );
+
+    static void _simplSecMinAngle( SectionPtr section_,
+                                   float tolerance_ );
+
     ///@}
 
     //! Static instance of Simplifier singleton class
