@@ -20,6 +20,7 @@ Ubuntu-Subproject:
   - date
   - hostname
   - uname -a
+  - export COVERAGE=ON
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Ninja";
   - bash .gitlab-ci.sh
