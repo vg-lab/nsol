@@ -128,7 +128,7 @@ namespace nsol
   typedef Soma* SomaPtr;
   typedef Circuit* CircuitPtr;
   typedef Synapse* SynapsePtr;
-  typedef MorphologySynapse* CompartmentSynapsePtr;
+  typedef MorphologySynapse* MorphologySynapsePtr;
   typedef NodeCached* NodeCachedPtr;
 
 

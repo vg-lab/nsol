@@ -160,8 +160,8 @@ namespace nsol
         }
 
         const brain::Synapse& brainSynapse = brainSynapses[ i ];
-        CompartmentSynapsePtr synapse =
-                            dynamic_cast<CompartmentSynapsePtr>( _synapses[i] );
+        MorphologySynapsePtr synapse =
+                            dynamic_cast<MorphologySynapsePtr>( _synapses[i] );
 
         vmml::Vector3f brainPreSynPos  = brainSynapse.
                                               getPresynapticSurfacePosition();
