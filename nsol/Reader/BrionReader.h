@@ -454,7 +454,7 @@ namespace nsol
     {
       const brain::Synapse& brainSynapse = (*it);
 
-      CompartmentSynapsePtr afferent_synapse = CompartmentSynapsePtr(
+      MorphologySynapsePtr afferent_synapse = MorphologySynapsePtr(
                                                      new MorphologySynapse( ));
 
       std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
