@@ -31,22 +31,22 @@ namespace nsol
   {
   }
 
-  void Synapse::preSynapticNeuron( const unsigned int neuronID_ )
+  void Synapse::preSynapticNeuron( const uint32_t neuronID_ )
   {
     _preSynapticNeuron = neuronID_;
   }
 
-  unsigned int Synapse::preSynapticNeuron( void ) const
+  uint32_t Synapse::preSynapticNeuron( void ) const
   {
     return _preSynapticNeuron;
   }
 
-  void Synapse::postSynapticNeuron( const unsigned int neuronID_ )
+  void Synapse::postSynapticNeuron(const uint32_t neuronID_ )
   {
     _postSynapticNeuron = neuronID_;
   }
 
-  unsigned int Synapse::postSynapticNeuron( void ) const
+  uint32_t Synapse::postSynapticNeuron( void ) const
   {
     return _postSynapticNeuron;
   }

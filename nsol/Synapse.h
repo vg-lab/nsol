@@ -59,7 +59,7 @@ namespace nsol
      * @return gid of the presynaptic neuron.
      */
     NSOL_API
-    unsigned int preSynapticNeuron( void ) const;
+    uint32_t preSynapticNeuron( void ) const;
 
     /**
      * Method to add a presynaptic neuron to the synapse.
@@ -67,14 +67,14 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void preSynapticNeuron( const unsigned int neuronID_ );
+    void preSynapticNeuron(const uint32_t neuronID_ );
 
     /**
       * Method to get the gid of the postsynaptic neuron.
       * @return gid of the postsynaptic neuron.
       */
     NSOL_API
-    unsigned int postSynapticNeuron( void ) const;
+    uint32_t postSynapticNeuron( void ) const;
 
     /**
      * Method to add a postsynaptic neuron to the synapse.
@@ -82,7 +82,7 @@ namespace nsol
      * @see Neuron
      */
     NSOL_API
-    void postSynapticNeuron( const unsigned int neuronID_ );
+    void postSynapticNeuron( const uint32_t neuronID_ );
 
     /**
      * Method to set the synaptic weight.
