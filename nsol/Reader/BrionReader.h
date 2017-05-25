@@ -93,7 +93,6 @@ namespace nsol
     loadBlueConfigBasicConnectivity(
       NeuronsMap& neurons_,
       Circuit& circuit_,
-      std::vector<SynapsePtr>& synapses_,
       const brion::BlueConfig& blueConfig_,
       const std::string& target_ );
 
@@ -424,11 +423,10 @@ namespace nsol
   < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
     NeuronsMap& neurons_,
     Circuit& circuit_,
-    std::vector<SynapsePtr>& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
-    synapses_.clear();
+    circuit_.clear();
 
     brain::Circuit brainCircuit( blueConfig_);
     brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
@@ -473,7 +471,6 @@ namespace nsol
 
       circuit_.addSynapse( afferent_synapse );
 
-      synapses_.push_back( afferent_synapse );
     }
   }
 

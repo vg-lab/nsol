@@ -40,13 +40,16 @@ namespace nsol
     MorphologySynapse::TSynapseType synapseType_ =
                                                   MorphologySynapse::UNDEFINED;
 
-    if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
-    {
-      return MorphologySynapse::SOMATOSOMATIC;
-    }
     if( _preSynapticSection == nullptr )
     {
-      return synapseType_;
+      if( _postSynapticSection == nullptr )
+      {
+        return MorphologySynapse::SOMATOSOMATIC;
+      }
+      else
+      {
+        return synapseType_;
+      }
     }
 
     Neurite::TNeuriteType neuritePresynaptic, neuritePostsynaptic;

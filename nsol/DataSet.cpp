@@ -57,7 +57,6 @@ namespace nsol
 
     _columns.clear( );
     _circuit.clear( );
-    _synapses.clear( );
     _neurons.clear( );
     _morphologies.clear( );
 
