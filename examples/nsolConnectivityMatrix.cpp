@@ -57,8 +57,9 @@ bool contactsNeurons( const NeuronsMap& neurons_, Circuit& circuit_,
 
     unsigned int v = contactsMatrix.coeff( synapse->preSynapticNeuron( )-1,
                               synapse->postSynapticNeuron( )-1 ) + 1;
-    contactsMatrix.insert( synapse->preSynapticNeuron( )-1,
-              synapse->postSynapticNeuron( )-1 ) = v;
+
+    contactsMatrix.coeffRef( synapse->preSynapticNeuron( )-1,
+                                  synapse->postSynapticNeuron( )-1 ) = v;
   }
 
   contacts_.swap( contactsMatrix );
@@ -114,7 +115,7 @@ int main( int argc, char* argv[ ])
 
   dataSet.loadBlueConfigHierarchy( blueConfig, target );
   dataSet.loadAllMorphologies( );
-  dataSet.loadBlueConfigBasicConnectivity( );
+  dataSet.loadBlueConfigConnectivity( );
 
   const NeuronsMap& neuronsMap = dataSet.neurons();
   Circuit circuit = dataSet.circuit();

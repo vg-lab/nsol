@@ -146,12 +146,6 @@ namespace nsol
     virtual MorphologySynapse& operator =
     ( const MorphologySynapse& other_ );
 
-    NSOL_API
-    virtual bool operator == (const MorphologySynapse& other_ );
-
-    NSOL_API
-    virtual bool operator != ( const MorphologySynapse& other_ );
-
     ///@}
 
 

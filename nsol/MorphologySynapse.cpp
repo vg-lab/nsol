@@ -40,13 +40,16 @@ namespace nsol
     MorphologySynapse::TSynapseType synapseType_ =
                                                   MorphologySynapse::UNDEFINED;
 
-    if( _preSynapticSection == nullptr && _postSynapticSection == nullptr )
-    {
-      return MorphologySynapse::SOMATOSOMATIC;
-    }
     if( _preSynapticSection == nullptr )
     {
-      return synapseType_;
+      if( _postSynapticSection == nullptr )
+      {
+        return MorphologySynapse::SOMATOSOMATIC;
+      }
+      else
+      {
+        return synapseType_;
+      }
     }
 
     Neurite::TNeuriteType neuritePresynaptic, neuritePostsynaptic;
@@ -148,24 +151,6 @@ namespace nsol
     }
 
     return *this;
-  }
-
-  bool MorphologySynapse::operator == ( const MorphologySynapse& other_ )
-  {
-    return (( this->preSynapticNeuron( ) == other_.preSynapticNeuron( )) &&
-            ( this->postSynapticNeuron( ) == other_.postSynapticNeuron( )) &&
-            ( this->weight( ) == other_.weight( )) &&
-            ( this->preSynapticSection( ) == other_.preSynapticSection( )) &&
-            ( this->postSynapticSection( ) == other_.postSynapticSection( )) &&
-            ( this->preSynapticSurfacePosition( ) ==
-              other_.preSynapticSurfacePosition( )) &&
-            ( this->postSynapticSurfacePosition( ) ==
-              other_.postSynapticSurfacePosition( )));
-  }
-
-  bool MorphologySynapse::operator != ( const MorphologySynapse& other_ )
-  {
-    return !( *this == other_ );
   }
 
 

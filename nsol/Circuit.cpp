@@ -59,6 +59,11 @@ namespace nsol
 
 
   /** Efferents and afferents synapses **/
+  std::vector< SynapsePtr > Circuit::synapses( void ) const
+  {
+     return _synapses;
+  }
+
   std::set< SynapsePtr > Circuit::synapses( TDataType dataType_ ) const
   {
     std::set< SynapsePtr > synapses_;
@@ -94,53 +99,78 @@ namespace nsol
     return synapses_;
   }
 
-  std::set< SynapsePtr > Circuit::synapses( unsigned int neuronGID_,
-                                          TDataType dataType_ ) const
+  std::set< SynapsePtr > Circuit::synapses( uint32_t neuronGID_,
+                                            TDataType dataType_ ) const
   {
     std::set< SynapsePtr > synapses_;
 
-    switch( dataType_ )
-    {
-      case PRESYNAPTICCONNECTIONS:
-
-        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
-
-      break;
-      case POSTSYNAPTICCONNECTIONS:
-
-        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
-
-      break;
-
-      case ALL:
-      {
-        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
-
-        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
-      }
-      break;
-      default:
-      break;
-    }
+    this->_calculateConnections( neuronGID_, synapses_, dataType_ );
 
     return synapses_;
   }
 
   std::set< SynapsePtr >
-  Circuit::synapses( const std::set< unsigned int >& gidsNeurons_,
+  Circuit::synapses( const std::set< uint32_t >& gidsNeurons_,
                      TDataType dataType_ ) const
   {
+
     std::set< SynapsePtr > synapses_;
 
     for( auto gid: gidsNeurons_ )
     {
-      std::set< SynapsePtr > aux = std::move(this->synapses( gid, dataType_ ));
-
-      for( auto synapse: aux )
-        synapses_.insert( synapse );
+      this->_calculateConnections( gid, synapses_, dataType_ );
     }
 
     return synapses_;
+  }
+
+  // Methods to computing connections
+  void
+  Circuit::_calculateConnections( unsigned int& neuronGID_,
+                                  std::set< SynapsePtr >& synapses_,
+                                  TDataType& dataType_) const
+  {
+    switch( dataType_ )
+    {
+      case PRESYNAPTICCONNECTIONS:
+        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
+      break;
+      case POSTSYNAPTICCONNECTIONS:
+        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
+      break;
+      case ALL:
+      {
+        this->_calculatePresynapticConnections( neuronGID_, synapses_ );
+        this->_calculatePostsynapticConnections( neuronGID_, synapses_ );
+      }
+      break;
+        default:
+      break;
+    }
+  }
+
+  void
+  Circuit::_calculatePresynapticConnections( unsigned int& neuronGID_,
+                                    std::set< SynapsePtr >& synapses_ ) const
+  {
+    auto values = _preSynapticConnections.equal_range( neuronGID_ );
+    for( auto value = values.first; value != values.second; ++value )
+    {
+      SynapsePtr synapse = value->second;
+      synapses_.insert( synapse );
+    }
+  }
+
+  void
+  Circuit::_calculatePostsynapticConnections( unsigned int& neuronGID_,
+                                     std::set< SynapsePtr >& synapses_ ) const
+  {
+    auto values = _postSynapticConnections.equal_range( neuronGID_ );
+    for( auto value = values.first; value != values.second; ++value )
+    {
+      SynapsePtr synapse = value->second;
+      synapses_.insert( synapse );
+    }
   }
 
 
