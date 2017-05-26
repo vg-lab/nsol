@@ -89,6 +89,13 @@ namespace nsol
 
     /**
      * Method to get all the synapses from the circuit.
+     * @return vector with all the ordered synapses by its gid
+     */
+    NSOL_API
+    std::vector< SynapsePtr > synapses( void ) const;
+
+    /**
+     * Method to get all the synapses from the circuit.
      * @return subset with all the synapses
      */
     NSOL_API
@@ -101,7 +108,7 @@ namespace nsol
      */
     NSOL_API
     std::set< SynapsePtr >
-    synapses( unsigned int neuronGID_, TDataType dataType_ ) const;
+    synapses(uint32_t neuronGID_, TDataType dataType_ ) const;
 
     /**
      * Method to get all the sinapses from a subset of neurons.
@@ -110,7 +117,7 @@ namespace nsol
      */
     NSOL_API
     std::set< SynapsePtr >
-    synapses( const std::set< unsigned int >& gidsNeurons_,
+    synapses(const std::set< uint32_t > &gidsNeurons_,
               TDataType dataType_ ) const;
 
     ///@}
@@ -118,28 +125,17 @@ namespace nsol
   private:
 
     void
+    _calculateConnections( unsigned int& neuronGID_,
+                           std::set< SynapsePtr >& synapses_ ,
+                           TDataType &dataType_ ) const;
+
+    void
     _calculatePresynapticConnections( unsigned int& neuronGID_,
-                                      std::set< SynapsePtr >& synapses_ ) const
-    {
-      auto values = _preSynapticConnections.equal_range( neuronGID_ );
-      for( auto value = values.first; value != values.second; ++value )
-      {
-        SynapsePtr synapse = value->second;
-        synapses_.insert( synapse );
-      }
-    }
+                                      std::set< SynapsePtr >& synapses_ ) const;
 
     void
     _calculatePostsynapticConnections( unsigned int& neuronGID_,
-                                       std::set< SynapsePtr >& synapses_ ) const
-    {
-      auto values = _postSynapticConnections.equal_range( neuronGID_ );
-      for( auto value = values.first; value != values.second; ++value )
-      {
-        SynapsePtr synapse = value->second;
-        synapses_.insert( synapse );
-      }
-    }
+                                      std::set< SynapsePtr >& synapses_ ) const;
 
   protected:
 

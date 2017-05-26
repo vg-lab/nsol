@@ -68,7 +68,7 @@ int main( int argc, char* argv[ ])
 
   dataSet.loadBlueConfigHierarchy( blueConfig, target );
   dataSet.loadAllMorphologies( );
-  dataSet.loadBlueConfigBasicConnectivity( );
+  dataSet.loadBlueConfigConnectivity( );
 
   cout << " EXECUTING CircuitLoader... " << endl;
   cout << endl; cout << endl; cout << endl;

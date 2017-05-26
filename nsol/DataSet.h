@@ -93,7 +93,7 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigBasicConnectivity( void )
+    void loadBlueConfigConnectivity( void )
     {
       if( !_blueConfig || _target.empty( ))
       {
@@ -105,12 +105,11 @@ namespace nsol
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > brionReader;
 
-       brionReader.loadBlueConfigBasicConnectivity( _neurons,
+       brionReader.loadBlueConfigConnectivity( _neurons,
                                                     _circuit,
-                                                    _synapses,
                                                    *_blueConfig, _target );
 #else
-    void loadBlueConfigBasicConnectivity( )
+    void loadBlueConfigConnectivity( )
     {
       NSOL_THROW( std::string( "Brion not supported" ));
 #endif
@@ -126,7 +125,7 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigConnectivity( )
+    void loadBlueConfigConnectivityWithMorphologies( )
     {
       if( !_blueConfig || _target.empty())
       {
@@ -134,7 +133,7 @@ namespace nsol
         return;
       }
 
-      this->loadBlueConfigBasicConnectivity< nsol::Node,
+      this->loadBlueConfigConnectivity< nsol::Node,
                                              nsol::Section,
                                              nsol::Dendrite,
                                              nsol::Axon,
@@ -150,18 +149,24 @@ namespace nsol
                                         getAfferentSynapses( gidSetBrain,
                                               brain::SynapsePrefetch::all );
 
-      for( unsigned int i = 0; i < _synapses.size(); ++i )
+      if( _circuit.synapses().size() != brainSynapses.size() )
       {
-        if( _synapses.size() != brainSynapses.size() )
-        {
-          Log::log("Not exist correspondence of the neurons data "
-                   "between NSOL and BRION", LOG_LEVEL_WARNING );
-          break;
-        }
+        Log::log("Not exist correspondence of the neurons data "
+                 "between NSOL and BRION", LOG_LEVEL_WARNING );
+        return;
+      }
 
+      for( unsigned int i = 0; i < _circuit.synapses().size(); ++i )
+      {
         const brain::Synapse& brainSynapse = brainSynapses[ i ];
-        MorphologySynapsePtr synapse =
-                            dynamic_cast<MorphologySynapsePtr>( _synapses[i] );
+        MorphologySynapsePtr synapse = dynamic_cast<MorphologySynapsePtr>
+                                       ( _circuit.synapses()[i] );
+
+        if( synapse == nullptr )
+        {
+          Log::log("Inconsistent type of synapse.", LOG_LEVEL_WARNING );
+          return;
+        }
 
         vmml::Vector3f brainPreSynPos  = brainSynapse.
                                               getPresynapticSurfacePosition();
@@ -171,6 +176,7 @@ namespace nsol
         synapse->preSynapticSurfacePosition( Vec3f( brainPreSynPos.x(),
                                                         brainPreSynPos.y(),
                                                         brainPreSynPos.z()));
+
         synapse->postSynapticSurfacePosition( Vec3f( brainPostSynPos.x(),
                                                          brainPostSynPos.y(),
                                                          brainPostSynPos.z()));
@@ -248,7 +254,7 @@ namespace nsol
       }// all synapses
 
 #else
-    void loadBlueConfigConnectivity( )
+    void loadBlueConfigConnectivityWithMorphologies( )
     {
       NSOL_THROW( std::string( "Brion not supported" ));
 #endif
@@ -612,9 +618,6 @@ namespace nsol
 
     //! Entry for connections of the circuit.
     Circuit _circuit;
-
-    //! Container of synapses by its id
-    std::vector<SynapsePtr> _synapses;
 
     //! Container of neurons by its gid
     NeuronsMap _neurons;

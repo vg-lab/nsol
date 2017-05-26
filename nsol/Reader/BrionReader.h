@@ -90,10 +90,9 @@ namespace nsol
       const std::string& targetLabel = std::string( "" ));
 
     void
-    loadBlueConfigBasicConnectivity(
+    loadBlueConfigConnectivity(
       NeuronsMap& neurons_,
       Circuit& circuit_,
-      std::vector<SynapsePtr>& synapses_,
       const brion::BlueConfig& blueConfig_,
       const std::string& target_ );
 
@@ -421,14 +420,13 @@ namespace nsol
   template < BRION_READER_TEMPLATE_CLASSES >
   void
   BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigBasicConnectivity(
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigConnectivity(
     NeuronsMap& neurons_,
     Circuit& circuit_,
-    std::vector<SynapsePtr>& synapses_,
     const brion::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
-    synapses_.clear();
+    circuit_.clear();
 
     brain::Circuit brainCircuit( blueConfig_);
     brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
@@ -436,17 +434,6 @@ namespace nsol
     const brain::Synapses& brainSynapses = brainCircuit.
                                            getAfferentSynapses( gidSetBrain,
                                               brain::SynapsePrefetch::all );
-    if( brainSynapses.size() > 0)
-    {
-      try{
-           brainSynapses[0].getGID();
-
-         }catch (...)
-         {
-           std::cerr << "Exception: No synapse index file available"
-                     << std::endl;
-         }
-    }
 
     // number of efferent synapses it is the same that afferent synapses
     for( brain::Synapses::const_iterator it = brainSynapses.begin();
@@ -473,7 +460,6 @@ namespace nsol
 
       circuit_.addSynapse( afferent_synapse );
 
-      synapses_.push_back( afferent_synapse );
     }
   }
 
