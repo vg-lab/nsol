@@ -10,6 +10,7 @@ Ubuntu-Optional-Deps:
   - export BUILD_OPTIONALS_SUBPROJECTS=1
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Ninja"
+  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
   - bash .gitlab-ci.sh
  tags:
   - ubuntu
@@ -33,13 +34,14 @@ OSX-Optional-Deps:
   - hostname
   - uname -a
   - export BUILD_OPTIONALS_SUBPROJECTS=1
-  - source $ENVFILESDIR/Qt-5.4
+  - module load Qt-5.9.1
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Ninja"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
+  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
   - bash .gitlab-ci.sh
  tags:
-  - osx
+  - osx-sierra
 
 OSX-Subproject:
  stage: build
@@ -47,23 +49,22 @@ OSX-Subproject:
   - date
   - hostname
   - uname -a
-  - source $ENVFILESDIR/Qt-5.4
+  - module load Qt-5.9.1
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Ninja"
   - export CMAKE_OSX_ARCHITECTURES=x86_64
   - bash .gitlab-ci.sh
  tags:
-  - osx
+  - osx-sierra
 
 Win7:
  stage: build
  script:
-  - call %ENVFILESDIR%\Boost-1.56-vs12-x64.bat
-  - call %ENVFILESDIR%\HDF5-1.8.14-vs12-x64.bat
-  - call %ENVFILESDIR%\Qt-5.4.bat
-  - set JAMBS_TARGETS=eigen
+  - call %ENVFILESDIR%\Boost-1.64-vs14-x64.bat
+  - call %ENVFILESDIR%\Qt-5.9-vs14.bat
+  - call %ENVFILESDIR%\eigen-3.1.2-vs12-x64.bat
   - set CMAKE_EXTRA_TARGETS=RUN_TESTS
-  - set BUILD_GENERATOR=Visual Studio 12 Win64
+  - set BUILD_GENERATOR=Visual Studio 14 Win64
   - set PATH=%PATH%;"c:\\Program Files (x86)\\Git\\bin"
   - bash.exe --login .gitlab-ci.sh
  tags:
