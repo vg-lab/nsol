@@ -22,7 +22,7 @@ Optional dependencies: FiReS, Brion and Boost's Unit Test Framework and Qt5Core
 ## Building
 
 nsol has been succesfully built and used on Ubuntu 17.04/16.04, Mac OSX
-Yosemite/Capitan and Windows 7/8/10 (Visual Studio 2013 Win64). The following
+Yosemite/Capitan/Sierra and Windows 7/8/10 (Visual Studio 2015 Win64). The following
 steps should be enough to build it:
 
 ```bash
