@@ -18,7 +18,7 @@
 namespace nsol
 {
 
-  class MorphologySynapse : public Synapse
+  class MorphologySynapse : public virtual Synapse
   {
 
   public:
