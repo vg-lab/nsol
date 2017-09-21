@@ -19,6 +19,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+/*
+ * Tool that convertes from BlueConfig to nsol XML scene
+ */
 #include <nsol/nsol.h>
 
 void usageMessage( char* programName )

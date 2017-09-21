@@ -43,8 +43,7 @@ option( NSOL_WITH_EXAMPLES "NSOL_WITH_EXAMPLES" ON )
 option( NSOL_WITH_TESTS "NSOL_WITH_TESTS" ON )
 
 # Option to build with shared pointers or raw pointers
-option(NSOL_WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
-option(NSOL_WITH_BBPSDK "WITH_BBPSDK" OFF)
+# TODO option(NSOL_WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
 
 option( NSOL_WITH_LOGGING "NSOL_WITH_LOGGING" ON )
 if ( NSOL_WITH_LOGGING )
@@ -83,12 +82,6 @@ if( BRION_FOUND )
   list(APPEND NSOL_DEPENDENT_LIBRARIES Brion)
 endif( )
 
-if (NSOL_WITH_BBPSDK)
-  common_find_package(BBPSDK)
-  if( BBPSDK_FOUND )
-    list(APPEND NSOL_DEPENDENT_LIBRARIES BBPSDK)
-  endif( )
-endif()
 common_find_package_post()
 
 # library subdirectory

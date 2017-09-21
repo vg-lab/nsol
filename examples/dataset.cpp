@@ -1,21 +1,17 @@
 #include <nsol/nsol.h>
 
 
-#ifdef NSOL_USE_BBPSDK
+#ifdef NSOL_USE_BRION
 int main ( int argc, char ** argv )
 {
-  if ( argc < 2 )
+  if ( argc < 3 )
   {
     std::cerr << "Usage: " << argv[ 0 ]
-              << " blueconfig_path [target]" << std::endl;
+              << " blueconfig_path target" << std::endl;
     return -1;
   }
 
-  std::string target("");
-  if ( argc > 2  )
-  {
-    target = std::string( argv[ 2 ] );
-  }
+  std::string target( argv[2] );
 
   nsol::DataSet ds;
 
@@ -65,9 +61,9 @@ int main ( int argc, char ** argv )
 
   ds.loadAllMorphologies( );
 
-  for ( auto par: ds.neurons( ))
+  for ( const auto& pair: ds.neurons( ))
   {
-    nsol::NeuronPtr neuron = par.second;
+    nsol::NeuronPtr neuron = pair.second;
 
     nsol::NeuronMorphologyPtr morpho = neuron->morphology( );
     if( !morpho )
@@ -77,7 +73,8 @@ int main ( int argc, char ** argv )
     }
     else
     {
-      std::cout << "Soma center: " << morpho->soma( )->center( )
+      std::cout << neuron->gid( ) << "\t" << "Soma center: "
+                << neuron->transform( ).col( 3 ).transpose( )
                 << std::endl;
     }
   }
@@ -86,17 +83,12 @@ int main ( int argc, char ** argv )
   std::cout << "Closing dataset " << std::endl;
   ds.close( );
 
-  // std::cout << "Opening dataset with MORPHOLOGY " << argv[ 1 ] << std::endl;
-  // ds.loadFromBlueConfig( argv[ 1 ], nsol::MORPHOLOGY, target );
-  // std::cout << "Loaded " << ds.columns( ).size( ) << " columns " << std::endl;
-  // std::cout << "Closing dataset " << std::endl;
-  // ds.close( );
 
 
 #else
 int main ( void )
 {
-  std::cerr << "This example needs BBPSDK support." << std::endl;
+  std::cerr << "This example needs Brion support." << std::endl;
 #endif
 
   return 0;

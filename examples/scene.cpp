@@ -1,3 +1,6 @@
+/*
+ * Example of loading a nsol XML scene
+ */
 #include <nsol/nsol.h>
 
 
