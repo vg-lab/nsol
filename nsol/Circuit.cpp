@@ -21,10 +21,14 @@ namespace nsol
 
   Circuit::~Circuit( void )
   {
-    _synapses.clear();
-
     _preSynapticConnections.clear( );
     _postSynapticConnections.clear( );
+
+    for( auto synapse: _synapses )
+    {
+      delete( synapse );
+    }
+    _synapses.clear();
   }
 
   //
