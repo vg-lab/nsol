@@ -32,8 +32,8 @@ include(GitExternal)
 set(LAST_RELEASE 0.0.0)
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "0")
-set(VERSION_ABI 1)
+set(VERSION_PATCH "1")
+set(VERSION_ABI 2)
 
 # description
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
