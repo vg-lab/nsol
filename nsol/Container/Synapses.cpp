@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 GMRV/URJC.
+ * Copyright (c) 2014-2017 GMRV/URJC.
  *
  * Authors: Raquel Jarillo <raquel.jarillo@urjc.es>
  *
