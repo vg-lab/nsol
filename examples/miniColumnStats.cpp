@@ -1,5 +1,5 @@
 /*
- * Example to show how to use stats and cached stats
+ * Example to show how to use stats and cached stats with minicolumns
  */
 
 #include <nsol/nsol.h>
@@ -9,44 +9,46 @@ void computeMiniColumnStats( nsol::MiniColumnPtr column );
 void printMiniColumnStats( nsol::MiniColumnPtr column );
 
 
-#ifndef NSOL_USE_BBPSDK
+#ifndef NSOL_USE_BRION
 
 int main ( int /* argc */, char ** /* argv */ )
 {
-  std::cout << "BBPSDK support not built-in" << std::endl;
+  std::cout << "Brion support not built-in" << std::endl;
 
   return 0;
 }
 #else
 
+#include <sys/time.h>
+
 int main ( int argc, char ** argv )
 {
   std::cout << std::endl;
 
-  if ( argc < 2 )
+  if ( argc < 3 )
   {
     std::cerr << "Error. Usage: " << argv[0]
-              << " blue_config_input_file" << std::endl;
+              << " blue_config_input_file target" << std::endl;
     return -1;
   }
 
-  nsol::BBPSDKReaderStats readerWithStats;
+  brion::BlueConfig blueConfig( argv[1] );
+
+  nsol::BrionReaderStats readerWithStats;
   nsol::Columns columnsWithStats;
   nsol::NeuronsMap neuronsWithStats;
-  readerWithStats.readFromBlueConfig( columnsWithStats, neuronsWithStats,
-                                      argv[1] );
+  readerWithStats.loadBlueConfigHierarchy( columnsWithStats, neuronsWithStats,
+                                           blueConfig, argv[2] );
 
   nsol::MiniColumnPtr miniColumnWithStats =
     columnsWithStats[0]->miniColumns( )[0];
 
-  // columnsWithStats[0]->miniColumns( )[0]->stats()->dendriticSurface();
-  // return 0;
-
-  nsol::BBPSDKReaderCachedStats readerWithCachedStats;
+  nsol::BrionReaderCachedStats readerWithCachedStats;
   nsol::Columns columnsWithCachedStats;
   nsol::NeuronsMap neuronsWithCachedStats;
-  readerWithCachedStats.readFromBlueConfig( columnsWithCachedStats,
-                                            neuronsWithCachedStats, argv[1] );
+  readerWithCachedStats.loadBlueConfigHierarchy( columnsWithCachedStats,
+                                                 neuronsWithCachedStats,
+                                                 blueConfig, argv[2] );
 
   nsol::MiniColumnPtr miniColumnWithCachedStats =
     columnsWithCachedStats[0]->miniColumns( )[0];
@@ -76,33 +78,6 @@ int main ( int argc, char ** argv )
   }
 
 
-
-  return 0;
-
-  struct timeval startTime, endTime;
-  long totalTime;
-
-#define START_TIME  gettimeofday(&startTime, NULL);
-#define END_TIME                                               \
-  gettimeofday(&endTime, NULL);                                \
-  totalTime =  (endTime.tv_sec - startTime.tv_sec) * 1000000L; \
-  totalTime += (endTime.tv_usec - startTime.tv_usec);          \
-  std::cout << "\tElapsed time: "                              \
-            << (totalTime/1000L) / 1000.0f                     \
-            << std::endl << std::endl;
-
-  std::cout << "Non-cached stats" << std::endl;
-  START_TIME;
-  printMiniColumnStats( miniColumnWithStats );
-  END_TIME;
-
-  START_TIME;
-  printMiniColumnStats( miniColumnWithCachedStats );
-  END_TIME;
-
-  START_TIME;
-  printMiniColumnStats( miniColumnWithCachedStats );
-  END_TIME;
 
   return 0;
 
@@ -139,28 +114,12 @@ void computeMiniColumnStats( nsol::MiniColumnPtr miniColumn )
   miniColumn->stats( )->getStat( nsol::MiniColumnStats::NEURITIC_BIFURCATIONS );
 
 
-
-  // miniColumn->stats( )->dendriticSurface( );
-  // miniColumn->stats( )->axonSurface( );
-  // miniColumn->stats( )->neuriticSurface( );
-  // miniColumn->stats( )->surface( );
-  // miniColumn->stats( )->dendriticVolume( );
-  // miniColumn->stats( )->axonVolume( );
-  // miniColumn->stats( )->neuriticVolume( );
-  // miniColumn->stats( )->volume( );
-  // miniColumn->stats( )->dendriticLength( );
-  // miniColumn->stats( )->axonLength( );
-  // miniColumn->stats( )->neuriticLength( );
-  // miniColumn->stats( )->dendriticBifurcations( );
-  // miniColumn->stats( )->axonBifurcations( );
-  // miniColumn->stats( )->neuriticBifurcations( );
-
 }
 
-#define COMPUTE_AND_PRINT2( __MSG__, __METHOD__ )                        \
-  std::cout << __MSG__                                                  \
-  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )      \
-  << std::endl;                                                         \
+#define COMPUTE_AND_PRINT2( __MSG__, __METHOD__ )                   \
+  std::cout << __MSG__                                              \
+  << miniColumn->stats( )->__METHOD__( nsol::TAggregation::TOTAL )  \
+  << std::endl;                                                     \
 
 
 #define COMPUTE_AND_PRINT( __MSG__, _S_ )                               \
@@ -231,4 +190,4 @@ void printMiniColumnStats( nsol::MiniColumnPtr miniColumn )
 
 }
 
-#endif // NSOL_USE_BBPSDK
+#endif // NSOL_USE_BRION

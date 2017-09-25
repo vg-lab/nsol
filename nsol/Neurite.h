@@ -34,7 +34,6 @@ namespace nsol {
               class SOMA,
               class NEURONMORPHOLOGY,
               class NEURON > friend class SwcReaderTemplated;
-    friend class BBPSDKreader;
 
   public:
 

@@ -1,5 +1,7 @@
 /*
- * Example to show how to use stats and cached stats
+ * Example to show how to use stats and cached stats. It takes a swc file , a
+ * BlueConfig (and target) or nsol xml scene and prints a csv file with some
+ * morphological measures.
  */
 
 #include <nsol/nsol.h>
@@ -21,72 +23,72 @@ bool atLeastTwo( bool a, bool b, bool c )
   return a ^ b ? c : a;
 }
 
-  std::string NeuronMorphologyToLabel(
-    nsol::NeuronMorphologyStats::TNeuronMorphologyStat stat )
+std::string NeuronMorphologyToLabel(
+  nsol::NeuronMorphologyStats::TNeuronMorphologyStat stat )
+{
+  switch( stat )
   {
-    switch( stat )
-    {
     // Volume
-    case nsol::NeuronMorphologyStats::DENDRITIC_VOLUME:
-      return std::string("Dendritic Volume");
-      break;
-    case nsol::NeuronMorphologyStats::AXON_VOLUME:
-      return std::string("Axon Volume");
-      break;
-    case nsol::NeuronMorphologyStats::NEURITIC_VOLUME:
-      return std::string("Neuritic Volume");
-      break;
-    case nsol::NeuronMorphologyStats::SOMA_VOLUME:
-      return std::string("Soma Volume");
-      break;
-    case nsol::NeuronMorphologyStats::VOLUME:
-      return std::string("Volume");
-      break;
+  case nsol::NeuronMorphologyStats::DENDRITIC_VOLUME:
+    return std::string("Dendritic Volume");
+    break;
+  case nsol::NeuronMorphologyStats::AXON_VOLUME:
+    return std::string("Axon Volume");
+    break;
+  case nsol::NeuronMorphologyStats::NEURITIC_VOLUME:
+    return std::string("Neuritic Volume");
+    break;
+  case nsol::NeuronMorphologyStats::SOMA_VOLUME:
+    return std::string("Soma Volume");
+    break;
+  case nsol::NeuronMorphologyStats::VOLUME:
+    return std::string("Volume");
+    break;
 
     // Surface
-    case nsol::NeuronMorphologyStats::DENDRITIC_SURFACE:
-      return std::string("Dendritic Surface");
-      break;
-    case nsol::NeuronMorphologyStats::AXON_SURFACE:
-      return std::string("Axon Surface");
-      break;
-    case nsol::NeuronMorphologyStats::NEURITIC_SURFACE:
-      return std::string("Neuritic Surface");
-      break;
-    case nsol::NeuronMorphologyStats::SOMA_SURFACE:
-      return std::string("Soma Surface");
-      break;
-    case nsol::NeuronMorphologyStats::SURFACE:
-      return std::string("Surface");
-      break;
+  case nsol::NeuronMorphologyStats::DENDRITIC_SURFACE:
+    return std::string("Dendritic Surface");
+    break;
+  case nsol::NeuronMorphologyStats::AXON_SURFACE:
+    return std::string("Axon Surface");
+    break;
+  case nsol::NeuronMorphologyStats::NEURITIC_SURFACE:
+    return std::string("Neuritic Surface");
+    break;
+  case nsol::NeuronMorphologyStats::SOMA_SURFACE:
+    return std::string("Soma Surface");
+    break;
+  case nsol::NeuronMorphologyStats::SURFACE:
+    return std::string("Surface");
+    break;
 
     // Length
-    case nsol::NeuronMorphologyStats::DENDRITIC_LENGTH:
-      return std::string("Dendritic Length");
-      break;
-    case nsol::NeuronMorphologyStats::AXON_LENGTH:
-      return std::string("Axon Length");
-      break;
-    case nsol::NeuronMorphologyStats::NEURITIC_LENGTH:
-      return std::string("Neuritic Length");
-      break;
+  case nsol::NeuronMorphologyStats::DENDRITIC_LENGTH:
+    return std::string("Dendritic Length");
+    break;
+  case nsol::NeuronMorphologyStats::AXON_LENGTH:
+    return std::string("Axon Length");
+    break;
+  case nsol::NeuronMorphologyStats::NEURITIC_LENGTH:
+    return std::string("Neuritic Length");
+    break;
 
     // Bifurcations
-    case nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS:
-      return std::string("Dendritic Bifurcations");
-      break;
-    case nsol::NeuronMorphologyStats::AXON_BIFURCATIONS:
-      return std::string("Axon Bifurcations");
-      break;
-    case nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS:
-      return std::string("Neuritic Bifurcations");
-      break;
+  case nsol::NeuronMorphologyStats::DENDRITIC_BIFURCATIONS:
+    return std::string("Dendritic Bifurcations");
+    break;
+  case nsol::NeuronMorphologyStats::AXON_BIFURCATIONS:
+    return std::string("Axon Bifurcations");
+    break;
+  case nsol::NeuronMorphologyStats::NEURITIC_BIFURCATIONS:
+    return std::string("Neuritic Bifurcations");
+    break;
 
-    default:
-      break;
-    }
-    return std::string("");
+  default:
+    break;
   }
+  return std::string("");
+}
 
 
 int main ( int argc, char ** argv )
@@ -177,8 +179,8 @@ int main ( int argc, char ** argv )
 
   if( !blueConfig.empty( ))
   {
-#ifdef NSOL_USE_BBPSDK
-    dataSet.loadFromBlueConfig<
+#ifdef NSOL_USE_BRION
+    dataSet.loadBlueConfigHierarchy<
       nsol::Node,
       nsol::SectionStats,
       nsol::DendriteStats,
@@ -187,11 +189,11 @@ int main ( int argc, char ** argv )
       nsol::NeuronMorphologyCachedStats,
       nsol::Neuron,
       nsol::MiniColumnStats,
-      nsol::ColumnStats >( blueConfig,
-                           nsol::CORTICAL_HIERARCHY |  nsol::MORPHOLOGY,
-                           target );
+      nsol::ColumnStats >( blueConfig, target );
+    dataSet.loadAllMorphologies( );
+
 #else
-    std::cerr << "No BBPSDK support built-in" << std::endl;
+    std::cerr << "No Brion support built-in" << std::endl;
     return -1;
 #endif
 
@@ -233,23 +235,23 @@ int main ( int argc, char ** argv )
   // Print out headers
 
   ( *outStream ) << "Gid" << ","
-            << "x" << ","
-            << "y" << ","
-            << "z" << ","
-            << "Layer" << ","
-            << "Column" << ","
-            << "Minicolumn" << ","
-            << "Morphological Type" << ","
-            << "Functional Type" << ","
-            << "Soma Max. Radius";
+                 << "x" << ","
+                 << "y" << ","
+                 << "z" << ","
+                 << "Layer" << ","
+                 << "Column" << ","
+                 << "Minicolumn" << ","
+                 << "Morphological Type" << ","
+                 << "Functional Type" << ","
+                 << "Soma Max. Radius";
 
   for ( int stat_ = 0;
         stat_ < nsol::NeuronMorphologyStats::NEURON_MORPHOLOGY_NUM_STATS;
         ++stat_ )
   {
     ( *outStream ) << ","
-              <<  NeuronMorphologyToLabel(
-                nsol::NeuronMorphologyStats::TNeuronMorphologyStat( stat_ ));
+                   <<  NeuronMorphologyToLabel(
+                     nsol::NeuronMorphologyStats::TNeuronMorphologyStat( stat_ ));
   }
 
   ( *outStream ) << std::endl;
@@ -258,13 +260,14 @@ int main ( int argc, char ** argv )
 
   for( const auto& col : dataSet.columns( ))
   {
-    for( const auto miniCol : col->miniColumns( ))
+    for( const auto& miniCol : col->miniColumns( ))
     {
-      for( const auto neuron : miniCol->neurons( ))
+      for( const auto& neuron : miniCol->neurons( ))
       {
+        assert( neuron && neuron->morphology( ));
         nsol::Vec4f center = neuron->transform( ) *
           neuron->morphology( )->soma( )->center( ).homogeneous( );
-        
+
         ( *outStream )
           << neuron->gid( ) << ","
           << center.x( )
@@ -276,10 +279,10 @@ int main ( int argc, char ** argv )
           << neuron->layer( ) << ","
           << neuron->miniColumn( )->column( )->id( ) << ","
           << neuron->miniColumn( )->id( ) << ","
-          << neuron->morphologicalType( ) << ","
-          << neuron->functionalType( ) << ","
+          << ( int ) neuron->morphologicalType( ) << ","
+          << ( int ) neuron->functionalType( ) << ","
           << neuron->morphology( )->soma( )->maxRadius( );
-        
+
         assert( neuron->morphology( ) &&  neuron->morphology( )->stats( ));
 
         nsol::NeuronMorphologyStats* nms = neuron->morphology( )->stats( );
@@ -288,15 +291,14 @@ int main ( int argc, char ** argv )
               stat_ < nsol::NeuronMorphologyStats::NEURON_MORPHOLOGY_NUM_STATS;
               ++stat_ )
         {
-            nsol::NeuronMorphologyStats::TNeuronMorphologyStat stat =
-              nsol::NeuronMorphologyStats::TNeuronMorphologyStat( stat_ );
-            ( *outStream ) << "," << nms->getStat( stat );
+          nsol::NeuronMorphologyStats::TNeuronMorphologyStat stat =
+            nsol::NeuronMorphologyStats::TNeuronMorphologyStat( stat_ );
+          ( *outStream ) << "," << nms->getStat( stat );
         }
         ( *outStream )  << std::endl;
       }
     }
   }
-
 
 
   return 0;
