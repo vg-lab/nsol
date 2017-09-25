@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2014-2016 GMRV/URJC.
+ * Copyright (c) 2014-2017 GMRV/URJC.
  *
  * Authors: Pablo Toharia <pablo.toharia@urjc.es>
  *
- * This file is part of FiReS <https://github.com/gmrvvis/FiReS>
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 3.0 as published
