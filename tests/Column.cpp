@@ -335,3 +335,10 @@ BOOST_AUTO_TEST_CASE( test_column_number_of_neurons )
 
 
 }
+
+
+BOOST_AUTO_TEST_CASE( column_stats)
+{
+  Column c;
+  BOOST_CHECK( c.stats( ) == nullptr );
+}

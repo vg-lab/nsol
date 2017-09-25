@@ -68,7 +68,7 @@ namespace nsol
     Log::log( msg, *_stream, level );
   }
 
-  TLogLevel stringToLogLevel( std::string logLevelString )
+  TLogLevel Log::stringToLogLevel( std::string logLevelString )
   {
   if ( logLevelString == "WARNING" )
     return LOG_LEVEL_WARNING;
@@ -94,7 +94,7 @@ namespace nsol
 
     if ( envLogLevelString )
     {
-      auto envLogLevel = stringToLogLevel( envLogLevelString );
+      auto envLogLevel = Log::stringToLogLevel( envLogLevelString );
 
       if ( envLogLevel != LOG_LEVEL_UNKNOWN )
         currentLogLevel = envLogLevel;

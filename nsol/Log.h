@@ -93,6 +93,8 @@ namespace nsol
                      std::ostream& stream,
                      const TLogLevel level = LOG_LEVEL_VERBOSE );
 
+
+    static TLogLevel stringToLogLevel( std::string logLevelString );
   protected:
 
     //! Current log level. This can be overwritten with proper value

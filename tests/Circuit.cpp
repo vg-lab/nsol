@@ -35,6 +35,8 @@ BOOST_AUTO_TEST_CASE( test_empty_circuit )
                        .empty( ), true );
     BOOST_CHECK_EQUAL( circuit.synapses( Circuit::POSTSYNAPTICCONNECTIONS )
                        .empty( ), true );
+
+    BOOST_CHECK_EQUAL( circuit.synapses( Circuit::TDataType( -100 ) ).size( ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( test_circuit_add_synapse )
