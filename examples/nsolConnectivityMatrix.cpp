@@ -47,7 +47,7 @@ void usageMessage( char* programName )
 bool contactsNeurons( const NeuronsMap& neurons_, Circuit& circuit_,
                       Eigen::SparseMatrix< unsigned int >& contacts_ )
 {
-  std::set<SynapsePtr> synapses = std::move(circuit_.synapses( Circuit::ALL ));
+  std::set<SynapsePtr> synapses = circuit_.synapses( Circuit::ALL );
 
   unsigned int dim = neurons_.size();
 
@@ -145,7 +145,7 @@ int main( int argc, char* argv[ ])
   unsigned int count = 1;
 
   ofs << '"' << " X " << '"' << ";";
-  for( unsigned int col=0; col < contactsMatrix.cols(); ++col )
+  for( int col=0; col < contactsMatrix.cols(); ++col )
   {
     ofs << '"' << " Post " << count << '"' << ";";
 
@@ -154,10 +154,10 @@ int main( int argc, char* argv[ ])
   ofs << std::endl;
 
   count = 1;
-  for( unsigned int row=0; row < contactsMatrix.rows(); ++row )
+  for( int row=0; row < contactsMatrix.rows(); ++row )
   {
     ofs << '"' << "Pre " << count << '"' << ";";
-    for( unsigned int col=0; col < contactsMatrix.cols(); ++col )
+    for( int col=0; col < contactsMatrix.cols(); ++col )
     {
       ofs << '"' << contactsMatrix.coeff( row, col ) << '"' << ";";
     }

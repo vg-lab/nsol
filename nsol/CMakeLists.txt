@@ -52,8 +52,6 @@ set(NSOL_PUBLIC_HEADERS
   # templated classes at last
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
-  Factory.h
-  Reader/BBPSDKReader.h
   Reader/BrionReader.h
   Reader/SwcReader.h
   Reader/XmlSceneReader.h
@@ -107,9 +105,6 @@ if (BRION_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
 endif()
 
-if (BBPSDK_FOUND)
-  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC BBPSDK)
-endif()
 
 if (QT5CORE_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Qt5::Core)

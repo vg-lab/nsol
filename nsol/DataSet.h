@@ -36,7 +36,6 @@
 #include "MorphologySynapse.h"
 #include "Container/Columns.h"
 #include "Container/Sections.h"
-#include "Reader/BBPSDKReader.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
 
@@ -377,35 +376,6 @@ namespace nsol
                         COLUMN >( neuronIds );
     }
 
-#ifdef NSOL_USE_BBPSDK
-
-    template < class NODE = Node,
-               class SECTION = Section,
-               class DENDRITE = Dendrite,
-               class AXON = Axon,
-               class SOMA = Soma,
-               class NEURONMORPHOLOGY = NeuronMorphology,
-               class NEURON = Neuron,
-               class MINICOLUMN = MiniColumn,
-               class COLUMN = Column >
-    void loadFromBlueConfig(
-      const std::string& blueconfig,
-      const int loadFlags = MORPHOLOGY | CORTICAL_HIERARCHY,
-      const std::string& targetLabel = std::string( "" ))
-    {
-      std::cerr << "DataSet< >::loadFromBlueConfig is deprecated.\n"
-                << "Please use DataSet< >::loadBlueConfigHierarchy and\n"
-                << "DataSet< >::loadMorphologies" << std::endl;
-      BBPSDKReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
-                             COLUMN > reader;
-      reader.readFromBlueConfig( _columns,
-                                 _neurons,
-                                 blueconfig,
-                                 loadFlags,
-                                 targetLabel );
-    }
-#endif
 
     NSOL_API
     void unloadMorphologies( void );

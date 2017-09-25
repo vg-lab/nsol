@@ -235,6 +235,30 @@ namespace nsol
         }
       }
     }
+
+    unsigned int nodeId = 1;
+
+    for( auto node: soma->nodes( ))
+    {
+      node->id( ) = nodeId;
+      nodeId ++;
+    }
+
+    for( auto neurite: nsolMorpho->neurites( ))
+    {
+      neurite->firstSection( )->firstNode( )->id( ) = nodeId;
+      nodeId++;
+      for( auto section: neurite->sections( ))
+      {
+        auto nodes = section->nodes( );
+        for ( unsigned int i = 1; i < nodes.size( ); i++ )
+        {
+          nodes[i]->id( ) = nodeId;
+          nodeId ++;
+        }
+      }
+    }
+
     nsolMorpho->soma( soma );
 
     if ( reposition_ )

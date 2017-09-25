@@ -30,59 +30,28 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
 
   unsigned int i = 0;
 
-  for ( auto it = n->morphology( )->neurites( ).begin( );
-        it != n->morphology( )->neurites( ).end( ); it++ )
+  for ( const auto& neurite : n->morphology( )->neurites( ))
   {
     std::cout << "\tDendrite " << i++ << " type: "
-              <<  ( * it )->neuriteType( ) << " ";
+              <<  neurite->neuriteType( ) << " ";
 
-    if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
-      std::cout << NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ))
-        ->dendriteType( );
+    if ( neurite->neuriteType( ) == nsol::Neurite::DENDRITE )
+      std::cout << NSOL_DYNAMIC_CAST( nsol::Dendrite, neurite )->dendriteType( );
 
     std::cout << " surface: ";
 
-    if ( ( * it )->stats( ))
+    if ( neurite->stats( ))
     {
-      // nsol::Cached<> * cached =
-      //   NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * it )->stats( ));
-
-      // if ( cached )
-      //   std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
-      //                  ? "Clean" : "Dirty" );
-
-      std::cout << " " << ( * it )->stats( )->getStat(
+      std::cout << " " << neurite->stats( )->getStat(
         nsol::NeuriteStats::SURFACE ) << " ";
 
-      // if ( cached )
-      //   std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
-      //                  ? "Clean" : "Dirty" );
-
-      // std::cout << ", " << ( * it )->stats( )->surface( ) << " ";
-
-      // if ( cached )
-      //   std::cout  <<
-      //     ( ! cached->dirty( nsol::NeuriteCachedStats::SURFACE )
-      //       ? "Clean" : "Dirty" );
-
-      nsol::Sections sections = ( * it )->sections( );
+      const nsol::Sections& sections = neurite->sections( );
       std::cout << "[ ";
-      for ( auto sectionsIt = sections.begin( );
-            sectionsIt != sections.end( ); sectionsIt++ )
+      for ( const auto& section : sections )
       {
-        // cached =
-        //   NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * sectionsIt )->stats( ));
-
-        // if ( cached )
-        //   std::cout  <<
-        //     ( ! cached->dirty( nsol::SectionCachedStats::SURFACE )
-        //       ? "Clean, " : "Dirty, " );
-
-//        std::cout << ( * sectionsIt )->stats( )->surface( ) << " ";
-        std::cout << ( * sectionsIt )->stats( )->getStat(
-	  nsol::SectionStats::/*TSectionStat::*/SURFACE ) << " ";
+        std::cout << section->stats( )->getStat(
+          nsol::SectionStats::/*TSectionStat::*/SURFACE ) << " ";
       }
-//      delete sections;
 
       std::cout << "]";
     }
@@ -100,41 +69,38 @@ void PrintCachedSurfaceState( nsol::NeuronPtr n )
 
   unsigned int i = 0;
 
-  NSOL_CONST_FOREACH( it, n->morphology( )->neurites( ))
+  for ( const auto& neurite : n->morphology( )->neurites( ))
   {
     std::cout << "\tDendrite " << i++ << " type: "
-              <<  ( * it )->neuriteType( ) << " ";
+              <<  neurite->neuriteType( ) << " ";
 
-    if ( ( * it )->neuriteType( ) == nsol::Neurite::DENDRITE )
-      std::cout << NSOL_DYNAMIC_CAST( nsol::Dendrite, ( * it ))
+    if ( neurite->neuriteType( ) == nsol::Neurite::DENDRITE )
+      std::cout << NSOL_DYNAMIC_CAST( nsol::Dendrite, ( neurite ))
         ->dendriteType( );
 
     std::cout << " surface: ";
 
-    if ( ( * it )->stats( ))
+    if ( neurite->stats( ))
     {
       nsol::Cached<> * cached =
-        NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * it )->stats( ));
+        NSOL_DYNAMIC_CAST( nsol::Cached<>, neurite->stats( ));
 
       if ( cached )
         std::cout << ( !cached->dirty( nsol::NeuriteCachedStats::SURFACE )
                        ? "C" : "D" );
 
-      nsol::Sections sections = ( * it )->sections( );
+      nsol::Sections sections = neurite->sections( );
       std::cout << " [ ";
-      for ( auto sectionsIt = sections.begin( );
-            sectionsIt != sections.end( ); sectionsIt++ )
+      for ( const auto& section : sections )
       {
         cached =
-          NSOL_DYNAMIC_CAST( nsol::Cached<>, ( * sectionsIt )->stats( ));
+          NSOL_DYNAMIC_CAST( nsol::Cached<>, section->stats( ));
 
         if ( cached )
           std::cout  <<
             ( ! cached->dirty( nsol::SectionCachedStats::SURFACE )
               ? "C " : "D " );
       }
-//      delete sections;
-
       std::cout << "]";
     }
     else
@@ -179,32 +145,25 @@ int main ( int argc, char ** argv )
 
   std::cout << std::endl;
 
-  // ComputeAndPrintSurface( neuron );
-  // std::cout << std::endl;
+  std::cout << "Compute and print neuron stats when not available" << std::endl;
+  ComputeAndPrintSurface( neuron );
+  std::cout << std::endl;
 
-  // ComputeAndPrintSurface( neuronWithStats );
-  // std::cout << std::endl;
+  std::cout << "Compute and print neuron stats when not cacheable" << std::endl;
+  ComputeAndPrintSurface( neuronWithStats );
+  std::cout << std::endl;
 
+  std::cout << "Print cached stats" << std::endl;
   PrintCachedSurfaceState( neuronWithCachedStats );
   std::cout << std::endl;
 
+  std::cout << "Compute and print cacheable stats" << std::endl;
   ComputeAndPrintSurface( neuronWithCachedStats );
   std::cout << std::endl;
 
+  std::cout << "Print cached stats" << std::endl;
   PrintCachedSurfaceState( neuronWithCachedStats );
   std::cout << std::endl;
-
-  {
-    nsol::SectionPtr sectionWithCachedStats =
-      neuronWithCachedStats->morphology( )->neurites()[0]->firstSection( );
-
-    NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
-  }
-  {
-    nsol::SectionPtr sectionWithCachedStats =
-      neuronWithCachedStats->morphology( )->neurites()[1]->firstSection( );
-    NSOL_CHECK_THROW( sectionWithCachedStats, "No stats available" );
-  }
 
   PrintCachedSurfaceState( neuronWithCachedStats );
   std::cout << std::endl;

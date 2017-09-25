@@ -22,23 +22,22 @@
 
 #include <assert.h>
 
+#include <nsol/nsol.h>
 #include <iostream>
 
-using namespace nsol;
-using namespace std;
-
-int main( int argc, char* argv[ ])
+int main( int argc, char* argv[ ] )
 {
-  BrionReader r;
+  nsol::BrionReader r;
 
   if( argc < 2 )
   {
-    std::cerr << "Error: swc/hdf5 file parameter needed" << std::endl;
+    std::cerr << "Error: morphology input file parameter needed" << std::endl;
     return -1;
   }
-  cout << "Reading file " << argv[1] << endl;
 
-  NeuronPtr neuron = r.loadNeuron( std::string( argv[1] ), 1 );
+  std::cout << "Reading file " << argv[1] << std::endl;
+
+  nsol::NeuronPtr neuron = r.loadNeuron( std::string( argv[1] ), 1 );
 
   if( !neuron->morphology( ))
   {
@@ -57,12 +56,12 @@ int main( int argc, char* argv[ ])
             << std::endl;
 
   unsigned int neuriteId = 0;
-  for( auto neurite: neuron->morphology( )->neurites( ))
+  for( const auto& neurite: neuron->morphology( )->neurites( ))
   {
     std::cout << "\n**Neurite " << neuriteId << std::endl;
     neuriteId++;
     unsigned int sectionId = 0;
-    for( auto section: neurite->sections( ))
+    for( const auto& section: neurite->sections( ))
     {
       std::cout << "\n****Section " << sectionId << std::endl;
       sectionId++;

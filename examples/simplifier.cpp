@@ -30,14 +30,15 @@ void printMorpho( NeuronMorphologyPtr morpho )
 {
   for ( auto neurite: morpho->neurites( ))
   {
-    std::cout << "****Neurite****" << std::endl;
+    std::cout << "=== Neurite ===" << std::endl;
     for ( auto section: neurite->sections( ))
     {
-      std::cout << "Section********" << std::endl;
+      std::cout << "==== Section ===" << std::endl;
       for ( auto node: section->nodes( ))
       {
-        std::cout << "Node: " << node->id( ) << std::endl;
-        std::cout << "      " <<  node->point( ) << std::endl;
+        std::cout << "Node: " << node->id( );
+        std::cout << "      (" <<  node->point( ).transpose( ) << ")"
+                  << std::endl;
       }
     }
   }
@@ -47,7 +48,7 @@ int main( int argc, char* argv[ ])
 {
   if( argc < 2 )
   {
-    std::cerr << "Error: swc/hdf5 file parameters needed" << std::endl;
+    std::cerr << "Error: morphology file parameters needed" << std::endl;
     return -1;
   }
 
@@ -68,4 +69,6 @@ int main( int argc, char* argv[ ])
   morpho = Simplifier::Instance( )->simplify( morpho, Simplifier::DIST_NODES, 5, true );
 
   printMorpho( morpho );
+
+  return 0;
 }

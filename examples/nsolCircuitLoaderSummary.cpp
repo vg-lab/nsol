@@ -89,11 +89,9 @@ int main( int argc, char* argv[ ])
   NeuronsMap neuronsMap = dataSet.neurons();
   Circuit circuit = dataSet.circuit();
 
-  std::set<SynapsePtr> synapses = std::move(circuit.synapses
-                                           ( Circuit::PRESYNAPTICCONNECTIONS ));
-
   std::cout << "-     SUMMARY OF CONNECTIVITY DATA     -"<< std::endl;
-  std::cout << "  - Number of synapses: "<< synapses.size() << std::endl;
+  std::cout << "  - Number of synapses: "<< circuit.synapses
+                  ( Circuit::PRESYNAPTICCONNECTIONS ).size() << std::endl;
   std::cout << "  - Number of neurons: "<< neuronsMap.size() << std::endl;
 
   unsigned int totalSynapsesPerNeuron = 0;
@@ -102,12 +100,9 @@ int main( int argc, char* argv[ ])
 
   for( const auto& pair: neuronsMap )
   {
-    std::set<SynapsePtr> preSynapses = std::move(circuit.synapses
-                               ( pair.first, Circuit::PRESYNAPTICCONNECTIONS ));
-    std::set<SynapsePtr> postSynapses = std::move(circuit.synapses
-                              ( pair.first, Circuit::POSTSYNAPTICCONNECTIONS ));
-
-    unsigned int numSynapses = preSynapses.size() + postSynapses.size();
+    unsigned int numSynapses =
+        circuit.synapses( pair.first, Circuit::PRESYNAPTICCONNECTIONS ).size() +
+        circuit.synapses( pair.first, Circuit::POSTSYNAPTICCONNECTIONS ).size();
 
     if( numSynapses >  maxSynapsesPerNeurons)
      maxSynapsesPerNeurons = numSynapses;

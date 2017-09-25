@@ -28,17 +28,6 @@
 
 int main ( int argc, char ** argv )
 {
-
-
-  // nsol::NeuritePtr n1 = new nsol::Axon;
-  // nsol::NeuritePtr n2 = new nsol::AxonStats;
-
-  // std::cout << n1->neuriteType( ) << " " << n1->stats( ) << std::endl;
-  // std::cout << n2->neuriteType( ) << " " << n2->stats( )->surface( ) << std::endl;
-
-  // return 0;
-
-
   std::cout << std::endl;
 
   if ( argc < 2 )
@@ -98,8 +87,8 @@ int main ( int argc, char ** argv )
   NSOL_CHECK_THROW( sectionCached, "non cached section" );
 
 
-#define PRINT_SURFACE_DIRTY_STATE( section )                    \
-  (( section->dirty(nsol::SectionCachedStats::SURFACE) ) ?      \
+#define PRINT_SURFACE_DIRTY_STATE( section )                \
+  (( section->dirty(nsol::SectionCachedStats::SURFACE) ) ?  \
    "Dirty" : "Clean" )
 
 
@@ -110,19 +99,19 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tNon cached section: "
             << sectionWithStats->stats( )->getStat(
-	         nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+              nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-	         nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-	         nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -132,7 +121,7 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-                 nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
@@ -183,43 +172,40 @@ int main ( int argc, char ** argv )
   std::cout << std::endl;
 
 
+  // Print stats of each neurite
   int j = 0;
-  NSOL_FOREACH( neurite, neuronWithCachedStats->morphology( )->neurites( ))
+  for ( const auto& neurite : neuronWithCachedStats->morphology( )->neurites( ))
   {
     std::cout << "Neurite " << j << std::endl;
 
     std::stack< nsol::SectionPtr > sSP;
 
-    nsol::SectionPtr section = (*neurite)->firstSection( );
+    nsol::SectionPtr neuriteSection = neurite->firstSection( );
 
-    sSP.push( section );
+    sSP.push( neuriteSection );
 
     int k = 0;
-    while( !sSP.empty( ))
+    while ( !sSP.empty( ))
     {
-      section = sSP.top( );;
+      neuriteSection = sSP.top( );;
       sSP.pop( );
 
       std::cout << "  Section " << k << std::endl;
-      std::cout << "    Surface " << section->stats( )->getStat(
-          nsol::SectionStats::SURFACE ) << std::endl;
-      std::cout << "    Volumne " << section->stats( )->getStat(
-          nsol::SectionStats::VOLUME ) << std::endl;
-      std::cout << "    Length " << section->stats( )->getStat(
-          nsol::SectionStats::LENGTH ) << std::endl;
+      std::cout << "    Surface " << neuriteSection->stats( )->getStat(
+        nsol::SectionStats::SURFACE ) << std::endl;
+      std::cout << "    Volumne " << neuriteSection->stats( )->getStat(
+        nsol::SectionStats::VOLUME ) << std::endl;
+      std::cout << "    Length " << neuriteSection->stats( )->getStat(
+        nsol::SectionStats::LENGTH ) << std::endl;
 
 
       if ( section->children( ).size( ) > 0 )
-      {
-        NSOL_FOREACH( sec, section->children( ))
-        {
-          sSP.push( *sec );
-        }
-      }
-      k ++;
+        for ( const auto& sec : section->children( ))
+          sSP.push( sec );
+      ++k;
     }
 
-    j ++;
+    ++j;
   }
 
   return 0;

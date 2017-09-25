@@ -1,70 +1,66 @@
 if ( NSOL_WITH_EXAMPLES )
+
   add_executable(nsolSwcReader SwcReader.cpp)
   target_link_libraries(nsolSwcReader nsol)
 
-if(BRION_FOUND)
-  add_executable(nsolBrionReaderFile BrionReaderFile.cpp)
-  target_link_libraries(nsolBrionReaderFile nsol)
+  if( BRION_FOUND )
+    set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
+    set( NSOLBRIONMORPHOLOGYREADER_LINK_LIBRARIES nsol )
+    common_application( nsolBrionMorphologyReader )
 
-  add_executable(nsolBrionCircuitLoader brionCircuitLoader.cpp)
-  target_link_libraries(nsolBrionCircuitLoader nsol)  
+    set( NSOLBRIONCIRCUITLOADER_SOURCES brionCircuitLoader.cpp )
+    set( NSOLBRIONCIRCUITLOADER_LINK_LIBRARIES nsol )
+    common_application( nsolBrionCircuitLoader )
 
-  add_executable(nsolConnectivityMatrix nsolConnectivityMatrix.cpp)
-  target_link_libraries(nsolConnectivityMatrix nsol)
+    set( NSOLCONNECTIVITYMATRIX_SOURCES nsolConnectivityMatrix.cpp )
+    set( NSOLCONNECTIVITYMATRIX_LINK_LIBRARIES nsol )
+    common_application( nsolConnectivityMatrix )
 
-  add_executable(nsolCircuitLoaderSummary nsolCircuitLoaderSummary.cpp)
-  target_link_libraries(nsolCircuitLoaderSummary nsol)
-endif()
+    set( NSOLCIRCUITLOADERSUMMARY_SOURCES nsolCircuitLoaderSummary.cpp )
+    set( NSOLCIRCUITLOADERSUMMARY_LINK_LIBRARIES nsol )
+    common_application( nsolCircuitLoaderSummary )
+  endif( )
 
-  if (BBPSDK_FOUND)
-    add_executable(nsolBBPSDKLoader BBPSDKLoader.cpp)
-    target_link_libraries(nsolBBPSDKLoader nsol)
-    add_definitions(-DWITH_BBPSDK)
-  endif()
+  set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )
+  set( NSOLEXTRACTNEURONSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolExtractNeuronStats )
 
-  add_executable(nsolExtractNeuronStats nsolExtractNeuronStats.cpp)
-  target_link_libraries(nsolExtractNeuronStats nsol)
+  set( NSOLSECTIONSTATS_SOURCES sectionStats.cpp )
+  set( NSOLSECTIONSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolSectionStats )
 
-  add_executable(nsolExample1 example1.cpp)
-  target_link_libraries(nsolExample1 nsol)
+  set( NSOLRADIUSSTAT_SOURCES radiusStat.cpp )
+  set( NSOLRADIUSSTAT_LINK_LIBRARIES nsol )
+  common_application( nsolRadiusStat )
 
-  add_executable(nsolExample2 example2.cpp)
-  target_link_libraries(nsolExample2 nsol)
+  set( NSOLNEURITESTATS_SOURCES neuriteStats.cpp )
+  set( NSOLNEURITESTATS_LINK_LIBRARIES nsol )
+  common_application( nsolNeuriteStats )
 
-  add_executable(nsolSectionStats sectionStats.cpp)
-  target_link_libraries(nsolSectionStats nsol)
+  set( NSOLNEURONSTATS_SOURCES neuronStats.cpp )
+  set( NSOLNEURONSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolNeuronStats )
 
-  add_executable(nsolRadiusStat radiusStat.cpp)
-  target_link_libraries(nsolRadiusStat nsol)
+  set( NSOLMINICOLUMNSTATS_SOURCES miniColumnStats.cpp )
+  set( NSOLMINICOLUMNSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolMiniColumnStats )
 
-  add_executable(nsolNeuriteStats neuriteStats.cpp)
-  target_link_libraries(nsolNeuriteStats nsol)
+  set( NSOLDATASET_SOURCES dataset.cpp )
+  set( NSOLDATASET_LINK_LIBRARIES nsol )
+  common_application( nsolDataset )
 
-  add_executable(nsolNeuronStats neuronStats.cpp)
-  target_link_libraries(nsolNeuronStats nsol)
+  set( NSOLSIMPLIFIER_SOURCES simplifier.cpp )
+  set( NSOLSIMPLIFIER_LINK_LIBRARIES nsol )
+  common_application( nsolSimplifier )
 
-  add_executable(nsolMiniColumnStats miniColumnStats.cpp)
-  target_link_libraries(nsolMiniColumnStats nsol)
-
-  add_executable(nsolFactory factory.cpp)
-  target_link_libraries(nsolFactory nsol)
-
-  add_executable(nsolDataset dataset.cpp)
-  target_link_libraries(nsolDataset nsol)
-
-  add_executable(nsolSimplifier simplifier.cpp)
-  target_link_libraries(nsolSimplifier nsol)
-
-
-  set(NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
-  set(NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )
+  set( NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
+  set( NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )
   common_application( nsolBlueConfig2XmlScene )
 
-  if (QT5CORE_FOUND)
-    add_executable(nsolScene scene.cpp)
-    target_link_libraries(nsolScene
-      ${NSOL_LINK_LIBRARIES}
-      nsol
-   )
+  if ( QT5CORE_FOUND )
+    set( NSOLSCENE_SOURCES scene.cpp )
+    set( NSOLSCENE_LINK_LIBRARIES nsol )
+    common_application( nsolScene )
   endif( )
-endif( )
+
+endif( NSOL_WITH_EXAMPLES )
