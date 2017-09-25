@@ -1,8 +1,6 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Author <author@urjc.es>
- *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
  * This library is free software; you can redistribute it and/or modify it under

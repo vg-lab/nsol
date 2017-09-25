@@ -63,7 +63,10 @@ BOOST_AUTO_TEST_CASE( test_circuit_add_synapse )
     BOOST_CHECK_EQUAL( circuit->synapses( ).at( 0 )->weight( ), 1.0f );
 
     // Free dymanic memory used
+<<<<<<< HEAD
     NSOL_DELETE_PTR( synapse );
+=======
+>>>>>>> 0f09be7c2402e5cb08f8707a6691de5be320be47
     NSOL_DELETE_PTR( circuit );
 }
 
@@ -161,12 +164,18 @@ BOOST_AUTO_TEST_CASE( test_circuit_synapses )
     gidsNeurons.insert( 4 );
 
     BOOST_CHECK_EQUAL( circuit->synapses( gidsNeurons,
+<<<<<<< HEAD
                                 Circuit::POSTSYNAPTICCONNECTIONS ).size( ), 3 );
 
     // Free dymanic memory used
     NSOL_DELETE_PTR( synapse1 );
     NSOL_DELETE_PTR( synapse2 );
     NSOL_DELETE_PTR( synapse3 );
+=======
+                       Circuit::POSTSYNAPTICCONNECTIONS ).size( ), 3 );
+
+    // Free dymanic memory used
+>>>>>>> 0f09be7c2402e5cb08f8707a6691de5be320be47
     NSOL_DELETE_PTR( circuit );
 }
 
