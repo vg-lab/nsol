@@ -37,6 +37,10 @@ BOOST_AUTO_TEST_CASE( test_object )
 {
   nsol::ObjectPtr obj = new nsol::Object;
   CHECK_AS( obj, 0, 0, 0, 0, 0, 0 );
+
+  nsol::ObjectPtr obj2 = obj->create( );
+  CHECK_AS( obj2, 0, 0, 0, 0, 0, 0 );
+  delete obj2;
   delete obj;
 
   obj = new nsol::Column;
@@ -64,4 +68,10 @@ BOOST_AUTO_TEST_CASE( test_object )
   delete obj;
 
 
+}
+
+BOOST_AUTO_TEST_CASE( test_valid_aggregation )
+{
+  BOOST_CHECK( validAggregation( nsol::TAggregation::TOTAL ) );
+  BOOST_CHECK( !validAggregation( nsol::TAggregation( -100 )));
 }

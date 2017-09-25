@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( test_object_with_properties )
   BOOST_CHECK( o.properties( ) ==  nullptr );
 
   nsol::ObjectWithProperties owp1;
-  nsol::ObjectPtr owp2 = new nsol::ObjectWithProperties;
+  nsol::ObjectPtr owp2 = owp1.create( ); // Same as new nsol::ObjectWithProperties;
 
 #ifdef NSOL_USE_FIRES
 

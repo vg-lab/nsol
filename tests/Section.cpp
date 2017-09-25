@@ -34,6 +34,20 @@ BOOST_AUTO_TEST_CASE( section_constructor )
   BOOST_CHECK( !section.parent( ));
   BOOST_CHECK_EQUAL( section.nodes( ).size( ), 0 );
 
+  BOOST_CHECK_EQUAL( section.id( ), 0 );
+
+  const unsigned int newId  = 1;
+  section.id( newId );
+  BOOST_CHECK_EQUAL( section.id( ), newId );
+
+  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
+
+  Section const section2;
+  BOOST_CHECK_EQUAL( section2.children( ).size( ), 0 );
+
+  BOOST_CHECK( section.firstNode( ) == nullptr );
+  BOOST_CHECK( section.lastNode( ) == nullptr );
+
 }
 
 BOOST_AUTO_TEST_CASE( section_clone )
@@ -108,4 +122,10 @@ BOOST_AUTO_TEST_CASE( section_operators )
   BOOST_CHECK( section != *section2 );
   BOOST_CHECK( *section1 != *section2 );
 
+}
+
+BOOST_AUTO_TEST_CASE( section_stats)
+{
+  Section s;
+  BOOST_CHECK( s.stats( ) == nullptr );
 }

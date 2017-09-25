@@ -34,10 +34,31 @@ BOOST_AUTO_TEST_CASE( neurite_constructor )
   Neurite* neurite = new Neurite( );
 
   BOOST_CHECK_EQUAL( neurite->neuriteType( ), 0 );
+  BOOST_CHECK( !neurite->hasMorphology( ));
   BOOST_CHECK( !neurite->morphology( ));
   BOOST_CHECK( !neurite->firstSection( ));
   BOOST_CHECK_EQUAL( neurite->numBranches( ), 0 );
   BOOST_CHECK_EQUAL( neurite->numBifurcations( ), 0 );
+}
+
+
+BOOST_AUTO_TEST_CASE( neurite_type )
+{
+  {
+    std::ostringstream out;
+    out << Neurite::DENDRITE;
+    BOOST_CHECK_EQUAL( out.str( ), "DENDRITE" );
+  }
+  {
+    std::ostringstream out;
+    out << Neurite::AXON;
+    BOOST_CHECK_EQUAL( out.str( ), "AXON" );
+  }
+  {
+    std::ostringstream out;
+    out << Neurite::TNeuriteType( -100 );
+    BOOST_CHECK_EQUAL( out.str( ), "UNDEFINED" );
+  }
 }
 
 BOOST_AUTO_TEST_CASE( neurite_clone )
@@ -120,5 +141,11 @@ BOOST_AUTO_TEST_CASE( neurite_operators )
 
   BOOST_CHECK( *neurite == *neurite );
   BOOST_CHECK( *neurite1 == *neurite1 );
-  BOOST_CHECK( *neurite != *neurite1);
+  BOOST_CHECK( *neurite != *neurite1 );
+}
+
+BOOST_AUTO_TEST_CASE( neurite_stats)
+{
+  Neurite* neurite = new Neurite( );
+  BOOST_CHECK( neurite->stats( ) == nullptr );
 }

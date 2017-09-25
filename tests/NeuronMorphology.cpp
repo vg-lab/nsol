@@ -32,11 +32,12 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_constructor )
     NeuronMorphology neuronMorphology;
     BOOST_CHECK( neuronMorphology.soma() == nullptr );
     BOOST_CHECK_EQUAL( neuronMorphology.neurites( ).size( ), 0 );
+    BOOST_CHECK_EQUAL( neuronMorphology.parentNeurons( ).size( ), 0 );
   }
   {
-    NeuronMorphology neuronMorphology( nullptr );
-    BOOST_CHECK( neuronMorphology.soma() ==  nullptr );
+    NeuronMorphology const neuronMorphology( nullptr );
     BOOST_CHECK_EQUAL( neuronMorphology.neurites( ).size( ), 0 );
+    BOOST_CHECK_EQUAL( neuronMorphology.parentNeurons( ).size( ), 0 );
   }
 }
 
@@ -72,6 +73,59 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_operators )
 #endif
 
   BOOST_CHECK( neuronMorphology1 == neuronMorphology1 );
+
+  BOOST_CHECK( *neuronMorphology1 == *neuronMorphology1 );
+  BOOST_CHECK( *neuronMorphology2 != *neuronMorphology1 );
+
   BOOST_CHECK( neuronMorphology2 == neuronMorphology2 );
   BOOST_CHECK( neuronMorphology1 != neuronMorphology2 );
+}
+
+
+BOOST_AUTO_TEST_CASE( neuronMorphology_dentrites )
+{
+  NeuronMorphologyPtr neuronMorphology;
+
+#ifdef NSOL_USE_BRION
+  BrionReader brionReader;
+  neuronMorphology = brionReader.loadMorphology( "ExampleNeuron.swc" );
+#else
+  SwcReader swcReader;
+  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+#endif
+
+  auto basalDendrites = neuronMorphology->basalDendrites( );
+  auto apicalDendrites = neuronMorphology->apicalDendrites( );
+
+  uint32_t num_neurites = neuronMorphology->neurites( ).size( );
+  uint32_t num_dendrites = neuronMorphology->dendrites( )->size( );
+  uint32_t num_basals = basalDendrites->size( );
+  uint32_t num_apicals = apicalDendrites->size( );
+
+  BOOST_CHECK_EQUAL( num_neurites, 6);
+  BOOST_CHECK_EQUAL( num_dendrites, 5);
+  BOOST_CHECK_EQUAL( num_basals + num_apicals, num_dendrites);
+  BOOST_CHECK_EQUAL( num_basals, 4);
+  BOOST_CHECK_EQUAL( num_apicals, 1);
+
+  BOOST_CHECK( neuronMorphology->apicalDendrite( ) != nullptr );
+  BOOST_CHECK( neuronMorphology->axon( ) != nullptr );
+
+  BOOST_CHECK_EQUAL( neuronMorphology, neuronMorphology );
+
+  BOOST_CHECK_EQUAL( neuronMorphology->parentNeurons( ).size( ), 0 );
+
+
+
+  const NeuronMorphologyPtr neuronMorphology2 = new NeuronMorphology( );
+  BOOST_CHECK( neuronMorphology2->apicalDendrite( ) == nullptr );
+  BOOST_CHECK( neuronMorphology2->axon( ) == nullptr );
+  BOOST_CHECK_EQUAL( neuronMorphology2->neurites( ).size( ), 0 );
+}
+
+
+BOOST_AUTO_TEST_CASE( neuronmorphology_stats)
+{
+  NeuronMorphology nm;
+  BOOST_CHECK( nm.stats( ) == nullptr );
 }

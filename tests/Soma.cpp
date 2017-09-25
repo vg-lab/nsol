@@ -37,8 +37,13 @@ BOOST_AUTO_TEST_CASE( soma_constructor )
 
   BOOST_CHECK_EQUAL( soma.nodes( ).size( ), 0 );
   BOOST_CHECK_EQUAL( soma.center( ), CENTER );
+  BOOST_CHECK( std::isnan( soma.minRadius( ) ) );
   BOOST_CHECK_EQUAL( soma.maxRadius( ), MAX_RADIUS );
   BOOST_CHECK_EQUAL( soma.meanRadius( ), MEAN_RADIUS );
+
+
+  soma.center( CENTER );
+  BOOST_CHECK_EQUAL( soma.center( ), CENTER );
 
 }
 
@@ -92,4 +97,10 @@ BOOST_AUTO_TEST_CASE( soma_operators )
   BOOST_CHECK( soma1 != soma2 );
   BOOST_CHECK( soma1 != soma3 );
   BOOST_CHECK( soma2 != soma3 );
+}
+
+BOOST_AUTO_TEST_CASE( soma_stats)
+{
+  Soma s;
+  BOOST_CHECK( s.stats( ) == nullptr );
 }
