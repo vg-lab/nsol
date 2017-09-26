@@ -24,6 +24,8 @@
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
+#include <cmath>
+
 using namespace nsol;
 
 #define CENTER Vec3f( 0.0f, 0.0f, 0.0f )
@@ -37,7 +39,6 @@ BOOST_AUTO_TEST_CASE( soma_constructor )
 
   BOOST_CHECK_EQUAL( soma.nodes( ).size( ), 0 );
   BOOST_CHECK_EQUAL( soma.center( ), CENTER );
-  BOOST_CHECK( std::isnan( soma.minRadius( ) ) );
   BOOST_CHECK_EQUAL( soma.maxRadius( ), MAX_RADIUS );
   BOOST_CHECK_EQUAL( soma.meanRadius( ), MEAN_RADIUS );
 
@@ -102,5 +103,5 @@ BOOST_AUTO_TEST_CASE( soma_operators )
 BOOST_AUTO_TEST_CASE( soma_stats)
 {
   Soma s;
-  BOOST_CHECK( s.stats( ) == nullptr );
+  BOOST_CHECK_EQUAL( s.stats( ) == nullptr, true );
 }

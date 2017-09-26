@@ -31,7 +31,6 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_constructors )
   {
      MorphologySynapse synapse;
 
-
      BOOST_CHECK_EQUAL( synapse.preSynapticSurfacePosition( ),
                         Vec3f( 0.0f, 0.0f, 0.0f ));
      BOOST_CHECK_EQUAL( synapse.postSynapticSurfacePosition( ),
@@ -73,7 +72,6 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_constructors )
                         synapse2.preSynapticSurfacePosition( ));
      BOOST_CHECK_EQUAL( synapse1.postSynapticSurfacePosition( ),
                         synapse2.postSynapticSurfacePosition( ));
-
     }
 }
 

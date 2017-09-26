@@ -97,10 +97,10 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_dentrites )
   auto basalDendrites = neuronMorphology->basalDendrites( );
   auto apicalDendrites = neuronMorphology->apicalDendrites( );
 
-  uint32_t num_neurites = neuronMorphology->neurites( ).size( );
-  uint32_t num_dendrites = neuronMorphology->dendrites( )->size( );
-  uint32_t num_basals = basalDendrites->size( );
-  uint32_t num_apicals = apicalDendrites->size( );
+  size_t num_neurites = neuronMorphology->neurites( ).size( );
+  size_t num_dendrites = neuronMorphology->dendrites( )->size( );
+  size_t num_basals = basalDendrites->size( );
+  size_t num_apicals = apicalDendrites->size( );
 
   BOOST_CHECK_EQUAL( num_neurites, 6);
   BOOST_CHECK_EQUAL( num_dendrites, 5);

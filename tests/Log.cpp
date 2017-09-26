@@ -30,21 +30,23 @@ using namespace nsol;
 
 BOOST_AUTO_TEST_CASE( logger_levels )
 {
-	Log::setLogLevel( TLogLevel::LOG_LEVEL_ERROR );
+    Log::setLogLevel( TLogLevel::LOG_LEVEL_ERROR );
 
-	BOOST_CHECK_EQUAL( Log::logLevel( ), TLogLevel::LOG_LEVEL_ERROR );
+    BOOST_CHECK_EQUAL( Log::logLevel( ), TLogLevel::LOG_LEVEL_ERROR );
 
-	BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_ERROR, 
-		Log::stringToLogLevel( "ERROR" ) );
+    std::string ERROR( "ERROR" );
+    std::string WARNING( "WARNING" );
+    std::string VERBOSE( "VERBOSE" );
+    std::string LEVEL_UNKNOWN( "" );
 
-	BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_WARNING, 
-		Log::stringToLogLevel( "WARNING" ) );
-
-	BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_VERBOSE, 
-		Log::stringToLogLevel( "VERBOSE" ) );
-
-	BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_UNKNOWN, 
-		Log::stringToLogLevel( "" ) );
+    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_ERROR,
+                       Log::stringToLogLevel( ERROR ) );
+    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_WARNING,
+                       Log::stringToLogLevel( WARNING ) );
+    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_VERBOSE,
+                       Log::stringToLogLevel( VERBOSE ) );
+    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_UNKNOWN,
+                       Log::stringToLogLevel( LEVEL_UNKNOWN ) );
 }
 
 std::string toString( const std::ostream& str )
