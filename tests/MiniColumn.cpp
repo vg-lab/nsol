@@ -311,3 +311,10 @@ BOOST_AUTO_TEST_CASE( numberOfNeurons )
 
 
 }
+
+
+BOOST_AUTO_TEST_CASE( minicolumn_stats)
+{
+  nsol::MiniColumnPtr mc ( new nsol::MiniColumn );
+  BOOST_CHECK( mc->stats( ) == nullptr );
+}

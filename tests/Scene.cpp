@@ -104,6 +104,11 @@ BOOST_AUTO_TEST_CASE( load_scene )
   BOOST_CHECK_EQUAL( ds.columns( ).size( ), 0 );
   BOOST_CHECK_EQUAL( ds.neurons( ).size( ), 0 );
 
+  BOOST_CHECK_EQUAL( ds.circuit( ).synapses( ).empty( ), true );
+
+  DataSet const ds2;
+
+  BOOST_CHECK_EQUAL( ds2.circuit( ).synapses( ).empty( ), true );
 }
 
 BOOST_AUTO_TEST_CASE( write_scene )
@@ -122,5 +127,28 @@ BOOST_AUTO_TEST_CASE( write_scene )
 
   ds.loadXmlScene( NSOL_SCENE_TEST_OUT );
   checkScene( ds );
+}
+class TestDataSetLoader : public DataSet
+{
+public:
+  bool hasMorphologies( void )
+  {
+    return !_morphologies.empty( );
+  }
+  bool hasNeurons( void )
+  {
+    return !_neurons.empty( );
+  }
+};
+BOOST_AUTO_TEST_CASE( unload_scene )
+{
+  TestDataSetLoader tl;
+  tl.loadXmlScene( NSOL_XML_SCENE_TEST_DATA );
+  checkScene( tl );
+  tl.close( );
 
+  tl.unloadMorphologies( );
+
+  BOOST_CHECK( !tl.hasMorphologies( ) );
+  BOOST_CHECK( !tl.hasNeurons( ) );
 }

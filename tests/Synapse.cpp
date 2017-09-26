@@ -59,3 +59,19 @@ BOOST_AUTO_TEST_CASE( synapse_operator )
    BOOST_CHECK_EQUAL( synapse1.preSynapticNeuron( ), 1 );
    BOOST_CHECK_EQUAL( synapse1.postSynapticNeuron( ), 2 );
 }
+
+BOOST_AUTO_TEST_CASE( synapse_asign )
+{
+  {
+    Synapse synapse;
+    synapse.weight( 2.f );
+    synapse.preSynapticNeuron( 1 );
+    synapse.postSynapticNeuron( 2 );
+
+    Synapse synapse1;
+    synapse1 = synapse;
+    BOOST_CHECK_EQUAL( synapse1.weight( ), 2.f );
+    BOOST_CHECK_EQUAL( synapse1.preSynapticNeuron( ), 1 );
+    BOOST_CHECK_EQUAL( synapse1.postSynapticNeuron( ), 2 );
+  }
+}

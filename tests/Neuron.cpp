@@ -48,6 +48,9 @@ BOOST_AUTO_TEST_CASE( neuron_constructor )
     BOOST_CHECK_EQUAL( neuron.morphologicalType( ), Neuron::PYRAMIDAL );
     BOOST_CHECK_EQUAL( neuron.functionalType( ),
         Neuron::INHIBITORY );
+
+    neuron.miniColumn( nullptr );
+    BOOST_CHECK( neuron.miniColumn( ) == nullptr );
   }
 }
 
