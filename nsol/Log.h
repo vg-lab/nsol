@@ -93,7 +93,7 @@ namespace nsol
                      std::ostream& stream,
                      const TLogLevel level = LOG_LEVEL_VERBOSE );
 
-
+    NSOL_API
     static TLogLevel stringToLogLevel( std::string logLevelString );
   protected:
 
