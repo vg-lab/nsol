@@ -60,16 +60,18 @@ else()
   set( NSOL_OPTS_FIND_ARGS "" )
 endif()
 
-
 include(Common)
 
 common_find_package(Boost COMPONENTS unit_test_framework)
 common_find_package(Eigen3 SYSTEM REQUIRED)
+common_find_package(HDF5 SYSTEM REQUIRED COMPONENTS C CXX)
 common_find_package(Qt5Core)
 common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
 common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
 
 list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
+list(APPEND NSOL_LINK_LIBRARIES PUBLIC ${HDF5_LIBRARIES})
+list(APPEND NSOL_PUBLIC_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIRS})
 
 if(FIRES_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES FiReS)

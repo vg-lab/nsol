@@ -14,6 +14,8 @@
 
 #include "NsolTypes.h"
 
+#include <set>
+
 namespace nsol
 {
 
@@ -60,6 +62,22 @@ namespace nsol
       TSimplificationMethod simplMethod_ = DELETE_ALL,
       float tolerance_ = 0.1,
       bool clone_ = false );
+
+    /**
+     * Method to simplify the morphology given by the simplification function
+     * selected, the simplification can be made over the original given
+     * morphology or over a clone of this morphology
+     * @param ngvMorpho_ neuro glia vasculature morphology to simplify
+     * @param simplMethod_ to select the function used to simplify
+     * @param tolerance_ used for different simplification function
+     * @param clone_ if true the morphology is clone before the simplification
+     *        if false the simplification is made over the orignal morphology
+     */
+    NSOL_API
+    NGVMorphologyPtr simplify(
+      NGVMorphologyPtr ngvMorpho_,
+      TSimplificationMethod simplMethod_ = DIST_NODES_RADIUS,
+      float tolerance_ = 0.1 );
 
 
     /**
@@ -114,6 +132,9 @@ namespace nsol
 
     void _cutoutSection( SectionPtr section_ );
 
+    void _groupSections( NGVSectionPtr section_,
+                         std::set< NGVSectionPtr >& uniqueSections_ );
+
 
     /** @name Simplification functions */
     ///@{
@@ -125,7 +146,13 @@ namespace nsol
                                     float tolerance_ );
 
     static void _simplSecDistNodesRadius( SectionPtr section_,
-                                    float tolerance_ );
+                                          float tolerance_ );
+
+    static void _simplNGVSecDistNodes( NGVSectionPtr section_,
+                                       float tolerance_ );
+
+    static void _simplNGVSecDistNodesRadius( NGVSectionPtr section_,
+                                             float tolerance_ );
 
     static void _simplSecMinAngle( SectionPtr section_,
                                    float tolerance_ );

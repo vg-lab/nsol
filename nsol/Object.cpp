@@ -31,6 +31,16 @@ namespace nsol
     return nullptr;
   }
 
+  NGVMorphologyPtr Object::asNGVMorphology( void )
+  {
+    return nullptr;
+  }
+
+  NGVSectionPtr Object::asNGVSection( void )
+  {
+    return nullptr;
+  }
+
   SectionPtr Object::asSection( void )
   {
     return nullptr;

@@ -46,6 +46,9 @@ if ( NSOL_WITH_EXAMPLES )
   add_executable(nsolSimplifier simplifier.cpp)
   target_link_libraries(nsolSimplifier nsol)
 
+  add_executable(nsolHDF5ReaderFile HDF5ReaderFile.cpp)
+  target_link_libraries(nsolHDF5ReaderFile nsol)
+
 
   set(NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
   set(NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )

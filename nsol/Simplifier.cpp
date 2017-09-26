@@ -1,6 +1,7 @@
 #include "Simplifier.h"
 
 #include "NeuronMorphology.h"
+#include "NGVMorphology.h"
 #include "Container/Nodes.h"
 #include "ImportanceNode.h"
 
@@ -62,6 +63,46 @@ namespace nsol
       {
         function( section, tolerance_ );
       }
+    return morpho;
+  }
+
+
+  NGVMorphologyPtr Simplifier::simplify( NGVMorphologyPtr ngvMorpho_,
+                                         TSimplificationMethod simplMethod_,
+                                         float tolerance_ )
+  {
+    NGVMorphologyPtr morpho = ngvMorpho_;
+
+    typedef void (*func)( NGVSectionPtr, float ) ;
+
+    func function = nullptr;
+
+    switch( simplMethod_ )
+    {
+    case 1:
+      function = Simplifier::_simplNGVSecDistNodes;
+      break;
+    case 2:
+      function = Simplifier::_simplNGVSecDistNodesRadius;
+      break;
+    default:
+      break;
+    }
+
+    if ( !function )
+      return morpho;
+
+    std::set< NGVSectionPtr > uniqueSections;
+    for ( auto section: morpho->sections( ))
+    {
+      uniqueSections.insert( section );
+      _groupSections( section, uniqueSections );
+    }
+
+    for ( auto section: uniqueSections)
+    {
+      function( section, tolerance_ );
+    }
     return morpho;
   }
 
@@ -282,6 +323,27 @@ namespace nsol
     }
   }
 
+  void Simplifier::_groupSections( NGVSectionPtr section_,
+                                   std::set< NGVSectionPtr >& uniqueSections_ )
+  {
+    for ( auto section : section_->backwardNeighbors( ))
+    {
+      if ( uniqueSections_.find( section ) == uniqueSections_.end( ))
+      {
+        uniqueSections_.insert( section );
+        _groupSections( section, uniqueSections_ );
+      }
+    }
+    for ( auto section : section_->forwardNeighbors( ))
+    {
+      if ( uniqueSections_.find( section ) == uniqueSections_.end( ))
+      {
+        uniqueSections_.insert( section );
+        _groupSections( section, uniqueSections_ );
+      }
+    }
+  }
+
   void Simplifier::_simplSecDeleteAll( SectionPtr section_,
                                        float /*tolerance_*/ )
   {
@@ -336,6 +398,72 @@ namespace nsol
       }
       distancePre = distancePost;
       maxRadiusPre = maxRadiusPost;
+    }
+  }
+
+  void Simplifier::_simplNGVSecDistNodes( NGVSectionPtr section_,
+                                          float tolerance_ )
+  {
+    Nodes* nodes = &section_->nodes( );
+    for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
+    {
+      float distance =
+        ((*nodes)[i-1]->point( ) - (*nodes)[i]->point( )).norm( );
+      if ( distance < tolerance_ )
+      {
+        delete (*nodes)[i];
+        nodes->erase( nodes->begin( ) + i );
+        i--;
+      }
+    }
+  }
+
+  void Simplifier::_simplNGVSecDistNodesRadius( NGVSectionPtr section_,
+                                                float /*tolerance_*/ )
+  {
+    Nodes* nodes = &section_->nodes( );
+    if ( nodes->size(  ) < 3 )
+      return;
+    for ( unsigned int i = 1; i < nodes->size( ) - 1; i++ )
+    {
+      if ( nodes->size( ) < 3 )
+        break;
+      auto distPre = ((*nodes)[i]->point( ) - (*nodes)[i-1]->point( )).norm( );
+      auto distPost = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
+      auto maxRadiusPre =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i - 1]->radius( ));
+      auto maxRadiusPost =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i + 1]->radius( ));
+
+      if ( i == 1 )
+      {
+        if ( distPre <= maxRadiusPre )
+        {
+          /* delete nodes->at(1); */
+          nodes->erase( nodes->begin( ) + 1 );
+          i--;
+        }
+        else if ( distPost <= maxRadiusPost )
+        {
+          nodes->erase( nodes->begin( ) + 2 );
+          i--;
+        }
+      }
+      else if ( i == ( nodes->size( ) - 2 ))
+      {
+        if ( distPost <= maxRadiusPost  )
+        {
+          /* delete nodes->at(i); */
+          nodes->erase( nodes->begin( ) + i );
+          i--;
+        }
+      }
+      else if ( distPost <= maxRadiusPost )
+      {
+        /* delete nodes->at( i + 1 ); */
+        nodes->erase( nodes->begin( ) + i + 1 );
+        i--;
+      }
     }
   }
 

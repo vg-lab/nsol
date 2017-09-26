@@ -40,6 +40,14 @@ namespace nsol
 
     NSOL_API
     virtual
+    NGVMorphologyPtr asNGVMorphology( void );
+
+    NSOL_API
+    virtual
+    NGVSectionPtr asNGVSection( void );
+
+    NSOL_API
+    virtual
     SectionPtr asSection( void );
 
     NSOL_API

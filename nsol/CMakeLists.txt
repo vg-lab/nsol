@@ -19,6 +19,8 @@ set(NSOL_PUBLIC_HEADERS
   Neurite.h
   Neuron.h
   NeuronMorphology.h
+  NGVMorphology.h
+  NGVSection.h
   Node.h
   NsolTypes.h
   Object.h
@@ -51,6 +53,7 @@ set(NSOL_PUBLIC_HEADERS
   Factory.h
   Reader/BBPSDKReader.h
   Reader/BrionReader.h
+  Reader/HDF5Reader.h
   Reader/SwcReader.h
   Reader/XmlSceneReader.h
   )
@@ -69,6 +72,8 @@ set(NSOL_SOURCES
   Neurite.cpp
   Neuron.cpp
   NeuronMorphology.cpp
+  NGVMorphology.cpp
+  NGVSection.cpp
   Node.cpp
   Object.cpp
   ObjectWithProperties.cpp

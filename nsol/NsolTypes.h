@@ -51,9 +51,14 @@ namespace nsol
 
 #endif
 
+  typedef ::Eigen::Vector3i Vec3i;
   typedef ::Eigen::Vector3f Vec3f;
   typedef ::Eigen::Matrix4f Matrix4_4f;
   typedef ::Eigen::Vector4f Vec4f;
+  typedef std::vector< Vec3i > Vec3is;
+  typedef Vec3is* Vec3isPtr;
+  typedef std::vector< Vec4f > Vec4fs;
+  typedef Vec4fs* Vec4fsPtr;
   #define Matrix4_4fIdentity Matrix4_4f::Identity()
 
   static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
@@ -66,6 +71,8 @@ namespace nsol
   class Neurite;
   class Neuron;
   class NeuronMorphology;
+  class NGVMorphology;
+  class NGVSection;
   class Node;
   class Object;
   class ObjectWithProperties;
@@ -84,6 +91,8 @@ namespace nsol
   typedef std::shared_ptr< Neurite > NeuritePtr;
   typedef std::shared_ptr< Neuron > NeuronPtr;
   typedef std::shared_ptr< NeuronMorphology > NeuronMorphologyPtr;
+  typedef std::shared_ptr< NGVMorphology > NGVMorphologyPtr;
+  typedef std::shared_ptr< NGVSection > NGVSectionPtr;
   typedef std::shared_ptr< Node > NodePtr;
   typedef std::shared_ptr< Object > ObjectPtr;
   typedef std::shared_ptr< ObjectWithProperties > ObjectWithPropertiesPtr;
@@ -114,6 +123,8 @@ namespace nsol
   typedef Neurite* NeuritePtr;
   typedef Neuron* NeuronPtr;
   typedef NeuronMorphology* NeuronMorphologyPtr;
+  typedef NGVMorphology* NGVMorphologyPtr;
+  typedef NGVSection* NGVSectionPtr;
   typedef Node* NodePtr;
   typedef Object* ObjectPtr;
   typedef Properties* PropertiesPtr;
