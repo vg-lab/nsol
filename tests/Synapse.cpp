@@ -75,3 +75,21 @@ BOOST_AUTO_TEST_CASE( synapse_asign )
     BOOST_CHECK_EQUAL( synapse1.postSynapticNeuron( ), 2 );
   }
 }
+
+BOOST_AUTO_TEST_CASE( synapse_map )
+{
+  Synapse synapse;
+
+  Synapse synapse1;
+  synapse1 = synapse;
+
+  SynapsesMap sm;
+  sm.addSynapse( 0, &synapse );
+  BOOST_CHECK_EQUAL( sm.size( ), 1 );
+
+  sm.addSynapse( 0, &synapse1 );
+  // TODO: BOOST_CHECK_EQUAL( sm.size( ), 1 );
+
+  sm.clear( );
+  BOOST_CHECK( sm.empty( ) );
+}

@@ -39,6 +39,11 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_constructors )
      BOOST_CHECK_EQUAL( synapse.preSynapticSection( ) == nullptr, true );
      BOOST_CHECK_EQUAL( synapse.postSynapticSection( ) == nullptr, true );
 
+     MorphologySynapse synapse2;
+     synapse2 = synapse;
+     BOOST_CHECK_EQUAL( synapse2.postSynapticSurfacePosition( ),
+                        Vec3f( 0.0f, 0.0f, 0.0f ));
+
   }
   {
      SectionPtr sectionPre( new Section );
