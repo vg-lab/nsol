@@ -79,7 +79,7 @@ namespace nsol {
     Neurite( TNeuriteType neuriteType = DENDRITE );
 
     NSOL_API
-    virtual ~Neurite();
+    virtual ~Neurite( void );
 
     //! Get the type of neurite
     NSOL_API

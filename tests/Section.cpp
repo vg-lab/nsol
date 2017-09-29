@@ -128,4 +128,7 @@ BOOST_AUTO_TEST_CASE( section_stats)
 {
   Section s;
   BOOST_CHECK( s.stats( ) == nullptr );
+
+  SectionStats ss;
+  BOOST_CHECK( ss.stats( ) == &ss );
 }

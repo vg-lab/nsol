@@ -128,4 +128,7 @@ BOOST_AUTO_TEST_CASE( neuronmorphology_stats)
 {
   NeuronMorphology nm;
   BOOST_CHECK( nm.stats( ) == nullptr );
+
+  NeuronMorphologyStats nm2;
+  BOOST_CHECK( nm2.stats( ) == &nm2 );
 }
