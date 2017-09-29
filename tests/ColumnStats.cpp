@@ -47,8 +47,10 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
     BOOST_CHECK_EQUAL( result1, result2 );
 
     // Aggregation MIN & MAX
-//    float result3 = columnStats.getStat( stat, MIN );
-//    float result4 = columnStats.getStat( stat, MAX );
+    float result3 = columnStats.getStat( ColumnStats::DENDRITIC_BIFURCATIONS, MIN );
+    float result4 = columnStats.getStat( ColumnStats::SOMA_SURFACE, MAX );
+
+    BOOST_CHECK_EQUAL( result3 != result4, true );
 
 //    BOOST_CHECK( result3 < result4 );
 //    BOOST_CHECK_EQUAL( result3, std::min( result3, result4 ));
