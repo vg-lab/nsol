@@ -73,3 +73,13 @@ BOOST_AUTO_TEST_CASE( neuron_type )
     BOOST_CHECK_EQUAL( neuron.isInhibitory(), false );
   }
 }
+
+
+BOOST_AUTO_TEST_CASE( neurons_map )
+{
+  NeuronsMap nm;
+  Neuron* neuron = new Neuron( nullptr, 1, 1, Matrix4_4fIdentity, nullptr,
+                 Neuron::PYRAMIDAL, Neuron::INHIBITORY );
+  BOOST_CHECK( nm.addNeuron( neuron ) );
+  BOOST_CHECK( !nm.addNeuron( neuron ) );
+}

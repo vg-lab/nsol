@@ -2,6 +2,7 @@
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
  * Authors: Raquel Jarillo <raquel.jarillo@urjc.es>
+ *          Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -54,6 +55,13 @@ BOOST_AUTO_TEST_CASE( sectionStats_getStat )
    float result3 = sectionStats->getStat( SectionStats::VOLUME, TOTAL );
 
    BOOST_CHECK( result2 == result3 );
+
+   BOOST_CHECK( sectionStats->getStat( SectionStats::SURFACE,
+                                          MIN ) == 0.0f );
+   BOOST_CHECK( sectionStats->getStat( SectionStats::SURFACE,
+                                          MAX ) == 0.0f );
+   BOOST_CHECK( sectionStats->getStat( SectionStats::RADIUS,
+                                           MEAN ) == 0.0f );
 
    // Free dymanic memory used
    NSOL_DELETE_PTR( sectionStats );
