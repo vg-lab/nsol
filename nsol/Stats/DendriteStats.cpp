@@ -26,7 +26,8 @@ namespace nsol
 {
 
   DendriteStats::DendriteStats ( TDendriteType dendriteType_ )
-    : Dendrite( dendriteType_ )
+    : NeuriteStats( )
+    , Dendrite( dendriteType_ )
   {
   }
   

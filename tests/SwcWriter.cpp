@@ -20,20 +20,23 @@
  *
  */
 
+#include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
+#include <sstream>
+
 using namespace nsol;
 
-BOOST_AUTO_TEST_CASE( axon_stats )
+BOOST_AUTO_TEST_CASE( swc_writer )
 {
-  AxonStats* as = new AxonStats( );
-  BOOST_CHECK_EQUAL( as->neuriteType( ), Neurite::AXON );
-}
+  SwcWriter sw;
+  BOOST_CHECK( !sw.writeMorphology( "foo.txt", nullptr ) );
 
+  NeuronMorphologyPtr neuronMorphology;
 
-BOOST_AUTO_TEST_CASE( axon_cached_stats )
-{
-  AxonStats* as = new AxonCachedStats( );
-  BOOST_CHECK_EQUAL( as->neuriteType( ), Neurite::AXON );
+  SwcReader swcReader;
+  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+
+  BOOST_CHECK( sw.writeMorphology( "foo.txt", neuronMorphology ) );
 }

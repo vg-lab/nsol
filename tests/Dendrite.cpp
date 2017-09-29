@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ * Authors: Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -25,6 +25,25 @@
 
 using namespace nsol;
 
+BOOST_AUTO_TEST_CASE( dendrite_operator_out )
+{
+  {
+    std::ostringstream out;
+    out << Dendrite::BASAL;
+    BOOST_CHECK_EQUAL( out.str( ), "BASAL" );
+  }
+  {
+    std::ostringstream out;
+    out << Dendrite::APICAL;
+    BOOST_CHECK_EQUAL( out.str( ), "APICAL" );
+  }
+  {
+    std::ostringstream out;
+    out << Dendrite::TDendriteType( -100 );
+    BOOST_CHECK_EQUAL( out.str( ), "UNDEFINED" );
+  }
+}
+
 BOOST_AUTO_TEST_CASE( dendrite_stats )
 {
   DendriteStats* as = new DendriteStats( Dendrite::BASAL );
@@ -34,6 +53,6 @@ BOOST_AUTO_TEST_CASE( dendrite_stats )
 
 BOOST_AUTO_TEST_CASE( dendrite_cached_stats )
 {
-  DendriteStats* as = new DendriteCachedStats( Dendrite::BASAL );
+  DendriteCachedStats* as = new DendriteCachedStats( Dendrite::BASAL );
   BOOST_CHECK_EQUAL( as->dendriteType( ), Dendrite::BASAL );
 }
