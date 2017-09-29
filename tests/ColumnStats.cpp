@@ -28,42 +28,49 @@ using namespace nsol;
 
 BOOST_AUTO_TEST_CASE( columnStats_constructors )
 {
-    ColumnStats columnStats;
-    BOOST_CHECK_EQUAL( columnStats.id( ), 0 );
+   ColumnStats columnStats;
+   BOOST_CHECK_EQUAL( columnStats.id( ), 0 );
 
-    ColumnStats columnStats1( 2 );
-    BOOST_CHECK_EQUAL( columnStats1.id( ), 2 );
+   ColumnStats columnStats1( 2 );
+   BOOST_CHECK_EQUAL( columnStats1.id( ), 2 );
 }
 
 BOOST_AUTO_TEST_CASE( columnStats_getStat )
 {
-    ColumnStats columnStats;
-    ColumnStats::TColumnStat stat = ColumnStats::DENDRITIC_VOLUME;
+   ColumnStats columnStats;
+   ColumnStats::TColumnStat stat = ColumnStats::DENDRITIC_VOLUME;
 
-    // Aggregation STD_DEV & VARIANCE
-    float result1  = columnStats.getStat( stat, STD_DEV, STD_DEV );
-    float result2 = sqrt( columnStats.getStat( stat, VARIANCE ));
+   // Aggregation STD_DEV & VARIANCE
+   float result1  = columnStats.getStat( stat, STD_DEV, STD_DEV );
+   float result2 = sqrt( columnStats.getStat( stat, VARIANCE ));
 
-    BOOST_CHECK_EQUAL( result1, result2 );
+   BOOST_CHECK_EQUAL( result1, result2 );
 
-    // Aggregation MIN & MAX
-    float result3 = columnStats.getStat( ColumnStats::DENDRITIC_BIFURCATIONS, MIN );
-    float result4 = columnStats.getStat( ColumnStats::SOMA_SURFACE, MAX );
+   // Aggregation MIN & MAX
+   float result3 = columnStats.getStat( ColumnStats::DENDRITIC_BIFURCATIONS, MIN );
+   float result4 = columnStats.getStat( ColumnStats::SOMA_SURFACE, MAX );
 
-    BOOST_CHECK_EQUAL( result3 != result4, true );
+   BOOST_CHECK_EQUAL( result3 != result4, true );
+
 
 //    BOOST_CHECK( result3 < result4 );
 //    BOOST_CHECK_EQUAL( result3, std::min( result3, result4 ));
 //    BOOST_CHECK_EQUAL( result4, std::max( result3, result4 ));
 
-    // Aggregation MEAN & TOTAL
-    MiniColumns minicolumns = columnStats.miniColumns( );
+   // Aggregation MEAN & TOTAL
+   MiniColumns minicolumns = columnStats.miniColumns( );
 
-    float result5 = columnStats.getStat( stat, MEAN );
-    float result6 = columnStats.getStat( stat, TOTAL );
-    float result7 = minicolumns.size( ) == 0? 0.0f : result6 /
-                                             float( minicolumns.size( ));
-    BOOST_CHECK_EQUAL( result5, result7 );
+   float result5 = columnStats.getStat( stat, MEAN );
+   float result6 = columnStats.getStat( stat, TOTAL );
+   float result7 = minicolumns.size( ) == 0? 0.0f : result6 /
+                                            float( minicolumns.size( ));
+   BOOST_CHECK_EQUAL( result5, result7 );
+
+   MiniColumnPtr miniColumn( new MiniColumn );
+   columnStats.addMiniColumn( miniColumn );
+
+   BOOST_CHECK_EQUAL( columnStats.miniColumns( ).size( ), 1 );
+
 }
 
 BOOST_AUTO_TEST_CASE( columnStats_stats )

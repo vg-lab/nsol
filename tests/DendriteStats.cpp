@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Cristian Rodríguez <cristian.rodriguez@urjc.es>
+ * Authors: Pablo Toharia <pablo.toharia@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -20,40 +20,20 @@
  *
  */
 
-#include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
-#include <cmath>
-
 using namespace nsol;
 
-
-BOOST_AUTO_TEST_CASE( neuritestats_constructor )
+BOOST_AUTO_TEST_CASE( dendrite_stats )
 {
-  NodeCached node;
-  BOOST_CHECK_EQUAL( static_cast<Node>( node ).id( ), 0 );
-
-  node.radius( 5.0f );
-  BOOST_CHECK_EQUAL( static_cast<Node>( node ).radius( ), 5.0f );
-
-  node.point( Vec3f( 0.0f, 1.0f, 0.0f ) );
-  BOOST_CHECK( static_cast<Node>( node ).point( ) == Vec3f( 0.0f, 1.0f, 0.0f ) );
-
-  node.setAndPropagateDirty( 0 );
-  BOOST_CHECK( node.dirty( 0 ) );
-  node.setAndPropagateDirty( );
-
-  NeuriteStats* neuriteStats = new NeuriteStats();
-
-  BOOST_CHECK_EQUAL( neuriteStats->stats() != nullptr, true );
+  DendriteStats* as = new DendriteStats( Dendrite::BASAL );
+  BOOST_CHECK_EQUAL( as->dendriteType( ), Dendrite::BASAL );
 }
 
-BOOST_AUTO_TEST_CASE( neuritestats_getStat )
+
+BOOST_AUTO_TEST_CASE( dendrite_cached_stats )
 {
-   NeuriteStats* neuriteStats = new NeuriteStats();
-
-   float result = neuriteStats->getStat( NeuriteStats::SURFACE, MEAN );
-   BOOST_CHECK_EQUAL( result, 0.0f );
+  DendriteStats* as = new DendriteCachedStats( Dendrite::BASAL );
+  BOOST_CHECK_EQUAL( as->dendriteType( ), Dendrite::BASAL );
 }
-
