@@ -1,10 +1,23 @@
-/**
- * @file    Neurite.cpp
- * @brief   Test for class nsol::Neurite
- * @author  Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
-            Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 
 #include <limits.h>
@@ -21,10 +34,31 @@ BOOST_AUTO_TEST_CASE( neurite_constructor )
   Neurite* neurite = new Neurite( );
 
   BOOST_CHECK_EQUAL( neurite->neuriteType( ), 0 );
+  BOOST_CHECK( !neurite->hasMorphology( ));
   BOOST_CHECK( !neurite->morphology( ));
   BOOST_CHECK( !neurite->firstSection( ));
   BOOST_CHECK_EQUAL( neurite->numBranches( ), 0 );
   BOOST_CHECK_EQUAL( neurite->numBifurcations( ), 0 );
+}
+
+
+BOOST_AUTO_TEST_CASE( neurite_type )
+{
+  {
+    std::ostringstream out;
+    out << Neurite::DENDRITE;
+    BOOST_CHECK_EQUAL( out.str( ), "DENDRITE" );
+  }
+  {
+    std::ostringstream out;
+    out << Neurite::AXON;
+    BOOST_CHECK_EQUAL( out.str( ), "AXON" );
+  }
+  {
+    std::ostringstream out;
+    out << Neurite::TNeuriteType( -100 );
+    BOOST_CHECK_EQUAL( out.str( ), "UNDEFINED" );
+  }
 }
 
 BOOST_AUTO_TEST_CASE( neurite_clone )
@@ -107,5 +141,11 @@ BOOST_AUTO_TEST_CASE( neurite_operators )
 
   BOOST_CHECK( *neurite == *neurite );
   BOOST_CHECK( *neurite1 == *neurite1 );
-  BOOST_CHECK( *neurite != *neurite1);
+  BOOST_CHECK( *neurite != *neurite1 );
+}
+
+BOOST_AUTO_TEST_CASE( neurite_stats)
+{
+  Neurite* neurite = new Neurite( );
+  BOOST_CHECK( neurite->stats( ) == nullptr );
 }

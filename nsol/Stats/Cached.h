@@ -1,11 +1,24 @@
-/**
- * @file    Cached.h
- * @brief
- * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
-            Do not distribute without further notice.
-*/
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #ifndef __NSOL_STATS_CACHED__
 #define __NSOL_STATS_CACHED__
 
@@ -33,14 +46,14 @@ namespace nsol
     {
     }
 
-    bool dirty( unsigned int id ) const
+    bool dirty( unsigned int id_ ) const
     {
-      return ( _values.find( id ) == _values.end( ));
+      return ( _values.find( id_ ) == _values.end( ));
     }
 
-    void setDirty( unsigned int id )
+    void setDirty( unsigned int id_ )
     {
-      _values.erase( id );
+      _values.erase( id_ );
     }
 
     void setDirty( void )
@@ -48,9 +61,9 @@ namespace nsol
       _values.clear( );
     }
 
-    virtual void setAndPropagateDirty( unsigned int id )
+    virtual void setAndPropagateDirty( unsigned int id_ )
     {
-      this->setDirty( id );
+      this->setDirty( id_ );
       // Note: propagation has to be reimplemented if needed
     }
 

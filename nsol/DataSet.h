@@ -1,10 +1,23 @@
-/**
- * @file    DataSet.h
- * @brief
- * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
- *          Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 #ifndef __NSOL_DATASET__
 #define __NSOL_DATASET__
@@ -14,7 +27,15 @@
 #include "Log.h"
 #include "NsolTypes.h"
 #include "Neuron.h"
+#include "NeuronMorphology.h"
+#include "Neurite.h"
+#include "Axon.h"
+#include "Section.h"
+#include "Circuit.h"
+#include "Synapse.h"
+#include "MorphologySynapse.h"
 #include "Container/Columns.h"
+#include "Container/Sections.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
 
@@ -72,6 +93,186 @@ namespace nsol
       NSOL_THROW( std::string( "Brion not supported" ));
 #endif
     }
+
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+#ifdef NSOL_USE_BRION
+    void loadBlueConfigConnectivity( void )
+    {
+      if( !_blueConfig || _target.empty( ))
+      {
+        Log::log("BlueConfig not open or target empty", LOG_LEVEL_WARNING );
+        return;
+      }
+
+       BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
+                             COLUMN > brionReader;
+
+       brionReader.loadBlueConfigConnectivity( _neurons,
+                                                    _circuit,
+                                                   *_blueConfig, _target );
+#else
+    void loadBlueConfigConnectivity( )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
+    }
+
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
+#ifdef NSOL_USE_BRION
+    void loadBlueConfigConnectivityWithMorphologies( )
+    {
+      if( !_blueConfig || _target.empty())
+      {
+        Log::log("BlueConfig not open or target empty", LOG_LEVEL_WARNING );
+        return;
+      }
+
+      this->loadBlueConfigConnectivity< nsol::Node,
+                                             nsol::Section,
+                                             nsol::Dendrite,
+                                             nsol::Axon,
+                                             nsol::Soma,
+                                             nsol::NeuronMorphology,
+                                             nsol::Neuron,
+                                             nsol::MiniColumn,
+                                             nsol::Column >( );
+
+      brain::Circuit brainCircuit( *_blueConfig );
+      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
+      const brain::Synapses& brainSynapses = brainCircuit.
+                                        getAfferentSynapses( gidSetBrain,
+                                              brain::SynapsePrefetch::all );
+
+      if( _circuit.synapses().size() != brainSynapses.size() )
+      {
+        Log::log("Not exist correspondence of the neurons data "
+                 "between NSOL and BRION", LOG_LEVEL_WARNING );
+        return;
+      }
+
+      for( unsigned int i = 0; i < _circuit.synapses().size(); ++i )
+      {
+        const brain::Synapse& brainSynapse = brainSynapses[ i ];
+        MorphologySynapsePtr synapse = dynamic_cast<MorphologySynapsePtr>
+                                       ( _circuit.synapses()[i] );
+
+        if( synapse == nullptr )
+        {
+          Log::log("Inconsistent type of synapse.", LOG_LEVEL_WARNING );
+          return;
+        }
+
+        vmml::Vector3f brainPreSynPos  = brainSynapse.
+                                              getPresynapticSurfacePosition();
+        vmml::Vector3f brainPostSynPos = brainSynapse.
+                                              getPostsynapticSurfacePosition();
+
+        synapse->preSynapticSurfacePosition( Vec3f( brainPreSynPos.x(),
+                                                        brainPreSynPos.y(),
+                                                        brainPreSynPos.z()));
+
+        synapse->postSynapticSurfacePosition( Vec3f( brainPostSynPos.x(),
+                                                         brainPostSynPos.y(),
+                                                         brainPostSynPos.z()));
+
+        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
+                         nitPre = _neurons.find( synapse->preSynapticNeuron( ));
+        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
+                        nitPost = _neurons.find( synapse->postSynapticNeuron( ));
+
+        if (( nitPre  == _neurons.end( ))||
+            ( nitPost == _neurons.end( )))
+         continue;
+
+        NeuronPtr preSynapticNeuron = nitPre->second;
+        NeuronPtr postSynapticNeuron = nitPost->second;
+
+        // Computing pre-synaptic section..
+        bool found = false;
+        SectionPtr preSynSection = nullptr;
+        unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
+
+        Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
+        NSOL_FOREACH( neuriteIt, neuritesPre )
+        {
+          if( found ) break;
+
+          const NeuritePtr neurite = (*neuriteIt);
+          Sections sections = neurite->sections();
+
+          NSOL_FOREACH( sectionIt, sections )
+          {
+            const SectionPtr section = (*sectionIt);
+            if( section->id() == brainIDSection )
+            {
+              found = true;
+              preSynSection = section;
+
+              break;
+            }
+          }// for all sections of one neurite
+        }// for all neurites
+
+
+        // Computing post-synaptic section..
+        found = false;
+
+        SectionPtr postSynSection = nullptr;
+        brainIDSection = brainSynapse.getPostsynapticSectionID();
+
+        Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
+        NSOL_FOREACH( neuriteIt, neuritesPost )
+        {
+          if( found ) break;
+
+          const NeuritePtr neurite = (*neuriteIt);
+          Sections sections = neurite->sections();
+
+          NSOL_FOREACH( sectionIt, sections )
+          {
+            const SectionPtr section = (*sectionIt);
+
+            if( section->id() == brainIDSection )
+            {
+              found = true;
+              postSynSection = section;
+
+              break;
+            }
+          }// for all sections of one neurite
+        }// for all neurites
+
+        synapse->preSynapticSection( preSynSection );
+        synapse->postSynapticSection( postSynSection );
+
+      }// all synapses
+
+#else
+    void loadBlueConfigConnectivityWithMorphologies( )
+    {
+      NSOL_THROW( std::string( "Brion not supported" ));
+#endif
+
+    }
+
 
     template < class NODE = Node,
                class SECTION = Section,
@@ -187,6 +388,12 @@ namespace nsol
 
     NSOL_API
     const Columns& columns( void ) const;
+
+    NSOL_API
+    Circuit& circuit( void );
+
+    NSOL_API
+    const Circuit& circuit( void ) const;
 
     NSOL_API
     NeuronsMap& neurons( void );
@@ -391,6 +598,9 @@ namespace nsol
 
     //! Entry for cortical hierarchy in form o a container of cortial columns
     Columns _columns;
+
+    //! Entry for connections of the circuit.
+    Circuit _circuit;
 
     //! Container of neurons by its gid
     NeuronsMap _neurons;

@@ -1,10 +1,23 @@
-/**
- * @file    Section.cpp
- * @brief   Test for class nsol::Section
- * @author  Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
-            Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 
 #include <limits.h>
@@ -20,6 +33,20 @@ BOOST_AUTO_TEST_CASE( section_constructor )
   BOOST_CHECK( !section.neurite( ));
   BOOST_CHECK( !section.parent( ));
   BOOST_CHECK_EQUAL( section.nodes( ).size( ), 0 );
+
+  BOOST_CHECK_EQUAL( section.id( ), 0 );
+
+  const unsigned int newId  = 1;
+  section.id( newId );
+  BOOST_CHECK_EQUAL( section.id( ), newId );
+
+  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
+
+  Section const section2;
+  BOOST_CHECK_EQUAL( section2.children( ).size( ), 0 );
+
+  BOOST_CHECK( section.firstNode( ) == nullptr );
+  BOOST_CHECK( section.lastNode( ) == nullptr );
 
 }
 
@@ -95,4 +122,10 @@ BOOST_AUTO_TEST_CASE( section_operators )
   BOOST_CHECK( section != *section2 );
   BOOST_CHECK( *section1 != *section2 );
 
+}
+
+BOOST_AUTO_TEST_CASE( section_stats)
+{
+  Section s;
+  BOOST_CHECK( s.stats( ) == nullptr );
 }

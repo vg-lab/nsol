@@ -1,9 +1,23 @@
- /**
- * @brief
- * @author  Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
- *          Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 #ifdef NSOL_USE_BRION
 
@@ -13,17 +27,21 @@
 #include "../Stats/ColumnStats.h"
 #include "../Stats/MiniColumnStats.h"
 #include "../Neuron.h"
+#include "../Synapse.h"
 #include "../Stats/NodeCached.h"
 #include "../Stats/SectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
+#include "../Container/Synapses.h"
 
 #include "../NsolTypes.h"
 
+#include <brain/brain.h>
 #include <brion/brion.h>
 
 #include <string>
+#include <vmmlib/vmmlib.h>
 
 namespace nsol
 {
@@ -84,6 +102,13 @@ namespace nsol
       NeuronsMap& neurons_,
       const brion::BlueConfig& blueConfig_,
       const std::string& targetLabel = std::string( "" ));
+
+    void
+    loadBlueConfigConnectivity(
+      NeuronsMap& neurons_,
+      Circuit& circuit_,
+      const brion::BlueConfig& blueConfig_,
+      const std::string& target_ );
 
 
   }; // BrionReaderTemplated
@@ -169,6 +194,7 @@ namespace nsol
       else
       {
         nsolSection = new SECTION( );
+        nsolSection->id( sectId );
         nsolSections[sectId] = nsolSection;
         if ( sectType != fatherSectType )
         {
@@ -428,6 +454,53 @@ namespace nsol
       neurons_[ gid ] = neuron;
     }
   }
+
+  template < BRION_READER_TEMPLATE_CLASSES >
+  void
+  BrionReaderTemplated
+  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigConnectivity(
+    NeuronsMap& neurons_,
+    Circuit& circuit_,
+    const brion::BlueConfig& blueConfig_,
+    const std::string& target_ )
+  {
+    circuit_.clear();
+
+    brain::Circuit brainCircuit( blueConfig_);
+    brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+
+    const brain::Synapses& brainSynapses = brainCircuit.
+                                           getAfferentSynapses( gidSetBrain,
+                                              brain::SynapsePrefetch::all );
+
+    // number of efferent synapses it is the same that afferent synapses
+    for( brain::Synapses::const_iterator it = brainSynapses.begin();
+                                           it != brainSynapses.end(); ++it)
+    {
+      const brain::Synapse& brainSynapse = (*it);
+
+      MorphologySynapsePtr afferent_synapse = MorphologySynapsePtr(
+                                                     new MorphologySynapse( ));
+
+      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
+                                         .find(brainSynapse.getPresynapticGID());
+      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
+                                         .find(brainSynapse.getPostsynapticGID());
+
+      if (( nitPre  == neurons_.end( ))||
+          ( nitPost == neurons_.end( )))
+          break;
+
+      afferent_synapse->preSynapticNeuron( nitPre->second->gid( ));
+      afferent_synapse->postSynapticNeuron( nitPost->second->gid( ));
+
+      afferent_synapse->weight( 0.0f );
+
+      circuit_.addSynapse( afferent_synapse );
+
+    }
+  }
+
 }
 
 #endif // __NSOL_BRION_READER__

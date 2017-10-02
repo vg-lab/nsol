@@ -1,9 +1,23 @@
-/**
- * @brief
- * @author  Pablo Toharia <pablo.toharia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
- *          Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 #ifndef __NSOL_TYPES__
 #define __NSOL_TYPES__
@@ -72,6 +86,9 @@ namespace nsol
   class Properties;
   class Section;
   class Soma;
+  class Circuit;
+  class Synapse;
+  class MorphologySynapse;
 
   class NodeCached;
 
@@ -90,6 +107,9 @@ namespace nsol
   typedef std::shared_ptr< Properties > PropertiesPtr;
   typedef std::shared_ptr< Section > SectionPtr;
   typedef std::shared_ptr< Soma > SomaPtr;
+  typedef std::shared_ptr< Circuit > CircuitPtr;
+  typedef std::shared_ptr< Synapse > SynapsePtr;
+  typedef std::shared_ptr< MorphologySynapse > MorphologySynapsePtr;
   typedef std::shared_ptr< NodeCached > NodeCachedPtr;
 
 
@@ -120,6 +140,9 @@ namespace nsol
   typedef ObjectWithProperties* ObjectWithPropertiesPtr;
   typedef Section* SectionPtr;
   typedef Soma* SomaPtr;
+  typedef Circuit* CircuitPtr;
+  typedef Synapse* SynapsePtr;
+  typedef MorphologySynapse* MorphologySynapsePtr;
   typedef NodeCached* NodeCachedPtr;
 
 

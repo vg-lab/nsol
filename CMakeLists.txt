@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(nsol VERSION 0.1.0 )
-set(nsol_VERSION_ABI 1)
+project(nsol VERSION 0.1.1 )
+set(nsol_VERSION_ABI 2)
 
 # Disable in source building
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -32,8 +32,8 @@ include(GitExternal)
 set(LAST_RELEASE 0.0.0)
 set(VERSION_MAJOR "0")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "0")
-set(VERSION_ABI 1)
+set(VERSION_PATCH "1")
+set(VERSION_ABI 2)
 
 # description
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")

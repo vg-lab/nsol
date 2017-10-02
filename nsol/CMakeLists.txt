@@ -3,6 +3,7 @@ source_group(\\ FILES CMakeLists.txt)
 set(NSOL_PUBLIC_HEADERS
   Axon.h
   Column.h
+  Container/Circuits.h
   Container/Columns.h
   Container/Dendrites.h
   Container/MiniColumns.h
@@ -10,6 +11,7 @@ set(NSOL_PUBLIC_HEADERS
   Container/Neurons.h
   Container/Nodes.h
   Container/Sections.h
+  Container/Synapses.h
   DataSet.h
   Dendrite.h
   error.h
@@ -44,7 +46,9 @@ set(NSOL_PUBLIC_HEADERS
   Stats/SectionCachedStats.h
   Stats/SegmentStats.h
   Stats/SomaStats.h
-  Synapse.h
+  Synapse.h  
+  MorphologySynapse.h
+  Circuit.h
   # templated classes at last
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
@@ -59,6 +63,7 @@ set(NSOL_SOURCES
   Axon.cpp
   Column.cpp
   Container/Neurons.cpp
+  Container/Synapses.cpp
   DataSet.cpp
   Dendrite.cpp
   ImportanceNode.cpp
@@ -88,11 +93,15 @@ set(NSOL_SOURCES
   Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
+  Synapse.cpp
+  MorphologySynapse.cpp
+  Circuit.cpp
   Writer/XmlSceneWriter.cpp
   )
 
 
 if (BRION_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brain )
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brion )
 endif()
 

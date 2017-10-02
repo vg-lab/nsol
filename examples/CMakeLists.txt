@@ -7,6 +7,18 @@ if ( NSOL_WITH_EXAMPLES )
     set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
     set( NSOLBRIONMORPHOLOGYREADER_LINK_LIBRARIES nsol )
     common_application( nsolBrionMorphologyReader )
+
+    set( NSOLBRIONCIRCUITLOADER_SOURCES brionCircuitLoader.cpp )
+    set( NSOLBRIONCIRCUITLOADER_LINK_LIBRARIES nsol )
+    common_application( nsolBrionCircuitLoader )
+
+    set( NSOLCONNECTIVITYMATRIX_SOURCES nsolConnectivityMatrix.cpp )
+    set( NSOLCONNECTIVITYMATRIX_LINK_LIBRARIES nsol )
+    common_application( nsolConnectivityMatrix )
+
+    set( NSOLCIRCUITLOADERSUMMARY_SOURCES nsolCircuitLoaderSummary.cpp )
+    set( NSOLCIRCUITLOADERSUMMARY_LINK_LIBRARIES nsol )
+    common_application( nsolCircuitLoaderSummary )
   endif( )
 
   set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )

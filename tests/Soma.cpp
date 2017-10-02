@@ -1,15 +1,30 @@
-/**
- * @file    Soma.cpp
- * @brief   Test for class nsol::Soma
- * @author  Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
- * @date
- * @remarks Copyright (c) GMRV/URJC. All rights reserved.
-            Do not distribute without further notice.
+/*
+ * Copyright (c) 2014-2017 GMRV/URJC.
+ *
+ * Authors: Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
+ *
+ * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 3.0 as published
+ * by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
  */
 
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+
+#include <cmath>
 
 using namespace nsol;
 
@@ -26,6 +41,10 @@ BOOST_AUTO_TEST_CASE( soma_constructor )
   BOOST_CHECK_EQUAL( soma.center( ), CENTER );
   BOOST_CHECK_EQUAL( soma.maxRadius( ), MAX_RADIUS );
   BOOST_CHECK_EQUAL( soma.meanRadius( ), MEAN_RADIUS );
+
+
+  soma.center( CENTER );
+  BOOST_CHECK_EQUAL( soma.center( ), CENTER );
 
 }
 
@@ -79,4 +98,10 @@ BOOST_AUTO_TEST_CASE( soma_operators )
   BOOST_CHECK( soma1 != soma2 );
   BOOST_CHECK( soma1 != soma3 );
   BOOST_CHECK( soma2 != soma3 );
+}
+
+BOOST_AUTO_TEST_CASE( soma_stats)
+{
+  Soma s;
+  BOOST_CHECK_EQUAL( s.stats( ) == nullptr, true );
 }
