@@ -2,6 +2,7 @@
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
  * Authors: Raquel Jarillo <raquel.jarillo@urjc.es>
+ *          Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -34,6 +35,14 @@ BOOST_AUTO_TEST_CASE( somaStats_constructor)
    BOOST_CHECK_EQUAL( somaStats->minRadius( ), 0.0f );
    BOOST_CHECK_EQUAL( somaStats->meanRadius( ), 0.0f );
 
+   Node* n = new Node( Vec3f(0.0f, 1.0f, 0.0f), 0, 1.0f );
+
+   somaStats->addNode( n );
+   BOOST_CHECK_EQUAL( somaStats->center(), Vec3f(0.0f, 1.0f, 0.0f) );
+   BOOST_CHECK_EQUAL( somaStats->maxRadius( ), 1.0f );
+   BOOST_CHECK_EQUAL( somaStats->minRadius( ), 1.0f );
+
+
    // Free dymanic memory used
    NSOL_DELETE_PTR( somaStats );
 
@@ -43,12 +52,16 @@ BOOST_AUTO_TEST_CASE( somaStats_getStat )
 {
    SomaStats* somaStats = new SomaStats( );
 
-   float result_surface = somaStats->getStat( SomaStats::SURFACE );
-   float result_volume = somaStats->getStat( SomaStats::VOLUME );
+   float resultSurface = somaStats->getStat( SomaStats::SURFACE );
+   float resultVolume = somaStats->getStat( SomaStats::VOLUME );
 
-   BOOST_CHECK_EQUAL( somaStats->center(), Vec3f(0.0f, 0.0f, 0.0f) );
-   BOOST_CHECK_EQUAL( result_surface, 0.0f );
-   BOOST_CHECK_EQUAL( result_volume, 0.0f );
+   const Vec3f v( 0.1f, 0.2f, 0.3f );
+
+   somaStats->center( v );
+
+   BOOST_CHECK_EQUAL( somaStats->center( ), v );
+   BOOST_CHECK_EQUAL( resultSurface, 0.0f );
+   BOOST_CHECK_EQUAL( resultVolume, 0.0f );
 
    BOOST_CHECK( somaStats->stats( ) != nullptr );
 
