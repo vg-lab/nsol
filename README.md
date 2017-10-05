@@ -16,8 +16,13 @@ and writers to load dataset and to store them.
 
 ## Dependencies
 
-Required dependencies: Eigen3
-Optional dependencies: FiReS (*1), Brion (*1) and Boost's Unit Test Framework and Qt5Core
+* Required dependencies:
+    * Eigen3
+* Optional dependencies:
+    * FiReS (*1)
+    * Brion (*1)
+    * Boost's Unit Test Framework
+    * Qt5Core
 
 (*1) This dependencies can be built uncommenting theirs corresponding line in the file .gitsubprojects
 

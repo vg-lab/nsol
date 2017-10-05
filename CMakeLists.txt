@@ -1,7 +1,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
-#   NSOL - NeuroScience Ontology Library
-#   2014 (c) GMRV / Universidad Rey Juan Carlos
+#   NSOL - NeuroScience Objects Library
+#   2014-2017 (c) GMRV / URJC
 #   gmrv@gmrv.es
 #   www.gmrv.es
 #
@@ -28,15 +28,8 @@ endif()
 
 include(GitExternal)
 
-# nsol version
-set(LAST_RELEASE 0.0.0)
-set(VERSION_MAJOR "0")
-set(VERSION_MINOR "1")
-set(VERSION_PATCH "1")
-set(VERSION_ABI 2)
-
 # description
-set(NSOL_DESCRIPTION "Nsol - Neuroscience Ontology Library")
+set(NSOL_DESCRIPTION "Nsol - Neuroscience Objects Library")
 set(COMMON_PROJECT_DOMAIN gmrv.es)
 
 option( NSOL_WITH_EXAMPLES "NSOL_WITH_EXAMPLES" ON )
@@ -84,17 +77,17 @@ endif( )
 
 common_find_package_post()
 
-# library subdirectory
 add_subdirectory(nsol)
-
-# tests subdirectory
 add_subdirectory(tests)
-
-# examples subdirectory
 add_subdirectory(examples)
-
-# examples subdirectory
 add_subdirectory(testData)
 
-include(CPackConfig)
+set(DOCS README.md LICENSE.txt)
+install( FILES ${DOCS} DESTINATION share/nsol COMPONENT dev)
+
+set(DOXYGEN_MAINPAGE_MD README.md )
+set(DOXYGEN_EXTRA_INPUT ${PROJECT_SOURCE_DIR}/README.md)
 include(DoxygenRule)
+
+include(CPackConfig)
+include(CTest)
