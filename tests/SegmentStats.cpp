@@ -43,16 +43,16 @@ BOOST_AUTO_TEST_CASE( segmentStats_getStat )
       SegmentStats* segmentStat = new SegmentStats( );
 
       // Aggregation STD_DEV & VARIANCE
-      const NodePtr begin_node( new Node );
-      const NodePtr end_node( new Node );
+      const NodePtr beginNode( new Node );
+      const NodePtr endNode( new Node );
       float result = segmentStat->getStat( SegmentStats::SURFACE, nullptr,
                                            nullptr );
       float result1 = segmentStat->getStat( SegmentStats::VOLUME, nullptr,
                                            nullptr );
-      float result2 = segmentStat->getStat( SegmentStats::LENGTH, begin_node,
-                                            end_node );
-      float result3 = segmentStat->getStat( SegmentStats::RADIUS, begin_node,
-                                            end_node );
+      float result2 = segmentStat->getStat( SegmentStats::LENGTH, beginNode,
+                                            endNode );
+      float result3 = segmentStat->getStat( SegmentStats::RADIUS, beginNode,
+                                            endNode );
 
       BOOST_CHECK(( result == result1 ) && ( result1 == result2 ) &&
                   ( result2 == result3 ));
@@ -63,35 +63,35 @@ BOOST_AUTO_TEST_CASE( segmentStats_getStat )
    }
    {
       SegmentStats* segmentStat1 = new SegmentStats( );
-      const NodePtr begin_node( new Node );
-      const NodePtr end_node( new Node );
+      const NodePtr beginNode( new Node );
+      const NodePtr endNode( new Node );
 
-      begin_node->point( Vec3f(1.0f, 1.0f, 1.0f));
-      end_node->point( Vec3f(2.0f, 3.0f, 5.0f ));
+      beginNode->point( Vec3f(1.0f, 1.0f, 1.0f));
+      endNode->point( Vec3f(2.0f, 3.0f, 5.0f ));
 
-      begin_node->radius( 10.f );
-      end_node->radius( 5.0f );
+      beginNode->radius( 10.f );
+      endNode->radius( 5.0f );
 
-      float segmentLength = (begin_node->point( ) - end_node->point( )).norm( );
-      float radiusDifference = begin_node->radius() - end_node->radius();
+      float segmentLength = (beginNode->point( ) - endNode->point( )).norm( );
+      float radiusDifference = beginNode->radius() - endNode->radius();
       float generatrix = sqrt( segmentLength*segmentLength +
                                  radiusDifference*radiusDifference );
 
-      float result = ( M_PI ) * ( begin_node->radius() + end_node->radius() )
+      float result = ( M_PI ) * ( beginNode->radius() + endNode->radius() )
                        * generatrix;
 
-      float result1 = segmentStat1->getStat( SegmentStats::SURFACE, begin_node,
-                                               end_node );
+      float result1 = segmentStat1->getStat( SegmentStats::SURFACE, beginNode,
+                                               endNode );
 
       BOOST_CHECK_EQUAL( result, result1 );
 
-      float result2 = (M_PI_3) * (begin_node->point( ) - end_node->point( ))
-              .norm( ) * ( begin_node->radius() * begin_node->radius() +
-              end_node->radius()*end_node->radius() +
-              2.0f*begin_node->radius()*end_node->radius() );
+      float result2 = (M_PI_3) * (beginNode->point( ) - endNode->point( ))
+              .norm( ) * ( beginNode->radius() * beginNode->radius() +
+              endNode->radius()*endNode->radius() +
+              2.0f*beginNode->radius()*endNode->radius() );
 
-      float result3 = segmentStat1->getStat( SegmentStats::VOLUME, begin_node,
-                                             end_node );
+      float result3 = segmentStat1->getStat( SegmentStats::VOLUME, beginNode,
+                                             endNode );
 
 
       BOOST_CHECK_EQUAL( result2, result3 );
