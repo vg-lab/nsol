@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 using namespace nsol;
 
@@ -37,6 +38,7 @@ BOOST_AUTO_TEST_CASE( columnStats_constructors )
 
 BOOST_AUTO_TEST_CASE( columnStats_getStat )
 {
+    // 1- With empty data
    ColumnStats columnStats;
    ColumnStats::TColumnStat stat = ColumnStats::DENDRITIC_VOLUME;
 
@@ -52,11 +54,6 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
 
    BOOST_CHECK_EQUAL( result3 != result4, true );
 
-
-//    BOOST_CHECK( result3 < result4 );
-//    BOOST_CHECK_EQUAL( result3, std::min( result3, result4 ));
-//    BOOST_CHECK_EQUAL( result4, std::max( result3, result4 ));
-
    // Aggregation MEAN & TOTAL
    MiniColumns minicolumns = columnStats.miniColumns( );
 
@@ -70,6 +67,105 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
    columnStats.addMiniColumn( miniColumn );
 
    BOOST_CHECK_EQUAL( columnStats.miniColumns( ).size( ), 1 );
+
+   // 2- With data loaded
+   DataSet dataSet;
+
+#ifdef NSOL_USE_QT5CORE
+   dataSet.loadXmlScene<
+     nsol::NodeCached,
+     nsol::SectionCachedStats,
+     nsol::DendriteCachedStats,
+     nsol::AxonCachedStats,
+     nsol::SomaStats,
+     nsol::NeuronMorphologyCachedStats,
+     nsol::Neuron,
+     nsol::MiniColumnStats,
+     nsol::ColumnStats >( NSOL_XML_SCENE_TEST2_DATA );
+#else
+   std::cerr << "No QT5 support built-in" << std::endl;
+   return -1;
+#endif
+
+   Columns columns = dataSet.columns( );
+
+   if( columns.size( ) > 0 )
+   {
+      ColumnPtr column = columns.at( 0 );
+      ColumnStats* columnStats1 = column->stats( );
+
+      // Aggregation VARIANCE
+      ColumnStats::TColumnStat stat1 = ColumnStats::SOMA_VOLUME;
+      MiniColumnStats::TMiniColumnStat nStat = MiniColumnStats::TMiniColumnStat( stat1 );
+      TAggregation neuronAgg = MAX;
+
+      float value = 0.f;
+      float mean = columnStats1->getStat( stat1, MEAN );
+
+      NSOL_CONST_FOREACH( miniCol, columnStats1->miniColumns( ))
+      {
+         float tmpValue = ( * miniCol )->stats( )->getStat( nStat, neuronAgg );
+         value += ( mean - tmpValue ) * ( mean - tmpValue );
+      }
+      float variance_result = ( columnStats1->miniColumns( ).size( ) == 0 ? 0.0f :
+                             value / float( columnStats1->miniColumns( ).size( )));
+
+      float variance_result1 = columnStats1->getStat( stat1, VARIANCE, neuronAgg );
+
+      BOOST_CHECK_EQUAL( variance_result, variance_result1 );
+
+
+      BOOST_CHECK_EQUAL( columnStats1->id( ), 0 );
+
+      float maxVarianceNeuriteSurface = columnStats1->getStat(
+                                 ColumnStats::NEURITIC_SURFACE, VARIANCE, MAX );
+      float minVarianceNeuriteSurface = columnStats1->getStat(
+                                 ColumnStats::NEURITIC_SURFACE, VARIANCE, MIN );
+
+      float maxVolumeNeurite = columnStats1->getStat( ColumnStats::NEURITIC_VOLUME,
+                                                 MAX, MAX );
+      float maxSurfaceNeurite = columnStats1->getStat( ColumnStats::NEURITIC_SURFACE,
+                                                 MAX, MAX );
+
+      float minVolumeNeurite = columnStats1->getStat( ColumnStats::NEURITIC_VOLUME,
+                                                  MIN, MIN );
+      float minSurfaceNeurite = columnStats1->getStat( ColumnStats::NEURITIC_SURFACE,
+                                                  MIN, MIN );
+
+      BOOST_CHECK_EQUAL( minVarianceNeuriteSurface,
+                         std::numeric_limits<double>::infinity( ));
+
+      BOOST_CHECK_EQUAL( maxVolumeNeurite, minVolumeNeurite );
+      BOOST_CHECK_EQUAL( maxSurfaceNeurite, minSurfaceNeurite );
+
+      float maxVarianceSomaSurface = columnStats1->getStat(
+                                     ColumnStats::SOMA_SURFACE, VARIANCE, MAX );
+      float minVarianceSomaSurface = columnStats1->getStat(
+                                     ColumnStats::SOMA_SURFACE, VARIANCE, MIN );
+
+      float maxVolumeSoma = columnStats1->getStat( ColumnStats::SOMA_VOLUME,
+                                                  MAX, MAX );
+      float maxSurfaceSoma = columnStats1->getStat( ColumnStats::SOMA_SURFACE,
+                                                  MAX, MAX );
+
+      float minVolumeSoma = columnStats1->getStat( ColumnStats::SOMA_VOLUME,
+                                                  MIN, MIN );
+      float minSurfaceSoma = columnStats1->getStat( ColumnStats::SOMA_SURFACE,
+                                                  MIN, MIN );
+
+      BOOST_CHECK_EQUAL( minVarianceSomaSurface, std::numeric_limits<double>::infinity( ));
+
+      BOOST_CHECK_EQUAL( maxVolumeSoma, minVolumeSoma );
+      BOOST_CHECK_EQUAL( maxSurfaceSoma, minSurfaceSoma );
+
+      BOOST_CHECK_EQUAL( minVarianceNeuriteSurface, minVarianceSomaSurface);
+
+      BOOST_CHECK( maxVarianceNeuriteSurface > maxVarianceSomaSurface );
+
+      // Free dymanic memory used
+      NSOL_DELETE_PTR( columnStats1 );
+
+   }
 
 }
 

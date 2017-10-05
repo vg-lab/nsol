@@ -1,0 +1,29 @@
+<scene version="0.1">
+    <morphology>
+        <columns>
+			<column id="0">
+				<minicolumn id="0">
+					<neuron gid="0" layer="2">
+					</neuron>
+					<neuron gid="1" layer="3" morphologicalType="INTERNEURON" functionalType="INHIBITORY">
+						<transform>
+							1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 40.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0
+						</transform>
+					</neuron>
+				</minicolumn>
+				<minicolumn id="1">
+					<neuron gid="0" layer="2">
+					</neuron>
+					<neuron gid="1" layer="3" morphologicalType="INTERNEURON" functionalType="INHIBITORY">
+						<transform>
+							1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 40.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0
+						</transform>
+					</neuron>
+				</minicolumn>
+			</column>
+	    </columns>
+		<neuronmorphologies>
+			<neuronmorphology neurons="0,1" swc="@NSOL_TESTDATA_SRC_DIR@/ExampleNeuron.swc"/>
+		</neuronmorphologies>
+	</morphology>
+</scene>

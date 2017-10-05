@@ -45,6 +45,18 @@ if ( NSOL_WITH_EXAMPLES )
   set( NSOLMINICOLUMNSTATS_LINK_LIBRARIES nsol )
   common_application( nsolMiniColumnStats )
 
+  set( NSOLMINICOLUMNSTATS1_SOURCES miniColumnStats1.cpp )
+  set( NSOLMINICOLUMNSTATS1_LINK_LIBRARIES nsol )
+  common_application( nsolMiniColumnStats1 )
+
+  set( NSOLCOLUMNSTATS_SOURCES columnStats.cpp )
+  set( NSOLCOLUMNSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolColumnStats )
+
+  set( NSOLCOLUMNSTATS1_SOURCES columnStats1.cpp )
+  set( NSOLCOLUMNSTATS1_LINK_LIBRARIES nsol )
+  common_application( nsolColumnStats1 )
+
   set( NSOLDATASET_SOURCES dataset.cpp )
   set( NSOLDATASET_LINK_LIBRARIES nsol )
   common_application( nsolDataset )

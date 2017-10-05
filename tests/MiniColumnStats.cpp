@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 using namespace nsol;
 
@@ -48,6 +49,7 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_constructors )
 
 BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
 {
+   // 1- With empty data
    ColumnPtr column( new Column( 1 ));
 
    MiniColumnStats* minicolumnStats( new MiniColumnStats( column, 2 ));
@@ -93,6 +95,117 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
    NSOL_DELETE_PTR( minicolumnStats );
    NSOL_DELETE_PTR( minicolumnStats1 );
    NSOL_DELETE_PTR( column );
+
+   // 2- With data loaded
+   DataSet dataSet;
+
+#ifdef NSOL_USE_QT5CORE
+   dataSet.loadXmlScene<
+     nsol::NodeCached,
+     nsol::SectionCachedStats,
+     nsol::DendriteCachedStats,
+     nsol::AxonCachedStats,
+     nsol::SomaStats,
+     nsol::NeuronMorphologyCachedStats,
+     nsol::Neuron,
+     nsol::MiniColumnStats,
+     nsol::ColumnStats >( NSOL_XML_SCENE_TEST2_DATA );
+#else
+    std::cerr << "No QT5 support built-in" << std::endl;
+    return -1;
+#endif
+
+   Columns columns = dataSet.columns();
+
+   if( columns.size() > 0 )
+   {
+      ColumnPtr column1 = columns.at(0);
+
+      if( column1->miniColumns().size() >= 2 )
+      {
+         MiniColumnPtr miniColumn1 = column1->miniColumns().at(0);
+         MiniColumnPtr miniColumn2 = column1->miniColumns().at(1);
+
+         MiniColumnStats* miniColumnStats2 = miniColumn1->stats();
+         MiniColumnStats* miniColumnStats3 = miniColumn2->stats();
+
+         BOOST_CHECK( miniColumnStats2 != nullptr );
+         BOOST_CHECK_EQUAL( miniColumnStats2->id( ), 0 );
+
+         BOOST_CHECK( miniColumnStats3 != nullptr );
+         BOOST_CHECK_EQUAL( miniColumnStats3->id( ), 1 );
+
+         // Aggregation VARIANCE
+         MiniColumnStats::TMiniColumnStat stat1 = MiniColumnStats::SOMA_VOLUME;
+         NeuronMorphologyStats::TNeuronMorphologyStat nStat =
+                        NeuronMorphologyStats::TNeuronMorphologyStat( stat1 );
+
+         float value = 0;
+         float mean = miniColumnStats2->getStat( stat1, MEAN );
+
+         NSOL_CONST_FOREACH( neuron, miniColumn2->neurons() )
+         {
+            NeuronMorphologyPtr morphology = ( * neuron )->morphology( );
+
+            float tmpValue = morphology->stats( )->getStat( nStat );
+            value += ( mean - tmpValue ) * ( mean - tmpValue );
+         }
+
+         float varianceResult = ( miniColumn2->neurons().size( ) == 0 ? 0.0f :
+                             value / float( miniColumn2->neurons().size( )));
+
+         float varianceResult1 = miniColumnStats2->getStat( stat1, VARIANCE);
+
+         BOOST_CHECK_EQUAL( varianceResult, varianceResult1 );
+
+
+         // MiniColumn Stats 1
+         float maxVarianceNeuriteSurface1 = miniColumnStats2->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MAX );
+         float minVarianceNeuriteSurface1 = miniColumnStats2->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MIN );
+
+         float maxVolumeNeurite1 = miniColumnStats2->getStat(
+                                        MiniColumnStats::NEURITIC_VOLUME, MAX );
+         float maxSurfaceNeurite1 = miniColumnStats2->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MAX );
+
+         float minVolumeNeurite1 = miniColumnStats2->getStat(
+                                        MiniColumnStats::NEURITIC_VOLUME, MIN );
+         float minSurfaceNeurite1 = miniColumnStats2->getStat(
+                                           MiniColumnStats::NEURITIC_SURFACE, MIN );
+         // MiniColumn Stats 2
+         float maxVarianceNeuriteSurface2 = miniColumnStats3->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MAX );
+         float minVarianceNeuriteSurface2 = miniColumnStats3->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MIN );
+
+         float maxVolumeNeurite2 = miniColumnStats3->getStat(
+                                        MiniColumnStats::NEURITIC_VOLUME, MAX );
+         float maxSurfaceNeurite2 = miniColumnStats3->getStat(
+                                       MiniColumnStats::NEURITIC_SURFACE, MAX );
+
+         float minVolumeNeurite2 = miniColumnStats3->getStat(
+                                        MiniColumnStats::NEURITIC_VOLUME, MIN );
+         float minSurfaceNeurite2 = miniColumnStats3->getStat(
+                                           MiniColumnStats::NEURITIC_SURFACE, MIN );
+
+         // MiniColumn Stats 1 same morphology than MiniColumn Stats 2
+         BOOST_CHECK( maxVarianceNeuriteSurface1 > maxVarianceNeuriteSurface2 );
+         BOOST_CHECK( minVarianceNeuriteSurface1 < minVarianceNeuriteSurface2 );
+         BOOST_CHECK( maxVolumeNeurite1 > maxVolumeNeurite2 );
+         BOOST_CHECK( maxSurfaceNeurite1 > maxSurfaceNeurite2 );
+         BOOST_CHECK( minVolumeNeurite1 < minVolumeNeurite2 );
+         BOOST_CHECK( minSurfaceNeurite1 < minSurfaceNeurite2 );
+
+         // Free dymanic memory used
+         NSOL_DELETE_PTR( miniColumnStats2 );
+         NSOL_DELETE_PTR( miniColumnStats3 );
+         NSOL_DELETE_PTR( column1 );
+
+      }
+   }
+
 }
 
 BOOST_AUTO_TEST_CASE( miniColumnStats_stats )
