@@ -43,16 +43,16 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
    ColumnStats::TColumnStat stat = ColumnStats::DENDRITIC_VOLUME;
 
    // Aggregation STD_DEV & VARIANCE
-   float result1  = columnStats.getStat( stat, STD_DEV, STD_DEV );
-   float result2 = sqrt( columnStats.getStat( stat, VARIANCE ));
+   float volume  = columnStats.getStat( stat, STD_DEV, STD_DEV );
+   float length = sqrt( columnStats.getStat( stat, VARIANCE ));
 
-   BOOST_CHECK_EQUAL( result1, result2 );
+   BOOST_CHECK_EQUAL( volume, length );
 
    // Aggregation MIN & MAX
-   float result3 = columnStats.getStat( ColumnStats::DENDRITIC_BIFURCATIONS, MIN );
+   float radius = columnStats.getStat( ColumnStats::DENDRITIC_BIFURCATIONS, MIN );
    float result4 = columnStats.getStat( ColumnStats::SOMA_SURFACE, MAX );
 
-   BOOST_CHECK_EQUAL( result3 != result4, true );
+   BOOST_CHECK_EQUAL( radius != result4, true );
 
    // Aggregation MEAN & TOTAL
    MiniColumns minicolumns = columnStats.miniColumns( );
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
      nsol::ColumnStats >( NSOL_XML_SCENE_TEST2_DATA );
 #else
    std::cerr << "No QT5 support built-in" << std::endl;
-   return -1;
+   return 0;
 #endif
 
    Columns columns = dataSet.columns( );
@@ -95,25 +95,27 @@ BOOST_AUTO_TEST_CASE( columnStats_getStat )
       ColumnStats* columnStats1 = column->stats( );
 
       // Aggregation VARIANCE
-      ColumnStats::TColumnStat stat1 = ColumnStats::SOMA_VOLUME;
-      MiniColumnStats::TMiniColumnStat nStat = MiniColumnStats::TMiniColumnStat( stat1 );
-      TAggregation neuronAgg = MAX;
-
-      float value = 0.f;
-      float mean = columnStats1->getStat( stat1, MEAN );
-
-      NSOL_CONST_FOREACH( miniCol, columnStats1->miniColumns( ))
+      if( !column->miniColumns().empty() )
       {
-         float tmpValue = ( * miniCol )->stats( )->getStat( nStat, neuronAgg );
-         value += ( mean - tmpValue ) * ( mean - tmpValue );
+         ColumnStats::TColumnStat stat1 = ColumnStats::SOMA_VOLUME;
+         MiniColumnStats::TMiniColumnStat nStat = MiniColumnStats::TMiniColumnStat( stat1 );
+         TAggregation neuronAgg = MAX;
+
+         float value = 0.f;
+         float mean = columnStats1->getStat( stat1, MEAN );
+
+         NSOL_CONST_FOREACH( miniCol, columnStats1->miniColumns( ))
+         {
+            float tmpValue = ( * miniCol )->stats( )->getStat( nStat, neuronAgg );
+            value += ( mean - tmpValue ) * ( mean - tmpValue );
+         }
+         float variance_result = ( columnStats1->miniColumns( ).size( ) == 0 ? 0.0f :
+                                value / float( columnStats1->miniColumns( ).size( )));
+
+         float variance_result1 = columnStats1->getStat( stat1, VARIANCE, neuronAgg );
+
+         BOOST_CHECK_EQUAL( variance_result, variance_result1 );
       }
-      float variance_result = ( columnStats1->miniColumns( ).size( ) == 0 ? 0.0f :
-                             value / float( columnStats1->miniColumns( ).size( )));
-
-      float variance_result1 = columnStats1->getStat( stat1, VARIANCE, neuronAgg );
-
-      BOOST_CHECK_EQUAL( variance_result, variance_result1 );
-
 
       BOOST_CHECK_EQUAL( columnStats1->id( ), 0 );
 

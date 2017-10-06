@@ -45,18 +45,18 @@ BOOST_AUTO_TEST_CASE( segmentStats_getStat )
       // Aggregation STD_DEV & VARIANCE
       const NodePtr beginNode( new Node );
       const NodePtr endNode( new Node );
-      float result = segmentStat->getStat( SegmentStats::SURFACE, nullptr,
+      float surface = segmentStat->getStat( SegmentStats::SURFACE, nullptr,
                                            nullptr );
-      float result1 = segmentStat->getStat( SegmentStats::VOLUME, nullptr,
+      float volume = segmentStat->getStat( SegmentStats::VOLUME, nullptr,
                                            nullptr );
-      float result2 = segmentStat->getStat( SegmentStats::LENGTH, beginNode,
+      float length = segmentStat->getStat( SegmentStats::LENGTH, beginNode,
                                             endNode );
-      float result3 = segmentStat->getStat( SegmentStats::RADIUS, beginNode,
+      float radius = segmentStat->getStat( SegmentStats::RADIUS, beginNode,
                                             endNode );
 
-      BOOST_CHECK(( result == result1 ) && ( result1 == result2 ) &&
-                  ( result2 == result3 ));
-      BOOST_CHECK_EQUAL( result, 0.0f );
+      BOOST_CHECK(( surface == volume ) && ( volume == length ) &&
+                  ( length == radius ));
+      BOOST_CHECK_EQUAL( surface, 0.0f );
 
       // Free dymanic memory used
       NSOL_DELETE_PTR( segmentStat );
@@ -77,24 +77,24 @@ BOOST_AUTO_TEST_CASE( segmentStats_getStat )
       float generatrix = sqrt( segmentLength*segmentLength +
                                  radiusDifference*radiusDifference );
 
-      float result = ( M_PI ) * ( beginNode->radius() + endNode->radius() )
+      float surface = ( M_PI ) * ( beginNode->radius() + endNode->radius() )
                        * generatrix;
 
-      float result1 = segmentStat1->getStat( SegmentStats::SURFACE, beginNode,
+      float volume = segmentStat1->getStat( SegmentStats::SURFACE, beginNode,
                                                endNode );
 
-      BOOST_CHECK_EQUAL( result, result1 );
+      BOOST_CHECK_EQUAL( surface, volume );
 
-      float result2 = (M_PI_3) * (beginNode->point( ) - endNode->point( ))
+      float length = (M_PI_3) * (beginNode->point( ) - endNode->point( ))
               .norm( ) * ( beginNode->radius() * beginNode->radius() +
               endNode->radius()*endNode->radius() +
               2.0f*beginNode->radius()*endNode->radius() );
 
-      float result3 = segmentStat1->getStat( SegmentStats::VOLUME, beginNode,
+      float radius = segmentStat1->getStat( SegmentStats::VOLUME, beginNode,
                                              endNode );
 
 
-      BOOST_CHECK_EQUAL( result2, result3 );
+      BOOST_CHECK_EQUAL( length, radius );
 
       // Free dymanic memory used
       NSOL_DELETE_PTR( segmentStat1 );

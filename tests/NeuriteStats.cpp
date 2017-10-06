@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE( neuritestats_getStat )
 {
    NeuriteStats* neuriteStats = new NeuriteStats();
 
-   float result = neuriteStats->getStat( NeuriteStats::SURFACE, MEAN );
-   BOOST_CHECK_EQUAL( result, 0.0f );
+   float surface = neuriteStats->getStat( NeuriteStats::SURFACE, MEAN );
+   BOOST_CHECK_EQUAL( surface, 0.0f );
 }
 

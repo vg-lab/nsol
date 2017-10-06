@@ -44,17 +44,17 @@ BOOST_AUTO_TEST_CASE( sectionStats_getStat )
    SectionStats* sectionStats = new SectionStats();
 
    // Aggregation STD_DEV & VARIANCE
-   float result  = sectionStats->getStat( SectionStats::SURFACE,
+   float surface  = sectionStats->getStat( SectionStats::SURFACE,
                                           STD_DEV );
-   float result1 = sectionStats->getStat( SectionStats::SURFACE,
+   float volume = sectionStats->getStat( SectionStats::SURFACE,
                                           VARIANCE );
-   BOOST_CHECK_EQUAL( result, result1 );
+   BOOST_CHECK_EQUAL( surface, volume );
 
    // Aggregation MEAN & TOTAL
-   float result2 = sectionStats->getStat( SectionStats::VOLUME, MEAN );
-   float result3 = sectionStats->getStat( SectionStats::VOLUME, TOTAL );
+   float length = sectionStats->getStat( SectionStats::VOLUME, MEAN );
+   float radius = sectionStats->getStat( SectionStats::VOLUME, TOTAL );
 
-   BOOST_CHECK( result2 == result3 );
+   BOOST_CHECK( length == radius );
 
    BOOST_CHECK( sectionStats->getStat( SectionStats::SURFACE,
                                           MIN ) == 0.0f );

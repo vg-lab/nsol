@@ -44,7 +44,6 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_constructors )
 
    // Free dymanic memory used
    NSOL_DELETE_PTR( minicolumnStats1 );
-   NSOL_DELETE_PTR( column );
 }
 
 BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
@@ -58,15 +57,15 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
    MiniColumnStats::TMiniColumnStat stat = MiniColumnStats::DENDRITIC_VOLUME;
 
    // Aggregation STD_DEV & VARIANCE
-   float result  = minicolumnStats->getStat( stat, STD_DEV );
-   float result1 = sqrt( minicolumnStats->getStat( stat, VARIANCE ));
+   float surface  = minicolumnStats->getStat( stat, STD_DEV );
+   float volume = sqrt( minicolumnStats->getStat( stat, VARIANCE ));
 
-   float result2  = minicolumnStats1->getStat( stat, STD_DEV );
-   float result3 = sqrt( minicolumnStats1->getStat( stat, VARIANCE ));
+   float length  = minicolumnStats1->getStat( stat, STD_DEV );
+   float radius = sqrt( minicolumnStats1->getStat( stat, VARIANCE ));
 
-   BOOST_CHECK_EQUAL( result, result1 );
-   BOOST_CHECK_EQUAL( result, result2 );
-   BOOST_CHECK_EQUAL( result1,result3 );
+   BOOST_CHECK_EQUAL( surface, volume );
+   BOOST_CHECK_EQUAL( surface, length );
+   BOOST_CHECK_EQUAL( volume,radius );
 
    // Aggregation MEAN & TOTAL
    Neurons neurons = minicolumnStats->neurons();
@@ -94,7 +93,6 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
    // Free dymanic memory used
    NSOL_DELETE_PTR( minicolumnStats );
    NSOL_DELETE_PTR( minicolumnStats1 );
-   NSOL_DELETE_PTR( column );
 
    // 2- With data loaded
    DataSet dataSet;
@@ -112,7 +110,7 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
      nsol::ColumnStats >( NSOL_XML_SCENE_TEST2_DATA );
 #else
     std::cerr << "No QT5 support built-in" << std::endl;
-    return -1;
+    return 0;
 #endif
 
    Columns columns = dataSet.columns();
@@ -136,28 +134,30 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
          BOOST_CHECK_EQUAL( miniColumnStats3->id( ), 1 );
 
          // Aggregation VARIANCE
-         MiniColumnStats::TMiniColumnStat stat1 = MiniColumnStats::SOMA_VOLUME;
-         NeuronMorphologyStats::TNeuronMorphologyStat nStat =
-                        NeuronMorphologyStats::TNeuronMorphologyStat( stat1 );
-
-         float value = 0;
-         float mean = miniColumnStats2->getStat( stat1, MEAN );
-
-         NSOL_CONST_FOREACH( neuron, miniColumn2->neurons() )
+         if( !miniColumnStats2->neurons( ).empty( ) )
          {
-            NeuronMorphologyPtr morphology = ( * neuron )->morphology( );
+            MiniColumnStats::TMiniColumnStat stat1 = MiniColumnStats::SOMA_VOLUME;
+            NeuronMorphologyStats::TNeuronMorphologyStat nStat =
+                            NeuronMorphologyStats::TNeuronMorphologyStat( stat1 );
 
-            float tmpValue = morphology->stats( )->getStat( nStat );
-            value += ( mean - tmpValue ) * ( mean - tmpValue );
+            float value = 0;
+            float mean = miniColumnStats2->getStat( stat1, MEAN );
+
+            NSOL_CONST_FOREACH( neuron, miniColumn2->neurons() )
+            {
+               NeuronMorphologyPtr morphology = ( * neuron )->morphology( );
+
+               float tmpValue = morphology->stats( )->getStat( nStat );
+               value += ( mean - tmpValue ) * ( mean - tmpValue );
+            }
+
+            float varianceResult = ( miniColumn2->neurons().size( ) == 0 ? 0.0f :
+                                 value / float( miniColumn2->neurons().size( )));
+
+            float varianceResult1 = miniColumnStats2->getStat( stat1, VARIANCE);
+
+            BOOST_CHECK_EQUAL( varianceResult, varianceResult1 );
          }
-
-         float varianceResult = ( miniColumn2->neurons().size( ) == 0 ? 0.0f :
-                             value / float( miniColumn2->neurons().size( )));
-
-         float varianceResult1 = miniColumnStats2->getStat( stat1, VARIANCE);
-
-         BOOST_CHECK_EQUAL( varianceResult, varianceResult1 );
-
 
          // MiniColumn Stats 1
          float maxVarianceNeuriteSurface1 = miniColumnStats2->getStat(
@@ -201,7 +201,6 @@ BOOST_AUTO_TEST_CASE( miniColumnStats_getStat )
          // Free dymanic memory used
          NSOL_DELETE_PTR( miniColumnStats2 );
          NSOL_DELETE_PTR( miniColumnStats3 );
-         NSOL_DELETE_PTR( column1 );
 
       }
    }

@@ -66,20 +66,20 @@ BOOST_AUTO_TEST_CASE( neuriteCachedStats_getStat )
 
   NeuriteStats::TNeuriteStat stat = NeuriteStats::SURFACE;
 
-  float result  = neuriteStats->getStat( stat );
-  float result1 = neuritecached->getStat( stat );
+  float surface  = neuriteStats->getStat( stat );
+  float volume = neuritecached->getStat( stat );
 
-  BOOST_CHECK_EQUAL( result, result1 );
+  BOOST_CHECK_EQUAL( surface, volume );
 
   BOOST_CHECK_EQUAL( neuritecached->dirty( stat ), false );
 
   NeuriteStats::TNeuriteStat stat1 = NeuriteStats::SURFACE;
   TAggregation agg = MEAN;
 
-  float result2 = neuriteStats->getStat( stat1, agg );
-  float result3 = neuritecached->getStat( stat1, agg );
+  float length = neuriteStats->getStat( stat1, agg );
+  float radius = neuritecached->getStat( stat1, agg );
 
-  BOOST_CHECK_EQUAL( result2, result3 );
+  BOOST_CHECK_EQUAL( length, radius );
 
 }
 

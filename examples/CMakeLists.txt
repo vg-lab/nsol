@@ -45,17 +45,9 @@ if ( NSOL_WITH_EXAMPLES )
   set( NSOLMINICOLUMNSTATS_LINK_LIBRARIES nsol )
   common_application( nsolMiniColumnStats )
 
-  set( NSOLMINICOLUMNSTATS1_SOURCES miniColumnStats1.cpp )
-  set( NSOLMINICOLUMNSTATS1_LINK_LIBRARIES nsol )
-  common_application( nsolMiniColumnStats1 )
-
   set( NSOLCOLUMNSTATS_SOURCES columnStats.cpp )
   set( NSOLCOLUMNSTATS_LINK_LIBRARIES nsol )
   common_application( nsolColumnStats )
-
-  set( NSOLCOLUMNSTATS1_SOURCES columnStats1.cpp )
-  set( NSOLCOLUMNSTATS1_LINK_LIBRARIES nsol )
-  common_application( nsolColumnStats1 )
 
   set( NSOLDATASET_SOURCES dataset.cpp )
   set( NSOLDATASET_LINK_LIBRARIES nsol )
@@ -74,5 +66,8 @@ if ( NSOL_WITH_EXAMPLES )
     set( NSOLSCENE_LINK_LIBRARIES nsol )
     common_application( nsolScene )
   endif( )
+
+  configure_file(${PROJECT_SOURCE_DIR}/examples/exampleData.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/exampleData.h)
 
 endif( NSOL_WITH_EXAMPLES )
