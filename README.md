@@ -33,7 +33,7 @@ Yosemite/Capitan/Sierra and Windows 7/8/10 (Visual Studio 2015 Win64). The follo
 steps should be enough to build it:
 
 ```bash
-git --recursive clone https://gitlab.gmrv.es/nsviz/nsol.git
+git clone --recursive https://gitlab.gmrv.es/nsviz/nsol.git
 mkdir nsol/build && cd nsol/build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCLONE_SUBPROJECTS=ON
 make
