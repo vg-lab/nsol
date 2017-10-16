@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 #include <sstream>
 
@@ -36,7 +37,7 @@ BOOST_AUTO_TEST_CASE( swc_writer )
   NeuronMorphologyPtr neuronMorphology;
 
   SwcReader swcReader;
-  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 
   BOOST_CHECK( sw.writeMorphology( "foo.txt", neuronMorphology ) );
 }

@@ -24,6 +24,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 using namespace nsol;
 
@@ -47,10 +48,10 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_clone )
   NeuronMorphologyPtr neuronMorphology;
 #ifdef NSOL_USE_BRION
   BrionReader brionReader;
-  neuronMorphology = brionReader.loadMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = brionReader.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
   SwcReader swcReader;
-  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
   NeuronMorphologyPtr neuronMorphology1 = neuronMorphology->clone( );
@@ -65,12 +66,12 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_operators )
 
 #ifdef NSOL_USE_BRION
   BrionReader brionReader;
-  neuronMorphology1 = brionReader.loadMorphology( "ExampleNeuron.swc" );
-  neuronMorphology2 = brionReader.loadMorphology( "mini.swc" );
+  neuronMorphology1 = brionReader.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
+  neuronMorphology2 = brionReader.loadMorphology( NSOL_MINI_SWC );
 #else
   SwcReader swcReader;
-  neuronMorphology1 = swcReader.readMorphology( "ExampleNeuron.swc" );
-  neuronMorphology2 = swcReader.readMorphology( "mini.swc" );
+  neuronMorphology1 = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
+  neuronMorphology2 = swcReader.readMorphology( NSOL_MINI_SWC );
 #endif
 
   BOOST_CHECK( neuronMorphology1 == neuronMorphology1 );
@@ -89,10 +90,10 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_dentrites )
 
 #ifdef NSOL_USE_BRION
   BrionReader brionReader;
-  neuronMorphology = brionReader.loadMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = brionReader.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
   SwcReader swcReader;
-  neuronMorphology = swcReader.readMorphology( "ExampleNeuron.swc" );
+  neuronMorphology = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
   auto basalDendrites = neuronMorphology->basalDendrites( );
@@ -115,8 +116,6 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_dentrites )
   BOOST_CHECK_EQUAL( neuronMorphology, neuronMorphology );
 
   BOOST_CHECK_EQUAL( neuronMorphology->parentNeurons( ).size( ), 0 );
-
-
 
   const NeuronMorphologyPtr neuronMorphology2 = new NeuronMorphology( );
   BOOST_CHECK( neuronMorphology2->apicalDendrite( ) == nullptr );

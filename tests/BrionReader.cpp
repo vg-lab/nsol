@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 using namespace nsol;
 
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronMorphologyPtr morphology = br.loadMorphology( "ExampleNeuron.swc" );
+    NeuronMorphologyPtr morphology = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 
     Neurites neurites = morphology->neurites( );
     unsigned int numNeurites = neurites.size( );
@@ -59,12 +60,6 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
         numNeuritesNodes += section->nodes( ).size( );
       }
     }
-
-    // std::cout << "Number of neurites: " << numNeurites << std::endl;
-    // std::cout << "Number of soma nodes: " << numSomaNodes << std::endl;
-    // std::cout << "Number of branches: " << numBranches << std::endl;
-    // std::cout << "Number of bifurcations: " << numBifurcations << std::endl;
-    // std::cout << "Number of neurites nodes: " << numNeuritesNodes << std::endl;
 
     BOOST_CHECK_EQUAL( numNeurites, 6 );
     BOOST_CHECK_EQUAL( numSomaNodes, 1 );
@@ -84,7 +79,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 0 );
+    NeuronPtr neuron = br.loadNeuron( NSOL_EXAMPLE_NEURON_SWC, 0 );
 
     BOOST_CHECK_EQUAL( neuron->gid( ), 0 );
     BOOST_CHECK_EQUAL( neuron->layer( ), 0 );
@@ -104,7 +99,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 1, 1,
+    NeuronPtr neuron = br.loadNeuron( NSOL_EXAMPLE_NEURON_SWC, 1, 1,
                                       Matrix4_4fIdentity,
                                       Neuron::INTERNEURON,
                                       Neuron::INHIBITORY );
