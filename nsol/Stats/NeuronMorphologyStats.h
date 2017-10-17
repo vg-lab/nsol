@@ -92,54 +92,6 @@ namespace nsol
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
 
-    // NSOL_API
-    // virtual float dendriticVolume( void ) const;
-
-    // NSOL_API
-    // virtual float axonVolume( void ) const;
-
-    // NSOL_API
-    // virtual float neuriticVolume( void ) const;
-
-    // NSOL_API
-    // virtual float somaVolume( void ) const;
-
-    // NSOL_API
-    // virtual float volume( void ) const;
-
-    // NSOL_API
-    // virtual float dendriticSurface( void ) const;
-
-    // NSOL_API
-    // virtual float axonSurface( void ) const;
-
-    // NSOL_API
-    // virtual float neuriticSurface( void ) const;
-
-    // NSOL_API
-    // virtual float somaSurface( void ) const;
-
-    // NSOL_API
-    // virtual float surface( void ) const;
-
-    // NSOL_API
-    // virtual float dendriticLength( void ) const;
-
-    // NSOL_API
-    // virtual float axonLength( void ) const;
-
-    // NSOL_API
-    // virtual float neuriticLength( void ) const;
-
-    // NSOL_API
-    // virtual unsigned int dendriticBifurcations( void ) const;
-
-    // NSOL_API
-    // virtual unsigned int axonBifurcations( void ) const;
-
-    // NSOL_API
-    // virtual unsigned int neuriticBifurcations( void ) const;
-
   }; // class NeuronMorphologyStats
 
 } // namespace nsol
