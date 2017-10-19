@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 #include <iostream>
 
@@ -45,10 +46,10 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
 
 #ifdef NSOL_USE_BRION
     BrionReader br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReader swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;
@@ -104,10 +105,10 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
 
 #ifdef NSOL_USE_BRION
     BrionReader br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReader swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;
@@ -164,10 +165,10 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
 
 #ifdef NSOL_USE_BRION
     BrionReader br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReader swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;
@@ -222,10 +223,10 @@ BOOST_AUTO_TEST_CASE( simplifier_simplify )
 
 #ifdef NSOL_USE_BRION
     BrionReader br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReader swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;
@@ -294,7 +295,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       MiniColumn,
       Column
       > br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReaderTemplated<
       ImportanceNode,
@@ -305,7 +306,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       NeuronMorphology,
       Neuron
       > swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;
@@ -370,7 +371,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       MiniColumn,
       Column
       > br;
-    morpho0 = br.loadMorphology( "ExampleNeuron.swc" );
+    morpho0 = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #else
     SwcReaderTemplated<
       ImportanceNode,
@@ -381,7 +382,7 @@ BOOST_AUTO_TEST_CASE( cutout )
       NeuronMorphology,
       Neuron
       > swcr;
-    morpho0 = swcr.readMorphology( "ExampleNeuron.swc" );
+    morpho0 = swcr.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
 #endif
 
     NeuronMorphologyPtr morpho1;

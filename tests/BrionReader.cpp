@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <nsol/nsol.h>
 #include "nsolTests.h"
+#include <testData.h>
 
 using namespace nsol;
 
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronMorphologyPtr morphology = br.loadMorphology( "ExampleNeuron.swc" );
+    NeuronMorphologyPtr morphology = br.loadMorphology( NSOL_EXAMPLE_NEURON_SWC );
 
     Neurites neurites = morphology->neurites( );
     unsigned int numNeurites = neurites.size( );
@@ -60,17 +61,12 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       }
     }
 
-    // std::cout << "Number of neurites: " << numNeurites << std::endl;
-    // std::cout << "Number of soma nodes: " << numSomaNodes << std::endl;
-    // std::cout << "Number of branches: " << numBranches << std::endl;
-    // std::cout << "Number of bifurcations: " << numBifurcations << std::endl;
-    // std::cout << "Number of neurites nodes: " << numNeuritesNodes << std::endl;
-
-    BOOST_CHECK_EQUAL( numNeurites, 6 );
-    BOOST_CHECK_EQUAL( numSomaNodes, 1 );
-    BOOST_CHECK_EQUAL( numBranches, 80 );
-    BOOST_CHECK_EQUAL( numBifurcations, 160 );
-    BOOST_CHECK_EQUAL( numNeuritesNodes, 515 );
+    BOOST_CHECK_EQUAL( numNeurites, 3 );
+    BOOST_CHECK_EQUAL( numSomaNodes, 3 );
+    BOOST_CHECK_EQUAL( numBranches, 30 );
+    BOOST_CHECK_EQUAL( numBifurcations, 60 );
+    //TODO: check this value. Seems to be wrong
+    BOOST_CHECK_EQUAL( numNeuritesNodes, 211 );
   }
   {
     BrionReaderTemplated<
@@ -84,7 +80,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 0 );
+    NeuronPtr neuron = br.loadNeuron( NSOL_EXAMPLE_NEURON_SWC, 0 );
 
     BOOST_CHECK_EQUAL( neuron->gid( ), 0 );
     BOOST_CHECK_EQUAL( neuron->layer( ), 0 );
@@ -104,7 +100,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
       MiniColumn,
       Column> br;
 
-    NeuronPtr neuron = br.loadNeuron( "ExampleNeuron.swc", 1, 1,
+    NeuronPtr neuron = br.loadNeuron( NSOL_EXAMPLE_NEURON_SWC, 1, 1,
                                       Matrix4_4fIdentity,
                                       Neuron::INTERNEURON,
                                       Neuron::INHIBITORY );

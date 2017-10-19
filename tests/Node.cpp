@@ -111,6 +111,13 @@ BOOST_AUTO_TEST_CASE( node_operators )
 
 }
 
+BOOST_AUTO_TEST_CASE( node_importante )
+{
+  ImportanceNode const n;
+
+  BOOST_CHECK( n.importance( ) == 0 );
+}
+
 
 BOOST_AUTO_TEST_CASE( node_parent_segments )
 {

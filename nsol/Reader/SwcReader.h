@@ -225,7 +225,6 @@ namespace nsol
     }
 
     std::string lineString;
-    std::getline( inFile, lineString );
 
     NsolVector< NodePtr > nodes;
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));

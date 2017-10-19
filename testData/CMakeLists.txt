@@ -5,3 +5,8 @@ configure_file(
   scene.xml.in
   ${NSOL_BINARY_BIN_DIR}/scene.xml
   @ONLY )
+
+configure_file(
+  oneColumnScene.xml.in
+  ${NSOL_BINARY_BIN_DIR}/oneColumnScene.xml
+  @ONLY )

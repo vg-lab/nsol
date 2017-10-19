@@ -55,6 +55,10 @@ if ( NSOL_WITH_EXAMPLES )
   common_application( nsolMiniColumnStats )
   list( APPEND NSOL_EXAMPLES_FILES ${NSOLMINICOLUMNSTATS_SOURCES} )
 
+  set( NSOLCOLUMNSTATS_SOURCES columnStats.cpp )
+  set( NSOLCOLUMNSTATS_LINK_LIBRARIES nsol )
+  common_application( nsolColumnStats )
+
   set( NSOLDATASET_SOURCES dataset.cpp )
   set( NSOLDATASET_LINK_LIBRARIES nsol )
   common_application( nsolDataset )

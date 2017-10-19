@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ * Authors: Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -19,16 +19,25 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "DendriteStats.h"
 
+#include <limits.h>
+#include <nsol/nsol.h>
+#include "nsolTests.h"
+#include <testData.h>
 
-namespace nsol
+#include <sstream>
+
+using namespace nsol;
+
+BOOST_AUTO_TEST_CASE( swc_writer )
 {
+  SwcWriter sw;
+  BOOST_CHECK( !sw.writeMorphology( "foo.txt", nullptr ) );
 
-  DendriteStats::DendriteStats ( TDendriteType dendriteType_ )
-    : NeuriteStats( )
-    , Dendrite( dendriteType_ )
-  {
-  }
-  
-} // namespace nsol
+  NeuronMorphologyPtr neuronMorphology;
+
+  SwcReader swcReader;
+  neuronMorphology = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
+
+  BOOST_CHECK( sw.writeMorphology( "foo.txt", neuronMorphology ) );
+}

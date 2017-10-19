@@ -28,6 +28,7 @@ namespace nsol
   Soma::Soma( )
     : _center( Vec3f( 0.0f, 0.0f, 0.0f ))
     , _maxRadius( 0.0f )
+    , _minRadius( 0.0f )
     , _meanRadius( 0.0f )
   {
   }

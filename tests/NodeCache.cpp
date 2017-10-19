@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Pablo Toharia <pablo.toharia@urjc.es>
+ * Authors: Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -19,16 +19,24 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "DendriteStats.h"
+
+#include <limits.h>
+#include <nsol/nsol.h>
+#include "nsolTests.h"
+
+#include <cmath>
+
+using namespace nsol;
 
 
-namespace nsol
+BOOST_AUTO_TEST_CASE( nodecache_constructor )
 {
+  NeuriteStats* neuriteStats = new NeuriteStats( );
 
-  DendriteStats::DendriteStats ( TDendriteType dendriteType_ )
-    : NeuriteStats( )
-    , Dendrite( dendriteType_ )
-  {
-  }
-  
-} // namespace nsol
+  BOOST_CHECK( neuriteStats->stats( ) == neuriteStats );
+
+  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::STD_DEV ) == 0.0f );
+  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::MIN ) == 0.0f );
+  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::MAX ) == 0.0f );
+  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::VARIANCE ) == 0.0f );
+}

@@ -75,3 +75,28 @@ BOOST_AUTO_TEST_CASE( synapse_asign )
     BOOST_CHECK_EQUAL( synapse1.postSynapticNeuron( ), 2 );
   }
 }
+
+BOOST_AUTO_TEST_CASE( synapse_map )
+{
+  Synapse* synapse = new Synapse( );
+
+  Synapse* synapse1 = new Synapse( );
+  synapse1 = synapse;
+
+  SynapsesMap sm;
+  sm.addSynapse( 0, synapse );
+  BOOST_CHECK_EQUAL( sm.size( ), 1 );
+
+  try
+  {
+    sm.addSynapse( 0, synapse1 );
+  }
+  catch( std::exception e )
+  {
+    std::cout << e.what( ) << std::endl;
+  }
+  BOOST_CHECK_EQUAL( sm.size( ), 1 );
+
+  sm.clear( );
+  BOOST_CHECK( sm.empty( ) );
+}

@@ -20,3 +20,7 @@
  *
  */
 #define NSOL_XML_SCENE_TEST_DATA "@PROJECT_BINARY_DIR@/testData/scene.xml"
+#define NSOL_XML_SCENE_TEST2_DATA "@PROJECT_BINARY_DIR@/testData/oneColumnScene.xml"
+#define NSOL_EXAMPLE_NEURON_SWC "@PROJECT_SOURCE_DIR@/testData/ExampleNeuron.swc"
+#define NSOL_MINI_SWC "@PROJECT_SOURCE_DIR@/testData/mini.swc"
+#define NSOL_STATS_TEST_MORPHOLOGY_SWC "@PROJECT_SOURCE_DIR@/tests/statsTestMorphology.swc"

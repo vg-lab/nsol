@@ -2,6 +2,7 @@
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
  * Authors: Juan Jose Garcia Cantero <juanjose.garcia@urjc.es>
+ *          Cristian Rodríguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -40,6 +41,7 @@ BOOST_AUTO_TEST_CASE( soma_constructor )
   BOOST_CHECK_EQUAL( soma.nodes( ).size( ), 0 );
   BOOST_CHECK_EQUAL( soma.center( ), CENTER );
   BOOST_CHECK_EQUAL( soma.maxRadius( ), MAX_RADIUS );
+  BOOST_CHECK_EQUAL( soma.minRadius( ), 0.0f );
   BOOST_CHECK_EQUAL( soma.meanRadius( ), MEAN_RADIUS );
 
 

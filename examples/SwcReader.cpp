@@ -52,8 +52,6 @@ int main(int argc, char *argv[])
 
   w.writeMorphology(filename, n);
 
-//  cout << "Neuron loaded with " << n->numNeurites() << " neurites" << endl;
-
   Neurites neurites = n->neurites();
 
   int j = 0;

@@ -46,11 +46,14 @@ namespace nsol
 
   void SynapsesMap::addSynapse( unsigned int neuronGID_, Synapse* synapse_ )
   {
-
-    NSOL_DEBUG_CHECK( _checkSynapseRepeated( neuronGID_, synapse_ ),
+    bool isAdded = _checkSynapseRepeated( neuronGID_, synapse_ );
+    NSOL_DEBUG_CHECK( isAdded,
                       "The synapse already exists into the dataset." );
 
-    this->insert( std::make_pair( neuronGID_, synapse_ ));
+    if( isAdded )
+    {
+      this->insert( std::make_pair( neuronGID_, synapse_ ));
+    }
 
   }
 

@@ -55,23 +55,29 @@ namespace nsol
       float radius;
     } TSwcLine;
 
-    void writeMorphology(const char *fileName, NeuronMorphologyPtr morphology)
+    bool writeMorphology(const char *fileName, NeuronMorphologyPtr morphology)
     {
       return this->writeMorphology(std::string(fileName), morphology);
     }
 
-    void writeMorphology(const std::string& fileName, NeuronMorphologyPtr morphology)
+    bool writeMorphology(const std::string& fileName, NeuronMorphologyPtr morphology)
     {
 
       if (!morphology)
+      {
         std::cerr << "Error neuron " << std::endl;
+        return false;
+      }
 
       std::ofstream outFile;
       outFile.open(fileName, std::ios::out);
 
       //Opening file checking
       if ((outFile.rdstate() & std::ofstream::failbit) != 0)
+      {
         std::cerr << "Error opening file " << fileName << std::endl;
+        return false;
+      }
 
       int parent = -1;
 
@@ -176,6 +182,8 @@ namespace nsol
       }
 
      outFile.close();
+
+     return true;
 
     }
   };

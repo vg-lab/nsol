@@ -44,13 +44,13 @@ namespace nsol
      * Default constructor
      */
     NSOL_API
-    Soma( );
+    Soma( void );
 
     /**
      * Destructor
      */
     NSOL_API
-    virtual ~Soma( );
+    virtual ~Soma( void );
 
     /**
      * Method to get the center of the soma
