@@ -155,25 +155,23 @@ namespace nsol
   {
     NeuronMorphologyPtr nsolMorpho = new NEURONMORPHOLOGY( );
 
-    brion::Vector4fsPtr points = brionMorpho_->readPoints(
-      brion::MORPHOLOGY_UNDEFINED );
-    brion::Vector2isPtr sections = brionMorpho_->readSections(
-      brion::MORPHOLOGY_UNDEFINED );
-    brion::SectionTypesPtr sectionTypes = brionMorpho_->readSectionTypes( );
+    const auto& points = brionMorpho_->getPoints( );
+    const auto& sections = brionMorpho_->getSections( );
+    const auto& sectionTypes = brionMorpho_->getSectionTypes( );
 
     SOMA* soma = new SOMA;
 
-    std::vector< SECTION* > nsolSections( sections->size( ));
+    std::vector< SECTION* > nsolSections( sections.size( ));
 
-    for ( unsigned int sectId = 0; sectId < sections->size(); sectId++ )
+    for ( unsigned int sectId = 0; sectId < sections.size(); sectId++ )
     {
-      int fatherSectId = (*sections)[sectId].y( );
-      brion::SectionType sectType = (*sectionTypes)[sectId];
-      brion::SectionType fatherSectType = (*sectionTypes)[fatherSectId];
+      int fatherSectId = sections[sectId].y( );
+      brion::SectionType sectType = sectionTypes[sectId];
+      brion::SectionType fatherSectType = sectionTypes[fatherSectId];
 
-      int startNode = (*sections)[sectId].x( );
-      int endNode = sectId == sections->size( ) - 1 ?
-        points->size( ) : (*sections)[sectId+1].x( );
+      int startNode = sections[sectId].x( );
+      int endNode = sectId == sections.size( ) - 1 ?
+        points.size( ) : sections[sectId+1].x( );
 
       NODE* nsolNode = nullptr;
       SECTION* nsolSection = nullptr;
@@ -184,7 +182,7 @@ namespace nsol
       {
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = (*points)[i];
+          brion::Vector4f point = points[i];
           nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )), i,
                                point.w( ) / 2.0f );
           soma->addNode( nsolNode );
@@ -228,7 +226,7 @@ namespace nsol
 
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = (*points)[i];
+          brion::Vector4f point = points[i];
           nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )), i,
                                point.w( ) / 2.0f );
           nsolSection->addNode( nsolNode );
@@ -295,7 +293,7 @@ namespace nsol
     bool reposition_ )
   {
     brion::Morphology* brionMorpho = new brion::Morphology(
-      uri_.getPath( ));
+      servus::URI( uri_.getPath( )));
 
     NeuronMorphologyPtr nsolMorpho = loadMorphology( brionMorpho, reposition_ );
     delete brionMorpho;
