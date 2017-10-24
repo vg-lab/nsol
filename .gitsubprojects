@@ -1,3 +1,3 @@
 # -*- mode: cmake -*-
-# git_subproject(Brion https://github.com/BlueBrain/Brion.git 5d9de9d)
+# git_subproject(Brion https://github.com/BlueBrain/Brion.git f8e46f4)
 # git_subproject(FiReS https://github.com/gmrvvis/FiReS.git b63cdd97)
