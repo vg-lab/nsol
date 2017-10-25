@@ -53,7 +53,7 @@ namespace nsol
      * @return true if everything went ok
      */
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -332,12 +332,14 @@ namespace nsol
                     if ( morphologies.find( swc ) == morphologies.end( ))
                     {
 #ifdef NSOL_USE_BRION
-                    BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                                          SOMA, NEURONMORPHOLOGY, NEURON,
+                    BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
+                                          DENDRITE, AXON, SOMA,
+                                          NEURONMORPHOLOGY, NEURON,
                                           MINICOLUMN, COLUMN > brionReader;
                      neuronMorphology = brionReader.loadMorphology( swc );
 #else
-                     SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+                     SwcReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
+                                         DENDRITE, AXON, SOMA,
                                          NEURONMORPHOLOGY, NEURON> swcReader;
                      neuronMorphology = swcReader.readMorphology( swc );
 #endif

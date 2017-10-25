@@ -200,7 +200,7 @@ int main ( int argc, char ** argv )
 #ifdef NSOL_USE_BRION
     dataSet.loadBlueConfigHierarchy<
       nsol::Node,
-      nsol::SectionStats,
+      nsol::NeuronMorphologySectionStats,
       nsol::DendriteStats,
       nsol::AxonStats,
       nsol::SomaStats,
@@ -221,7 +221,7 @@ int main ( int argc, char ** argv )
 
     dataSet.loadCorticalNeuronFromFile<
       nsol::NodeCached,
-      nsol::SectionCachedStats,
+      nsol::NeuronMorphologySectionCachedStats,
       nsol::DendriteCachedStats,
       nsol::AxonCachedStats,
       nsol::SomaStats,
@@ -235,7 +235,7 @@ int main ( int argc, char ** argv )
 #ifdef NSOL_USE_QT5CORE
     dataSet.loadXmlScene<
       nsol::NodeCached,
-      nsol::SectionCachedStats,
+      nsol::NeuronMorphologySectionCachedStats,
       nsol::DendriteCachedStats,
       nsol::AxonCachedStats,
       nsol::SomaStats,

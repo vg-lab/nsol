@@ -31,8 +31,6 @@
 namespace nsol
 {
 
-  class SectionStats;
-
   class Section
     : public virtual Object
   {
@@ -50,34 +48,6 @@ namespace nsol
      */
     NSOL_API
     virtual ~Section( );
-
-    /**
-     * Method to get the gid of the section.
-     * @return gid
-     */
-    NSOL_API
-    unsigned int id( void );
-
-    /**
-     * Method to set the gid of the section.
-     * @param gid
-     */
-    NSOL_API
-    void id (unsigned int id_ );
-
-    /**
-     * Gets the parent Neurite of the Section
-     * @return pointer to the parent Neurite
-     */
-    NSOL_API
-    NeuritePtr neurite( void );
-
-    /**
-     * Sets the parent neurite of this Section
-     * @param neurite pointer to parent neurite
-     */
-    NSOL_API
-    void neurite( NeuritePtr neurite );
 
     /**
      * Gets the parent Section of this Section
@@ -150,13 +120,6 @@ namespace nsol
     NSOL_API
     NodePtr lastNode( void );
 
-    /**
-     * Returns object as SectionStats
-     * @return pointer to SectionStats object
-     */
-    NSOL_API
-    virtual SectionStats * stats( void );
-
     NSOL_API
     virtual SectionPtr clone( void ) const;
 
@@ -173,12 +136,6 @@ namespace nsol
     }
 
   protected:
-
-    //! Unique id
-    unsigned int _id;
-
-    //! Parent neurite of the section
-    NeuritePtr _neurite;
 
     //! Parent section of this section
     SectionPtr _parent;

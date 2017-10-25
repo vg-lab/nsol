@@ -125,14 +125,15 @@ namespace nsol
      * @return pointer to the presynaptic section added
      */
     NSOL_API
-    void preSynapticSection( const SectionPtr preSynapticSection_ );
+    void preSynapticSection(
+      const  NeuronMorphologySectionPtr preSynapticSection_ );
 
     /**
      * Method to get the presynaptic section.
      * @return pointer to the presynaptic section.
      */
     NSOL_API
-    SectionPtr preSynapticSection( void ) const;
+    NeuronMorphologySectionPtr preSynapticSection( void ) const;
 
     /**
      * Method to add a postsynaptic section to the synapse.
@@ -141,14 +142,15 @@ namespace nsol
      * @return pointer to the postsynaptic section added
      */
     NSOL_API
-    void postSynapticSection(const SectionPtr section_ );
+    void postSynapticSection(
+      const  NeuronMorphologySectionPtr section_ );
 
     /**
      * Method to get the postsynaptic section.
      * @return pointer to the postsynaptic section.
      */
     NSOL_API
-    SectionPtr postSynapticSection( void ) const;
+    NeuronMorphologySectionPtr postSynapticSection( void ) const;
 
     ///@}
 
@@ -206,10 +208,10 @@ namespace nsol
     Vec3f _postSynapticSurfacePosition;
 
     //! Section of a presynaptic neuron (neurite)
-    SectionPtr _preSynapticSection;
+    NeuronMorphologySectionPtr _preSynapticSection;
 
     //! Section of a postsynaptic neuron (neurite)
-    SectionPtr _postSynapticSection;
+    NeuronMorphologySectionPtr _postSynapticSection;
 
   };
 

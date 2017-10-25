@@ -20,51 +20,59 @@
  *
  */
 
-#include "NodeCached.h"
-#include "NeuronMorphologySectionCachedStats.h"
+#include "NeuronMorphologySection.h"
 
 namespace nsol
 {
 
-
-  NodeCached::NodeCached( const Vec3f & point_,
-                          const int & id_,
-                          const float & radius_ )
-    : Node( point_, id_, radius_ )
-    , Cached( )
+  NeuronMorphologySection::NeuronMorphologySection( void )
+    : Section( )
+    , _id( 0 )
+    , _neurite( nullptr )
   {
   }
 
-  NodeCached::~NodeCached( void )
+  NeuronMorphologySection::~NeuronMorphologySection( void )
   {
-  }
-
-  void NodeCached::setAndPropagateDirty( unsigned int id_ )
-  {
-    this->Cached::setAndPropagateDirty( id_ );
-    // TODO: propagate dirtiness to parents
-  }
-
-  void NodeCached::setAndPropagateDirty( void )
-  {
-    this->Cached::setAndPropagateDirty( );
-    // TODO: propagate dirtiness to parents
-  }
-
-
-  void NodeCached::radius( const float radius_ )
-  {
-    this->Node::radius( radius_ );
-    // TODO: propagate dirtiness to parents
 
   }
 
-
-  void NodeCached::point( const Vec3f & point_ )
+  unsigned int NeuronMorphologySection::id( void )
   {
-    this->Node::point( point_ );
-    // TODO: propagate dirtiness to parents
+      return _id;
   }
 
+  void NeuronMorphologySection::id ( unsigned int id_ )
+  {
+      _id = id_;
+  }
+
+  NeuritePtr NeuronMorphologySection::neurite( void )
+  {
+    return _neurite;
+  }
+
+  void NeuronMorphologySection::neurite( NeuritePtr newNeurite )
+  {
+    _neurite = newNeurite;
+  }
+
+  NeuronMorphologySectionStats * NeuronMorphologySection::stats( void )
+  {
+    return nullptr;
+  }
+
+  SectionPtr NeuronMorphologySection::clone( void ) const
+  {
+    SectionPtr section = new NeuronMorphologySection( );
+    for ( unsigned int i = 1; i < _nodes.size( ); i++ )
+    {
+      section->addNode( _nodes[i]->clone( ));
+    }
+    return section;
+  }
 
 } // namespace nsol
+
+
+// EOF

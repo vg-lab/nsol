@@ -29,7 +29,7 @@
 #include "../Neuron.h"
 #include "../Synapse.h"
 #include "../Stats/NodeCached.h"
-#include "../Stats/SectionCachedStats.h"
+#include "../Stats/NeuronMorphologySectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
@@ -48,7 +48,7 @@ namespace nsol
 
 #define BRION_READER_TEMPLATE_CLASSES            \
   class NODE,                                         \
-    class SECTION,                                    \
+    class NEURONMORPHOLOGYSECTION,                    \
     class DENDRITE,                                   \
     class AXON,                                       \
     class SOMA,                                       \
@@ -59,7 +59,7 @@ namespace nsol
 
 #define BRION_READER_TEMPLATE_CLASS_NAMES        \
   NODE,                                               \
-    SECTION,                                          \
+    NEURONMORPHOLOGYSECTION,                          \
     DENDRITE,                                         \
     AXON,                                             \
     SOMA,                                             \
@@ -115,7 +115,7 @@ namespace nsol
 
   typedef BrionReaderTemplated<
     Node,
-    Section,
+    NeuronMorphologySection,
     Dendrite,
     Axon,
     Soma,
@@ -126,7 +126,7 @@ namespace nsol
 
    typedef BrionReaderTemplated<
      Node,
-     SectionStats,
+     NeuronMorphologySectionStats,
      DendriteStats,
      AxonStats,
      SomaStats,
@@ -137,7 +137,7 @@ namespace nsol
 
    typedef BrionReaderTemplated<
      NodeCached,
-     SectionCachedStats,
+     NeuronMorphologySectionCachedStats,
      DendriteCachedStats,
      AxonCachedStats,
      SomaStats,
@@ -161,7 +161,7 @@ namespace nsol
 
     SOMA* soma = new SOMA;
 
-    std::vector< SECTION* > nsolSections( sections.size( ));
+    std::vector< NEURONMORPHOLOGYSECTION* > nsolSections( sections.size( ));
 
     for ( unsigned int sectId = 0; sectId < sections.size(); sectId++ )
     {
@@ -174,8 +174,8 @@ namespace nsol
         points.size( ) : sections[sectId+1].x( );
 
       NODE* nsolNode = nullptr;
-      SECTION* nsolSection = nullptr;
-      SECTION* nsolFatherSection = nullptr;
+      NEURONMORPHOLOGYSECTION* nsolSection = nullptr;
+      NEURONMORPHOLOGYSECTION* nsolFatherSection = nullptr;
       NeuritePtr nsolNeurite = nullptr;
 
       if ( sectType == brion::SectionType::SECTION_SOMA )
@@ -191,7 +191,7 @@ namespace nsol
       }
       else
       {
-        nsolSection = new SECTION( );
+        nsolSection = new NEURONMORPHOLOGYSECTION( );
         nsolSection->id( sectId );
         nsolSections[sectId] = nsolSection;
         if ( sectType != fatherSectType )

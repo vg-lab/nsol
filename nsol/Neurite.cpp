@@ -84,12 +84,12 @@ namespace nsol
     return ( _morphology != nullptr );
   }
 
-  SectionPtr Neurite::firstSection( void ) const
+  NeuronMorphologySectionPtr Neurite::firstSection( void ) const
   {
     return _firstSection;
   }
 
-  void Neurite::firstSection(SectionPtr section)
+  void Neurite::firstSection( NeuronMorphologySectionPtr section)
   {
     _firstSection = section;
   }
@@ -161,7 +161,8 @@ namespace nsol
   NeuritePtr Neurite::clone( void ) const
   {
     NeuritePtr neurite = new Neurite( _neuriteType );
-    SectionPtr firstSec = _firstSection->clone( );
+    NeuronMorphologySectionPtr firstSec =
+      dynamic_cast< NeuronMorphologySectionPtr >( _firstSection->clone( ));
 
     firstSec->neurite( neurite );
     firstSec->firstNode( _firstSection->firstNode( )->clone( ));
@@ -175,14 +176,17 @@ namespace nsol
 
     while( ! originalSections.empty( ))
     {
-      SectionPtr originalSec = originalSections.top( );
-      SectionPtr newSec = newSections.top( );
+      NeuronMorphologySectionPtr originalSec =
+        dynamic_cast< NeuronMorphologySectionPtr >( originalSections.top( ));
+      NeuronMorphologySectionPtr newSec =
+        dynamic_cast< NeuronMorphologySectionPtr >( newSections.top( ));
       originalSections.pop( );
       newSections.pop( );
 
       for ( SectionPtr childSec: originalSec->children( ))
       {
-        SectionPtr newChildSec = childSec->clone( );
+        NeuronMorphologySectionPtr newChildSec =
+          dynamic_cast< NeuronMorphologySectionPtr >( childSec->clone( ));
         newChildSec->parent( newSec );
         newChildSec->neurite( neurite );
         newSec->addChild( newChildSec );

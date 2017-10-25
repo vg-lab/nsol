@@ -205,13 +205,13 @@ int main( int argc, char* argv[ ])
                 postSynapticNeuron = neuronIt_->second;
             }
 
-            SectionPtr preSynSection  = nullptr;
-            SectionPtr postSynSection = nullptr;
+            NeuronMorphologySectionPtr preSynSection  = nullptr;
+            NeuronMorphologySectionPtr postSynSection = nullptr;
 
             NodePtr preSynNode  = nullptr;
             NodePtr postSynNode = nullptr;
 
-          Vec3f preSynPos  = synapse->preSynapticSurfacePosition();
+            Vec3f preSynPos  = synapse->preSynapticSurfacePosition();
             Vec3f postSynPos = synapse->postSynapticSurfacePosition();
 
             cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;

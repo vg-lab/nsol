@@ -19,13 +19,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef __NSOL_SECTION_CACHED_STATS__
-#define __NSOL_SECTION_CACHED_STATS__
+#ifndef __NSOL_NEURON_MORPHOLOGY_SECTION_CACHED_STATS__
+#define __NSOL_NEURON_MORPHOLOGY_SECTION_CACHED_STATS__
 
 #include <nsol/api.h>
 
 #include "Cached.h"
-#include "SectionStats.h"
+#include "NeuronMorphologySectionStats.h"
 
 namespace nsol
 {
@@ -34,48 +34,48 @@ namespace nsol
   /** \class SectionCachedStats
    *  \brief This class allows to cache the stats for sections
    *
-   *  Using this class instead of Section or SectionStats when constructing
-   *  the hierarchy allows to call the method stats from base Section
-   *  class and get the corresponding volume, surface and length. If the cached
-   *  value is dirty then the actual computation process is done. In case is
-   *  clean the cached value is returned directly.
+   *  Using this class instead of Section or NeuronMorphologySectionStats when
+   *  constructing the hierarchy allows to call the method stats from base
+   *  NeuronMorphologySection class and get the corresponding volume, surface
+   *  and length. If the cached value is dirty then the actual computation
+   *  process is done. In case is clean the cached value is returned directly.
    *
    *  Example: @include examples/sectionStats.cpp
    */
-  class SectionCachedStats
-    : public SectionStats
+  class NeuronMorphologySectionCachedStats
+    : public NeuronMorphologySectionStats
     , public Cached<>
   {
 
 
   public:
 
-    //! Stats that can be cached for SectionStats
+    //! Stats that can be cached for NeuronMorphologySectionStats
     // typedef enum
     // {
     //   SURFACE = 0,
     //   VOLUME,
     //   LENGTH,
     //   SECTION_NUM_CACHED_VALUES
-    // } TSectionCachedValues;
+    // } TNeuronMorphologySectionCachedValues;
 
     /**
      * Default constructor
      */
     NSOL_API
-    SectionCachedStats( void );
+    NeuronMorphologySectionCachedStats( void );
 
     /**
      * Default destructor
      */
     NSOL_API
-    virtual ~SectionCachedStats( void );
+    virtual ~NeuronMorphologySectionCachedStats( void );
 
     /**
      * Set dirty a cached stat and propagates dirty to parent neurite
      * @param id identifier of the property to set dirty. It also propagates
      * dirty state to parent neurite. id value has to be one from
-     * TSectionCachedValues (checked only on debug compiling).
+     * TNeuronMorphologySectionCachedValues (checked only on debug compiling).
      */
     NSOL_API
     virtual void setAndPropagateDirty(unsigned int id_ );
@@ -101,7 +101,7 @@ namespace nsol
     virtual void firstNode( NodePtr firstNode_ );
 
     NSOL_API
-    virtual float getStat( TSectionStat stat ) const;
+    virtual float getStat( TNeuronMorphologySectionStat stat ) const;
 
     // /**
     //  * Computes volume of the section
@@ -125,8 +125,8 @@ namespace nsol
     // virtual float length( void ) const;
 
 
-  }; // class SectionCachedStats
+  }; // class NeuronMorphologySectionCachedStats
 
 } // namespace nsol
 
-#endif // __NSOL_SECTION_CACHED_STATS__
+#endif // __NSOL_NEURON_MORPHOLOGY_SECTION_CACHED_STATS__

@@ -20,26 +20,29 @@
  *
  */
 
-#include "SectionCachedStats.h"
+#include "NeuronMorphologySectionCachedStats.h"
 #include "../Neurite.h"
 
 namespace nsol
 {
 
 
-  SectionCachedStats::SectionCachedStats( void )
-    : SectionStats( )
+  NeuronMorphologySectionCachedStats::NeuronMorphologySectionCachedStats( void )
+    : NeuronMorphologySectionStats( )
     , Cached( )
   {
   }
 
-  SectionCachedStats::~SectionCachedStats( void )
+  NeuronMorphologySectionCachedStats::~NeuronMorphologySectionCachedStats(
+    void )
   {
   }
 
-  void SectionCachedStats::setAndPropagateDirty( unsigned int id_ )
+  void NeuronMorphologySectionCachedStats::setAndPropagateDirty(
+    unsigned int id_ )
   {
-    NSOL_DEBUG_CHECK( id_ < SECTION_NUM_STATS, "id not valid" );
+    NSOL_DEBUG_CHECK( id_ < NEURON_MORPHOLOGY_SECTION_NUM_STATS,
+                      "id not valid" );
 
     this->Cached::setAndPropagateDirty( id_ );
     auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
@@ -47,7 +50,7 @@ namespace nsol
       cached->setAndPropagateDirty( id_ );
   }
 
-  void SectionCachedStats::setAndPropagateDirty( void )
+  void NeuronMorphologySectionCachedStats::setAndPropagateDirty( void )
   {
     this->Cached::setAndPropagateDirty( );
 
@@ -56,24 +59,25 @@ namespace nsol
       cached->setAndPropagateDirty( );
   }
 
-  void SectionCachedStats::addNode( NodePtr node )
+  void NeuronMorphologySectionCachedStats::addNode( NodePtr node )
   {
     this->setAndPropagateDirty( );
     this->Section::addNode( node );
   }
 
-  void SectionCachedStats::firstNode( NodePtr firstNode_ )
+  void NeuronMorphologySectionCachedStats::firstNode( NodePtr firstNode_ )
   {
     return this->Section::firstNode( firstNode_ );
     this->setAndPropagateDirty( );
   }
 
-  float SectionCachedStats::getStat( TSectionStat stat ) const
+  float NeuronMorphologySectionCachedStats::getStat(
+    TNeuronMorphologySectionStat stat ) const
   {
     if ( ! this->dirty( stat ))
       return this->getValue( stat );
 
-    float statValue = this->SectionStats::getStat( stat );
+    float statValue = this->NeuronMorphologySectionStats::getStat( stat );
     this->cacheValue( stat, statValue );
 
     return statValue;

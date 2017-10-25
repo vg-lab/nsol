@@ -286,7 +286,7 @@ BOOST_AUTO_TEST_CASE( cutout )
 #ifdef NSOL_USE_BRION
     BrionReaderTemplated<
       ImportanceNode,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_CASE( cutout )
 #else
     SwcReaderTemplated<
       ImportanceNode,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE( cutout )
 #ifdef NSOL_USE_BRION
     BrionReaderTemplated<
       ImportanceNode,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -375,7 +375,7 @@ BOOST_AUTO_TEST_CASE( cutout )
 #else
     SwcReaderTemplated<
       ImportanceNode,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,

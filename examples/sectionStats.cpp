@@ -57,13 +57,13 @@ int main ( int argc, char ** argv )
   }
 
 
-  nsol::SectionPtr section =
+  nsol::NeuronMorphologySectionPtr section =
     neuron->morphology( )->neurites( )[0]->firstSection( );
 
-  nsol::SectionPtr sectionWithStats =
+  nsol::NeuronMorphologySectionPtr sectionWithStats =
     neuronWithStats->morphology( )->neurites()[0]->firstSection( );
 
-  nsol::SectionPtr sectionWithCachedStats =
+  nsol::NeuronMorphologySectionPtr sectionWithCachedStats =
     neuronWithCachedStats->morphology( )->neurites()[0]->firstSection( );
 
   if ( ! section || ! sectionWithStats || ! sectionWithCachedStats )
@@ -81,14 +81,14 @@ int main ( int argc, char ** argv )
   NSOL_CHECK_THROW ( sectionWithStats->stats( ) != nullptr, "stats null" );
 
   // Will get the base class to force cache operations
-  nsol::SectionCachedStats * sectionCached =
-    dynamic_cast< nsol::SectionCachedStats * >
+  nsol::NeuronMorphologySectionCachedStats * sectionCached =
+    dynamic_cast< nsol::NeuronMorphologySectionCachedStats * >
     ( sectionWithCachedStats->stats( ));
   NSOL_CHECK_THROW( sectionCached, "non cached section" );
 
 
 #define PRINT_SURFACE_DIRTY_STATE( section )                \
-  (( section->dirty(nsol::SectionCachedStats::SURFACE) ) ?  \
+  (( section->dirty(nsol::NeuronMorphologySectionCachedStats::SURFACE) ) ?  \
    "Dirty" : "Clean" )
 
 
@@ -99,34 +99,39 @@ int main ( int argc, char ** argv )
 
   std::cout << "\tNon cached section: "
             << sectionWithStats->stats( )->getStat(
-              nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+              nsol::NeuronMorphologySectionStats::
+              /*TNeuronMorphologySectionStat::*/SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
   // Next code shows how to force dirty on a specific cached value
-  sectionCached->setDirty( nsol::SectionCachedStats::SURFACE );
+  sectionCached->setDirty( nsol::NeuronMorphologySectionCachedStats::SURFACE );
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -136,12 +141,14 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -149,12 +156,14 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -162,12 +171,14 @@ int main ( int argc, char ** argv )
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << "\tCached section ("
             << PRINT_SURFACE_DIRTY_STATE( sectionCached ) << "): ";
   std::cout << sectionWithCachedStats->stats( )->getStat(
-    nsol::SectionStats::/*TSectionStat::*/SURFACE ) << std::endl;
+    nsol::NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                         */SURFACE ) << std::endl;
 
   std::cout << std::endl;
 
@@ -180,23 +191,24 @@ int main ( int argc, char ** argv )
 
     std::stack< nsol::SectionPtr > sSP;
 
-    nsol::SectionPtr neuriteSection = neurite->firstSection( );
+    nsol::NeuronMorphologySectionPtr neuriteSection = neurite->firstSection( );
 
     sSP.push( neuriteSection );
 
     int k = 0;
     while ( !sSP.empty( ))
     {
-      neuriteSection = sSP.top( );;
+      neuriteSection = dynamic_cast< nsol::NeuronMorphologySectionPtr >(
+        sSP.top( ));
       sSP.pop( );
 
       std::cout << "  Section " << k << std::endl;
       std::cout << "    Surface " << neuriteSection->stats( )->getStat(
-        nsol::SectionStats::SURFACE ) << std::endl;
+        nsol::NeuronMorphologySectionStats::SURFACE ) << std::endl;
       std::cout << "    Volumne " << neuriteSection->stats( )->getStat(
-        nsol::SectionStats::VOLUME ) << std::endl;
+        nsol::NeuronMorphologySectionStats::VOLUME ) << std::endl;
       std::cout << "    Length " << neuriteSection->stats( )->getStat(
-        nsol::SectionStats::LENGTH ) << std::endl;
+        nsol::NeuronMorphologySectionStats::LENGTH ) << std::endl;
 
 
       if ( section->children( ).size( ) > 0 )
