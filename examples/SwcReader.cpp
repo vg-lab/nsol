@@ -36,7 +36,10 @@ int main(int argc, char *argv[])
   SwcWriter w;
 
   if ( argc < 2 )
+  {
     std::cerr << "Error: swc file parameter needed." << std::endl;
+    return -1;
+  }
 
   cout << "Reading file " << argv[1] << endl;
 

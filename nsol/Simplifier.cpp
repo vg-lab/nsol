@@ -202,14 +202,14 @@ namespace nsol
 
     if ( morpho->neurites( ).size( ) < 1 )
     {
-      std::cerr << "This morphology doesn't containes neurites" << std::endl;
+      std::cerr << "This morphology doesn't contain neurites" << std::endl;
       return morpho;
     }
 
     if ( ! dynamic_cast<ImportanceNodePtr>(
            morpho->neurites( )[0]->firstSection( )->firstNode( )))
     {
-      std::cerr << "This morphology doesn't containes ImportanceNodes"
+      std::cerr << "This morphology doesn't contain ImportanceNodes"
                 << std::endl;
       return morpho;
     }

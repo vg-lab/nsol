@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
- * Authors: Cristian Rodríguez <cristian.rodriguez@urjc.es>
+ * Authors: Cristian Rodriguez <cristian.rodriguez@urjc.es>
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *

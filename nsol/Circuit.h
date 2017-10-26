@@ -75,8 +75,7 @@ namespace nsol
 
     /**
      * Method to add a connection into the cirtuit.
-     * @param synapse to add to this circuit
-     * @return true if connection added false otherwise
+     * @param synapse_ synapse to add to this circuit
      */
     NSOL_API
     void addSynapse( SynapsePtr synapse_ );
@@ -109,6 +108,7 @@ namespace nsol
 
     /**
      * Method to get all the synapses from the circuit.
+     * @param dataType_ Data type
      * @return subset with all the synapses
      */
     NSOL_API
@@ -116,7 +116,8 @@ namespace nsol
 
     /**
      * Method to get all the sinapses of the neuron into the circuit.
-     * @param neuron id
+     * @param neuronGID_ neuron id
+     * @param dataType_ Data type
      * @return all the synapses of this neuron.
      */
     NSOL_API
@@ -125,7 +126,8 @@ namespace nsol
 
     /**
      * Method to get all the sinapses from a subset of neurons.
-     * @param subset of ids neurons
+     * @param gidsNeurons_ subset of ids neurons
+     * @param dataType_ Data type
      * @return all the synapses of this subset of neurons.
      */
     NSOL_API
