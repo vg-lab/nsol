@@ -44,13 +44,14 @@ namespace nsol
   class XmlSceneReader
   {
   public:
+
+#ifdef NSOL_USE_QT5CORE
     /**
-     * Write structure and optinally morphologies to xml file.
-     * @param fileName name of file to write to
-     * @param columns container of columns to be written
-     * @param morphologies morphologies to be written to SWC
-     files and linked in the Xml
-     * @return true if everything went ok
+     * Read structure and optionally morphologies to xml file.
+     * @param xmlSceneFile intput filename to read
+     * @param columns container of columns 
+     * @param neuronsMap 
+     * @param morphologies morphologies to be read from XML files and linked in the Xml
      */
     template < class NODE = Node,
                class SECTION = Section,
@@ -61,12 +62,24 @@ namespace nsol
                class NEURON = Neuron,
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
-#ifdef NSOL_USE_QT5CORE
     static void loadXml(
       const std::string& xmlSceneFile,
       Columns& columns, NeuronsMap& neuronsMap,
       std::map< std::string, NeuronMorphologyPtr >& morphologies)
 #else
+    /**
+     * Read structure and optionally morphologies to xml file.
+     * @param xmlSceneFile intput filename to read
+     */
+    template < class NODE = Node,
+               class SECTION = Section,
+               class DENDRITE = Dendrite,
+               class AXON = Axon,
+               class SOMA = Soma,
+               class NEURONMORPHOLOGY = NeuronMorphology,
+               class NEURON = Neuron,
+               class MINICOLUMN = MiniColumn,
+               class COLUMN = Column >
     static void loadXml(
       const std::string& xmlSceneFile,
       Columns&, NeuronsMap&,
@@ -379,10 +392,6 @@ namespace nsol
               }
             }
           }
-        }
-        else if ( xml.name( ) == "ciruit" )
-        {
-          //TODO
         }
         else
           NSOL_THROW( std::string( "Element <" ) +

@@ -30,7 +30,7 @@ It is used in projects as
     * Boost's Unit Test Framework
     * Qt5Core
 
-(*1) Install linux package libeigen3-dev or download sources from http://eigen.tuxfamily.org/   
+(*1) Install linux package libeigen3-dev or download sources from http://eigen.tuxfamily.org/       
 (*2) This dependencies can be built uncommenting theirs corresponding line in the file .gitsubprojects
 
 ## Building
@@ -39,24 +39,25 @@ nsol has been succesfully built and used on Ubuntu 17.04/16.04, Mac OSX
 Yosemite/Capitan/Sierra and Windows 7/8/10 (Visual Studio 2015 Win64). 
 The following steps should be enough to build it under linux/Mac OSX:
 
-```bash
-git clone --recursive https://gitlab.gmrv.es/nsviz/nsol.git
+~~~~~~~~~~~~~
+git clone --recursive https://github.com/gmrvvis/nsol
 mkdir nsol/build && cd nsol/build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCLONE_SUBPROJECTS=ON
 make
-```
+~~~~~~~~~~~~~
 
 ## Testing
 
 After building NSOL, you can run some examples in bin directory.
-For example, to manually run a simple test that parses an input .swc file and dumps
-some statistics about it, use the command:
-```bash
+For example, to manually run a simple test that parses an input .swc 
+file and dumps some statistics about it, use the command:
+~~~~~~~~~~~~~
 ./bin/nsolScene testData/scene.xml
-
-```
+~~~~~~~~~~~~~
 
 ## Documentation
 
-You can access the online API documentation generated from the source with [Doxygen](http://doxygen.org/) in 
+You can access the online API documentation generated from the source 
+(using [Doxygen](http://doxygen.org/) ) in 
 https://gmrvvis.github.io/doc/nsol/
+

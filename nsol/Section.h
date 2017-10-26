@@ -60,7 +60,7 @@ namespace nsol
 
     /**
      * Method to set the gid of the section.
-     * @param gid
+     * @param id_ New gid of the section
      */
     NSOL_API
     void id (unsigned int id_ );
@@ -121,8 +121,8 @@ namespace nsol
     const Nodes & nodes( void ) const;
 
     /**
-     * Adds a Node at the end of Section
-     * @param Node pointer to the Node to add.
+     * Adds a node at the end of this section
+     * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
     NSOL_API

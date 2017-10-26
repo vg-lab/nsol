@@ -89,10 +89,10 @@ namespace nsol
 
     /**
      * Method to set the center of the soma
-     * @param center of the soma
+     * @param center_ New center of the soma
      */
     NSOL_API
-    void center( Vec3f center_ );
+    void center( const Vec3f & center_ );
 
     /**
      * Method to add a node to the soma

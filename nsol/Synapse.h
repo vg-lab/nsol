@@ -51,7 +51,7 @@ namespace nsol
 
     /**
      * Copy constructor
-     * @param other synapse to be copied
+     * @param other_ synapse to be copied
      */
     NSOL_API
     Synapse( const Synapse& other_ );
@@ -76,7 +76,7 @@ namespace nsol
 
     /**
      * Method to add a presynaptic neuron to the synapse.
-     * @param gid of the presynaptic neuron.
+     * @param neuronID_ gid of the presynaptic neuron.
      * @see Neuron
      */
     NSOL_API
@@ -91,7 +91,7 @@ namespace nsol
 
     /**
      * Method to add a postsynaptic neuron to the synapse.
-     * @param gid of the postsynaptic neuron.
+     * @param neuronID_ gid of the postsynaptic neuron.
      * @see Neuron
      */
     NSOL_API
@@ -99,7 +99,7 @@ namespace nsol
 
     /**
      * Method to set the synaptic weight.
-     * @param synaptic weight.
+     * @param weight_ synaptic weight.
      */
     NSOL_API
     void weight( const float weight_ );
