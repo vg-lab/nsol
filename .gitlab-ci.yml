@@ -15,6 +15,23 @@ Ubuntu-Optional-Deps:
  tags:
   - ubuntu
 
+Ubuntu-Subproject-master:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export COVERAGE=ON
+  - export CMAKE_EXTRA_TARGETS="nsol-tests doxygen"
+  - export BUILD_GENERATOR="Ninja"
+  - export DEPLOY_DOC_REPO="git@github.com:gmrvvis/gmrvvis.github.io"
+  - export GITHUB_MIRROR_URL="git@github.com:gmrvvis/nsol"
+  - bash .gitlab-ci.sh
+ only:
+  - master
+ tags:
+  - ubuntu
+
 Ubuntu-Subproject:
  stage: build
  script:
@@ -23,8 +40,10 @@ Ubuntu-Subproject:
   - uname -a
   - export COVERAGE=ON
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Ninja";
+  - export BUILD_GENERATOR="Ninja"
   - bash .gitlab-ci.sh
+ except:
+  - master
  tags:
   - ubuntu
 

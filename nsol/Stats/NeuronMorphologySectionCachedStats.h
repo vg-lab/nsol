@@ -73,7 +73,7 @@ namespace nsol
 
     /**
      * Set dirty a cached stat and propagates dirty to parent neurite
-     * @param id identifier of the property to set dirty. It also propagates
+     * @param id_ identifier of the property to set dirty. It also propagates
      * dirty state to parent neurite. id value has to be one from
      * TNeuronMorphologySectionCachedValues (checked only on debug compiling).
      */

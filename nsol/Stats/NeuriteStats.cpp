@@ -50,7 +50,7 @@ namespace nsol
 
     case NeuriteStats::/*TNeuriteStat::*/NEURITE_NUM_STATS:
     default:
-      NSOL_THROW( "no know converstion from TNeuriteStat to TSectionStat");
+      NSOL_THROW( "Conversion from TNeuriteStat to TSectionStat not possible");
     }
 
     return NeuronMorphologySectionStats::/*TSectionStat::*/SURFACE;

@@ -66,7 +66,7 @@ namespace nsol
     return _meanRadius;
   }
 
-  void Soma::center( Vec3f center_ )
+  void Soma::center( const Vec3f & center_ )
   {
     _center = center_;
   }

@@ -59,14 +59,14 @@ namespace nsol
     ///@{
 
     /**
-     * Default CompartmentSynapse constructor
+     * Default MorphologySynapse constructor
      */
     NSOL_API
     MorphologySynapse( void );
 
     /**
      * Copy constructor
-     * @param other comparment synapse to be copied
+     * @param other_ MorphologySynapseto be copied
      */
     NSOL_API
     MorphologySynapse( const MorphologySynapse& other_ );
@@ -97,7 +97,7 @@ namespace nsol
 
     /**
      * Method to set presynaptic surface position to the synapse.
-     * @param presynaptic surface position.
+     * @param presynaptic_surface_position_ presynaptic surface position.
      */
     NSOL_API
     void
@@ -112,7 +112,7 @@ namespace nsol
 
     /**
      * Method to set postsynaptic surface position to the synapse.
-     * @param postsynaptic surface position.
+     * @param position_ postsynaptic surface position.
      */
     NSOL_API
     void
@@ -120,9 +120,8 @@ namespace nsol
 
     /**
      * Method to add a presynaptic section to the synapse.
-     * @param presynaptic section.
+     * @param preSynapticSection_ presynaptic section.
      * @see Synapse
-     * @return pointer to the presynaptic section added
      */
     NSOL_API
     void preSynapticSection(
@@ -137,9 +136,8 @@ namespace nsol
 
     /**
      * Method to add a postsynaptic section to the synapse.
-     * @param postsynaptic section.
+     * @param section_ postsynaptic section.
      * @see Synapse
-     * @return pointer to the postsynaptic section added
      */
     NSOL_API
     void postSynapticSection(

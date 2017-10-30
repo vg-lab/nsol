@@ -91,8 +91,8 @@ namespace nsol
     const Nodes & nodes( void ) const;
 
     /**
-     * Adds a Node at the end of Section
-     * @param Node pointer to the Node to add.
+     * Adds a node at the end of this section
+     * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
     NSOL_API
@@ -115,7 +115,7 @@ namespace nsol
 
     /**
      * Gets the last Node of the Section.
-     * @return pointer to the firts Node, null in case it doesn't have any
+     * @return pointer to the first Node, null in case it doesn't have any
      */
     NSOL_API
     NodePtr lastNode( void );

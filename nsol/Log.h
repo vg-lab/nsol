@@ -47,7 +47,7 @@ namespace nsol
 
     /**
      * Set current log level
-     * @param level level to be set
+     * @param logLevel level to be set
      */
     NSOL_API
     static void setLogLevel( const TLogLevel logLevel );

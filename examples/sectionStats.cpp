@@ -205,7 +205,7 @@ int main ( int argc, char ** argv )
       std::cout << "  Section " << k << std::endl;
       std::cout << "    Surface " << neuriteSection->stats( )->getStat(
         nsol::NeuronMorphologySectionStats::SURFACE ) << std::endl;
-      std::cout << "    Volumne " << neuriteSection->stats( )->getStat(
+      std::cout << "    Volume " << neuriteSection->stats( )->getStat(
         nsol::NeuronMorphologySectionStats::VOLUME ) << std::endl;
       std::cout << "    Length " << neuriteSection->stats( )->getStat(
         nsol::NeuronMorphologySectionStats::LENGTH ) << std::endl;
