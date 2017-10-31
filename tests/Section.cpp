@@ -30,17 +30,16 @@ BOOST_AUTO_TEST_CASE( section_constructor )
 {
 
   Section section;
-  BOOST_CHECK( !section.parent( ));
   BOOST_CHECK_EQUAL( section.nodes( ).size( ), 0 );
-
-  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
+  BOOST_CHECK_EQUAL( section.backwardNeighbors( ).size( ), 0 );
+  BOOST_CHECK_EQUAL( section.forwardNeighbors( ).size( ), 0 );
 
   Section const section2;
-  BOOST_CHECK_EQUAL( section2.children( ).size( ), 0 );
+  BOOST_CHECK_EQUAL( section2.backwardNeighbors( ).size( ), 0 );
+  BOOST_CHECK_EQUAL( section2.forwardNeighbors( ).size( ), 0 );
 
-  BOOST_CHECK( section.firstNode( ) == nullptr );
-  BOOST_CHECK( section.lastNode( ) == nullptr );
-
+  BOOST_CHECK( section.backwardNode( ) == nullptr );
+  BOOST_CHECK( section.forwardNode( ) == nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( section_clone )
@@ -55,16 +54,17 @@ BOOST_AUTO_TEST_CASE( section_clone )
   for( unsigned int i = 0; i < 10; i++ )
   {
     node = new Node( Vec3f( x, y, z ), i+1, radius );
-    section.addNode( node );
+    section.addForwardNode( node );
     x += 0.1f;
     y += 0.1f;
     z += 0.1f;
     radius += 0.1f;
   }
   node = new Node( Vec3f( x, y, z ), 0, radius );
-  section.firstNode( node );
+  section.addBackwardNode( node );
   SectionPtr cloneSection = section.clone( );
-  cloneSection->firstNode( node );
+  cloneSection->addBackwardNode( section.backwardNode( )->clone( ));
+  cloneSection->addForwardNode( section.forwardNode( )->clone( ));
 
   // Tests
   BOOST_CHECK_EQUAL( section.nodes( ).size( ), cloneSection->nodes( ).size( ));
@@ -90,21 +90,23 @@ BOOST_AUTO_TEST_CASE( section_operators )
   for( unsigned int i = 0; i < 10; i++ )
   {
     node = new Node( Vec3f( x, y, z ), i+1, radius );
-    section.addNode( node );
+    section.addForwardNode( node );
     x += 0.1f;
     y += 0.1f;
     z += 0.1f;
     radius += 0.1f;
   }
   node = new Node( Vec3f( x, y, z ), 0, radius );
-  section.firstNode( node );
+  section.addBackwardNode( node );
   SectionPtr section1 = section.clone( );
   SectionPtr section2 = section.clone( );
-  section1->firstNode( node );
-  section2->firstNode( node );
+  section1->addBackwardNode( node );
+  section2->addBackwardNode( node );
+  section1->addForwardNode( section.backwardNode( ));
+  section2->addForwardNode( section.backwardNode( ));
 
-  section1->firstNode( )->point( ).x( ) = 1000.0f;
-  section2->addNode( node );
+  section1->backwardNode( )->point( ).x( ) = 1000.0f;
+  section2->addBackwardNode( node );
 
   // Tests
   BOOST_CHECK( section == section );

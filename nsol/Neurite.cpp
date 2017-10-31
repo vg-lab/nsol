@@ -102,7 +102,8 @@ namespace nsol
 
     while ( ! sectionsToProcess.empty( ))
     {
-      SectionPtr section  = sectionsToProcess.top( );
+      NeuronMorphologySectionPtr section  =
+        dynamic_cast< NeuronMorphologySectionPtr >( sectionsToProcess.top( ));
       sectionsToProcess.pop( );
       sections_.push_back( section );
 
@@ -125,7 +126,8 @@ namespace nsol
 
     while (!sPS.empty( ))
     {
-      SectionPtr lS = sPS.top( );
+      NeuronMorphologySectionPtr lS =
+        dynamic_cast< NeuronMorphologySectionPtr >( sPS.top( ));
       sPS.pop( );
       for (Sections::iterator child = lS->children( ).begin( );
            child != lS->children( ).end( ); child++)
@@ -186,7 +188,8 @@ namespace nsol
       for ( SectionPtr childSec: originalSec->children( ))
       {
         NeuronMorphologySectionPtr newChildSec =
-          dynamic_cast< NeuronMorphologySectionPtr >( childSec->clone( ));
+          dynamic_cast< NeuronMorphologySectionPtr >(
+          dynamic_cast< NeuronMorphologySectionPtr >( childSec )->clone( ));
         newChildSec->parent( newSec );
         newChildSec->neurite( neurite );
         newSec->addChild( newChildSec );

@@ -74,7 +74,69 @@ namespace nsol
      * @param neurite pointer to parent neurite
      */
     NSOL_API
-    void neurite( NeuritePtr neurite );
+    void neurite( NeuritePtr neurite_ );
+
+     /**
+     * Gets the parent Section of this Section
+     * @return pointer to the parent Section
+     */
+    NSOL_API
+    SectionPtr parent( void );
+
+    /**
+     * Sets the parent Section of this Section
+     * @param parent pointer to parent Section
+     */
+    NSOL_API
+    void parent( SectionPtr parent_ );
+
+/**
+     * Adds child Section to this Section
+     * @param section pointer to the section to be added
+     */
+    NSOL_API
+    void addChild( SectionPtr section_ );
+
+    /**
+     * Return the children sections
+     * @return container of children sections
+     */
+    NSOL_API
+    Sections & children( void );
+
+    NSOL_API
+    const Sections & children( void ) const;
+
+    /**
+     * Adds a Node at the end of Section
+     * @param Node pointer to the Node to add.
+     *        Precondition: pointer is not null.
+     */
+    NSOL_API
+    virtual void addNode( NodePtr node_ );
+
+    /**
+     * Gets the first Node of the Section.
+     * @return pointer to the first Node, null in case it doesn't have any
+     */
+    NSOL_API
+    NodePtr firstNode( void );
+
+    /**
+     * Sets first Node of the Section. This method is virtual to allow
+     * reimplementation for cached objects and dirty state propagation
+     * @param firstNode pointer to the Node.
+     */
+    NSOL_API
+    virtual void firstNode( NodePtr firstNode_ );
+
+    /**
+     * Gets the last Node of the Section.
+     * @return pointer to the firts Node, null in case it doesn't have any
+     */
+    NSOL_API
+    NodePtr lastNode( void );
+
 
     /**
      * Returns object as SectionStats

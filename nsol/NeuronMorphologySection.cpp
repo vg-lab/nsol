@@ -34,6 +34,10 @@ namespace nsol
 
   NeuronMorphologySection::~NeuronMorphologySection( void )
   {
+    if ( _nodes.size( ) > 1 )
+    {
+      delete _nodes.back( );
+    }
 
   }
 
@@ -52,9 +56,66 @@ namespace nsol
     return _neurite;
   }
 
-  void NeuronMorphologySection::neurite( NeuritePtr newNeurite )
+  void NeuronMorphologySection::neurite( NeuritePtr newNeurite_ )
   {
-    _neurite = newNeurite;
+    _neurite = newNeurite_;
+  }
+
+  SectionPtr NeuronMorphologySection::parent( void )
+  {
+    if ( !this->_backwardSections.empty( ))
+      return this->_backwardSections.front( );
+    else
+      return nullptr;
+  }
+
+  void NeuronMorphologySection::parent( SectionPtr parent_ )
+  {
+    auto actualParent = dynamic_cast< NeuronMorphologySectionPtr >( parent_ );
+    if ( actualParent )
+    {
+      if ( _backwardSections.empty( ))
+      {
+        this->_backwardSections.push_back( actualParent );
+        if ( actualParent->lastNode( ))
+          firstNode( actualParent->lastNode( ));
+      }
+    }
+  }
+
+  void NeuronMorphologySection::addChild( SectionPtr section_ )
+  {
+    this->_forwardSections.push_back( section_ );
+  }
+
+  Sections& NeuronMorphologySection::children( void )
+  {
+    return this->_forwardSections;
+  }
+
+  const Sections& NeuronMorphologySection::children( void ) const
+  {
+    return this->_forwardSections;
+  }
+
+  void NeuronMorphologySection::addNode( NodePtr node_ )
+  {
+    addForwardNode( node_ );
+  }
+
+  NodePtr NeuronMorphologySection::firstNode( void )
+  {
+    return backwardNode( );
+  }
+
+  void NeuronMorphologySection::firstNode( NodePtr firstNode_ )
+  {
+    addBackwardNode( firstNode_ );
+  }
+
+  NodePtr NeuronMorphologySection::lastNode( void )
+  {
+    return forwardNode( );
   }
 
   NeuronMorphologySectionStats * NeuronMorphologySection::stats( void )
@@ -64,7 +125,7 @@ namespace nsol
 
   SectionPtr NeuronMorphologySection::clone( void ) const
   {
-    SectionPtr section = new NeuronMorphologySection( );
+    NeuronMorphologySectionPtr section = new NeuronMorphologySection( );
     for ( unsigned int i = 1; i < _nodes.size( ); i++ )
     {
       section->addNode( _nodes[i]->clone( ));

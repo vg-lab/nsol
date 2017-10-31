@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( neuron_morphology_section_constructor )
   BOOST_CHECK( !section.neurite( ));
   BOOST_CHECK( !section.parent( ));
   BOOST_CHECK_EQUAL( section.nodes( ).size( ), 0 );
-
+  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
   BOOST_CHECK_EQUAL( section.id( ), 0 );
 
   const unsigned int newId  = 1;
@@ -47,7 +47,34 @@ BOOST_AUTO_TEST_CASE( neuron_morphology_section_constructor )
 
   BOOST_CHECK( section.firstNode( ) == nullptr );
   BOOST_CHECK( section.lastNode( ) == nullptr );
+}
 
+BOOST_AUTO_TEST_CASE( neuron_morphology_section_desconstructor )
+{
+  NeuronMorphologySectionPtr section = new NeuronMorphologySection( );
+  NodePtr node;
+  float x = 0.0f;
+  float y = 0.0f;
+  float z = 0.0f;
+  float radius = 1.0f;
+  for( unsigned int i = 0; i < 10; i++ )
+  {
+    node = new Node( Vec3f( x, y, z ), i+1, radius );
+    section->addNode( node );
+    x += 0.1f;
+    y += 0.1f;
+    z += 0.1f;
+    radius += 0.1f;
+  }
+  node = new Node( Vec3f( x, y, z ), 0, radius );
+  section->firstNode( node );
+  NeuronMorphologySectionPtr section2 =
+    dynamic_cast< NeuronMorphologySectionPtr >( section->clone( ));
+  section2->firstNode( node );
+
+  delete section;
+  delete section2;
+  delete node;
 }
 
 BOOST_AUTO_TEST_CASE( neuron_morphology_section_clone )

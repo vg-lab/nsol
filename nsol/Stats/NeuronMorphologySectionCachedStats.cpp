@@ -62,12 +62,12 @@ namespace nsol
   void NeuronMorphologySectionCachedStats::addNode( NodePtr node )
   {
     this->setAndPropagateDirty( );
-    this->Section::addNode( node );
+    this->NeuronMorphologySection::addNode( node );
   }
 
   void NeuronMorphologySectionCachedStats::firstNode( NodePtr firstNode_ )
   {
-    return this->Section::firstNode( firstNode_ );
+    return this->NeuronMorphologySection::firstNode( firstNode_ );
     this->setAndPropagateDirty( );
   }
 

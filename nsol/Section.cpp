@@ -26,50 +26,67 @@ namespace nsol
 {
 
   Section::Section( void )
-    : _parent( nullptr )
   {
     _nodes.clear( );
+    _backwardSections.clear( );
+    _forwardSections.clear( );
   }
 
   Section::~Section( void )
   {
-    for ( unsigned int i = 1; i < _nodes.size( ); i++ )
-      delete _nodes[i];
+    if ( _nodes.size( ) > 2 )
+    {
+      for ( unsigned int i = 1; i < _nodes.size( ) - 1; i++ )
+        delete _nodes[i];
+    }
 
+    _backwardSections.clear( );
+    _forwardSections.clear( );
     _nodes.clear( );
   }
 
-  SectionPtr Section::parent( void )
+  Sections& Section::backwardNeighbors( void )
   {
-    return _parent;
+    return _backwardSections;
   }
 
-  void Section::parent( SectionPtr newParent )
+  const Sections& Section::backwardNeighbors( void ) const
   {
-    if ( newParent )
+    return _backwardSections;
+  }
+
+  Sections& Section::forwardNeighbors( void )
+  {
+    return _forwardSections;
+  }
+
+  const Sections& Section::forwardNeighbors( void ) const
+  {
+    return _forwardSections;
+  }
+
+  void Section::addBackwardNeighbour( SectionPtr section_ )
+  {
+    if ( section_ )
+      _backwardSections.push_back( section_ );
+  }
+
+  void Section::addForwardNeighbour( SectionPtr section_ )
+  {
+    if ( section_ )
+      _forwardSections.push_back( section_ );
+  }
+
+  void Section::addNeighbour( SectionPtr section_, NodePtr node_ )
+  {
+    if ( _nodes.size( ) > 0 )
     {
-      _parent = newParent;
-      if( _parent->lastNode() )
-        firstNode( _parent->lastNode( ));
+      if ( node_ ==  _nodes.front( ))
+        _backwardSections.push_back( section_ );
+      else if ( node_ ==  _nodes.back( ))
+        _forwardSections.push_back( section_ );
     }
   }
-
-  void Section::addChild( SectionPtr section )
-  {
-    assert(section);
-    _children.push_back(section);
-  }
-
-  Sections & Section::children( void )
-  {
-    return _children;
-  }
-
-  const Sections & Section::children( void ) const
-  {
-    return _children;
-  }
-
 
   Nodes & Section::nodes( void )
   {
@@ -82,58 +99,58 @@ namespace nsol
   }
 
 
-  void Section::addNode( NodePtr node )
+  void Section::addBackwardNode( NodePtr node_ )
   {
-    if ( node )
-      _nodes.push_back( node );
+    if ( node_ )
+    _nodes.insert( _nodes.begin( ), node_ );
   }
 
-  NodePtr Section::firstNode( void )
+  void Section::addForwardNode( NodePtr node_ )
+  {
+    if ( node_ )
+      _nodes.push_back( node_);
+  }
+
+  NodePtr Section::backwardNode( void )
   {
     if ( _nodes.size( ) > 0 )
       return _nodes[0];
     return nullptr;
   }
 
-  void Section::firstNode( NodePtr firstNode_ )
+  NodePtr Section::forwardNode( void )
   {
-    if ( firstNode_ )
-      _nodes.insert( _nodes.begin( ), firstNode_ );
-  }
-
-  NodePtr Section::lastNode( void )
-  {
-    if( _nodes.size( ) > 0 )
-      return _nodes.back( );
+    if ( _nodes.size( ) > 0 )
+      return _nodes[ _nodes.size( ) - 1 ];
     return nullptr;
   }
 
   SectionPtr Section::clone( void ) const
   {
     SectionPtr section = new Section( );
-    for ( unsigned int i = 1; i < _nodes.size( ); i++ )
+    for ( unsigned int i = 1; i < _nodes.size( ) - 1; i++ )
     {
-      section->addNode( _nodes[i]->clone( ));
+      section->addForwardNode( _nodes[i]->clone( ));
     }
     return section;
   }
 
-  bool Section::operator == ( Section & other ) const
+  bool Section::operator == ( Section & other_ ) const
   {
     unsigned int size = ( unsigned int )this->nodes( ).size( );
 
-    if( size != other.nodes( ).size( ))
+    if( size != other_.nodes( ).size( ))
       return false;
 
     for ( unsigned int i = 0; i < size; i++ )
-      if ( this->nodes( )[i] != other.nodes( )[i] )
+      if ( this->nodes( )[i] != other_.nodes( )[i] )
         return false;
     return true;
   }
 
-  bool Section::operator != ( Section & other ) const
+  bool Section::operator != ( Section & other_ ) const
   {
-    return ! ( *this == other );
+    return ! ( *this == other_ );
   }
 
 } // namespace nsol

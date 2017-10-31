@@ -125,7 +125,7 @@ namespace nsol
         else if (NSOL_DYNAMIC_CAST( Axon, *it ))
           type = SWC_AXON;
 
-        SectionPtr fSection = (*it)->firstSection();
+        NeuronMorphologySectionPtr fSection = (*it)->firstSection();
 
         std::stack<SectionPtr> sPS;
         sPS.push(fSection);
@@ -138,7 +138,8 @@ namespace nsol
 
         while (!sPS.empty())
         {
-          SectionPtr lS = sPS.top();
+          NeuronMorphologySectionPtr lS =
+            dynamic_cast< NeuronMorphologySectionPtr >( sPS.top( ));
           sPS.pop();
 
           NSOL_FOREACH( node, lS->nodes() )

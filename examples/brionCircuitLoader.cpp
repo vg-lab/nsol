@@ -58,7 +58,7 @@ void calculateSynapticNodes( MorphologySynapsePtr synapse,
     preSynNode = nullptr;
     Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
 
-    SectionPtr preSynSection = synapse->preSynapticSection( );
+    NeuronMorphologySectionPtr preSynSection = synapse->preSynapticSection( );
 
     if( preSynSection != nullptr )
     {
@@ -94,7 +94,7 @@ void calculateSynapticNodes( MorphologySynapsePtr synapse,
     postSynNode = nullptr;
     Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
 
-    SectionPtr postSynSection = synapse->postSynapticSection();
+    NeuronMorphologySectionPtr postSynSection = synapse->postSynapticSection();
 
     if(postSynSection != nullptr)
     {
