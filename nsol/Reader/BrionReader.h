@@ -213,6 +213,8 @@ namespace nsol
           }
           nsolMorpho->addNeurite( nsolNeurite );
           nsolNeurite->firstSection( nsolSection );
+          if ( soma->nodes( ).size( ) > 1 )
+            ++startNode;
         }
         else
         {
@@ -220,7 +222,7 @@ namespace nsol
           nsolNeurite = nsolFatherSection->neurite( );
           nsolSection->parent( nsolFatherSection );
           nsolFatherSection->addChild( nsolSection );
-          startNode++;
+          ++startNode;
         }
         nsolSection->neurite( nsolNeurite );
 
