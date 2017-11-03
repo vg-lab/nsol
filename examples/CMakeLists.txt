@@ -2,6 +2,9 @@ if ( NSOL_WITH_EXAMPLES )
 
   add_executable(nsolSwcReader SwcReader.cpp)
   target_link_libraries(nsolSwcReader nsol)
+  
+  add_executable(nsolSwcReader2 SwcReader2.cpp)
+  target_link_libraries(nsolSwcReader2 nsol)
 
   if( BRION_FOUND )
     set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
@@ -68,6 +71,7 @@ if ( NSOL_WITH_EXAMPLES )
   set( NSOLSIMPLIFIER_LINK_LIBRARIES nsol )
   common_application( nsolSimplifier NOHELP )
   list( APPEND NSOL_EXAMPLES_FILES ${NSOLSIMPLIFIER_SOURCES} )
+
 
   set( NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
   set( NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )

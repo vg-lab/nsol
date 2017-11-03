@@ -55,6 +55,7 @@ set(NSOL_PUBLIC_HEADERS
   Reader/BrionReader.h
   Reader/SwcReader.h
   Reader/XmlSceneReader.h
+  Reader/SwcReader2.h
   )
 
 set(NSOL_HEADERS )
