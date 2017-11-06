@@ -1,6 +1,7 @@
 # nsol
 
 ## git master
+[!66] Fixed brion morphology loader special case. Added loaders comparison test.
 [!55] Clean-ups and updates in examples. Removed BBPSDK old references. Removed Factory.h.
 [!54] Move CI to sierra and vs14.
 [!52] New method to adapt the trace fixing the intersected bifurcations
