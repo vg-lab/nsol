@@ -7,7 +7,7 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(nsol VERSION 0.1.1 )
+project(nsol VERSION 0.2.0 )
 set(nsol_VERSION_ABI 2)
 
 # Disable in source building
