@@ -35,12 +35,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <assert.h>
 #include <cctype>
 
 #include <map>
 #include <stack>
-#include <queue>
 
 namespace nsol
 {
@@ -104,26 +102,14 @@ namespace nsol
     {
       unsigned int id;
       SectionPtr parent;
-    } TReadDendritesStackElem;
-
-    typedef struct
-    {
-      unsigned int id;
-      SectionPtr parent;
-    } TReadAxonStackElem;
+    } TReadNeuriteStackElem;
 
 
-    void _ReadDendrite( DendritePtr d,
+    void _ReadNeurite( NeuritePtr d,
                         std::map<unsigned int, TSwcLine> & lines,
                         unsigned int initId,
                         NsolVector<NodePtr>* nodes_ = nullptr,
                         bool reposition_ = false );
-
-    void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> & lines,
-                   unsigned int initId,
-                   NsolVector<NodePtr>* nodes_ = nullptr,
-                   bool reposition_ = false );
-
 
   }; // class SwcReaderTemplated
 
@@ -165,8 +151,6 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
     const char *fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readNeuron is deprecated. "
-              << "Please use BrainReader< >::loadNeuron" << std::endl;
     return this->readNeuron(std::string(fileName), reposition_ );
   }
 
@@ -177,8 +161,6 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
     const std::string fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readNeuron is deprecated. "
-              << "Please use BrainReader< >::loadNeuron" << std::endl;
     NeuronMorphologyPtr nm = this->readMorphology( std::string( fileName ),
         reposition_ );
 
@@ -190,7 +172,7 @@ namespace nsol
     }
     else
       return nullptr;
-  }
+   }
 
 
 
@@ -199,8 +181,6 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
     const char * fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readMorphology is deprecated. "
-              << "Please use BrainReader< >::loadMorphology" << std::endl;
     return this->readMorphology(std::string(fileName), reposition_ );
   }
 
@@ -211,15 +191,13 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
     const std::string fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readMorphology is deprecated. "
-              << "Please use BrainReader< >::loadMorphology" << std::endl;
     std::ifstream inFile;
     inFile.open(fileName, std::ios::in);
 
     //Opening file checking
     if ((inFile.rdstate( ) & std::ifstream::failbit) != 0)
     {
-      std::cerr << "Error opening file " << fileName << std::endl;
+      std::cerr << "Error opening file: " << fileName << std::endl;
 
       return nullptr;
     }
@@ -237,7 +215,7 @@ namespace nsol
     {
       lineCount++;
 
-      // TODO: this does not cover the case the # char is not the first char
+      //TODO: this does not cover the case the # char is not the first char
       if ( lineString[0] != '#' )
       {
 
@@ -254,7 +232,9 @@ namespace nsol
         {
           Log::log( std::string( "Skipping lineString " ) +
                     std::to_string( lineCount ) +
-                    std::string( ". Not enough fields found" ),
+                    std::string( " in file " ) +
+                    std::to_string( fileName ) +
+                    std::string( ": Not enough fields found" ),
                     LOG_LEVEL_WARNING );
           continue;
         }
@@ -263,6 +243,8 @@ namespace nsol
         std::istringstream iss(lineString);
 
         TSwcLine swcLineString;
+
+        //TODO: PARSE
         iss >> swcLineString.id;
         iss >> swcLineString.type;
         iss >> swcLineString.xyz[0]
@@ -276,6 +258,7 @@ namespace nsol
       }
     }
 
+    //TODO: SEGUIR AQUÍ
     for ( const auto& line : lines )
     {
       if (line.second.parent != -1)
@@ -313,9 +296,6 @@ namespace nsol
 
       switch (lines[somaChildren[i]].type)
       {
-      case SWC_SOMA:
-        // TODO: handle error
-        assert(false);
 
       case SWC_DENDRITE:
       {
@@ -349,7 +329,8 @@ namespace nsol
         break;
       }
 
-      default:
+        default:
+        //TODO: HANDLE ERROR
         break;
       }
 
@@ -556,4 +537,3 @@ namespace nsol
 }
 
 #endif
-
