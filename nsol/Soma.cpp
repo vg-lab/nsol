@@ -96,7 +96,7 @@ namespace nsol
       return false;
 
     for ( unsigned int i = 0; i < size; i++ )
-      if ( this->nodes( )[i] != other.nodes( )[i])
+      if ( this->nodes( )[i] != other.nodes( )[i] )
         return false;
 
     return true;
