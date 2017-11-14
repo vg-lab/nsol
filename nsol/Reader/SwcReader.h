@@ -246,7 +246,7 @@ namespace nsol
     //! Reads file, line by line
     while ( std::getline( inFile, lineString ) )
     {
-      lineCount++;
+      ++lineCount;
 
       //! Skips comment lines
       if ( lineString[lineString.find_first_not_of( " \r\t" )] != '#' )
@@ -262,10 +262,10 @@ namespace nsol
 
         if ( fields < 7 )
         {
-          Log::log( std::string( "Skipping lineString " ) +
+          Log::log( std::string( "Skipping line " ) +
             std::to_string( lineCount ) +
             std::string( " in file " ) +
-            fileName  +std::string( ": \"" )+ lineString+
+            fileName + std::string( ": \"" ) + lineString +
             std::string( "\" ( not enough fields found )" ),
             LOG_LEVEL_WARNING );
         }
@@ -296,10 +296,10 @@ namespace nsol
 
           if ( failed )
           {
-            Log::log( std::string( "Skipping lineString " ) +
+            Log::log( std::string( "Skipping line " ) +
               std::to_string( lineCount ) +
               std::string( " in file " ) +
-              fileName  +std::string( ": \"" )+ lineString+
+              fileName + std::string( ": \"" ) + lineString +
               std::string( "\" ( line format not recognised )" ),
               LOG_LEVEL_WARNING );
           } else {
@@ -432,7 +432,8 @@ namespace nsol
 
     NodePtr node;
     //! Creates first Node in first Secion
-    node = new NODE( lines.at( initId ).xyz, initId, lines.at( initId ).radius );
+    TSwcLine lineElem = lines.at( initId );
+    node = new NODE( lineElem.xyz, initId, lineElem.radius );
     sectionPointer->firstNode( node );
     //! Loads first Section in Neurite
     _ReadSection( neuritePointer, sectionPointer, node, &sectionFirstNodes, lines, nodes_, reposition_ );
@@ -449,7 +450,8 @@ namespace nsol
       sectionFirstNodes.pop( );
 
       //! Creates first Node of new Section
-      node = new NODE( lines.at( id ).xyz, id, lines.at( id ).radius );
+      lineElem = lines.at( id );
+      node = new NODE( lineElem.xyz, id, lineElem.radius );
       sectionPointer->addNode( node ); //
 
       parentSection->addChild( sectionPointer );
@@ -471,16 +473,18 @@ namespace nsol
     NsolVector<NodePtr>* nodes_,
     bool reposition_ )
   {
-    unsigned int nodeId = (unsigned int) nodePointer->id();
+    unsigned int nodeId = ( unsigned int ) nodePointer->id();
     //! Stores first node for later position recalculation
     if ( reposition_ )
       nodes_->push_back( nodePointer );
 
     //! Loads all nodes in section
-    while ( lines.at( nodeId ).children.size( ) == 1 )
+    TSwcLine lineElem = lines.at( nodeId );
+    while ( lineElem.children.size( ) == 1 )
     {
-      nodeId = lines.at( nodeId ).children[0];
-      nodePointer = new NODE( lines.at( nodeId ).xyz, nodeId, lines.at( nodeId ).radius );
+      nodeId = lineElem.children[0];
+      lineElem = lines.at( nodeId );
+      nodePointer = new NODE( lineElem.xyz, nodeId, lineElem.radius );
 
       //! Stores nodes for later position recalculation
       if ( reposition_ )
@@ -493,15 +497,15 @@ namespace nsol
      * End of section reached;
      * first nodes of branching sections will be added to stack
      */
-    if ( lines.at( nodeId ).children.size( ) > 1 )
+    if ( lineElem.children.size( ) > 1 )
     {
       //! Branch count updated
-      neuritePointer->_addBranchCount( ( unsigned int ) lines.at( nodeId ).children.size( ) );
+      neuritePointer->_addBranchCount( ( unsigned int ) lineElem.children.size( ) );
       //! Plus new bifurcation
       neuritePointer->_addBifurcationCount( 1 );
 
       //! Adds first nodes of new branches to stack
-      for ( const auto& it : lines.at( nodeId ).children )
+      for ( const auto& it : lineElem.children )
       {
         TReadNeuriteStackElem tmpStackElem = { it, sectionPointer };
         sectionFirstNodes->push( tmpStackElem );
