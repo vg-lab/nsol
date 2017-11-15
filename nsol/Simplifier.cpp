@@ -143,8 +143,10 @@ namespace nsol
 
     for ( auto neurite: morpho->neurites( ))
     {
-      for ( auto section: neurite->sections( ))
+      for ( auto generalSection: neurite->sections( ))
       {
+        auto section = dynamic_cast< NeuronMorphologySectionPtr >(
+          generalSection );
         if ( section->children( ).size( ) == 2 )
         {
           NodePtr bifurcation = section->lastNode( );
@@ -249,7 +251,8 @@ namespace nsol
 
     while( ! sectionStack.empty( ))
     {
-      SectionPtr section = sectionStack.top( );
+      NeuronMorphologySectionPtr section =
+        dynamic_cast< NeuronMorphologySectionPtr >( sectionStack.top( ));
       sectionStack.pop( );
 
       Nodes* nodes = &section->nodes( );
@@ -293,7 +296,8 @@ namespace nsol
 
     while( ! sectionStack.empty( ))
     {
-      SectionPtr section = sectionStack.top( );
+      NeuronMorphologySectionPtr section =
+        dynamic_cast< NeuronMorphologySectionPtr >( sectionStack.top( ));
       sectionStack.pop( );
 
       for ( SectionPtr child: section->children( ))

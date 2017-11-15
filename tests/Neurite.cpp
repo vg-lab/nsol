@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE( neurite_type )
 BOOST_AUTO_TEST_CASE( neurite_clone )
 {
 
-  Section section;
+  NeuronMorphologySection section;
   float x = 0.0f;
   float y = 0.0f;
   float z = 0.0f;
@@ -81,7 +81,8 @@ BOOST_AUTO_TEST_CASE( neurite_clone )
   }
   node = new Node( Vec3f( x, y, z ), 0, radius );
   section.firstNode( node );
-  Section section1 = *(section.clone( ));
+  NeuronMorphologySection section1 =
+    *( dynamic_cast< NeuronMorphologySectionPtr >( section.clone( )));
   section1.parent( &section );
 
   Neurite* neurite = new Neurite( );
@@ -108,7 +109,7 @@ BOOST_AUTO_TEST_CASE( neurite_clone )
 BOOST_AUTO_TEST_CASE( neurite_operators )
 {
 
-  Section section;
+  NeuronMorphologySection section;
   float x = 0.0f;
   float y = 0.0f;
   float z = 0.0f;
@@ -125,9 +126,11 @@ BOOST_AUTO_TEST_CASE( neurite_operators )
   }
   node = new Node( Vec3f( x, y, z ), 0, radius );
   section.firstNode( node );
-  Section section1 = *(section.clone( ));
+  NeuronMorphologySection section1 =
+    *( dynamic_cast< NeuronMorphologySectionPtr >( section.clone( )));
   section1.parent( &section );
-  Section section2 = *(section.clone( ));
+  NeuronMorphologySection section2 =
+    *( dynamic_cast< NeuronMorphologySectionPtr >( section.clone( )));
 
   Neurite* neurite = new Neurite( );
   section.neurite( neurite );

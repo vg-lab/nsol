@@ -21,36 +21,39 @@
  */
 
 #include "NeuriteStats.h"
-#include "SectionStats.h"
+#include "NeuronMorphologySectionStats.h"
 
 #include <stack>
 
 namespace nsol
 {
 
-  SectionStats::TSectionStat
+  NeuronMorphologySectionStats::TNeuronMorphologySectionStat
   toSectionStat( NeuriteStats::TNeuriteStat stat )
   {
     switch( stat )
     {
     case NeuriteStats::/*TNeuriteStat::*/SURFACE:
-      return SectionStats::/*TSectionStat::*/SURFACE;
+      return NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                            */SURFACE;
       break;
 
     case NeuriteStats::/*TNeuriteStat::*/VOLUME:
-      return SectionStats::/*TSectionStat::*/VOLUME;
+      return NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                            */VOLUME;
       break;
 
     case NeuriteStats::/*TNeuriteStat::*/LENGTH:
-      return SectionStats::/*TSectionStat::*/LENGTH;
+      return NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                            */LENGTH;
       break;
 
     case NeuriteStats::/*TNeuriteStat::*/NEURITE_NUM_STATS:
     default:
-      NSOL_THROW( "no know converstion from TNeuriteStat to TSectionStat");
+      NSOL_THROW( "Conversion from TNeuriteStat to TSectionStat not possible");
     }
 
-    return SectionStats::/*TSectionStat::*/SURFACE;
+    return NeuronMorphologySectionStats::/*TSectionStat::*/SURFACE;
   }
 
 
@@ -94,7 +97,8 @@ namespace nsol
 
       while ( ! sectionsToProcess.empty( ))
       {
-        SectionPtr section = sectionsToProcess.top( );
+        NeuronMorphologySectionPtr section =
+          dynamic_cast< NeuronMorphologySectionPtr >( sectionsToProcess.top( ));
         sectionsToProcess.pop( );
 
         NSOL_DEBUG_CHECK( section->stats( ),

@@ -58,7 +58,7 @@ void calculateSynapticNodes( MorphologySynapsePtr synapse,
     preSynNode = nullptr;
     Nodes nodesPre = preSynapticNeuron->morphology()->soma()->nodes();
 
-    SectionPtr preSynSection = synapse->preSynapticSection( );
+    NeuronMorphologySectionPtr preSynSection = synapse->preSynapticSection( );
 
     if( preSynSection != nullptr )
     {
@@ -94,7 +94,7 @@ void calculateSynapticNodes( MorphologySynapsePtr synapse,
     postSynNode = nullptr;
     Nodes nodesPost = postSynapticNeuron->morphology()->soma()->nodes();
 
-    SectionPtr postSynSection = synapse->postSynapticSection();
+    NeuronMorphologySectionPtr postSynSection = synapse->postSynapticSection();
 
     if(postSynSection != nullptr)
     {
@@ -205,16 +205,16 @@ int main( int argc, char* argv[ ])
                 postSynapticNeuron = neuronIt_->second;
             }
 
-            SectionPtr preSynSection  = nullptr;
-            SectionPtr postSynSection = nullptr;
+            NeuronMorphologySectionPtr preSynSection  = nullptr;
+            NeuronMorphologySectionPtr postSynSection = nullptr;
 
             NodePtr preSynNode  = nullptr;
             NodePtr postSynNode = nullptr;
 
-          Vec3f preSynPos  = synapse->preSynapticSurfacePosition();
+            Vec3f preSynPos  = synapse->preSynapticSurfacePosition();
             Vec3f postSynPos = synapse->postSynapticSurfacePosition();
 
-            cout <<  "Synapse Nº " << numberSynapse <<" = "<< endl;
+            cout <<  "Synapse number " << numberSynapse <<" = "<< endl;
 
 #if 1 TESTING_PRINT_LITERAL
 
@@ -235,11 +235,11 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Section] id: "
                          << preSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << preSynSection->nodes().size()<< endl;
                     cout << " - [Postsynaptic Section] id: "
                          << postSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << postSynSection->nodes().size()<< endl;
 
                     cout << " - [Presynaptic Node] id: "
@@ -266,11 +266,11 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Section] id: "
                          << preSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << preSynSection->nodes().size()<< endl;
                     cout << " - [Postsynaptic Section] id: "
                          << postSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << postSynSection->nodes().size()<< endl;
 
                     cout << " - [Presynaptic Node] id: "
@@ -297,11 +297,11 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Section] id: "
                          << preSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << preSynSection->nodes().size()<< endl;
                     cout << " - [Postsynaptic Section] id: "
                          << postSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << postSynSection->nodes().size()<< endl;
 
                     cout << " - [Presynaptic Node] id: "
@@ -346,7 +346,7 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Section] id: "
                          << preSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << preSynSection->nodes().size()<< endl;
 
                     cout << " - [Presynaptic Node] id: "
@@ -372,7 +372,7 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Section] id: "
                          << preSynSection->id() << endl;
-                    cout << " nº middle nodes: "
+                    cout << " number middle nodes: "
                          << preSynSection->nodes().size()<< endl;
 
                     cout << " - [Presynaptic Node] id: "

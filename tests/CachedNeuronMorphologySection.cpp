@@ -24,7 +24,7 @@
 #include "nsolTests.h"
 
 
-BOOST_AUTO_TEST_CASE( empty_cached_section )
+BOOST_AUTO_TEST_CASE( empty_cached_neuron_morphology_section )
 {
 
   // nsol::CachedSection section;

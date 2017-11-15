@@ -30,7 +30,7 @@
 #include "NeuronMorphology.h"
 #include "Neurite.h"
 #include "Axon.h"
-#include "Section.h"
+#include "NeuronMorphologySection.h"
 #include "Circuit.h"
 #include "Synapse.h"
 #include "MorphologySynapse.h"
@@ -61,7 +61,7 @@ namespace nsol
 
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -74,7 +74,7 @@ namespace nsol
                                   const std::string& target_ )
     {
       close( );
-      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+      BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                             COLUMN > brionReader;
 
@@ -96,7 +96,7 @@ namespace nsol
 
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -113,7 +113,7 @@ namespace nsol
         return;
       }
 
-       BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+       BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > brionReader;
 
@@ -128,7 +128,7 @@ namespace nsol
     }
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -146,7 +146,7 @@ namespace nsol
       }
 
       this->loadBlueConfigConnectivity< nsol::Node,
-                                             nsol::Section,
+                                             nsol::NeuronMorphologySection,
                                              nsol::Dendrite,
                                              nsol::Axon,
                                              nsol::Soma,
@@ -207,7 +207,7 @@ namespace nsol
 
         // Computing pre-synaptic section..
         bool found = false;
-        SectionPtr preSynSection = nullptr;
+        NeuronMorphologySectionPtr preSynSection = nullptr;
         unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
 
         Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
@@ -220,7 +220,8 @@ namespace nsol
 
           NSOL_FOREACH( sectionIt, sections )
           {
-            const SectionPtr section = (*sectionIt);
+            const NeuronMorphologySectionPtr section =
+              dynamic_cast< NeuronMorphologySectionPtr>( *(sectionIt));
             if( section->id() == brainIDSection )
             {
               found = true;
@@ -235,7 +236,7 @@ namespace nsol
         // Computing post-synaptic section..
         found = false;
 
-        SectionPtr postSynSection = nullptr;
+        NeuronMorphologySectionPtr postSynSection = nullptr;
         brainIDSection = brainSynapse.getPostsynapticSectionID();
 
         Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
@@ -248,7 +249,8 @@ namespace nsol
 
           NSOL_FOREACH( sectionIt, sections )
           {
-            const SectionPtr section = (*sectionIt);
+            const NeuronMorphologySectionPtr section =
+              dynamic_cast< NeuronMorphologySectionPtr >( *( sectionIt ));
 
             if( section->id() == brainIDSection )
             {
@@ -275,7 +277,7 @@ namespace nsol
 
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -301,7 +303,7 @@ namespace nsol
 
       std::string morphologyLabel = data[0][0];
 
-      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+      BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                             COLUMN > brionReader;
 
@@ -315,7 +317,7 @@ namespace nsol
     }
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -336,7 +338,7 @@ namespace nsol
       const brion::NeuronMatrix& data = circuit.get(
         neuronIds_, brion::NEURON_MORPHOLOGY_NAME );
 
-      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
+      BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                             COLUMN > brionReader;
 
@@ -356,7 +358,7 @@ namespace nsol
     }
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -371,7 +373,7 @@ namespace nsol
       {
         neuronIds.insert( par.second->gid( ));
       }
-      loadMorphologies< NODE, SECTION, DENDRITE, AXON,
+      loadMorphologies< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                         SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                         COLUMN >( neuronIds );
     }
@@ -419,7 +421,7 @@ namespace nsol
     }
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -436,14 +438,14 @@ namespace nsol
     {
       NeuronPtr neuron;
 #ifdef NSOL_USE_BRION
-      BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+      BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
                             NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN  >
         brionReader;
 
       neuron =  brionReader.loadNeuron( file_, gid_, layer_, transform_,
                                         type_ );
 #else
-      SwcReaderTemplated< NODE, SECTION, DENDRITE, AXON, SOMA,
+      SwcReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
                           NEURONMORPHOLOGY, NEURON > swcReader;
       neuron = swcReader.readNeuron( file_ );
       neuron->gid( ) = gid_;
@@ -462,7 +464,7 @@ namespace nsol
 
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -478,7 +480,7 @@ namespace nsol
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
       NeuronPtr neuron =
-        loadNeuronFromFile< NODE, SECTION, DENDRITE, AXON, SOMA,
+        loadNeuronFromFile< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
                            NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN >
         ( file_, gid_, layer_, transform_, type_ );
 
@@ -521,7 +523,7 @@ namespace nsol
 
 
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -532,7 +534,7 @@ namespace nsol
     void loadXmlScene( const std::string& xmlSceneFile )
     {
       XmlSceneReader::loadXml<
-        NODE, SECTION, DENDRITE,
+        NODE, NEURONMORPHOLOGYSECTION, DENDRITE,
         AXON, SOMA, NEURONMORPHOLOGY,
         NEURON, MINICOLUMN, COLUMN >( xmlSceneFile, _columns,
                                       _neurons, _morphologies );
@@ -545,7 +547,7 @@ namespace nsol
 
 #ifdef NSOL_USE_BRION
     template < class NODE = Node,
-               class SECTION = Section,
+               class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
                class DENDRITE = Dendrite,
                class AXON = Axon,
                class SOMA = Soma,
@@ -556,9 +558,9 @@ namespace nsol
     void _loadMorphology( unsigned int& neuronId_,
                           const std::string& morphologySource_,
                           const std::string& morphologyLabel_,
-                          BrionReaderTemplated< NODE, SECTION, DENDRITE, AXON,
-                          SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
-                          COLUMN >& brionReader_ )
+                          BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
+                          DENDRITE, AXON, SOMA, NEURONMORPHOLOGY, NEURON,
+                          MINICOLUMN, COLUMN >& brionReader_ )
   {
       NeuronsMap::iterator neuronIt = _neurons.find( neuronId_ );
 

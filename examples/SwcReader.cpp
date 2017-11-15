@@ -71,7 +71,8 @@ int main(int argc, char *argv[])
 
     while( ! sPS.empty( ))
     {
-      SectionPtr section = sPS.top( );
+      NeuronMorphologySectionPtr section =
+        dynamic_cast< NeuronMorphologySectionPtr >( sPS.top( ));
       sPS.pop( );
       numSections ++;
 
@@ -86,7 +87,8 @@ int main(int argc, char *argv[])
       if (section->children( ).size( ) > 0 )
         NSOL_FOREACH( sec, section->children( ))
         {
-          if( section->lastNode( ) != (*sec)->firstNode( ))
+          if( section->lastNode( ) !=
+              dynamic_cast< NeuronMorphologySectionPtr >( *sec )->firstNode( ))
             cout << "Inconherencia entre nodos" << endl;
           sPS.push( *sec );
         }

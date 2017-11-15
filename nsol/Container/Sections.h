@@ -22,7 +22,7 @@
 #ifndef __NSOL_SECTIONS__
 #define __NSOL_SECTIONS__
 
-#include "../Section.h"
+#include "../NsolTypes.h"
 
 namespace nsol
 {
@@ -34,6 +34,5 @@ namespace nsol
   };
 
 }
-
 
 #endif

@@ -20,7 +20,7 @@
  *
  */
 
-#include "SectionStats.h"
+#include "NeuronMorphologySectionStats.h"
 #include "SegmentStats.h"
 
 
@@ -28,27 +28,30 @@ namespace nsol
 {
 
   SegmentStats::TSegmentStat
-  toSegmentStat( SectionStats::TSectionStat stat )
+  toSegmentStat(
+    NeuronMorphologySectionStats::TNeuronMorphologySectionStat stat )
   {
     switch( stat )
     {
-    case SectionStats::/*TSectionStat::*/SURFACE:
+    case NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                        */SURFACE:
       return SegmentStats::/*TSegmentStat::*/SURFACE;
       break;
 
-    case SectionStats::/*TSectionStat::*/VOLUME:
+    case NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::*/VOLUME:
       return SegmentStats::/*TSegmentStat::*/VOLUME;
       break;
 
-    case SectionStats::/*TSectionStat::*/LENGTH:
+    case NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::*/LENGTH:
       return SegmentStats::/*TSegmentStat::*/LENGTH;
       break;
 
-    case SectionStats::/*TSectionStat::*/RADIUS:
+    case NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::*/RADIUS:
       return SegmentStats::/*TSegmentStat::*/RADIUS;
       break;
 
-    case SectionStats::/*TSectionStat::*/SECTION_NUM_STATS:
+    case NeuronMorphologySectionStats::/*TNeuronMorphologySectionStat::
+                                        */NEURON_MORPHOLOGY_SECTION_NUM_STATS:
     default:
       NSOL_THROW( "no known conversion from TSectionStat to TSegmentStat");
     }
@@ -57,9 +60,11 @@ namespace nsol
   }
 
   //TODO Make SEGMENT_RADIUS stat lenght-weighted
-  float SectionStats::getStat( TSectionStat stat, TAggregation agg ) const
+  float NeuronMorphologySectionStats::getStat(
+    TNeuronMorphologySectionStat stat, TAggregation agg ) const
   {
-    NSOL_DEBUG_CHECK( stat < SECTION_NUM_STATS, "section stat unknown");
+    NSOL_DEBUG_CHECK( stat < NEURON_MORPHOLOGY_SECTION_NUM_STATS,
+                      "section stat unknown");
     NSOL_DEBUG_CHECK( validAggregation( agg ), "unknown aggregation");
 
     float value = 0.0f;

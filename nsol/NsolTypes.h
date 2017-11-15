@@ -80,6 +80,7 @@ namespace nsol
   class Neurite;
   class Neuron;
   class NeuronMorphology;
+  class NeuronMorphologySection;
   class Node;
   class Object;
   class ObjectWithProperties;
@@ -101,6 +102,7 @@ namespace nsol
   typedef std::shared_ptr< Neurite > NeuritePtr;
   typedef std::shared_ptr< Neuron > NeuronPtr;
   typedef std::shared_ptr< NeuronMorphology > NeuronMorphologyPtr;
+  typedef std::shared_ptr< NeuronMorphologySection > NeuronMorphologySectionPtr;
   typedef std::shared_ptr< Node > NodePtr;
   typedef std::shared_ptr< Object > ObjectPtr;
   typedef std::shared_ptr< ObjectWithProperties > ObjectWithPropertiesPtr;
@@ -134,6 +136,7 @@ namespace nsol
   typedef Neurite* NeuritePtr;
   typedef Neuron* NeuronPtr;
   typedef NeuronMorphology* NeuronMorphologyPtr;
+  typedef NeuronMorphologySection* NeuronMorphologySectionPtr;
   typedef Node* NodePtr;
   typedef Object* ObjectPtr;
   typedef Properties* PropertiesPtr;

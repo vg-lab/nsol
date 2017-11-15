@@ -128,6 +128,7 @@ BOOST_AUTO_TEST_CASE( write_scene )
   ds.loadXmlScene( NSOL_SCENE_TEST_OUT );
   checkScene( ds );
 }
+
 class TestDataSetLoader : public DataSet
 {
 public:
@@ -140,6 +141,7 @@ public:
     return !_neurons.empty( );
   }
 };
+
 BOOST_AUTO_TEST_CASE( unload_scene )
 {
   TestDataSetLoader tl;

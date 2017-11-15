@@ -28,7 +28,7 @@
 
 #include "../Neuron.h"
 #include "../Stats/NodeCached.h"
-#include "../Stats/SectionCachedStats.h"
+#include "../Stats/NeuronMorphologySectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
@@ -47,7 +47,7 @@ namespace nsol
 
 #define SWC_READER_TEMPLATE_CLASSES            \
   class NODE,                                  \
-  class SECTION,                               \
+  class NEURONMORPHOLOGYSECTION,               \
   class DENDRITE,                              \
   class AXON,                                  \
   class SOMA,                                  \
@@ -56,7 +56,7 @@ namespace nsol
 
 #define SWC_READER_TEMPLATE_CLASS_NAMES       \
   NODE,                                       \
-  SECTION,                                    \
+  NEURONMORPHOLOGYSECTION,                    \
   DENDRITE,                                   \
   AXON,                                       \
   SOMA,                                       \
@@ -119,7 +119,7 @@ namespace nsol
     typedef struct
     {
       unsigned int id;
-      SectionPtr parent;
+      NeuronMorphologySectionPtr parent;
     } TReadNeuriteStackElem;
 
 
@@ -157,7 +157,7 @@ namespace nsol
      * recalculation
      */
     void _ReadSection( NeuritePtr neuritePointer,
-      SectionPtr sectionPointer,
+      NeuronMorphologySectionPtr sectionPointer,
       NodePtr nodePointer,
       std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
       const std::map<unsigned int, TSwcLine>& lines,
@@ -168,7 +168,7 @@ namespace nsol
 
 
   typedef SwcReaderTemplated< Node,
-    Section,
+    NeuronMorphologySection,
     Dendrite,
     Axon,
     Soma,
@@ -176,7 +176,7 @@ namespace nsol
     Neuron > SwcReader;
 
   typedef SwcReaderTemplated< Node,
-    SectionStats,
+    NeuronMorphologySectionStats,
     DendriteStats,
     AxonStats,
     SomaStats,
@@ -184,7 +184,7 @@ namespace nsol
     Neuron > SwcReaderStats;
 
   typedef SwcReaderTemplated< NodeCached,
-    SectionCachedStats,
+    NeuronMorphologySectionCachedStats,
     DendriteCachedStats,
     AxonCachedStats,
     SomaStats,
@@ -423,9 +423,9 @@ namespace nsol
     bool reposition_ )
   {
     std::stack<TReadNeuriteStackElem> sectionFirstNodes;
-    SectionPtr sectionPointer = nullptr;
+    NeuronMorphologySectionPtr sectionPointer = nullptr;
 
-    sectionPointer = SectionPtr( new SECTION );
+    sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
 
     sectionPointer->neurite( neuritePointer );
     sectionPointer->parent( nullptr );
@@ -443,8 +443,8 @@ namespace nsol
     while ( !sectionFirstNodes.empty( ) )
     {
       unsigned int id = sectionFirstNodes.top( ).id;
-      SectionPtr parentSection = sectionFirstNodes.top( ).parent;
-      sectionPointer = SectionPtr( new SECTION );
+      NeuronMorphologySectionPtr parentSection = sectionFirstNodes.top( ).parent;
+      sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
       sectionPointer->neurite( neuritePointer );
       sectionPointer->parent( parentSection );
       sectionFirstNodes.pop( );
@@ -466,7 +466,7 @@ namespace nsol
   template < SWC_READER_TEMPLATE_CLASSES > void
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadSection(
     NeuritePtr neuritePointer,
-    SectionPtr sectionPointer,
+    NeuronMorphologySectionPtr sectionPointer,
     NodePtr nodePointer,
     std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
     const std::map<unsigned int, TSwcLine>& lines,
@@ -516,3 +516,4 @@ namespace nsol
 } // namespace nsol
 
 #endif
+

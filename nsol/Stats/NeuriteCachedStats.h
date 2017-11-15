@@ -80,7 +80,7 @@ namespace nsol
      * Set dirty all cached stats and propagates dirty to parent neurite
      */
     NSOL_API
-    virtual void firstSection( SectionPtr section );
+    virtual void firstSection( NeuronMorphologySectionPtr section );
 
 
     /**

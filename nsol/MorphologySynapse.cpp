@@ -128,22 +128,25 @@ namespace nsol
   }
 
   void
-  MorphologySynapse::preSynapticSection( const SectionPtr preSynapticSection_ )
+  MorphologySynapse::preSynapticSection(
+    const NeuronMorphologySectionPtr preSynapticSection_ )
   {
     _preSynapticSection = preSynapticSection_;
   }
 
-  SectionPtr MorphologySynapse::preSynapticSection( void ) const
+  NeuronMorphologySectionPtr MorphologySynapse::preSynapticSection( void ) const
   {
     return _preSynapticSection;
   }
 
-  void MorphologySynapse::postSynapticSection( const SectionPtr section_ )
+  void MorphologySynapse::postSynapticSection(
+    const NeuronMorphologySectionPtr section_ )
   {
     _postSynapticSection = section_;
   }
 
-  SectionPtr MorphologySynapse::postSynapticSection( void ) const
+  NeuronMorphologySectionPtr MorphologySynapse::postSynapticSection(
+    void ) const
   {
     return _postSynapticSection;
   }

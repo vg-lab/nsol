@@ -49,8 +49,9 @@ void ComputeAndPrintSurface( nsol::NeuronPtr n )
       std::cout << "[ ";
       for ( const auto& section : sections )
       {
-        std::cout << section->stats( )->getStat(
-          nsol::SectionStats::/*TSectionStat::*/SURFACE ) << " ";
+        std::cout << dynamic_cast< nsol::NeuronMorphologySectionPtr >(
+          section )->stats( )->getStat(
+            nsol::NeuronMorphologySectionStats::/*TSectionStat::*/SURFACE ) << " ";
       }
 
       std::cout << "]";
@@ -94,11 +95,14 @@ void PrintCachedSurfaceState( nsol::NeuronPtr n )
       for ( const auto& section : sections )
       {
         cached =
-          NSOL_DYNAMIC_CAST( nsol::Cached<>, section->stats( ));
+          NSOL_DYNAMIC_CAST(
+            nsol::Cached<>, dynamic_cast< nsol::NeuronMorphologySectionPtr >(
+              section )->stats( ));
 
         if ( cached )
           std::cout  <<
-            ( ! cached->dirty( nsol::SectionCachedStats::SURFACE )
+            ( ! cached->dirty(
+              nsol::NeuronMorphologySectionCachedStats::SURFACE )
               ? "C " : "D " );
       }
       std::cout << "]";

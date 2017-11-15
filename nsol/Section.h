@@ -31,8 +31,6 @@
 namespace nsol
 {
 
-  class SectionStats;
-
   class Section
     : public virtual Object
   {
@@ -52,63 +50,47 @@ namespace nsol
     virtual ~Section( );
 
     /**
-     * Method to get the gid of the section.
-     * @return gid
+     * Gets the backward neighbour sections of this section
+     * @return container of the backward neighbour sections
      */
     NSOL_API
-    unsigned int id( void );
+    Sections& backwardNeighbors( void );
+
+    NSOL_API
+    const Sections& backwardNeighbors( void ) const;
 
     /**
-     * Method to set the gid of the section.
-     * @param id_ New gid of the section
+     * Gets the forward neighbour sections of this section
+     * @return container of the forward neighbour sections
      */
     NSOL_API
-    void id (unsigned int id_ );
+    Sections& forwardNeighbors( void );
 
-    /**
-     * Gets the parent Neurite of the Section
-     * @return pointer to the parent Neurite
-     */
     NSOL_API
-    NeuritePtr neurite( void );
+    const Sections& forwardNeighbors( void ) const;
 
     /**
-     * Sets the parent neurite of this Section
-     * @param neurite pointer to parent neurite
-     */
-    NSOL_API
-    void neurite( NeuritePtr neurite );
-
-    /**
-     * Gets the parent Section of this Section
-     * @return pointer to the parent Section
-     */
-    NSOL_API
-    SectionPtr parent( void );
-
-    /**
-     * Sets the parent Section of this Section
-     * @param parent pointer to parent Section
-     */
-    NSOL_API
-    void parent( SectionPtr parent );
-
-    /**
-     * Adds child Section to this Section
+     * Adds backward neighbour section to this section
      * @param section pointer to the section to be added
      */
     NSOL_API
-    void addChild( SectionPtr section );
+    void addBackwardNeighbour( SectionPtr section_ );
 
     /**
-     * Return the children sections
-     * @return container of children sections
+     * Adds forward neighbour section to this section
+     * @param section pointer to the section to be added
      */
     NSOL_API
-    Sections & children( void );
+    void addForwardNeighbour( SectionPtr section_ );
 
+    /**
+     * Check if the node connects with the backward or the fordward neighbour
+     * sections and add the section to the correspondent sections container
+     * @param section pointer to the section to be added
+     * @param node pointer to the node between sections
+     */
     NSOL_API
-    const Sections & children( void ) const;
+    void addNeighbour( SectionPtr section_, NodePtr node_ );
 
     /**
      * Return the middle Nodes
@@ -121,41 +103,35 @@ namespace nsol
     const Nodes & nodes( void ) const;
 
     /**
+     * Adds a node at the start of this section
+     * @param node pointer to the Node to add.
+     *        Precondition: pointer is not null.
+     */
+    NSOL_API
+    virtual void addBackwardNode( NodePtr node );
+
+    /**
      * Adds a node at the end of this section
      * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
     NSOL_API
-    virtual void addNode( NodePtr node );
+    virtual void addForwardNode( NodePtr node );
+
 
     /**
      * Gets the first Node of the Section.
      * @return pointer to the first Node, null in case it doesn't have any
      */
     NSOL_API
-    NodePtr firstNode( void );
-
-    /**
-     * Sets first Node of the Section. This method is virtual to allow
-     * reimplementation for cached objects and dirty state propagation
-     * @param firstNode pointer to the Node.
-     */
-    NSOL_API
-    virtual void firstNode( NodePtr firstNode );
+    NodePtr backwardNode( void );
 
     /**
      * Gets the last Node of the Section.
      * @return pointer to the first Node, null in case it doesn't have any
      */
     NSOL_API
-    NodePtr lastNode( void );
-
-    /**
-     * Returns object as SectionStats
-     * @return pointer to SectionStats object
-     */
-    NSOL_API
-    virtual SectionStats * stats( void );
+    NodePtr forwardNode( void );
 
     NSOL_API
     virtual SectionPtr clone( void ) const;
@@ -174,21 +150,14 @@ namespace nsol
 
   protected:
 
-    //! Unique id
-    unsigned int _id;
-
-    //! Parent neurite of the section
-    NeuritePtr _neurite;
-
-    //! Parent section of this section
-    SectionPtr _parent;
-
-    //! Container of the childrens sections of this section
-    Sections _children;
-
     //! Container of the middle nodes of this section
     Nodes _nodes;
 
+    //! Container of the backward neighbour sections of this section
+    Sections _backwardSections;
+
+    //! Container of the forward neighbour sections of this section
+    Sections _forwardSections;
 
   }; // class Section
 

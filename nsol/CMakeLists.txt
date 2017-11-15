@@ -21,6 +21,7 @@ set(NSOL_PUBLIC_HEADERS
   Neurite.h
   Neuron.h
   NeuronMorphology.h
+  NeuronMorphologySection.h
   Node.h
   NsolTypes.h
   Object.h
@@ -38,15 +39,15 @@ set(NSOL_PUBLIC_HEADERS
   Stats/MiniColumnStats.h
   Stats/NeuronMorphologyStats.h
   Stats/NeuronMorphologyCachedStats.h
+  Stats/NeuronMorphologySectionStats.h
+  Stats/NeuronMorphologySectionCachedStats.h
   Stats/NeuriteStats.h
   Stats/NeuriteCachedStats.h
   Stats/NeuriteCachedStats.cpp
   Stats/NodeCached.h
-  Stats/SectionStats.h
-  Stats/SectionCachedStats.h
   Stats/SegmentStats.h
   Stats/SomaStats.h
-  Synapse.h  
+  Synapse.h
   MorphologySynapse.h
   Circuit.h
   # templated classes at last
@@ -72,6 +73,7 @@ set(NSOL_SOURCES
   Neurite.cpp
   Neuron.cpp
   NeuronMorphology.cpp
+  NeuronMorphologySection.cpp
   Node.cpp
   Object.cpp
   ObjectWithProperties.cpp
@@ -86,11 +88,11 @@ set(NSOL_SOURCES
   Stats/MiniColumnStats.cpp
   Stats/NeuronMorphologyStats.cpp
   Stats/NeuronMorphologyCachedStats.cpp
+  Stats/NeuronMorphologySectionStats.cpp
+  Stats/NeuronMorphologySectionCachedStats.cpp
   Stats/NeuriteStats.cpp
   Stats/NeuriteCachedStats.cpp
   Stats/NodeCached.cpp
-  Stats/SectionStats.cpp
-  Stats/SectionCachedStats.cpp
   Stats/SegmentStats.cpp
   Stats/SomaStats.cpp
   Synapse.cpp

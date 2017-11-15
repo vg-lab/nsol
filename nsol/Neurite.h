@@ -24,7 +24,7 @@
 
 #include <nsol/api.h>
 #include "NsolTypes.h"
-#include "Section.h"
+#include "NeuronMorphologySection.h"
 
 #include <stack>
 
@@ -41,7 +41,7 @@ namespace nsol {
   {
 
     template< class NODE,
-              class SECTION,
+              class NEURONMORPHOLOGYSECTION,
               class DENDRITE,
               class AXON,
               class SOMA,
@@ -95,10 +95,10 @@ namespace nsol {
     bool hasMorphology( void ) const;
 
     NSOL_API
-    SectionPtr firstSection( void ) const ;
+    NeuronMorphologySectionPtr firstSection( void ) const ;
 
     NSOL_API
-    virtual void firstSection( SectionPtr section );
+    virtual void firstSection( NeuronMorphologySectionPtr section );
 
     NSOL_API
     Sections sections( void ) const;
@@ -139,7 +139,7 @@ namespace nsol {
 
     TNeuriteType _neuriteType;
 
-    SectionPtr _firstSection;
+    NeuronMorphologySectionPtr _firstSection;
 
     NeuronMorphologyPtr _morphology;
 

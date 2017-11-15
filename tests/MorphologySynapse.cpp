@@ -46,8 +46,8 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_constructors )
 
   }
   {
-     SectionPtr sectionPre( new Section );
-     SectionPtr sectionPost( new Section );
+     NeuronMorphologySectionPtr sectionPre( new NeuronMorphologySection );
+     NeuronMorphologySectionPtr sectionPost( new NeuronMorphologySection );
      sectionPre->id( 1 );
      sectionPost->id( 2 );
 
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_synapseType )
    DendritePtr dendritePre( new Dendrite );
    DendritePtr dendritePost( new Dendrite );
 
-   SectionPtr sectionPre( new Section );
-   SectionPtr sectionPost( new Section );
+   NeuronMorphologySectionPtr sectionPre( new NeuronMorphologySection );
+   NeuronMorphologySectionPtr sectionPost( new NeuronMorphologySection );
    sectionPre->neurite( dendritePre );
    sectionPost->neurite( dendritePost );
 
@@ -140,8 +140,8 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_operator )
 {
    MorphologySynapse synapse1;
 
-   SectionPtr sectionPre( new Section );
-   SectionPtr sectionPost( new Section );
+   NeuronMorphologySectionPtr sectionPre( new NeuronMorphologySection );
+   NeuronMorphologySectionPtr sectionPost( new NeuronMorphologySection );
    sectionPre->id( 1 );
    sectionPost->id( 2 );
 
@@ -162,5 +162,3 @@ BOOST_AUTO_TEST_CASE( morphologySynapse_operator )
    BOOST_CHECK_EQUAL( synapse2.postSynapticSurfacePosition( ),
                       Vec3f( 2.f, 2.f, 2.f ));
 }
-
-
