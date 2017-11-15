@@ -57,7 +57,7 @@ namespace nsol
       cached->setAndPropagateDirty( );
   }
 
-  void NeuriteCachedStats::firstSection( SectionPtr section_ )
+  void NeuriteCachedStats::firstSection( NeuronMorphologySectionPtr section_ )
   {
     this->Neurite::firstSection( section_ );
     this->setAndPropagateDirty( );

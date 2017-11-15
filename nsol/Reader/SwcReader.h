@@ -26,7 +26,7 @@
 
 #include "../Neuron.h"
 #include "../Stats/NodeCached.h"
-#include "../Stats/SectionCachedStats.h"
+#include "../Stats/NeuronMorphologySectionCachedStats.h"
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
@@ -47,7 +47,7 @@ namespace nsol
 
 #define SWC_READER_TEMPLATE_CLASSES              \
     class NODE,                                  \
-    class SECTION,                               \
+    class NEURONMORPHOLOGYSECTION,               \
     class DENDRITE,                              \
     class AXON,                                  \
     class SOMA,                                  \
@@ -56,7 +56,7 @@ namespace nsol
 
 #define SWC_READER_TEMPLATE_CLASS_NAMES         \
     NODE,                                       \
-    SECTION,                                    \
+    NEURONMORPHOLOGYSECTION,                    \
     DENDRITE,                                   \
     AXON,                                       \
     SOMA,                                       \
@@ -103,13 +103,13 @@ namespace nsol
     typedef struct
     {
       unsigned int id;
-      SectionPtr parent;
+      NeuronMorphologySectionPtr parent;
     } TReadDendritesStackElem;
 
     typedef struct
     {
       unsigned int id;
-      SectionPtr parent;
+      NeuronMorphologySectionPtr parent;
     } TReadAxonStackElem;
 
 
@@ -129,7 +129,7 @@ namespace nsol
 
 
   typedef SwcReaderTemplated< Node,
-                              Section,
+                              NeuronMorphologySection,
                               Dendrite,
                               Axon,
                               Soma,
@@ -137,7 +137,7 @@ namespace nsol
                               Neuron > SwcReader;
 
   typedef SwcReaderTemplated< Node,
-                              SectionStats,
+                              NeuronMorphologySectionStats,
                               DendriteStats,
                               AxonStats,
                               SomaStats,
@@ -145,7 +145,7 @@ namespace nsol
                               Neuron > SwcReaderStats;
 
   typedef SwcReaderTemplated< NodeCached,
-                              SectionCachedStats,
+                              NeuronMorphologySectionCachedStats,
                               DendriteCachedStats,
                               AxonCachedStats,
                               SomaStats,
@@ -392,7 +392,7 @@ namespace nsol
     ids.push(tmp);
 
 
-    SectionPtr s = nullptr, parentSection;
+    NeuronMorphologySectionPtr s = nullptr, parentSection;
     bool first = true;
 
     while (!ids.empty( ))
@@ -403,7 +403,7 @@ namespace nsol
       ids.pop( );
 
       /* parentSection = s; */
-      s = SectionPtr( new SECTION );
+      s = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
 
       if (!d->firstSection( ))
         d->firstSection(s);  //->addSection( );
@@ -478,7 +478,7 @@ namespace nsol
     TReadAxonStackElem tmp = { initId, NULL };
     ids.push(tmp);
 
-    SectionPtr s = NULL, parentSection;
+    NeuronMorphologySectionPtr s = NULL, parentSection;
     bool first = true;
 
     while (!ids.empty( ))
@@ -489,7 +489,7 @@ namespace nsol
       ids.pop( );
 
       /* parentSection = s; */
-      s = SectionPtr( new SECTION );
+      s = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
 
       if (!d->firstSection( ))
         d->firstSection(s);  //->addSection( );

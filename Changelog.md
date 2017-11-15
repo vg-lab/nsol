@@ -2,6 +2,10 @@
 
 ## git master
 
+## 0.3.0
+
+	* [!65] Section class refactorized to support graph structures. Changed version to 0.3.0.
+
 ## 0.2.0
 
 	* [!67] Changed version to 0.2.0. Updated Changelog.md. (doc)

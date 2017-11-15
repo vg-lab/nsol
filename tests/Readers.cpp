@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
   {
     BrionReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
   {
     BrionReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
   {
     BrionReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE( swcReader_loaders )
   {
     SwcReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE( swcReader_loaders )
   {
     SwcReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
   {
     SwcReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
 
     BrionReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
   {
     SwcReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,
@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
 
     BrionReaderTemplated<
       Node,
-      Section,
+      NeuronMorphologySection,
       Dendrite,
       Axon,
       Soma,

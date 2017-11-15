@@ -21,7 +21,7 @@
  */
 
 #include "NodeCached.h"
-#include "SectionCachedStats.h"
+#include "NeuronMorphologySectionCachedStats.h"
 
 namespace nsol
 {

@@ -7,8 +7,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(nsol VERSION 0.2.0 )
-set(nsol_VERSION_ABI 2)
+project(nsol VERSION 0.3.0 )
+set(nsol_VERSION_ABI 3)
 
 # Disable in source building
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
