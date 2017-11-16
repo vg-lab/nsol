@@ -3,6 +3,8 @@
  *
  * Authors: Pablo Toharia <pablo.toharia@urjc.es>
  *          Ricardo Suarez
+ *          Fernando Lucas Pérez
+ *          Iago Calvo Lista
  *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
@@ -35,53 +37,74 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <assert.h>
 #include <cctype>
 
 #include <map>
 #include <stack>
-#include <queue>
 
 namespace nsol
 {
 
-#define SWC_READER_TEMPLATE_CLASSES              \
-    class NODE,                                  \
-    class NEURONMORPHOLOGYSECTION,               \
-    class DENDRITE,                              \
-    class AXON,                                  \
-    class SOMA,                                  \
-    class NEURONMORPHOLOGY,                      \
-    class NEURON
+#define SWC_READER_TEMPLATE_CLASSES            \
+  class NODE,                                  \
+  class NEURONMORPHOLOGYSECTION,               \
+  class DENDRITE,                              \
+  class AXON,                                  \
+  class SOMA,                                  \
+  class NEURONMORPHOLOGY,                      \
+  class NEURON
 
-#define SWC_READER_TEMPLATE_CLASS_NAMES         \
-    NODE,                                       \
-    NEURONMORPHOLOGYSECTION,                    \
-    DENDRITE,                                   \
-    AXON,                                       \
-    SOMA,                                       \
-    NEURONMORPHOLOGY,                           \
-    NEURON
+#define SWC_READER_TEMPLATE_CLASS_NAMES       \
+  NODE,                                       \
+  NEURONMORPHOLOGYSECTION,                    \
+  DENDRITE,                                   \
+  AXON,                                       \
+  SOMA,                                       \
+  NEURONMORPHOLOGY,                           \
+  NEURON
 
 
   template < SWC_READER_TEMPLATE_CLASSES >
   class SwcReaderTemplated
   {
 
-  public:
+    public:
 
-    NeuronPtr readNeuron( const char *fileName,
-        bool reposition_ = false );
-    NeuronPtr readNeuron( const std::string fileName,
-        bool reposition_ = false );
-    NeuronMorphologyPtr readMorphology( const char *fileName,
-        bool reposition_ = false );
-    NeuronMorphologyPtr readMorphology( const std::string fileName,
-        bool reposition_ = false );
+    /**
+     * Creates a new Neuron that contains the NeuronMorphology described in
+     * SWC file
+     * Calls readMorphology( 2 )
+     *
+     * @param fileName path to SWC file to read
+     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true
+     * @return pointer to the Neuron created; nullptr if failure on SWC read
+     */
+    NeuronPtr readNeuron( const std::string& fileName,
+      bool reposition_ = false );
+
+    /**
+     * Creates a NeuronMorphology and loads info described in SWC file
+     *
+     * @param fileName path to SWC file to read
+     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true
+     * @return pointer to the NeuronMorphology created; nullptr if failure on SWC read
+     */
+    NeuronMorphologyPtr readMorphology( const std::string& fileName,
+      bool reposition_ = false );
 
 
-  protected:
+    protected:
 
+    //! SWC element types
+    typedef enum
+    {
+      SWC_SOMA = 1,
+      SWC_AXON = 2,
+      SWC_BASAL = 3,
+      SWC_APICAL = 4
+    } TSwcNodeType;
+
+    //! Contains processed information of an SWC line element
     typedef struct
     {
       unsigned int id;
@@ -92,66 +115,81 @@ namespace nsol
       std::vector<unsigned int> children;
     } TSwcLine;
 
-    typedef enum
-    {
-      SWC_SOMA = 1,
-      SWC_AXON = 2,
-      SWC_DENDRITE = 3,
-      SWC_APICAL = 4
-    } TSwcNodeType;
-
+    //! Auxiliary elements to read branching neurite sections
     typedef struct
     {
       unsigned int id;
       NeuronMorphologySectionPtr parent;
-    } TReadDendritesStackElem;
-
-    typedef struct
-    {
-      unsigned int id;
-      NeuronMorphologySectionPtr parent;
-    } TReadAxonStackElem;
+    } TReadNeuriteStackElem;
 
 
-    void _ReadDendrite( DendritePtr d,
-                        std::map<unsigned int, TSwcLine> & lines,
-                        unsigned int initId,
-                        NsolVector<NodePtr>* nodes_ = nullptr,
-                        bool reposition_ = false );
+    /**
+     * Reads a Neurite from a processed SWC file, calls _ReadSection
+     *
+     * @param neuritePointer neuritePtr where info will be loaded
+     * @param lines processed SWC file line information stored as map
+     * @param initId node ID of the first node in the neurite to read
+     * @param nodes_ auxiliary vector for recalculation purposes
+     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true;
+     * it will only serve to add all new nodes to nodes_ for later
+     * recalculation
+     */
+    void _ReadNeurite( NeuritePtr neuritePointer,
+      const std::map<unsigned int, TSwcLine> & lines,
+      unsigned int initId,
+      NsolVector<NodePtr>* nodes_ = nullptr,
+      bool reposition_ = false );
 
-    void _ReadAxon(NeuritePtr d, std::map<unsigned int, TSwcLine> & lines,
-                   unsigned int initId,
-                   NsolVector<NodePtr>* nodes_ = nullptr,
-                   bool reposition_ = false );
 
+    /**
+     * Creates and calculates sections, as well as bifurcation and branch
+     * counts
+     *
+     * @param neuritePointer pointer to Neurite where section is located
+     * @param sectionPointer pointer to Section where data will be loaded
+     * @param nodePointer pointer to first Node in section
+     * @param sectionFirstNodes pointer to stack where new first nodes
+     * for new sections found will be stored
+     * @param lines processed SWC file line information stored as map
+     * @param nodes_ auxiliary vector for recalculation purposes
+     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true;
+     * it will only serve to add all new nodes to nodes_ for later
+     * recalculation
+     */
+    void _ReadSection( NeuritePtr neuritePointer,
+      NeuronMorphologySectionPtr sectionPointer,
+      NodePtr nodePointer,
+      std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
+      const std::map<unsigned int, TSwcLine>& lines,
+      NsolVector<NodePtr>* nodes_,
+      bool reposition_ );
 
   }; // class SwcReaderTemplated
 
 
   typedef SwcReaderTemplated< Node,
-                              NeuronMorphologySection,
-                              Dendrite,
-                              Axon,
-                              Soma,
-                              NeuronMorphology,
-                              Neuron > SwcReader;
+    NeuronMorphologySection,
+    Dendrite,
+    Axon,
+    Soma,
+    NeuronMorphology,
+    Neuron > SwcReader;
 
   typedef SwcReaderTemplated< Node,
-                              NeuronMorphologySectionStats,
-                              DendriteStats,
-                              AxonStats,
-                              SomaStats,
-                              NeuronMorphologyStats,
-                              Neuron > SwcReaderStats;
+    NeuronMorphologySectionStats,
+    DendriteStats,
+    AxonStats,
+    SomaStats,
+    NeuronMorphologyStats,
+    Neuron > SwcReaderStats;
 
   typedef SwcReaderTemplated< NodeCached,
-                              NeuronMorphologySectionCachedStats,
-                              DendriteCachedStats,
-                              AxonCachedStats,
-                              SomaStats,
-                              NeuronMorphologyCachedStats,
-                              Neuron > SwcReaderCachedStats;
-
+    NeuronMorphologySectionCachedStats,
+    DendriteCachedStats,
+    AxonCachedStats,
+    SomaStats,
+    NeuronMorphologyCachedStats,
+    Neuron > SwcReaderCachedStats;
 
 
   //////////////////////////////////////////////////////////////////
@@ -163,28 +201,14 @@ namespace nsol
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronPtr
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
-    const char *fileName, bool reposition_ )
+    const std::string& fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readNeuron is deprecated. "
-              << "Please use BrainReader< >::loadNeuron" << std::endl;
-    return this->readNeuron(std::string(fileName), reposition_ );
-  }
-
-
-
-  template < SWC_READER_TEMPLATE_CLASSES >
-  NeuronPtr
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readNeuron(
-    const std::string fileName, bool reposition_ )
-  {
-    std::cerr << "SwcReader< >::readNeuron is deprecated. "
-              << "Please use BrainReader< >::loadNeuron" << std::endl;
-    NeuronMorphologyPtr nm = this->readMorphology( std::string( fileName ),
-        reposition_ );
+    NeuronMorphologyPtr nm = this->readMorphology( fileName,
+      reposition_ );
 
     if ( nm )
     {
-      NeuronPtr neuron( new NEURON( nm ));
+      NeuronPtr neuron( new NEURON( nm ) );
       nm->addParentNeuron( neuron );
       return neuron;
     }
@@ -193,182 +217,195 @@ namespace nsol
   }
 
 
-
   template < SWC_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
-    const char * fileName, bool reposition_ )
+    const std::string& fileName, bool reposition_ )
   {
-    std::cerr << "SwcReader< >::readMorphology is deprecated. "
-              << "Please use BrainReader< >::loadMorphology" << std::endl;
-    return this->readMorphology(std::string(fileName), reposition_ );
-  }
-
-
-
-  template < SWC_READER_TEMPLATE_CLASSES >
-  NeuronMorphologyPtr
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
-    const std::string fileName, bool reposition_ )
-  {
-    std::cerr << "SwcReader< >::readMorphology is deprecated. "
-              << "Please use BrainReader< >::loadMorphology" << std::endl;
     std::ifstream inFile;
-    inFile.open(fileName, std::ios::in);
+    inFile.open( fileName, std::ios::in );
 
-    //Opening file checking
-    if ((inFile.rdstate( ) & std::ifstream::failbit) != 0)
+    //! Opening file check
+    if ( ( inFile.rdstate( ) & std::ifstream::failbit ) != 0 )
     {
-      std::cerr << "Error opening file " << fileName << std::endl;
+      Log::log( std::string( "Error opening file: " ) + fileName, LOG_LEVEL_WARNING );
 
       return nullptr;
+
     }
 
     std::string lineString;
 
-    NsolVector< NodePtr > nodes;
-    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
+    NsolVector< NodePtr > repositionNodes;
+    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ) );
 
     std::map<unsigned int, TSwcLine> lines;
 
     int lineCount = 0;
 
-    while ( std::getline( inFile, lineString ))
+    //! Reads file, line by line
+    while ( std::getline( inFile, lineString ) )
     {
-      lineCount++;
+      ++lineCount;
 
-      // TODO: this does not cover the case the # char is not the first char
-      if ( lineString[0] != '#' )
+      //! Skips comment lines
+      if ( lineString[lineString.find_first_not_of( " \r\t" )] != '#' )
       {
-
-        // Trim spaces
-        lineString.erase( lineString.find_last_not_of( " \r\t") +1 );
-        unsigned int fields = 1 +
-          (unsigned int)std::count_if( lineString.begin( ), lineString.end( ),
-                                       []( unsigned char c )
-                                       {
-                                         return std::isspace( c );
-                                       });
+        //! Verifies there are 7 fields ( or more, if comments are present )
+        unsigned int fields =
+          1 + ( unsigned int )std::count_if( lineString.begin( ), lineString.end( ),
+            []( unsigned char c )
+              {
+                return std::isspace( c );
+              }
+          );
 
         if ( fields < 7 )
         {
-          Log::log( std::string( "Skipping lineString " ) +
-                    std::to_string( lineCount ) +
-                    std::string( ". Not enough fields found" ),
-                    LOG_LEVEL_WARNING );
-          continue;
+          Log::log( std::string( "Skipping line " ) +
+            std::to_string( lineCount ) +
+            std::string( " in file " ) +
+            fileName + std::string( ": \"" ) + lineString +
+            std::string( "\" ( not enough fields found )" ),
+            LOG_LEVEL_WARNING );
         }
+        else
+        {
+          //! Loads info in struct TSwcLine
+          std::istringstream iss( lineString );
+          TSwcLine swcLineString;
 
+          bool failed = false;
+          iss >> swcLineString.id;
+          if ( iss.fail( ) )
+            failed = true;
+          iss >> swcLineString.type;
+          if ( iss.fail( ) )
+            failed = true;
+          iss >> swcLineString.xyz[0]
+              >> swcLineString.xyz[1]
+              >> swcLineString.xyz[2];
+          if ( iss.fail( ) )
+            failed = true;
+          iss >> swcLineString.radius;
+          if ( iss.fail( ) )
+            failed = true;
+          iss >> swcLineString.parent;
+          if ( iss.fail( ) )
+            failed = true;
 
-        std::istringstream iss(lineString);
+          if ( failed )
+          {
+            Log::log( std::string( "Skipping line " ) +
+              std::to_string( lineCount ) +
+              std::string( " in file " ) +
+              fileName + std::string( ": \"" ) + lineString +
+              std::string( "\" ( line format not recognised )" ),
+              LOG_LEVEL_WARNING );
+          } else {
+            lines[swcLineString.id] = swcLineString;
+          }
 
-        TSwcLine swcLineString;
-        iss >> swcLineString.id;
-        iss >> swcLineString.type;
-        iss >> swcLineString.xyz[0]
-            >> swcLineString.xyz[1]
-            >> swcLineString.xyz[2];
-        iss >> swcLineString.radius;
-        iss >> swcLineString.parent;
-
-        lines[swcLineString.id] = swcLineString;
-
+        }
       }
     }
 
+    inFile.close( );
+
+    //! Adds children to TSwcLine elements created
     for ( const auto& line : lines )
     {
-      if (line.second.parent != -1)
+      if ( line.second.parent != -1 )
         lines[line.second.parent].children.push_back( line.first );
     }
 
     std::vector<unsigned int> somaChildren;
     std::map<unsigned int, NodePtr > nodeSomaPtr;
 
+    //! Adds soma nodes to neuronMorphology->Soma
     for ( const auto& line : lines )
     {
-      if (line.second.type == SWC_SOMA)
+      if ( line.second.type == SWC_SOMA )
       {
         NodePtr node(
-          new NODE(line.second.xyz, line.second.id, line.second.radius) );
+            new NODE( line.second.xyz, line.second.id, line.second.radius ) );
 
+        /**
+         * Adds nodes for later recalculation of position
+         * if reposition_ is active
+         */
         if ( reposition_ )
-          nodes.push_back( node );
+          repositionNodes.push_back( node );
 
-        neuronMorphology->soma( )->addNode(node);
+        neuronMorphology->soma( )->addNode( node );
 
         nodeSomaPtr[line.second.id] = node;
 
-        for (unsigned int i = 0; i < line.second.children.size( ); i++)
-          if (lines[line.second.children[i]].type != SWC_SOMA)
-            somaChildren.push_back(line.second.children[i]);
+        //! Adds non-soma childrens of soma nodes to vector for later use
+        for ( const unsigned int child : line.second.children )
+          if ( lines[child].type != SWC_SOMA )
+            somaChildren.push_back( child );
+
       }
     }
 
-    DendritePtr d;
-
-    for (unsigned int i = 0; i < somaChildren.size( ); i++)
+    //! Initiates read process for each neurite, via first node
+    for ( const unsigned int firstNodeId : somaChildren )
     {
 
+      switch ( lines[firstNodeId].type ) {
+        case SWC_BASAL:
+        {
+          DendritePtr basalP = new DENDRITE( Dendrite::BASAL );
+          neuronMorphology->addNeurite( basalP );
+          basalP->morphology( neuronMorphology );
+          _ReadNeurite( basalP, lines, firstNodeId,
+            &repositionNodes, reposition_ );
+        }
+          break;
 
-      switch (lines[somaChildren[i]].type)
-      {
-      case SWC_SOMA:
-        // TODO: handle error
-        assert(false);
+        case SWC_APICAL:
+        {
+          DendritePtr apicalP = new DENDRITE( Dendrite::APICAL );
+          neuronMorphology->addNeurite( apicalP );
+          apicalP->morphology( neuronMorphology );
+          _ReadNeurite( apicalP, lines, firstNodeId,
+            &repositionNodes, reposition_ );
+        }
+          break;
 
-      case SWC_DENDRITE:
-      {
+        case SWC_AXON:
+        {
+          AxonPtr axonP = new AXON();
+          neuronMorphology->addNeurite( axonP );
+          axonP->morphology( neuronMorphology );
+          _ReadNeurite( axonP, lines, firstNodeId,
+            &repositionNodes, reposition_ );
+        }
+          break;
 
-        d = new DENDRITE( Dendrite::BASAL );
-        neuronMorphology->addNeurite( d );
-        d->morphology( neuronMorphology );
-        _ReadDendrite(d, lines, somaChildren[i],
-                      &nodes, reposition_ );
+        default:
+          Log::log( std::string( "Unexpected line type value in line " ) +
+            std::to_string( firstNodeId ), LOG_LEVEL_WARNING);
 
-        break;
       }
-
-      case SWC_APICAL:
-        d = new DENDRITE( Dendrite::APICAL );
-        neuronMorphology->addNeurite( d );
-        d->morphology(neuronMorphology);
-        _ReadDendrite(d, lines, somaChildren[i],
-                      &nodes, reposition_ );
-
-        break;
-
-      case SWC_AXON:
-      {
-        AxonPtr nP = new AXON( );
-        neuronMorphology->addNeurite( nP );
-        nP->morphology(neuronMorphology);
-        _ReadAxon(nP, lines, somaChildren[i],
-                  &nodes, reposition_ );
-
-        break;
-      }
-
-      default:
-        break;
-      }
-
     }
 
-
-    inFile.close( );
-
+    /**
+     * Moves soma center to ( 0.0, 0.0, 0.0 ) if reposition_ is active,
+     * accordingly recalculating position for all nodes
+     */
 
     if ( reposition_ )
     {
       Vec3f center = neuronMorphology->soma( )->center( );
 
-      NSOL_FOREACH( node, nodes )
+      for ( auto& node : repositionNodes )
       {
-        (*node)->point( (*node)->point( ) - center );
+        node->point( node->point( ) - center );
       }
 
-      neuronMorphology->soma( )->center( Vec3f( 0.0f, 0.0f, 0.0f ));
+      neuronMorphology->soma( )->center( Vec3f( 0.0f, 0.0f, 0.0f ) );
 
     }
 
@@ -378,181 +415,105 @@ namespace nsol
 
 
   template < SWC_READER_TEMPLATE_CLASSES > void
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadDendrite(
-    DendritePtr d,
-    std::map<unsigned int, TSwcLine> & lines,
+  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadNeurite(
+    NeuritePtr neuritePointer,
+    const std::map<unsigned int, TSwcLine>& lines,
     unsigned int initId,
     NsolVector<NodePtr>* nodes_,
     bool reposition_ )
   {
+    std::stack<TReadNeuriteStackElem> sectionFirstNodes;
+    NeuronMorphologySectionPtr sectionPointer = nullptr;
 
-    std::stack<TReadDendritesStackElem> ids;
-    //ids.push(TReadDendritesStackElem { initId, NULL });
-    TReadDendritesStackElem tmp = {initId, NULL};
-    ids.push(tmp);
+    sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
 
+    sectionPointer->neurite( neuritePointer );
+    sectionPointer->parent( nullptr );
 
-    NeuronMorphologySectionPtr s = nullptr, parentSection;
-    bool first = true;
+    NodePtr node;
+    //! Creates first Node in first Secion
+    TSwcLine lineElem = lines.at( initId );
+    node = new NODE( lineElem.xyz, initId, lineElem.radius );
+    sectionPointer->firstNode( node );
+    //! Loads first Section in Neurite
+    _ReadSection( neuritePointer, sectionPointer, node, &sectionFirstNodes, lines, nodes_, reposition_ );
+    neuritePointer->firstSection( sectionPointer );
 
-    while (!ids.empty( ))
+    //! Creates and loads all Sections in Neurite
+    while ( !sectionFirstNodes.empty( ) )
     {
+      unsigned int id = sectionFirstNodes.top( ).id;
+      NeuronMorphologySectionPtr parentSection = sectionFirstNodes.top( ).parent;
+      sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
+      sectionPointer->neurite( neuritePointer );
+      sectionPointer->parent( parentSection );
+      sectionFirstNodes.pop( );
 
-      unsigned int id = ids.top( ).id;
-      parentSection = ids.top( ).parent;
-      ids.pop( );
+      //! Creates first Node of new Section
+      lineElem = lines.at( id );
+      node = new NODE( lineElem.xyz, id, lineElem.radius );
+      sectionPointer->addNode( node ); //
 
-      /* parentSection = s; */
-      s = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
+      parentSection->addChild( sectionPointer );
 
-      if (!d->firstSection( ))
-        d->firstSection(s);  //->addSection( );
-
-      s->neurite(d);
-      s->parent( parentSection );
-
-      NodePtr node;
-      if (first)
-      {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
-        s->firstNode( node );
-
-        if ( reposition_ )
-          nodes_->push_back( node );
-        first = false;
-      }
-      else
-      {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
-        s->addNode( node );
-
-        if ( parentSection )
-          parentSection->addChild( s );
-
-        if ( reposition_ )
-          nodes_->push_back( node );
-      }
-
-      // While same section create the segments
-      while (lines[id].children.size( ) == 1)
-      {
-        id = lines[id].children[0];
-
-        node  = new NODE( lines[id].xyz, id, lines[id].radius );
-        if ( reposition_ )
-          nodes_->push_back( node );
-
-        s->addNode( node );
-      }
-
-      // New branching point
-      if (lines[id].children.size( ) > 1)
-      {
-        //Plus new branch
-        d->_addBranchCount( ( unsigned int ) lines[id].children.size( ) );
-        //Plus new bifurcation
-        d->_addBifurcationCount(1);
-
-        NSOL_CONST_FOREACH( it, lines[ id ].children )
-        {
-          TReadDendritesStackElem tmpStackElem = { (*it), s };
-          ids.push( tmpStackElem );
-        }
-      }
+      //! Loads Section and stores first Nodes of other Sections to load
+      _ReadSection( neuritePointer, sectionPointer, node, &sectionFirstNodes,
+        lines, nodes_, reposition_ );
 
     }
-
   }
 
   template < SWC_READER_TEMPLATE_CLASSES > void
-  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadAxon(
-    NeuritePtr d,
-    std::map<unsigned int,
-    TSwcLine> &lines,
-    unsigned int initId,
+  SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::_ReadSection(
+    NeuritePtr neuritePointer,
+    NeuronMorphologySectionPtr sectionPointer,
+    NodePtr nodePointer,
+    std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
+    const std::map<unsigned int, TSwcLine>& lines,
     NsolVector<NodePtr>* nodes_,
     bool reposition_ )
   {
+    unsigned int nodeId = ( unsigned int ) nodePointer->id();
+    //! Stores first node for later position recalculation
+    if ( reposition_ )
+      nodes_->push_back( nodePointer );
 
-    std::stack<TReadAxonStackElem> ids;
-    TReadAxonStackElem tmp = { initId, NULL };
-    ids.push(tmp);
-
-    NeuronMorphologySectionPtr s = NULL, parentSection;
-    bool first = true;
-
-    while (!ids.empty( ))
+    //! Loads all nodes in section
+    TSwcLine lineElem = lines.at( nodeId );
+    while ( lineElem.children.size( ) == 1 )
     {
+      nodeId = lineElem.children[0];
+      lineElem = lines.at( nodeId );
+      nodePointer = new NODE( lineElem.xyz, nodeId, lineElem.radius );
 
-      unsigned int id = ids.top( ).id;
-      parentSection = ids.top( ).parent;
-      ids.pop( );
+      //! Stores nodes for later position recalculation
+      if ( reposition_ )
+        nodes_->push_back( nodePointer );
 
-      /* parentSection = s; */
-      s = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
+      sectionPointer->addNode( nodePointer );
+    }
 
-      if (!d->firstSection( ))
-        d->firstSection(s);  //->addSection( );
+    /**
+     * End of section reached;
+     * first nodes of branching sections will be added to stack
+     */
+    if ( lineElem.children.size( ) > 1 )
+    {
+      //! Branch count updated
+      neuritePointer->_addBranchCount( ( unsigned int ) lineElem.children.size( ) );
+      //! Plus new bifurcation
+      neuritePointer->_addBifurcationCount( 1 );
 
-      s->neurite(d);
-      s->parent(parentSection);
-
-      NodePtr node;
-      if (first)
+      //! Adds first nodes of new branches to stack
+      for ( const auto& it : lineElem.children )
       {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
-        s->firstNode( node );
-
-        if ( reposition_ )
-          nodes_->push_back( node );
-        first = false;
-      }
-      else
-      {
-        node = new NODE(lines[id].xyz, id, lines[id].radius );
-        s->addNode( node );
-
-        if ( parentSection )
-          parentSection->addChild( s );
-
-        if ( reposition_ )
-          nodes_->push_back( node );
-      }
-
-      // While same section create the segments
-      while (lines[id].children.size( ) == 1)
-      {
-
-        id = lines[id].children[0];
-
-        node = new NODE(lines[id].xyz, id, lines[id].radius);
-        if ( reposition_ )
-          nodes_->push_back( node );
-
-        s->addNode( node );
-
-      }
-
-      // New branching point
-      if (lines[id].children.size( ) > 1)
-      {
-        //Plus new branch
-        d->_addBranchCount( ( unsigned int ) lines[id].children.size( ));
-        //Plus new bifurcation
-        d->_addBifurcationCount(1);
-
-        NSOL_CONST_FOREACH( it, lines[ id ].children )
-        {
-          TReadAxonStackElem tmpStackElem = { (*it), s };
-          ids.push( tmpStackElem );
-        }
+        TReadNeuriteStackElem tmpStackElem = { it, sectionPointer };
+        sectionFirstNodes->push( tmpStackElem );
       }
 
     }
-
   }
-
-
-}
+} // namespace nsol
 
 #endif
+

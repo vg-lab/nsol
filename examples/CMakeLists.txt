@@ -69,6 +69,7 @@ if ( NSOL_WITH_EXAMPLES )
   common_application( nsolSimplifier NOHELP )
   list( APPEND NSOL_EXAMPLES_FILES ${NSOLSIMPLIFIER_SOURCES} )
 
+
   set( NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
   set( NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )
   common_application( nsolBlueConfig2XmlScene NOHELP )
