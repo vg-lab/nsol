@@ -2,6 +2,8 @@ if ( NSOL_WITH_EXAMPLES )
 
   add_executable(nsolSwcReader SwcReader.cpp)
   target_link_libraries(nsolSwcReader nsol)
+  add_executable(nsolAscToSwcTest AscToSwcTest.cpp)
+  target_link_libraries(nsolAscToSwcTest nsol)
 
   if( BRION_FOUND )
     set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )

@@ -48,6 +48,14 @@ namespace nsol {
               class NEURONMORPHOLOGY,
               class NEURON > friend class SwcReaderTemplated;
 
+    template< class NODE,
+        class NEURONMORPHOLOGYSECTION,
+        class DENDRITE,
+        class AXON,
+        class SOMA,
+        class NEURONMORPHOLOGY,
+        class NEURON > friend class AscReaderTemplated;
+
   public:
 
     //! Possible types of neurite
