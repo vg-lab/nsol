@@ -93,7 +93,15 @@ namespace nsol
 
 
     protected:
+      unsigned int lineCount, nodeId;
+      std::ifstream inFile;
 
+    void _ReadNeurite(NeuronMorphologyPtr neuronMorphology);
+    void _ReadSoma(
+      NeuronMorphologyPtr neuronMorphology,
+      NsolVector<NodePtr>* repositionNodes_,
+      bool reposition_ );
+    int _countBrackets( const std::string& line );
   }; // class AscReaderTemplated
 
 
@@ -152,11 +160,11 @@ namespace nsol
   AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
       const std::string& fileName, bool reposition_ )
   {
-    std::ifstream inFile;
+
     inFile.open( fileName, std::ios::in );
 
     //! Opening file check
-    if ( ( inFile.rdstate( ) & std::ifstream::failbit ) != 0 )
+    if ((inFile.rdstate() & std::ifstream::failbit) != 0)
     {
       Log::log( std::string( "Error opening file: " ) + fileName, LOG_LEVEL_WARNING );
 
@@ -166,333 +174,135 @@ namespace nsol
 
     std::string lineString;
 
-    NsolVector< NodePtr > repositionNodes;
-    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ) );
+    NsolVector<NodePtr> repositionNodes;
+    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
 
-    unsigned int lineCount = 0;
-    unsigned int level = 0;
-    unsigned int nodeIdCount = 0;
-    std::stack<SectionPtr> parentSections;
-    SectionPtr currentParentSection = nullptr;
+    nodeId = 0;
+    lineCount = 0;
 
     //! Reads file, line by line
-    while ( std::getline( inFile, lineString ) )
+    while (std::getline( inFile, lineString ))
     {
       ++lineCount;
 
       //! Removes comment
-      lineString.erase( lineString.find_first_of( ';' ) );
+      lineString.erase( lineString.find_first_of( ';' ));
+
+      std::transform( lineString.begin(), lineString.end(), lineString.begin(), ::tolower );
+
+      if (std::regex_match( lineString, std::regex( ".*\( *dendrite *\).*" )))
+      {
+        DendritePtr dendrite = new DENDRITE();
+        neuronMorphology->addNeurite( dendrite );
+        dendrite->morphology( neuronMorphology );
+
+        //_ReadNeurite( basalP, lines, firstNodeId,                        &repositionNodes, reposition_ );
+
+      }
+      else if (std::regex_match( lineString, std::regex( ".*\( *cellbody *\).*" )))
+      {
+        _ReadSoma( neuronMorphology );
+
+      }
+      else if (std::regex_match( lineString, std::regex( ".*\( *axon *\).*" )))
+      {
+
+      }//! else ignore
+    }
+  }
+
+
+  template < ASC_READER_TEMPLATE_CLASSES > void
+  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::_ReadNeurite(NeuronMorphologyPtr neuronMorphology) {
+    std::stack<SectionPtr> parentSections;
+    SectionPtr currentParentSection = nullptr;
+    std::string lineString;
+    int level = 1;
+
+    //! Reads file, line by line
+    while (std::getline( inFile, lineString ) && level > 0) {
+      ++lineCount;
+
+      //! Removes comment
+      lineString.erase( lineString.find_first_of( ';' ));
 
       //! Skips empty lines
-      if ( lineString.find_first_not_of( " \r\t" ) != std::string::npos )
-      {
+      if (lineString.find_first_not_of( " \r\t" ) != std::string::npos) {
         //! Accounts for opening minus closing brackets
-        int bracketCount = 0;
-        for ( const auto& character : lineString )
-        {
-          if ( character == '(' )
-          {
-            ++bracketCount;
-
-          }
-          else if ( character == ')' )
-          {
-            --bracketCount;
-
-          }
-
-        }
-
+        int bracketCount = _countBrackets( lineString );
         level += bracketCount;
 
-        if ( bracketCount < 0 )
-        {
-          parentSections.pop( );
+        if (bracketCount < 0) {
+          parentSections.pop();
 
-        }
-        else if ( bracketCount > 0 && level != 1 )
-        {
+        } else if (bracketCount > 0 && level != 1) {
           parentSections.push( currentParentSection );
 
         }
-
-        if ( level == 1 )
-        {
-          if (std::regex_match ( lineString, std::regex( ".*\".*\".*" ) ) )
-          {
-
-          }
-          else if ( std::regex_match ( lineString, std::regex( ".*\( *[a|A]xon *\).*" ) ) )
-          {
-
-          }
-          //TODO
-
-
-        }
-
-        //! Verifies there are 7 fields ( or more, if comments are present )
-        unsigned int fields =
-            1 + ( unsigned int )std::count_if( lineString.begin( ), lineString.end( ),
-                                               []( unsigned char c )
-                                               {
-                                                 return std::isspace( c );
-                                               }
-            );
-
-        if ( fields < 7 )
-        {
-          Log::log( std::string( "Skipping line " ) +
-                    std::to_string( lineCount ) +
-                    std::string( " in file " ) +
-                    fileName + std::string( ": \"" ) + lineString +
-                    std::string( "\" ( not enough fields found )" ),
-                    LOG_LEVEL_WARNING );
-        }
-        else
-        {
-          //! Loads info in struct TAscLine
-          std::istringstream iss( lineString );
-          TAscLine ascLineString;
-
-          bool failed = false;
-          iss >> ascLineString.id;
-          if ( iss.fail( ) )
-            failed = true;
-          iss >> ascLineString.type;
-          if ( iss.fail( ) )
-            failed = true;
-          iss >> ascLineString.xyz[0]
-              >> ascLineString.xyz[1]
-              >> ascLineString.xyz[2];
-          if ( iss.fail( ) )
-            failed = true;
-          iss >> ascLineString.radius;
-          if ( iss.fail( ) )
-            failed = true;
-          iss >> ascLineString.parent;
-          if ( iss.fail( ) )
-            failed = true;
-
-          if ( failed )
-          {
-            Log::log( std::string( "Skipping line " ) +
-                      std::to_string( lineCount ) +
-                      std::string( " in file " ) +
-                      fileName + std::string( ": \"" ) + lineString +
-                      std::string( "\" ( line format not recognised )" ),
-                      LOG_LEVEL_WARNING );
-          } else {
-            lines[ascLineString.id] = ascLineString;
-          }
-
-        }
       }
     }
-
-    inFile.close( );
-
-    //! Adds children to TAscLine elements created
-    for ( const auto& line : lines )
-    {
-      if ( line.second.parent != -1 )
-        lines[line.second.parent].children.push_back( line.first );
-    }
-
-    std::vector<unsigned int> somaChildren;
-    std::map<unsigned int, NodePtr > nodeSomaPtr;
-
-    //! Adds soma nodes to neuronMorphology->Soma
-    for ( const auto& line : lines )
-    {
-      if ( line.second.type == ASC_SOMA )
-      {
-        NodePtr node(
-            new NODE( line.second.xyz, line.second.id, line.second.radius ) );
-
-        /**
-         * Adds nodes for later recalculation of position
-         * if reposition_ is active
-         */
-        if ( reposition_ )
-          repositionNodes.push_back( node );
-
-        neuronMorphology->soma( )->addNode( node );
-
-        nodeSomaPtr[line.second.id] = node;
-
-        //! Adds non-soma childrens of soma nodes to vector for later use
-        for ( const unsigned int child : line.second.children )
-          if ( lines[child].type != ASC_SOMA )
-            somaChildren.push_back( child );
-
-      }
-    }
-
-    //! Initiates read process for each neurite, via first node
-    for ( const unsigned int firstNodeId : somaChildren )
-    {
-
-      switch ( lines[firstNodeId].type ) {
-        case ASC_BASAL:
-        {
-          DendritePtr basalP = new DENDRITE( Dendrite::BASAL );
-          neuronMorphology->addNeurite( basalP );
-          basalP->morphology( neuronMorphology );
-          _ReadNeurite( basalP, lines, firstNodeId,
-                        &repositionNodes, reposition_ );
-        }
-          break;
-
-        case ASC_APICAL:
-        {
-          DendritePtr apicalP = new DENDRITE( Dendrite::APICAL );
-          neuronMorphology->addNeurite( apicalP );
-          apicalP->morphology( neuronMorphology );
-          _ReadNeurite( apicalP, lines, firstNodeId,
-                        &repositionNodes, reposition_ );
-        }
-          break;
-
-        case ASC_AXON:
-        {
-          AxonPtr axonP = new AXON();
-          neuronMorphology->addNeurite( axonP );
-          axonP->morphology( neuronMorphology );
-          _ReadNeurite( axonP, lines, firstNodeId,
-                        &repositionNodes, reposition_ );
-        }
-          break;
-
-        default:
-          Log::log( std::string( "Unexpected line type value in line " ) +
-                    std::to_string( firstNodeId ), LOG_LEVEL_WARNING);
-
-      }
-    }
-
-    /**
-     * Moves soma center to ( 0.0, 0.0, 0.0 ) if reposition_ is active,
-     * accordingly recalculating position for all nodes
-     */
-
-    if ( reposition_ )
-    {
-      Vec3f center = neuronMorphology->soma( )->center( );
-
-      for ( auto& node : repositionNodes )
-      {
-        node->point( node->point( ) - center );
-      }
-
-      neuronMorphology->soma( )->center( Vec3f( 0.0f, 0.0f, 0.0f ) );
-
-    }
-
-    return neuronMorphology;
-
   }
 
-
-  template < ASC_READER_TEMPLATE_CLASSES > void
-  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::_ReadNeurite(
-      NeuritePtr neuritePointer,
-      const std::map<unsigned int, TAscLine>& lines,
-      unsigned int initId,
-      NsolVector<NodePtr>* nodes_,
-      bool reposition_ )
+  template < ASC_READER_TEMPLATE_CLASSES > int
+  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >:: _countBrackets(
+      const std::string& line )
   {
-    std::stack<TReadNeuriteStackElem> sectionFirstNodes;
-    NeuronMorphologySectionPtr sectionPointer = nullptr;
-
-    sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
-
-    sectionPointer->neurite( neuritePointer );
-    sectionPointer->parent( nullptr );
-
-    NodePtr node;
-    //! Creates first Node in first Secion
-    TAscLine lineElem = lines.at( initId );
-    node = new NODE( lineElem.xyz, initId, lineElem.radius );
-    sectionPointer->firstNode( node );
-    //! Loads first Section in Neurite
-    _ReadSection( neuritePointer, sectionPointer, node, &sectionFirstNodes, lines, nodes_, reposition_ );
-    neuritePointer->firstSection( sectionPointer );
-
-    //! Creates and loads all Sections in Neurite
-    while ( !sectionFirstNodes.empty( ) )
+    int bracketCount = 0;
+    for (const auto& character : line)
     {
-      unsigned int id = sectionFirstNodes.top( ).id;
-      NeuronMorphologySectionPtr parentSection = sectionFirstNodes.top( ).parent;
-      sectionPointer = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
-      sectionPointer->neurite( neuritePointer );
-      sectionPointer->parent( parentSection );
-      sectionFirstNodes.pop( );
+      if (character == '(')
+      {
+        ++bracketCount;
 
-      //! Creates first Node of new Section
-      lineElem = lines.at( id );
-      node = new NODE( lineElem.xyz, id, lineElem.radius );
-      sectionPointer->addNode( node ); //
+      }
+      else if (character == ')')
+      {
+        --bracketCount;
 
-      parentSection->addChild( sectionPointer );
-
-      //! Loads Section and stores first Nodes of other Sections to load
-      _ReadSection( neuritePointer, sectionPointer, node, &sectionFirstNodes,
-                    lines, nodes_, reposition_ );
-
+      }
     }
+    return bracketCount;
+
   }
 
   template < ASC_READER_TEMPLATE_CLASSES > void
-  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::_ReadSection(
-      NeuritePtr neuritePointer,
-      NeuronMorphologySectionPtr sectionPointer,
-      NodePtr nodePointer,
-      std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
-      const std::map<unsigned int, TAscLine>& lines,
-      NsolVector<NodePtr>* nodes_,
+  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::_ReadSoma(
+      NeuronMorphologyPtr neuronMorphology,
+      NsolVector<NodePtr>* repositionNodes_,
       bool reposition_ )
   {
-    unsigned int nodeId = ( unsigned int ) nodePointer->id();
-    //! Stores first node for later position recalculation
-    if ( reposition_ )
-      nodes_->push_back( nodePointer );
 
-    //! Loads all nodes in section
-    TAscLine lineElem = lines.at( nodeId );
-    while ( lineElem.children.size( ) == 1 )
-    {
-      nodeId = lineElem.children[0];
-      lineElem = lines.at( nodeId );
-      nodePointer = new NODE( lineElem.xyz, nodeId, lineElem.radius );
+    std::string lineString;
+    int level = 1;
 
-      //! Stores nodes for later position recalculation
-      if ( reposition_ )
-        nodes_->push_back( nodePointer );
+    //! Reads file, line by line
+    while (std::getline( inFile, lineString ) && level > 0) {
+      level += _countBrackets(lineString);
+      ++lineCount;
 
-      sectionPointer->addNode( nodePointer );
+      /*TODO READ LINE
+       *
+       * comprobar que lo es con un regex
+       * quitar los parantesis
+       * iss>>
+       *
+       */
+
+      NodePtr node(
+          new NODE( line.second.xyz, line.second.id, line.second.radius ));
+
+      /**
+       * Adds nodes for later recalculation of position
+       * if reposition_ is active
+       */
+      if (reposition_)
+        repositionNodes_->push_back( node );
+
+      neuronMorphology->soma()->addNode( node );
     }
 
-    /**
-     * End of section reached;
-     * first nodes of branching sections will be added to stack
-     */
-    if ( lineElem.children.size( ) > 1 )
-    {
-      //! Branch count updated
-      neuritePointer->_addBranchCount( ( unsigned int ) lineElem.children.size( ) );
-      //! Plus new bifurcation
-      neuritePointer->_addBifurcationCount( 1 );
-
-      //! Adds first nodes of new branches to stack
-      for ( const auto& it : lineElem.children )
-      {
-        TReadNeuriteStackElem tmpStackElem = { it, sectionPointer };
-        sectionFirstNodes->push( tmpStackElem );
-      }
-
-    }
   }
+
 } // namespace nsol
 
 #endif
