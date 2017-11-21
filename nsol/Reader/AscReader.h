@@ -37,8 +37,8 @@
 #include <fstream>
 #include <sstream>
 #include <cctype>
+#include <regex>
 
-#include <map>
 #include <stack>
 
 namespace nsol
@@ -93,75 +93,6 @@ namespace nsol
 
 
     protected:
-
-    //! ASC element types
-    typedef enum
-    {
-      ASC_SOMA = 1,
-      ASC_AXON = 2,
-      ASC_BASAL = 3,
-      ASC_APICAL = 4
-    } TAscNodeType;
-
-    //! Contains processed information of an ASC line element
-    typedef struct
-    {
-      unsigned int id;
-      unsigned int type;
-      Vec3f xyz;
-      float radius;
-      int parent;
-      std::vector<unsigned int> children;
-    } TAscLine;
-
-    //! Auxiliary elements to read branching neurite sections
-    typedef struct
-    {
-      unsigned int id;
-      NeuronMorphologySectionPtr parent;
-    } TReadNeuriteStackElem;
-
-
-    /**
-     * Reads a Neurite from a processed ASC file, calls _ReadSection
-     *
-     * @param neuritePointer neuritePtr where info will be loaded
-     * @param lines processed ASC file line information stored as map
-     * @param initId node ID of the first node in the neurite to read
-     * @param nodes_ auxiliary vector for recalculation purposes
-     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true;
-     * it will only serve to add all new nodes to nodes_ for later
-     * recalculation
-     */
-    void _ReadNeurite( NeuritePtr neuritePointer,
-                       const std::map<unsigned int, TAscLine> & lines,
-                       unsigned int initId,
-                       NsolVector<NodePtr>* nodes_ = nullptr,
-                       bool reposition_ = false );
-
-
-    /**
-     * Creates and calculates sections, as well as bifurcation and branch
-     * counts
-     *
-     * @param neuritePointer pointer to Neurite where section is located
-     * @param sectionPointer pointer to Section where data will be loaded
-     * @param nodePointer pointer to first Node in section
-     * @param sectionFirstNodes pointer to stack where new first nodes
-     * for new sections found will be stored
-     * @param lines processed ASC file line information stored as map
-     * @param nodes_ auxiliary vector for recalculation purposes
-     * @param reposition_ sets soma center to ( 0.0, 0.0, 0.0 ) if true;
-     * it will only serve to add all new nodes to nodes_ for later
-     * recalculation
-     */
-    void _ReadSection( NeuritePtr neuritePointer,
-                       NeuronMorphologySectionPtr sectionPointer,
-                       NodePtr nodePointer,
-                       std::stack<TReadNeuriteStackElem>* sectionFirstNodes,
-                       const std::map<unsigned int, TAscLine>& lines,
-                       NsolVector<NodePtr>* nodes_,
-                       bool reposition_ );
 
   }; // class AscReaderTemplated
 
@@ -238,18 +169,68 @@ namespace nsol
     NsolVector< NodePtr > repositionNodes;
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ) );
 
-    std::map<unsigned int, TAscLine> lines;
-
-    int lineCount = 0;
+    unsigned int lineCount = 0;
+    unsigned int level = 0;
+    unsigned int nodeIdCount = 0;
+    std::stack<SectionPtr> parentSections;
+    SectionPtr currentParentSection = nullptr;
 
     //! Reads file, line by line
     while ( std::getline( inFile, lineString ) )
     {
       ++lineCount;
 
-      //! Skips comment lines
-      if ( lineString[lineString.find_first_not_of( " \r\t" )] != '#' )
+      //! Removes comment
+      lineString.erase( lineString.find_first_of( ';' ) );
+
+      //! Skips empty lines
+      if ( lineString.find_first_not_of( " \r\t" ) != std::string::npos )
       {
+        //! Accounts for opening minus closing brackets
+        int bracketCount = 0;
+        for ( const auto& character : lineString )
+        {
+          if ( character == '(' )
+          {
+            ++bracketCount;
+
+          }
+          else if ( character == ')' )
+          {
+            --bracketCount;
+
+          }
+
+        }
+
+        level += bracketCount;
+
+        if ( bracketCount < 0 )
+        {
+          parentSections.pop( );
+
+        }
+        else if ( bracketCount > 0 && level != 1 )
+        {
+          parentSections.push( currentParentSection );
+
+        }
+
+        if ( level == 1 )
+        {
+          if (std::regex_match ( lineString, std::regex( ".*\".*\".*" ) ) )
+          {
+
+          }
+          else if ( std::regex_match ( lineString, std::regex( ".*\( *[a|A]xon *\).*" ) ) )
+          {
+
+          }
+          //TODO
+
+
+        }
+
         //! Verifies there are 7 fields ( or more, if comments are present )
         unsigned int fields =
             1 + ( unsigned int )std::count_if( lineString.begin( ), lineString.end( ),
