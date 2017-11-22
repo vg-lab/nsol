@@ -20,8 +20,6 @@
 
 #include <nsol/nsol.h>
 
-#include <assert.h>
-
 #include <iostream>
 
 #include <stack>
@@ -61,9 +59,9 @@ int main(int argc, char *argv[])
   }
   std::cout << "Reading from ASC file: " << importFilename << endl;
 
-  NeuronMorphologyPtr neuronMorphology = ascReader.readMorphology(importFilename);
+  NeuronMorphologyPtr neuronMorphology = ascReader.readMorphology( importFilename );
 
-  if (!neuronMorphology) {
+  if ( !neuronMorphology ) {
     std::cerr << "Error: neuronMorphology not recognised." << std::endl;
     return -1;
   }
@@ -71,9 +69,9 @@ int main(int argc, char *argv[])
 
   cout << "Exporting to SWC file: " << exportFilename << endl;
 
-  swcWriter.writeMorphology(exportFilename, neuronMorphology);
+  swcWriter.writeMorphology( exportFilename, neuronMorphology );
 
-  Neurites neurites = neuronMorphology->neurites();
+  Neurites neurites = neuronMorphology->neurites( );
 
   int neuriteNumber = 0;
   for ( const auto& neurite : neurites )
@@ -84,10 +82,10 @@ int main(int argc, char *argv[])
     int numSections = 0;
     int numNodes = 1;
     std::stack< SectionPtr > sectionStack;
-    sectionStack.push( neurite->firstSection( ));
+    sectionStack.push( neurite->firstSection( ) );
 
 
-    while( ! sectionStack.empty( ))
+    while( ! sectionStack.empty( ) )
     {
       NeuronMorphologySectionPtr section =
           dynamic_cast< NeuronMorphologySectionPtr >( sectionStack.top( ) );
@@ -102,12 +100,12 @@ int main(int argc, char *argv[])
       std::cout << "      First Node: " << section->firstNode( )->id( )
                 << " End Node: " << section->lastNode( )->id( ) << endl;
 
-      if (section->children( ).size( ) > 0 )
-        for(auto&  sec : section->children( ))
+      if ( section->children( ).size( ) > 0 )
+        for( auto&  sec : section->children( ) )
         {
           if( section->lastNode( ) !=
               dynamic_cast< NeuronMorphologySectionPtr >
-              ( sec )->firstNode( ))
+              ( sec )->firstNode( ) )
             std::cout << "Node Incoherence." << endl;
           sectionStack.push( sec );
         }
