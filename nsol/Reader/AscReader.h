@@ -93,8 +93,8 @@ namespace nsol
 
 
     protected:
-      unsigned int lineCount, nodeId;
-      std::ifstream inFile;
+    unsigned int lineCount, nodeId;
+    std::ifstream inFile;
 
     void _ReadNeurite(NeuronMorphologyPtr neuronMorphology);
     void _ReadSoma(
@@ -102,6 +102,8 @@ namespace nsol
       NsolVector<NodePtr>* repositionNodes_,
       bool reposition_ );
     int _countBrackets( const std::string& line );
+
+    void eraseComent( std::string& lineString );
   }; // class AscReaderTemplated
 
 
@@ -175,40 +177,46 @@ namespace nsol
     std::string lineString;
 
     NsolVector<NodePtr> repositionNodes;
-    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ));
+    NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ) );
 
     nodeId = 0;
     lineCount = 0;
 
     //! Reads file, line by line
-    while (std::getline( inFile, lineString ))
-    {
+    while (std::getline( inFile, lineString ) ) {
       ++lineCount;
-
-      //! Removes comment
-      lineString.erase( lineString.find_first_of( ';' ));
+      eraseComent( lineString );
 
       std::transform( lineString.begin(), lineString.end(), lineString.begin(), ::tolower );
 
-      if (std::regex_match( lineString, std::regex( ".*\( *dendrite *\).*" )))
-      {
+      if (std::regex_match( lineString, std::regex( ".*\\( *dendrite *\\).*" ))) {
         DendritePtr dendrite = new DENDRITE();
         neuronMorphology->addNeurite( dendrite );
         dendrite->morphology( neuronMorphology );
 
+        std::printf( "dendrita\n" );
+
         //_ReadNeurite( basalP, lines, firstNodeId,                        &repositionNodes, reposition_ );
 
-      }
-      else if (std::regex_match( lineString, std::regex( ".*\( *cellbody *\).*" )))
-      {
-        _ReadSoma( neuronMorphology );
 
-      }
-      else if (std::regex_match( lineString, std::regex( ".*\( *axon *\).*" )))
-      {
+      } else if (std::regex_match( lineString, std::regex( ".*\\( *cellbody *\\).*" ))) {
+        _ReadSoma( neuronMorphology, &repositionNodes, reposition_ );
 
+      } else if (std::regex_match( lineString, std::regex( ".*\\( *axon *\\).*" ))) {
+        std::printf( "axon\n" );
       }//! else ignore
     }
+    return neuronMorphology;
+
+  }
+
+  template < ASC_READER_TEMPLATE_CLASSES > void
+  AscReaderTemplated< ASC_READER_TEMPLATE_CLASS_NAMES >::eraseComent(
+    std::string& lineString )
+  {
+    int comment = lineString.find_first_of( ';' );
+    if(comment != std::string::npos)
+        lineString.erase( comment );
   }
 
 
@@ -220,22 +228,21 @@ namespace nsol
     int level = 1;
 
     //! Reads file, line by line
-    while (std::getline( inFile, lineString ) && level > 0) {
+    while ( std::getline( inFile, lineString ) && level > 0 ) {
       ++lineCount;
 
-      //! Removes comment
-      lineString.erase( lineString.find_first_of( ';' ));
+      eraseComent( lineString );
 
       //! Skips empty lines
-      if (lineString.find_first_not_of( " \r\t" ) != std::string::npos) {
+      if ( lineString.find_first_not_of( " \r\t" ) != std::string::npos ) {
         //! Accounts for opening minus closing brackets
         int bracketCount = _countBrackets( lineString );
         level += bracketCount;
 
-        if (bracketCount < 0) {
-          parentSections.pop();
+        if ( bracketCount < 0 ) {
+          parentSections.pop( );
 
-        } else if (bracketCount > 0 && level != 1) {
+        } else if ( bracketCount > 0 && level != 1 ) {
           parentSections.push( currentParentSection );
 
         }
@@ -248,14 +255,14 @@ namespace nsol
       const std::string& line )
   {
     int bracketCount = 0;
-    for (const auto& character : line)
+    for ( const auto& character : line )
     {
-      if (character == '(')
+      if ( character == '(' )
       {
         ++bracketCount;
 
       }
-      else if (character == ')')
+      else if ( character == ')' )
       {
         --bracketCount;
 
@@ -276,31 +283,40 @@ namespace nsol
     int level = 1;
 
     //! Reads file, line by line
-    while (std::getline( inFile, lineString ) && level > 0) {
-      level += _countBrackets(lineString);
+    while ( std::getline( inFile, lineString ) && level > 0 ) {
+
+      eraseComent( lineString );
+
+      level += _countBrackets( lineString );
       ++lineCount;
 
-      /*TODO READ LINE
-       *
-       * comprobar que lo es con un regex
-       * quitar los parantesis
-       * iss>>
-       *
-       */
+      if ( std::regex_match( lineString, std::regex( " *\\( *-*\\d+\\.*\\d* +-*\\d+\\.*\\d* +-*\\d+\\.*\\d* +\\d+\\.*\\d* *\\) *" ) ) )
+      {
+        //! Removes opening bracket
+        lineString.erase( 0, lineString.find_first_of( '(' ) + 1);
+        std::istringstream iss( lineString );
+        Vec3f xyz;
+        float diametre;
 
-      NodePtr node(
-          new NODE( line.second.xyz, line.second.id, line.second.radius ));
+        iss >> xyz[0]
+            >> xyz[1]
+            >> xyz[2];
+        iss >> diametre;
 
-      /**
-       * Adds nodes for later recalculation of position
-       * if reposition_ is active
-       */
-      if (reposition_)
-        repositionNodes_->push_back( node );
+        NodePtr node(
+            new NODE( xyz, ++nodeId, diametre/2.0f ) );
 
-      neuronMorphology->soma()->addNode( node );
+        /**
+         * Adds nodes for later recalculation of position
+         * if reposition_ is active
+         */
+        if ( reposition_ )
+          repositionNodes_->push_back( node );
+
+        neuronMorphology->soma( )->addNode( node );
+
+      }
     }
-
   }
 
 } // namespace nsol

@@ -42,16 +42,15 @@ int main(int argc, char *argv[])
   }
 
   cout << "Reading file " << argv[1] << endl;
+  string filename;
+
+  cout << "Filename SWC to export: ";
+  cin >> filename;
 
   NeuronMorphologyPtr n = r.readMorphology(argv[1]);
 
   if (!n)
     return -1;
-
-  string filename;
-
-  cout << "Filename SWC to export: ";
-  cin >> filename;
 
   w.writeMorphology(filename, n);
 
