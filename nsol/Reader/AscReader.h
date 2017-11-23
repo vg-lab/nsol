@@ -94,7 +94,8 @@ namespace nsol
 
     protected:
 
-    #define REGEX_DATA_LINE " *\\( *-*\\d+\\.*\\d* +-*\\d+\\.*\\d* +-*\\d+\\.*\\d* +\\d+\\.*\\d* *\\) *"
+    #define REGEX_DATA_LINE "\\s*\\(\\s*-*\\d+\\.*\\d*\\s+-*\\d+\\.*\\d*\\s+-*\\d+\\.*\\d*\\s+\\d+\\.*\\d*\\s*\\)\\s*"
+    #define REGEX_SPINE_LINE "\\s*<\\s*\\(\\s*-*\\d+\\.*\\d*\\s+-*\\d+\\.*\\d*\\s+-*\\d+\\.*\\d*\\s+\\d+\\.*\\d*\\s*\\)\\s*>\\s*"
 
     unsigned int lineCount, nodeId;
     std::ifstream inFile;
@@ -200,12 +201,20 @@ namespace nsol
 
       if (std::regex_match( lineString, std::regex( ".*\\( *dendrite *\\).*" ) ) )
       {
-        DendritePtr dendrite = new DENDRITE( );
-        neuronMorphology->addNeurite( dendrite );
-        dendrite->morphology( neuronMorphology );
+        DendritePtr basalP = new DENDRITE(Dendrite::BASAL );
+        neuronMorphology->addNeurite( basalP );
+        basalP->morphology( neuronMorphology );
 
-        //_ReadNeurite( neuronMorphology, dendrite, &repositionNodes, reposition_ );
-        std::printf( "dendrite\n" );
+        _ReadNeurite( neuronMorphology, basalP, &repositionNodes, reposition_ );
+
+      }
+      else if (std::regex_match( lineString, std::regex( ".*\\( *apical *\\).*" ) ) )
+      {
+        DendritePtr apicalP = new DENDRITE(Dendrite::APICAL );
+        neuronMorphology->addNeurite( apicalP );
+        apicalP->morphology( neuronMorphology );
+
+        _ReadNeurite( neuronMorphology, apicalP, &repositionNodes, reposition_ );
 
       }
       else if (std::regex_match( lineString, std::regex( ".*\\( *cellbody *\\).*" ) ) )
@@ -215,8 +224,10 @@ namespace nsol
       }
       else if (std::regex_match( lineString, std::regex( ".*\\( *axon *\\).*" ) ) )
       {
-        std::printf( "axon\n" );
-
+        AxonPtr axon = new AXON( );
+        neuronMorphology->addNeurite( axon );
+        axon->morphology( neuronMorphology );
+        _ReadNeurite( neuronMorphology, axon, &repositionNodes, reposition_ );
       }//! else ignore
     }
     return neuronMorphology;
@@ -240,45 +251,79 @@ namespace nsol
     neuritePointer->firstSection( currentSection );
 
 
+    NeuronMorphologySectionPtr parentSection = nullptr;
+    bool firstNode = true;
+
+
     //! Reads file, line by line
     while ( std::getline( inFile, lineString ) && level > 0 ) {
       ++lineCount;
       _eraseComent(lineString);
 
 
-      int bracketCount = _countBrackets( lineString );
-      if ( bracketCount < 0 )
+      if( std::regex_match( lineString, std::regex( REGEX_DATA_LINE ) ) )
       {
-        NeuronMorphologySectionPtr parentSection = nullptr;
-        parentSection = parentSections.top( );
-        parentSections.pop( );
+        //! Parses the line to a new node
+        NodePtr node = _parseDataLine( lineString );
+
+        /**
+         * Adds nodes for later recalculation of position
+         * if reposition_ is active
+         */
+        if( reposition_ )
+          repositionNodes_->push_back( node );
+
+        //! Adds the new node to the soma
+
+
+        if ( firstNode )
+        {
+          currentSection->firstNode( node );
+          firstNode = false;
+        }else{
+          currentSection->addNode( node );
+        }
+      }
+      else if ( std::regex_match( lineString, std::regex( "\\s*\\|\\s*" ) ) )
+      {
         currentSection = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
         currentSection->neurite( neuritePointer );
         currentSection->parent( parentSection );
         parentSection->addChild( currentSection );
-        //neuritePointer->_addBranchCount( 1 ); //todo birfucation &  branch
-        //todo parse '|'
+        neuritePointer->_addBranchCount( 1 );
 
       }
-      else if ( bracketCount > 0 && level != 1 )
+      else if ( std::regex_match( lineString, std::regex( REGEX_SPINE_LINE ) ) )
       {
-        NeuronMorphologySectionPtr parentSection = nullptr;
-        parentSections.push( currentSection );
-        parentSection = currentSection;
-        currentSection = NeuronMorphologySectionPtr( new NEURONMORPHOLOGYSECTION );
-        currentSection->neurite( neuritePointer );
-        currentSection->parent( parentSection );
-        parentSection->addChild( currentSection );
+        Log::log( std::string( "Spines still not implemented: " ) +
+                  lineString, LOG_LEVEL_VERBOSE);
 
       }
-      /* todo elses:
-       * todo data line parse
-       * todo spine detection
-       * */
-      level += bracketCount;
+      else
+      {
+        int bracketCount = _countBrackets( lineString );
+        level += bracketCount;
 
+        if( bracketCount < 0 && level > 1 )
+        {
+          parentSections.pop( );
+          parentSection = parentSections.top( );
 
+        }
+        else if( bracketCount > 0 )
+        {
+          parentSections.push( currentSection );
+          neuritePointer->_addBifurcationCount( 1 );
+          neuritePointer->_addBranchCount( 1 );
 
+          parentSection = currentSection;
+          currentSection = new NEURONMORPHOLOGYSECTION ( );
+          currentSection->neurite( neuritePointer );
+          currentSection->parent( parentSection );
+          parentSection->addChild( currentSection );
+
+        }
+      }
     }
   }
 
@@ -296,12 +341,19 @@ namespace nsol
     //! Reads file, line by line
     while ( std::getline( inFile, lineString ) && level > 0 ) {
 
+      //! Changes to the next line
       ++lineCount;
+
+      //! Erase comment parte after ';'
       _eraseComent(lineString);
+
+      //! Checks that the level remains equal
       level += _countBrackets( lineString );
 
+      //! Detection of data lines
       if ( std::regex_match( lineString, std::regex( REGEX_DATA_LINE ) ) )
       {
+        //! Parses the line to a new node
         NodePtr node = _parseDataLine( lineString );
 
         /**
@@ -311,6 +363,7 @@ namespace nsol
         if ( reposition_ )
           repositionNodes_->push_back( node );
 
+        //! Adds the new node to the soma
         neuronMorphology->soma( )->addNode( node );
 
       }
@@ -327,13 +380,15 @@ namespace nsol
     float diametre;
     char tmp;
 
+    //! Pareses data line to auxiliar variables
     iss >> tmp; //! Removes opening bracket
     iss >> xyz[0]
         >> xyz[1]
         >> xyz[2];
     iss >> diametre;
 
-    NodePtr node( new NODE( xyz, ++nodeId, diametre/2.0f ) );
+    //! Creates a new node with the data line
+    NodePtr node = new NODE( xyz, ++nodeId, diametre/2.0f );
 
     return node;
   }
