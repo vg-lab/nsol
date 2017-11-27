@@ -169,43 +169,47 @@ namespace nsol
     delete edgesData;
 
     std::unordered_map< NodePtr, Sections > nodeSections;
-    NodePtr actualNode;
-    for ( auto actualSection: sections )
+    NodePtr currentNode;
+    for ( auto currentSection: sections )
     {
-      if ( actualSection->nodes( ).size( ) > 1 )
+      if ( currentSection->nodes( ).size( ) > 1 )
       {
-        actualNode =  actualSection->nodes( ).front( );
-        if ( nodeSections.find( actualNode ) != nodeSections.end( ))
+        currentNode =  currentSection->nodes( ).front( );
+        auto nodeSectionsIt = nodeSections.find( currentNode );
+        if ( nodeSectionsIt != nodeSections.end( ))
         {
-          for ( auto neighbourSection: nodeSections[actualNode] )
+          auto neighbourSections = nodeSectionsIt->second;
+          for ( auto neighbourSection: neighbourSections )
           {
-            neighbourSection->addNeighbour( actualSection, actualNode );
-            actualSection->addNeighbour( neighbourSection, actualNode );
+            neighbourSection->addNeighbour( currentSection, currentNode );
+            currentSection->addNeighbour( neighbourSection, currentNode );
           }
-          nodeSections[actualNode].push_back( actualSection );
+          nodeSections[currentNode].push_back( currentSection );
         }
         else
         {
           Sections* neighbors = new Sections( );
-          neighbors->push_back( actualSection );
-          nodeSections[ actualNode ] = *neighbors;
+          neighbors->push_back( currentSection );
+          nodeSections[ currentNode ] = *neighbors;
         }
 
-        actualNode = actualSection->nodes( ).back( );
-        if ( nodeSections.find( actualNode ) != nodeSections.end( ))
+        currentNode = currentSection->nodes( ).back( );
+        nodeSectionsIt = nodeSections.find( currentNode );
+        if ( nodeSectionsIt != nodeSections.end( ))
         {
-          for ( auto neighbourSection: nodeSections[actualNode] )
+          auto neighbourSections = nodeSectionsIt->second;
+          for ( auto neighbourSection: neighbourSections )
           {
-            neighbourSection->addNeighbour( actualSection, actualNode );
-            actualSection->addNeighbour( neighbourSection, actualNode );
+            neighbourSection->addNeighbour( currentSection, currentNode );
+            currentSection->addNeighbour( neighbourSection, currentNode );
           }
-          nodeSections[actualNode].push_back( actualSection );
+          nodeSections[currentNode].push_back( currentSection );
         }
         else
         {
           Sections* neighbors = new Sections( );
-          neighbors->push_back( actualSection );
-          nodeSections[ actualNode ] = *neighbors;
+          neighbors->push_back( currentSection );
+          nodeSections[ currentNode ] = *neighbors;
         }
       }
     }
@@ -214,12 +218,12 @@ namespace nsol
 
     std::set< SectionPtr > uniqueSections;
     Sections sectionsGrouped;
-    for ( auto actualSection: sections )
+    for ( auto currentSection: sections )
     {
-      if ( uniqueSections.find( actualSection ) == uniqueSections.end( ))
+      if ( uniqueSections.find( currentSection ) == uniqueSections.end( ))
       {
-        sectionsGrouped.push_back( actualSection );
-        _groupSections( actualSection, uniqueSections );
+        sectionsGrouped.push_back( currentSection );
+        _groupSections( currentSection, uniqueSections );
       }
     }
     uniqueSections.clear( );
