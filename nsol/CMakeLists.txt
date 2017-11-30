@@ -26,6 +26,11 @@ set(NSOL_PUBLIC_HEADERS
   NsolTypes.h
   Object.h
   ObjectWithProperties.h
+  Reader/EspINAXMLReader/Segmentation.h
+  Reader/EspINAXMLReader/Skeleton.h
+  Reader/EspINAXMLReader/SkeletonEdge.h
+  Reader/EspINAXMLReader/SkeletonNode.h
+  Reader/EspINAXMLReader/SkeletonStroke.h
   Section.h
   Simplifier.h
   Soma.h
@@ -54,6 +59,7 @@ set(NSOL_PUBLIC_HEADERS
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
   Reader/BrionReader.h
+  Reader/EspINAXMLReader/EspINAXMLReader.h
   Reader/SwcReader.h
   Reader/XmlSceneReader.h
   )
@@ -77,6 +83,11 @@ set(NSOL_SOURCES
   Node.cpp
   Object.cpp
   ObjectWithProperties.cpp
+  Reader/EspINAXMLReader/Segmentation.cpp
+  Reader/EspINAXMLReader/Skeleton.cpp
+  Reader/EspINAXMLReader/SkeletonEdge.cpp
+  Reader/EspINAXMLReader/SkeletonNode.cpp
+  Reader/EspINAXMLReader/SkeletonStroke.cpp
   Section.cpp
   Simplifier.cpp
   Soma.cpp
