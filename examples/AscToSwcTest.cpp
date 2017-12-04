@@ -1,6 +1,9 @@
 /*
  * Copyright (c) 2014-2017 GMRV/URJC.
  *
+ * Authors: Iago Calvo Lista
+ *          Fernando Lucas Pérez
+ *
  * This file is part of nsol <https://github.com/gmrvvis/nsol>
  *
  * This library is free software; you can redistribute it and/or modify it under
