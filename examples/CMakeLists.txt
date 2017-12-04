@@ -1,10 +1,5 @@
 if ( NSOL_WITH_EXAMPLES )
 
-  add_executable(nsolSwcReader SwcReader.cpp)
-  target_link_libraries(nsolSwcReader nsol)
-  add_executable(nsolAscToSwcTest AscToSwcTest.cpp)
-  target_link_libraries(nsolAscToSwcTest nsol)
-
   if( BRION_FOUND )
     set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
     set( NSOLBRIONMORPHOLOGYREADER_LINK_LIBRARIES nsol )
@@ -26,6 +21,16 @@ if ( NSOL_WITH_EXAMPLES )
     common_application( nsolCircuitLoaderSummary NOHELP )
     list( APPEND NSOL_EXAMPLES_FILES ${NSOLCIRCUITLOADERSUMMARY_SOURCES} )
   endif( )
+
+  set( NSOLSWCREADER_SOURCES SwcReader.cpp )
+  set( NSOLSWCREADER_LINK_LIBRARIES nsol )
+  common_application( nsolSwcReader NOHELP )
+  list( APPEND NSOL_EXAMPLES_FILES ${NSOLSWCREADER_SOURCES} )
+
+  set( NSOLASCTOSWCTEST_SOURCES AscToSwcTest.cpp )
+  set( NSOLASCTOSWCTEST_LINK_LIBRARIES nsol )
+  common_application( nsolAscToSwcTest NOHELP )
+  list( APPEND NSOL_EXAMPLES_FILES ${NSOLASCTOSWCTEST_SOURCES} )
 
   set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )
   set( NSOLEXTRACTNEURONSTATS_LINK_LIBRARIES nsol )

@@ -26,6 +26,12 @@
 
 using namespace nsol;
 
+enum
+{
+  SWC_READER_ERROR_INCORRECT_MORPHOLOGY = -1,
+  SWC_READER_ERROR_INCORRECT_PARAMETERS = -2
+};
+
 int main(int argc, char *argv[])
 {
 
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
   else
   {
     std::cerr << "Incorrect use of nsolSwcReader: [importFilename] [exportFilename]." << std::endl;
-    return -2;
+    return SWC_READER_ERROR_INCORRECT_PARAMETERS;
   }
   std::cout << "Reading from SWC file: " << importFilename << std::endl;
 
@@ -62,7 +68,7 @@ int main(int argc, char *argv[])
 
   if ( !neuronMorphology ) {
     std::cerr << "Error: neuronMorphology not recognised." << std::endl;
-    return -1;
+    return SWC_READER_ERROR_INCORRECT_MORPHOLOGY;
   }
 
 

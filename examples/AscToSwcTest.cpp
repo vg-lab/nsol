@@ -29,6 +29,14 @@
 
 using namespace nsol;
 
+enum
+{
+  ASC_READER_ERROR_INCORRECT_MORPHOLOGY = -1,
+  ASC_READER_ERROR_INCORRECT_PARAMETERS = -2
+};
+
+
+
 int main(int argc, char *argv[])
 {
 
@@ -57,7 +65,7 @@ int main(int argc, char *argv[])
   else
   {
     std::cerr << "Incorrect use of nsolAscToSwcTest: [importFilename] [exportFilename]." << std::endl;
-    return -2;
+    return ASC_READER_ERROR_INCORRECT_PARAMETERS;
   }
   std::cout << "Reading from ASC file: " << importFilename << std::endl;
 
@@ -65,7 +73,7 @@ int main(int argc, char *argv[])
 
   if ( !neuronMorphology ) {
     std::cerr << "Error: neuronMorphology not recognised." << std::endl;
-    return -1;
+    return ASC_READER_ERROR_INCORRECT_MORPHOLOGY;
   }
 
 
