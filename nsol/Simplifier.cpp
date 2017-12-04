@@ -307,20 +307,11 @@ namespace nsol
           {
             section->deleteBackwardNeighbour( section );
             section->deleteForwardNeighbour( section );
-            if ( section == rootSection )
-            {
-              rootSection = nullptr;
-              if ( section->backwardNeighbors( ).size( ) > 0 )
-                rootSection = section->backwardNeighbors( )[0];
-              else if( section->forwardNeighbors( ).size( ) > 0 )
-                rootSection = section->forwardNeighbors( )[0];
-            }
             _removeSectionFromNeighbors( section );
+            finalSections.push_back( section );
           }
         }
       }
-      if ( rootSection )
-          finalSections.push_back( rootSection );
       uniqueSections.clear( );
     }
     morpho->sections( ) = finalSections;
@@ -420,37 +411,40 @@ namespace nsol
   {
     for ( auto neighbour: section_->backwardNeighbors( ))
     {
-        if ( neighbour->deleteBackwardNeighbour( section_ ))
-        {
-          for ( auto otherNeighbour: section_->forwardNeighbors( ))
-            if ( otherNeighbour && otherNeighbour != section_ )
-              neighbour->addBackwardNeighbour( otherNeighbour );
-        }
-        if ( neighbour->deleteForwardNeighbour( section_ ))
-        {
-          for ( auto otherNeighbour: section_->forwardNeighbors( ))
-            if ( otherNeighbour && otherNeighbour != section_ )
-              neighbour->addForwardNeighbour( otherNeighbour );
-        }
+      neighbour->deleteBackwardNeighbour( section_ );
+      neighbour->deleteForwardNeighbour( section_ );
+        // if ( neighbour->deleteBackwardNeighbour( section_ ))
+        // {
+        //   for ( auto otherNeighbour: section_->forwardNeighbors( ))
+        //     if ( otherNeighbour && otherNeighbour != section_ )
+        //       neighbour->addBackwardNeighbour( otherNeighbour );
+        // }
+        // if ( neighbour->deleteForwardNeighbour( section_ ))
+        // {
+        //   for ( auto otherNeighbour: section_->forwardNeighbors( ))
+        //     if ( otherNeighbour && otherNeighbour != section_ )
+        //       neighbour->addForwardNeighbour( otherNeighbour );
+        // }
     }
     for ( auto neighbour: section_->forwardNeighbors( ))
     {
-        if ( neighbour->deleteBackwardNeighbour( section_ ))
-        {
-          for ( auto otherNeighbour: section_->backwardNeighbors( ))
-            if ( otherNeighbour && otherNeighbour != section_ )
-              neighbour->addBackwardNeighbour( otherNeighbour );
-        }
-        if ( neighbour->deleteForwardNeighbour( section_ ))
-        {
-          for ( auto otherNeighbour: section_->backwardNeighbors( ))
-            if ( otherNeighbour && otherNeighbour != section_ )
-              neighbour->addForwardNeighbour( otherNeighbour );
-        }
+      neighbour->deleteBackwardNeighbour( section_ );
+      neighbour->deleteForwardNeighbour( section_ );
+        // if ( neighbour->deleteBackwardNeighbour( section_ ))
+        // {
+        //   for ( auto otherNeighbour: section_->backwardNeighbors( ))
+        //     if ( otherNeighbour && otherNeighbour != section_ )
+        //       neighbour->addBackwardNeighbour( otherNeighbour );
+        // }
+        // if ( neighbour->deleteForwardNeighbour( section_ ))
+        // {
+        //   for ( auto otherNeighbour: section_->backwardNeighbors( ))
+        //     if ( otherNeighbour && otherNeighbour != section_ )
+        //       neighbour->addForwardNeighbour( otherNeighbour );
+        // }
     }
     section_->backwardNeighbors( ).clear( );
     section_->forwardNeighbors( ).clear( );
-    delete section_;
   }
 
   void Simplifier::_simplSecDeleteAll( SectionPtr section_,
