@@ -28,14 +28,13 @@
 #include <stack>
 
 using namespace nsol;
-using namespace std;
 
 int main(int argc, char *argv[])
 {
 
   AscReader ascReader;
   SwcWriter swcWriter;
-  string importFilename,exportFilename;
+  std::string importFilename,exportFilename;
 
   if ( argc == 1 )
   {
@@ -60,7 +59,7 @@ int main(int argc, char *argv[])
     std::cerr << "Incorrect use of nsolAscToSwcTest: [importFilename] [exportFilename]." << std::endl;
     return -2;
   }
-  std::cout << "Reading from ASC file: " << importFilename << endl;
+  std::cout << "Reading from ASC file: " << importFilename << std::endl;
 
   NeuronMorphologyPtr neuronMorphology = ascReader.readMorphology( importFilename );
 
@@ -70,7 +69,7 @@ int main(int argc, char *argv[])
   }
 
 
-  cout << "Exporting to SWC file: " << exportFilename << endl;
+  std::cout << "Exporting to SWC file: " << exportFilename << std::endl;
 
   swcWriter.writeMorphology( exportFilename, neuronMorphology );
 
@@ -79,7 +78,7 @@ int main(int argc, char *argv[])
   int neuriteNumber = 0;
   for ( const auto& neurite : neurites )
   {
-    std::cout << "  Neurite " << neuriteNumber << endl;;
+    std::cout << "  Neurite " << neuriteNumber << std::endl;;
     neuriteNumber++;
 
     int numSections = 0;
@@ -99,22 +98,22 @@ int main(int argc, char *argv[])
         numNodes += ( unsigned int ) section->nodes( ).size( ) - 1;
 
       std::cout << "    Section-> number of nodes: "
-                << section->nodes( ).size( ) << endl;
+                << section->nodes( ).size( ) << std::endl;
       std::cout << "      First Node: " << section->firstNode( )->id( )
-                << " End Node: " << section->lastNode( )->id( ) << endl;
+                << " End Node: " << section->lastNode( )->id( ) << std::endl;
 
-      if ( section->children( ).size( ) > 0 )
+      if ( !section->children( ).empty( ) )
         for( auto&  sec : section->children( ) )
         {
           if( section->lastNode( ) !=
               dynamic_cast< NeuronMorphologySectionPtr >
               ( sec )->firstNode( ) )
-            std::cout << "Node Incoherence." << endl;
+            std::cout << "Node Incoherence." << std::endl;
           sectionStack.push( sec );
         }
     }
     std::cout << " Number of sections " << numSections;
-    std::cout << " number of nodes " << numNodes << endl;
+    std::cout << " number of nodes " << numNodes << std::endl;
   }
 
 
