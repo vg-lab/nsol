@@ -28,7 +28,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <nsol/defines.h>
 
 // Visual Studio Warning disable.

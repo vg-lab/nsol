@@ -26,6 +26,7 @@
 #include "ImportanceNode.h"
 
 #include <stack>
+#include <Eigen/Geometry>
 
 #define EPSILON 0.00001f
 
