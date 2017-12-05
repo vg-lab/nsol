@@ -84,6 +84,22 @@ namespace nsol
     void addForwardNeighbour( SectionPtr section_ );
 
     /**
+     * Delete backward neighbour section from this section
+     * @param section pointer to the section to be deleted
+     * @return true if the given section is in the backward sections
+     */
+    NSOL_API
+    bool deleteBackwardNeighbour( SectionPtr section_ );
+
+    /**
+     * Delete forward neighbour section from this section
+     * @param section pointer to the section to be deleted
+     * @return true if the given section is in the forward sections
+     */
+    NSOL_API
+    bool deleteForwardNeighbour( SectionPtr section_ );
+
+    /**
      * Check if the node connects with the backward or the fordward neighbour
      * sections and add the section to the correspondent sections container
      * @param section pointer to the section to be added

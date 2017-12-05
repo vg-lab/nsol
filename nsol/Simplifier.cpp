@@ -86,6 +86,52 @@ namespace nsol
     return morpho;
   }
 
+  MorphologyPtr Simplifier::simplify( MorphologyPtr morpho_,
+                                            TSimplificationMethod simplMethod_,
+                                            float tolerance_ )
+  {
+    MorphologyPtr morpho = morpho_;
+
+    typedef void (*func)( SectionPtr, float ) ;
+
+    func function = nullptr;
+
+    switch( simplMethod_ )
+    {
+    case 0:
+      function = Simplifier::_simplSecDeleteAll;
+      break;
+    case 1:
+      function = Simplifier::_simplSecDistNodes;
+      break;
+    case 2:
+      function = Simplifier::_simplSecDistNodesRadius;
+      break;
+    case 3:
+      function = Simplifier::_simplSecMinAngle;
+      break;
+    default:
+      function = Simplifier::_simplSecDeleteAll;
+      break;
+    }
+
+    if ( !function )
+      return morpho;
+
+    std::set< SectionPtr > uniqueSections;
+    for ( auto section: morpho->sections( ))
+    {
+      uniqueSections.insert( section );
+      _groupSections( section, uniqueSections );
+    }
+
+    for ( auto section: uniqueSections )
+    {
+      function( section, tolerance_ );
+    }
+    return morpho;
+  }
+
   NeuronMorphologyPtr Simplifier::adaptSoma( NeuronMorphologyPtr morpho_,
                                              bool clone_ )
   {
@@ -239,6 +285,48 @@ namespace nsol
     return morpho;
   }
 
+  MorphologyPtr Simplifier::repairSections( MorphologyPtr morpho_ )
+  {
+    auto morpho = morpho_;
+    Sections finalSections;
+    std::set< SectionPtr > uniqueSections;
+    for ( auto rootSection: morpho->sections( ))
+    {
+      uniqueSections.insert( rootSection );
+      _groupSections( rootSection, uniqueSections );
+      for ( auto section: uniqueSections )
+      {
+        if (( section->nodes( ).size( ) <= 2 ) &&
+            ( section->nodes( ).front( ) != section->nodes( ).back( )))
+        {
+          float dist = ( section->nodes( ).front( )->point( ) -
+                       section->nodes( ).back( )->point( )).norm( );
+          float radius = ( section->nodes( ).front( )->radius( ) +
+                           section->nodes( ).back( )->radius( )) * 0.5f;
+          if ( dist < radius )
+          {
+            section->deleteBackwardNeighbour( section );
+            section->deleteForwardNeighbour( section );
+            if ( section == rootSection )
+            {
+              rootSection = nullptr;
+              if ( section->backwardNeighbors( ).size( ) > 0 )
+                rootSection = section->backwardNeighbors( )[0];
+              else if( section->forwardNeighbors( ).size( ) > 0 )
+                rootSection = section->forwardNeighbors( )[0];
+            }
+            _removeSectionFromNeighbors( section );
+          }
+        }
+      }
+      if ( rootSection )
+          finalSections.push_back( rootSection );
+      uniqueSections.clear( );
+    }
+    morpho->sections( ) = finalSections;
+    return morpho;
+  }
+
   void Simplifier::_cutoutAnalizeSection( SectionPtr section_ )
   {
     ImportanceNodePtr inode;
@@ -307,6 +395,64 @@ namespace nsol
     }
   }
 
+  void Simplifier::_groupSections( SectionPtr section_,
+                                   std::set< SectionPtr >& uniqueSections_ )
+  {
+    for ( auto section : section_->backwardNeighbors( ))
+    {
+      if ( uniqueSections_.find( section ) == uniqueSections_.end( ))
+      {
+        uniqueSections_.insert( section );
+        _groupSections( section, uniqueSections_ );
+      }
+    }
+    for ( auto section : section_->forwardNeighbors( ))
+    {
+      if ( uniqueSections_.find( section ) == uniqueSections_.end( ))
+      {
+        uniqueSections_.insert( section );
+        _groupSections( section, uniqueSections_ );
+      }
+    }
+  }
+
+  void Simplifier::_removeSectionFromNeighbors( SectionPtr section_ )
+  {
+    for ( auto neighbour: section_->backwardNeighbors( ))
+    {
+        if ( neighbour->deleteBackwardNeighbour( section_ ))
+        {
+          for ( auto otherNeighbour: section_->forwardNeighbors( ))
+            if ( otherNeighbour && otherNeighbour != section_ )
+              neighbour->addBackwardNeighbour( otherNeighbour );
+        }
+        if ( neighbour->deleteForwardNeighbour( section_ ))
+        {
+          for ( auto otherNeighbour: section_->forwardNeighbors( ))
+            if ( otherNeighbour && otherNeighbour != section_ )
+              neighbour->addForwardNeighbour( otherNeighbour );
+        }
+    }
+    for ( auto neighbour: section_->forwardNeighbors( ))
+    {
+        if ( neighbour->deleteBackwardNeighbour( section_ ))
+        {
+          for ( auto otherNeighbour: section_->backwardNeighbors( ))
+            if ( otherNeighbour && otherNeighbour != section_ )
+              neighbour->addBackwardNeighbour( otherNeighbour );
+        }
+        if ( neighbour->deleteForwardNeighbour( section_ ))
+        {
+          for ( auto otherNeighbour: section_->backwardNeighbors( ))
+            if ( otherNeighbour && otherNeighbour != section_ )
+              neighbour->addForwardNeighbour( otherNeighbour );
+        }
+    }
+    section_->backwardNeighbors( ).clear( );
+    section_->forwardNeighbors( ).clear( );
+    delete section_;
+  }
+
   void Simplifier::_simplSecDeleteAll( SectionPtr section_,
                                        float /*tolerance_*/ )
   {
@@ -342,25 +488,48 @@ namespace nsol
                                              float /*tolerance_*/ )
   {
     Nodes* nodes = &section_->nodes( );
-    float distancePre = ((*nodes)[0]->point( ) - (*nodes)[1]->point( )).norm( );
-    float distancePost;
-    float maxRadiusPre =
-      std::max((*nodes)[0]->radius( ), (*nodes)[1]->radius( ));
-    float maxRadiusPost;
-    for ( unsigned int i = 1; i < nodes->size( )-1; i++ )
+    if ( nodes->size(  ) < 3 )
+      return;
+    for ( unsigned int i = 1; i < nodes->size( ) - 1; i++ )
     {
-      distancePost = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
-      maxRadiusPost =
-        std::max((*nodes)[i]->radius( ), (*nodes)[i+1]->radius( ));
+      if ( nodes->size( ) < 3 )
+        break;
+      auto distPre = ((*nodes)[i]->point( ) - (*nodes)[i-1]->point( )).norm( );
+      auto distPost = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
+      auto maxRadiusPre =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i - 1]->radius( ));
+      auto maxRadiusPost =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i + 1]->radius( ));
 
-      if (( distancePre < maxRadiusPre ) || ( distancePost < maxRadiusPost ))
+      if ( i == 1 )
       {
-        delete (*nodes)[i];
-        nodes->erase( nodes->begin( ) + i );
+        if ( distPre <= maxRadiusPre )
+        {
+          /* delete nodes->at(1); */
+          nodes->erase( nodes->begin( ) + 1 );
+          i--;
+        }
+        else if ( distPost <= maxRadiusPost )
+        {
+          nodes->erase( nodes->begin( ) + 2 );
+          i--;
+        }
+      }
+      else if ( i == ( nodes->size( ) - 2 ))
+      {
+        if ( distPost <= maxRadiusPost  )
+        {
+          /* delete nodes->at(i); */
+          nodes->erase( nodes->begin( ) + i );
+          i--;
+        }
+      }
+      else if ( distPost <= maxRadiusPost )
+      {
+        /* delete nodes->at( i + 1 ); */
+        nodes->erase( nodes->begin( ) + i + 1 );
         i--;
       }
-      distancePre = distancePost;
-      maxRadiusPre = maxRadiusPost;
     }
   }
 

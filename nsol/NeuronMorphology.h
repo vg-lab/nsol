@@ -24,9 +24,8 @@
 
 #include <nsol/api.h>
 
-#include "NsolTypes.h"
+#include "Morphology.h"
 #include "Node.h"
-#include "Section.h"
 #include "Soma.h"
 #include "Axon.h"
 #include "Neurite.h"
@@ -48,7 +47,7 @@ namespace nsol
    TODO: extend long description
    */
   class NeuronMorphology
-    : public virtual Object
+    : public Morphology
   {
 
   public:

@@ -25,6 +25,13 @@ if ( NSOL_WITH_EXAMPLES )
     list( APPEND NSOL_EXAMPLES_FILES ${NSOLCIRCUITLOADERSUMMARY_SOURCES} )
   endif( )
 
+  if( HDF5_FOUND )
+    set( NSOLVASCULATUREMORPHOLOGYREADER_SOURCES vasculatureMorphologyReader.cpp )
+    set( NSOLVASCULATUREMORPHOLOGYREADER_LINK_LIBRARIES nsol )
+    common_application( nsolVasculatureMorphologyReader NOHELP )
+    list( APPEND NSOL_EXAMPLES_FILES ${NSOLVASCULATUREMORPHOLOGYREADER_SOURCES} )
+  endif( )
+
   set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )
   set( NSOLEXTRACTNEURONSTATS_LINK_LIBRARIES nsol )
   common_application( nsolExtractNeuronStats NOHELP )
