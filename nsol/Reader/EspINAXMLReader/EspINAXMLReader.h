@@ -171,12 +171,12 @@ namespace nsol
 
     NeuronMorphologyPtr neuronMorphology( new NEURONMORPHOLOGY( new SOMA ) );
 
-    SegmentationCategory category =
-      segmentation->getCategoryAsEnum();
+    SegmentationClassification classification =
+      segmentation->getClassificationAsEnum();
 
-    switch( category )
+    switch( classification )
     {
-      case SegmentationCategory::AXON :
+      case SegmentationClassification::AXON :
       {
 	    AxonPtr axonP = new AXON();
         neuronMorphology->addNeurite( axonP );
@@ -185,7 +185,7 @@ namespace nsol
       }
       break;
 
-      case SegmentationCategory::DENDRITE :
+      case SegmentationClassification::DENDRITE :
       {
     	// Does EspINA distinguish between basal and apical dendrites?
 	    DendritePtr basalP = new DENDRITE( Dendrite::BASAL );
@@ -195,7 +195,7 @@ namespace nsol
       }
       break;
 
-      case SegmentationCategory::OTHER :
+      case SegmentationClassification::OTHER :
       {
         Log::log( std::string( "This segmentation is not an axon nor a dendrite." ),
         		  LOG_LEVEL_WARNING );

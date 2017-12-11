@@ -25,8 +25,9 @@ namespace nsol
 {
 
 Segmentation::Segmentation( void )
-: _name( std::string( ) )
-, _category( std::string( ) )
+: _uuid( std::string( ) )
+, _name( std::string( ) )
+, _classification( std::string( ) )
 , _skeleton( nullptr )
 {
 }
@@ -34,6 +35,16 @@ Segmentation::Segmentation( void )
 Segmentation::~Segmentation( void )
 {
   delete _skeleton;
+}
+
+const std::string& Segmentation::getUuid( void ) const
+{
+  return _uuid;
+}
+
+void Segmentation::setUuid( const std::string& uuid )
+{
+  _uuid = uuid;
 }
 
 const std::string& Segmentation::getName( void ) const
@@ -46,32 +57,32 @@ void Segmentation::setName( const std::string& name )
   _name = name;
 }
 
-const std::string& Segmentation::getCategory( void ) const
+const std::string& Segmentation::getClassification( void ) const
 {
-  return _category;
+  return _classification;
 }
 
-SegmentationCategory Segmentation::getCategoryAsEnum( void ) const
+SegmentationClassification Segmentation::getClassificationAsEnum( void ) const
 {
-  SegmentationCategory category;
-  if( _category.compare( "Axon" ) == 0 )
+  SegmentationClassification classification;
+  if( _classification.compare( "Axon" ) == 0 )
   {
-    category = SegmentationCategory::AXON;
+    classification = SegmentationClassification::AXON;
   }
-  else if( _category.compare( "Dendrite" ) == 0 )
+  else if( _classification.compare( "Dendrite" ) == 0 )
   {
-    category = SegmentationCategory::DENDRITE;
+    classification = SegmentationClassification::DENDRITE;
   }
   else
   {
-    category = SegmentationCategory::OTHER;
+    classification = SegmentationClassification::OTHER;
   }
-  return category;
+  return classification;
 }
 
-void Segmentation::setCategory( const std::string& category )
+void Segmentation::setClassification( const std::string& classification )
 {
-  _category = category;
+  _classification = classification;
 }
 
 SkeletonPtr Segmentation::getSkeleton( void ) const
@@ -105,10 +116,12 @@ void Segmentation::loadFromXML( const std::string& filename_ )
     {
       QXmlStreamAttributes segmentationAttributes =
         reader.attributes( );
+      setUuid( segmentationAttributes.value(
+        QString( ), QString( "Uuid" ) ).toString( ).toStdString( ) );
       setName( segmentationAttributes.value(
         QString( ), QString( "Name" ) ).toString( ).toStdString( ) );
-      setCategory( segmentationAttributes.value(
-        QString( ), QString( "Category" ) ).toString( ).toStdString( ) );
+      setClassification( segmentationAttributes.value(
+        QString( ), QString( "Classification" ) ).toString( ).toStdString( ) );
 
       while(reader.readNextStartElement())
       {
@@ -252,12 +265,9 @@ void Segmentation::loadFromXML( const std::string& filename_ )
           setMesh( mesh );
         } // Mesh.
         **/
-        /** Section: Volumetric. **/
-        /**
-        else if(reader.name() == "Volumetric")
-        {
-        }
-        **/
+        // else if(reader.name() == "Volumetric")
+        // {
+        // }
         else
         {
           reader.skipCurrentElement();
@@ -276,8 +286,9 @@ void Segmentation::saveAsXML( const std::string& filename_ )
   stream.writeStartDocument( );
 
   stream.writeStartElement( "Segmentation" );
+  stream.writeAttribute( "Uuid", QString::fromStdString( _uuid ) );
   stream.writeAttribute( "Name", QString::fromStdString( _name ) );
-  stream.writeAttribute( "Category", QString::fromStdString( _category ) );
+  stream.writeAttribute( "Classification", QString::fromStdString( _classification ) );
 
   /** Section: Skeleton. **/
   if( _skeleton != nullptr  )

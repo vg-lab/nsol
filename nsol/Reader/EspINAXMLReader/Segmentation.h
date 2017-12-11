@@ -38,7 +38,7 @@
 namespace nsol
 {
 
-enum class SegmentationCategory:
+enum class SegmentationClassification:
 unsigned int
 {
   AXON = 0,
@@ -58,19 +58,25 @@ public:
   virtual ~Segmentation( void );
 
   NSOL_API
+  const std::string& getUuid( void ) const;
+
+  NSOL_API
+  void setUuid( const std::string& uuid );
+
+  NSOL_API
   const std::string& getName( void ) const;
 
   NSOL_API
   void setName( const std::string& name );
 
   NSOL_API
-  const std::string& getCategory( void ) const;
+  const std::string& getClassification( void ) const;
 
   NSOL_API
-  SegmentationCategory getCategoryAsEnum( void ) const;
+  SegmentationClassification getClassificationAsEnum( void ) const;
 
   NSOL_API
-  void setCategory( const std::string& category );
+  void setClassification( const std::string& classification );
 
   NSOL_API
   SkeletonPtr getSkeleton( void ) const;
@@ -89,8 +95,9 @@ protected:
   QString boolToQString( bool inputBool );
   bool qStringToBool( QString inputQString );
 
+  std::string _uuid;
   std::string _name;
-  std::string _category;
+  std::string _classification;
   // MeshPtr     _mesh;
   SkeletonPtr _skeleton;
   // Here there would be some volumetric data.
