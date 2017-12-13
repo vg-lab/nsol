@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( node_getters_setters )
   node.point( POINT );
   BOOST_CHECK_EQUAL( node.point( ), POINT );
 
-  node.id( ) = ID;
+  node.id( ID );
   BOOST_CHECK_EQUAL( node.id( ), ID );
 
   node.radius( RADIUS );

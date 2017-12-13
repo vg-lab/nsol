@@ -159,6 +159,9 @@ namespace nsol
     const auto& sections = brionMorpho_->getSections( );
     const auto& sectionTypes = brionMorpho_->getSectionTypes( );
 
+    //Id of each node as loaded from file
+    unsigned int nodeId = 1;
+
     SOMA* soma = new SOMA;
 
     std::vector< NEURONMORPHOLOGYSECTION* > nsolSections( sections.size( ));
@@ -183,8 +186,8 @@ namespace nsol
         for ( int i = startNode; i < endNode; i++ )
         {
           brion::Vector4f point = points[i];
-          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )), i,
-                               point.w( ) / 2.0f );
+          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
+                               nodeId++, point.w( ) / 2.0f );
           soma->addNode( nsolNode );
         }
         nsolSections[sectId] = nullptr;
@@ -229,32 +232,9 @@ namespace nsol
         for ( int i = startNode; i < endNode; i++ )
         {
           brion::Vector4f point = points[i];
-          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )), i,
-                               point.w( ) / 2.0f );
+          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
+                               nodeId++, point.w( ) / 2.0f );
           nsolSection->addNode( nsolNode );
-        }
-      }
-    }
-
-    unsigned int nodeId = 1;
-
-    for( auto node: soma->nodes( ))
-    {
-      node->id( ) = nodeId;
-      nodeId ++;
-    }
-
-    for( auto neurite: nsolMorpho->neurites( ))
-    {
-      neurite->firstSection( )->firstNode( )->id( ) = nodeId;
-      nodeId++;
-      for( auto section: neurite->sections( ))
-      {
-        auto nodes = section->nodes( );
-        for ( unsigned int i = 1; i < nodes.size( ); i++ )
-        {
-          nodes[i]->id( ) = nodeId;
-          nodeId ++;
         }
       }
     }
