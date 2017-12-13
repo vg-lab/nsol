@@ -18,6 +18,7 @@ set(NSOL_PUBLIC_HEADERS
   ImportanceNode.h
   Log.h
   MiniColumn.h
+  Morphology.h
   Neurite.h
   Neuron.h
   NeuronMorphology.h
@@ -56,6 +57,7 @@ set(NSOL_PUBLIC_HEADERS
   Reader/BrionReader.h
   Reader/SwcReader.h
   Reader/AscReader.h
+  Reader/VasculatureReader.h
   Reader/XmlSceneReader.h
   )
 
@@ -102,6 +104,9 @@ set(NSOL_SOURCES
   Writer/XmlSceneWriter.cpp
   )
 
+if (HDF5_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC ${HDF5_LIBRARIES})
+endif()
 
 if (BRION_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC Brain )

@@ -74,14 +74,30 @@ namespace nsol
      * @param section pointer to the section to be added
      */
     NSOL_API
-    void addBackwardNeighbour( SectionPtr section_ );
+    void addBackwardNeighbour( SectionPtr section );
 
     /**
      * Adds forward neighbour section to this section
      * @param section pointer to the section to be added
      */
     NSOL_API
-    void addForwardNeighbour( SectionPtr section_ );
+    void addForwardNeighbour( SectionPtr section );
+
+    /**
+     * Delete backward neighbour section from this section
+     * @param section pointer to the section to be deleted
+     * @return true if the given section is in the backward sections
+     */
+    NSOL_API
+    bool deleteBackwardNeighbour( SectionPtr section_ );
+
+    /**
+     * Delete forward neighbour section from this section
+     * @param section pointer to the section to be deleted
+     * @return true if the given section is in the forward sections
+     */
+    NSOL_API
+    bool deleteForwardNeighbour( SectionPtr section_ );
 
     /**
      * Check if the node connects with the backward or the fordward neighbour
@@ -90,17 +106,17 @@ namespace nsol
      * @param node pointer to the node between sections
      */
     NSOL_API
-    void addNeighbour( SectionPtr section_, NodePtr node_ );
+    void addNeighbour( SectionPtr section, NodePtr node );
 
     /**
      * Return the middle Nodes
      * @return container of middle Nodes
      */
     NSOL_API
-    Nodes & nodes( void );
+    Nodes& nodes( void );
 
     NSOL_API
-    const Nodes & nodes( void ) const;
+    const Nodes& nodes( void ) const;
 
     /**
      * Adds a node at the start of this section
@@ -117,7 +133,6 @@ namespace nsol
      */
     NSOL_API
     virtual void addForwardNode( NodePtr node );
-
 
     /**
      * Gets the first Node of the Section.

@@ -27,6 +27,8 @@
 
 #include "NsolTypes.h"
 
+#include <set>
+
 namespace nsol
 {
 
@@ -74,6 +76,12 @@ namespace nsol
       float tolerance_ = 0.1,
       bool clone_ = false );
 
+    NSOL_API
+    MorphologyPtr simplify(
+      MorphologyPtr morpho_,
+      TSimplificationMethod simplMethod_ = DELETE_ALL,
+      float tolerance_ = 0.1 );
+
 
     /**
      * Method to correct the neuronal morphology to avoid errors in the
@@ -113,6 +121,16 @@ namespace nsol
       NeuronMorphologyPtr morpho_,
       bool clone_ = false );
 
+    /**
+     * Method to repair morphological traces, deleting sections composed only by
+     * two nodes and whose distance between nodes is less than the radius of the
+     * segment that they represent
+     * @param morpho_ neuronal morphology to unify sections
+     */
+    NSOL_API
+    MorphologyPtr repairSections(
+      MorphologyPtr morpho_ );
+
     NSOL_API
     Simplifier( Simplifier const& ) = delete;
 
@@ -127,6 +145,10 @@ namespace nsol
 
     void _cutoutSection( SectionPtr section_ );
 
+    void _groupSections( SectionPtr section_,
+                         std::set< SectionPtr >& uniqueSections_ );
+
+    void _removeSectionFromNeighbors( SectionPtr section_ );
 
     /** @name Simplification functions */
     ///@{
