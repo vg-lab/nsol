@@ -96,8 +96,8 @@ namespace nsol
     protected:
 
     //! Regular expressions that define data lines
-    #define REGEX_DATA_LINE "\\s*\\(\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s*\\)\\s*"
-    #define REGEX_SPINE_LINE "\\s*<\\s*\\(\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s*\\)\\s*>\\s*"
+    #define REGEX_DATA_LINE "\\s*\\(\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s*\\)\\s*[\\r]?"
+    #define REGEX_SPINE_LINE "\\s*<\\s*\\(\\s*-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+-?\\d+\\.?\\d*\\s+\\d+\\.?\\d*\\s*\\)\\s*>\\s*[\\r]?"
 
     unsigned int nodeId;
     std::ifstream inFile;
@@ -242,7 +242,7 @@ namespace nsol
 
       //! Checks whether a new basal dendrite is being declared
       if ( std::regex_match( lineString,
-        std::regex( ".*\\(\\s*dendrite\\s*\\).*" ) ) )
+        std::regex( ".*\\(\\s*dendrite\\s*\\)\\s*[\\r]?" ) ) )
       {
         /**
          * Creates a pointer to a new basal dendrite and loads all corresponding
@@ -256,7 +256,7 @@ namespace nsol
       }
       //! Checks whether a new apical dendrite is being declared
       else if ( std::regex_match( lineString,
-        std::regex( ".*\\(\\s*apical\\s*\\).*" ) ) )
+        std::regex( ".*\\(\\s*apical\\s*\\)\\s*[\\r]?" ) ) )
       {
         /**
          * Creates a pointer to a new apical dendrite and loads all
@@ -274,14 +274,14 @@ namespace nsol
        * into a single soma
        */
       else if ( std::regex_match( lineString,
-        std::regex( ".*\\(\\s*cellbody\\s*\\).*" ) ) )
+        std::regex( ".*\\(\\s*cellbody\\s*\\)\\s*[\\r]?" ) ) )
       {
         _ReadSoma( neuronMorphology, &repositionNodes, reposition_ );
 
       }
       //! Checks whether a new axon has been declared
       else if ( std::regex_match( lineString,
-        std::regex( ".*\\(\\s*axon\\s*\\).*" ) ) )
+        std::regex( ".*\\(\\s*axon\\s*\\)\\s*[\\r]?" ) ) )
       {
         /**
          * Creates a pointer to a new axon and loads all
@@ -414,7 +414,7 @@ namespace nsol
             lineString.begin( ), ::tolower );
           //! Skips markers (not implemented)
           if ( std::regex_match( lineString,
-            std::regex( "\\s*\\(\\s*dot\\s*" ) ) )
+            std::regex( "\\s*\\(\\s*dot\\s*[\\r]?" ) ) )
           {
             bracketCount = 0;
 
@@ -544,7 +544,7 @@ namespace nsol
     std::string &line )
   {
     //! Erases all characters from the first instance of ';' onwards
-    unsigned long comment = line.find_first_of( ';' );
+    size_t comment = line.find_first_of( ';' );
     if( comment != std::string::npos )
       line.erase( comment );
 

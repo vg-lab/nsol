@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
       std::cout << "    Section-> number of nodes: "
                 << section->nodes( ).size( ) << std::endl;
       std::cout << "      First Node: " << section->firstNode( )->id( )
-                << " End Node: " << section->lastNode( )->id( ) << std::endl;
+                << ", End Node: " << section->lastNode( )->id( ) << std::endl;
 
       if ( !section->children( ).empty( ) )
         for( auto&  sec : section->children( ) )
