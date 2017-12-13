@@ -19,40 +19,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifdef NSOL_USE_HDF5
-
-#ifndef __NSOL_VASCULATURE_READER__
-#define __NSOL_VASCULATURE_READER__
+#ifndef __NSOL_VECTORS_READER__
+#define __NSOL_VECTORS_READER__
 
 #include "../Morphology.h"
 
 #include "../NsolTypes.h"
 
-#include <H5Cpp.h>
-#include <stdexcept>
-#include <iostream>
-#include <string>
 
 namespace nsol
 {
 
-#define VASCULATURE_READER_TEMPLATE_CLASSES   \
+#define VECTORS_READER_TEMPLATE_CLASSES   \
   class NODE,                                 \
     class SECTION,                            \
     class MORPHOLOGY
 
-#define VASCULATURE_READER_TEMPLATE_CLASS_NAMES \
+#define VECTORS_READER_TEMPLATE_CLASS_NAMES \
   NODE,                                         \
     SECTION,                                    \
     MORPHOLOGY
 
-  template < VASCULATURE_READER_TEMPLATE_CLASSES >
-  class VasculatureReaderTemplated
+  template < VECTORS_READER_TEMPLATE_CLASSES >
+  class VectorsReaderTemplated
   {
 
   public:
 
-    MorphologyPtr loadMorphology( const std::string& file_ );
+    MorphologyPtr loadMorphology(
+      const std::vector< float >& points_,
+      const std::vector< unsigned int >& segments_ );
 
   protected:
 
@@ -60,40 +56,21 @@ namespace nsol
                          std::set< SectionPtr >& uniqueSections_ );
   };
 
-  typedef VasculatureReaderTemplated<
+  typedef VectorsReaderTemplated<
     Node,
     Section,
-    Morphology > VasculatureReader;
+    Morphology > VectorsReader;
 
-  template < VASCULATURE_READER_TEMPLATE_CLASSES >
+  template < VECTORS_READER_TEMPLATE_CLASSES >
   MorphologyPtr
-  VasculatureReaderTemplated< VASCULATURE_READER_TEMPLATE_CLASS_NAMES>::
-  loadMorphology( const std::string& file_ )
+  VectorsReaderTemplated< VECTORS_READER_TEMPLATE_CLASS_NAMES>::
+  loadMorphology( const std::vector< float >& points_,
+                  const std::vector< unsigned int >& segments_ )
   {
     MorphologyPtr morpho = nullptr;
-    H5::H5File file;
-    try
-    {
-      file.openFile( file_, H5F_ACC_RDONLY );
-    }
-    catch ( const std::exception& exc )
-    {
-      throw( std::runtime_error( "Could not open morphology file " + file_
-                                 + ": " + exc.what( )));
-    }
 
-    hsize_t dims[2];
-    H5::DataSet dataset;
-
-    dataset = file.openDataSet( "/points" );
-    dataset.getSpace( ).getSimpleExtentDims( dims );
-    Vec4fsPtr pointsData( new Vec4fs( dims[0] ));
-    dataset.read( pointsData->data( ), H5::PredType::NATIVE_FLOAT );
-
-    dataset = file.openDataSet("/edges" );
-    dataset.getSpace( ).getSimpleExtentDims( dims );
-    Vec3isPtr edgesData( new Vec3is( dims[0] ));
-    dataset.read( edgesData->data( ), H5::PredType::NATIVE_INT );
+    if ( points_.size( )%4 != 0 || segments_.size( )%2 != 0 )
+      return morpho;
 
     morpho = new MORPHOLOGY( );
 
@@ -101,23 +78,26 @@ namespace nsol
     NodePtr node;
     unsigned int nodeId = 0;
 
-    for ( const auto& point: *pointsData )
+    for( size_t i = 0, len = points_.size( ) / 4;
+         i < len; ++i )
     {
-      node = new NODE( Vec3f( point.x( ), point.y( ), point.z( )), nodeId,
-                       point.w( ));
+      size_t index = i*4;
+      node = new NODE( Vec3f( points_[index], points_[index+1],
+                              points_[index+2]), nodeId, points_[index+3] );
       nodes.push_back( node );
       ++nodeId;
     }
 
-    pointsData->clear( );
-    delete pointsData;
-
     std::vector< unsigned int > nodesOccurrences( nodes.size( ), 0 );
 
-    for ( const auto& edge: *edgesData )
+    for ( size_t i = 0, len = segments_.size( ) / 2;
+          i < len; ++i )
     {
-      nodesOccurrences[ edge.x( )] = nodesOccurrences[ edge.x( )] + 1;
-      nodesOccurrences[ edge.y( )] = nodesOccurrences[ edge.y( )] + 1;
+      size_t index = i*2;
+      nodesOccurrences[ segments_[index]] =
+        nodesOccurrences[ segments_[index]] + 1;
+      nodesOccurrences[ segments_[index+1]] =
+        nodesOccurrences[ segments_[index+1]] + 1;
     }
 
     Sections sections;
@@ -125,34 +105,38 @@ namespace nsol
     int previousIDx = -1;
     int previousIDy = -1;
 
-    for( const auto& edge: *edgesData )
+    for( size_t i = 0, len = segments_.size( ) / 2;
+         i < len; ++i )
     {
-      int occuX = nodesOccurrences[ edge.x( )];
-      int occuY = nodesOccurrences[ edge.y( )];
-      if ( previousIDy == edge.x( ))
+      size_t index = i*2;
+      int x = ( int )segments_[index];
+      int y = ( int )segments_[index+1];
+      int occuX = nodesOccurrences[ x ];
+      int occuY = nodesOccurrences[ y ];
+      if ( previousIDy == x )
       {
-        section->addForwardNode( nodes[ edge.y( )]);
+        section->addForwardNode( nodes[ y ]);
         previousIDx = -1;
         if ( occuY < 2 || occuY > 2 )
           previousIDy = -1;
         else
-          previousIDy = edge.y( );
+          previousIDy = y;
       }
-      else if ( previousIDx == edge.y( ))
+      else if ( previousIDx == y )
       {
-        section->addBackwardNode( nodes[ edge.x( )]);
+        section->addBackwardNode( nodes[ x ]);
         if ( occuY < 2 || occuY > 2 )
           previousIDx = -1;
         else
-          previousIDx = edge.x( );
+          previousIDx = x;
         previousIDy = -1;
       }
       else
       {
         section = new SECTION( );
         sections.push_back( section );
-        section->addForwardNode( nodes[ edge.x( )]);
-        section->addForwardNode( nodes[ edge.y( )]);
+        section->addForwardNode( nodes[ x ]);
+        section->addForwardNode( nodes[ y ]);
         if (( occuX < 2 || occuX > 2 ) && ( occuY < 2 || occuY > 2 ))
         {
           previousIDx = -1;
@@ -160,13 +144,11 @@ namespace nsol
         }
         else
         {
-          previousIDx = edge.x( );
-          previousIDy = edge.y( );
+          previousIDx = x;
+          previousIDy = y;
         }
       }
     }
-    edgesData->clear( );
-    delete edgesData;
 
     std::unordered_map< NodePtr, Sections > nodeSections;
     NodePtr currentNode;
@@ -174,7 +156,7 @@ namespace nsol
     {
       if ( currentSection->nodes( ).size( ) > 1 )
       {
-        currentNode =  currentSection->nodes( ).front( );
+        currentNode = currentSection->nodes( ).front( );
         auto nodeSectionsIt = nodeSections.find( currentNode );
         if ( nodeSectionsIt != nodeSections.end( ))
         {
@@ -230,14 +212,11 @@ namespace nsol
 
     morpho->sections( ) = sectionsGrouped;
 
-    if ( file.getId( ))
-      file.close( );
-
     return morpho;
   }
 
-  template < VASCULATURE_READER_TEMPLATE_CLASSES >
-  void VasculatureReaderTemplated< VASCULATURE_READER_TEMPLATE_CLASS_NAMES>::
+  template < VECTORS_READER_TEMPLATE_CLASSES >
+  void VectorsReaderTemplated< VECTORS_READER_TEMPLATE_CLASS_NAMES>::
   _groupSections( const SectionPtr section_,
                   std::set< SectionPtr >& uniqueSections_ )
   {
@@ -254,5 +233,3 @@ namespace nsol
 } // end namespace nsol
 
 #endif
-
-#endif // NSOL_USE_HDF5
