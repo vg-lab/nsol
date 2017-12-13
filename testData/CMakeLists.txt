@@ -10,3 +10,13 @@ configure_file(
   oneColumnScene.xml.in
   ${NSOL_BINARY_BIN_DIR}/oneColumnScene.xml
   @ONLY )
+
+configure_file(
+  SimpleMorphology.swc
+  ${NSOL_BINARY_BIN_DIR}/SimpleMorphology.swc
+  @ONLY )
+
+configure_file(
+  ExampleNeuron.swc
+  ${NSOL_BINARY_BIN_DIR}/ExampleNeuron.swc
+  @ONLY )

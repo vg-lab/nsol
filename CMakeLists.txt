@@ -91,6 +91,22 @@ add_subdirectory(tests)
 add_subdirectory(examples)
 add_subdirectory(testData)
 
+# Check and copy extra test data files from subprojects to testData directory
+set(TEST_DATA_FILES  
+    Brion/tests/data/h5/test_neuron.h5 
+    Brion/tests/data/swc/Neuron.swc
+   )
+foreach(file ${TEST_DATA_FILES})
+  if( EXISTS ${CMAKE_SOURCE_DIR}/${file} )
+    if(NOT EXISTS ${CMAKE_BINARY_DIR}/testData/${file} )
+      #message("copy " ${CMAKE_SOURCE_DIR}/${file}  " to " ${CMAKE_BINARY_DIR}/testData/ )
+      configure_file(${file} testData/ COPYONLY)
+    endif()
+  else()
+    #message("Not found datafile: " ${CMAKE_SOURCE_DIR}/${file} )
+  endif()
+endforeach()
+
 set(DOCS README.md LICENSE.txt)
 install( FILES ${DOCS} DESTINATION share/nsol COMPONENT dev)
 
