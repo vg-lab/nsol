@@ -117,8 +117,8 @@ BOOST_AUTO_TEST_CASE( brionReader_loaders )
 {
 
 }
-
 #endif // NSOL_USE_BRION
+
 BOOST_AUTO_TEST_CASE( swcReader_loaders )
 {
   {
@@ -225,7 +225,6 @@ void checkEquivalentNeuronMorphologies( NeuronMorphologyPtr morpho0,
 
 }
 
-
 #ifdef NSOL_USE_BRION
 BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
 {
@@ -294,3 +293,40 @@ BOOST_AUTO_TEST_CASE( morphology_loaders_comparison )
   // Empty test
 }
 #endif
+
+BOOST_AUTO_TEST_CASE( vectors_morphology_loaders)
+{
+  std::vector< float > points;
+  std::vector< unsigned int > segments;
+
+  Eigen::Vector4f point;
+  point = Eigen::Vector4f( 0.0f, 0.0f, 0.0f, 1.0f ); // 0
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  point = Eigen::Vector4f( 2.0f, 0.0f, 0.0f, 1.0f ); // 1
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  point = Eigen::Vector4f( 4.0f, 0.0f, 0.0f, 1.0f ); // 2
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  segments.push_back( 0 ); segments.push_back( 1 );
+  segments.push_back( 1 ); segments.push_back( 2 );
+
+  point = Eigen::Vector4f( 6.0f, 0.0f, 0.0f, 1.0f ); // 3
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  point = Eigen::Vector4f( 8.0f, 0.0f, 0.0f, 1.0f ); // 4
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  segments.push_back( 2 ); segments.push_back( 3 );
+  segments.push_back( 3 ); segments.push_back( 4 );
+
+  point = Eigen::Vector4f( 4.0f, 2.0f, 0.0f, 1.0f ); // 5
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  point = Eigen::Vector4f( 4.0f, 4.0f, 0.0f, 1.0f ); // 6
+  points.insert( points.end( ), &point.data( )[0], &point.data( )[4]);
+  segments.push_back( 2 ); segments.push_back( 5 );
+  segments.push_back( 5 ); segments.push_back( 6 );
+
+  VectorsReader vr;
+  MorphologyPtr morpho = vr.loadMorphology( points, segments );
+
+  BOOST_CHECK_EQUAL( morpho->sections( ).size( ), 1 );
+  BOOST_CHECK_EQUAL( morpho->sections( )[0]->nodes( ).size( ), 3 );
+  BOOST_CHECK_EQUAL( morpho->sections( )[0]->forwardNeighbors( ).size( ), 2 );
+}
