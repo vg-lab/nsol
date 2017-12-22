@@ -59,6 +59,8 @@ set(NSOL_PUBLIC_HEADERS
   Reader/VasculatureReader.h
   Reader/VectorsReader.h
   Reader/XmlSceneReader.h
+  Reader/strict_fstream.h
+  Reader/zstr.h
   )
 
 set(NSOL_HEADERS )

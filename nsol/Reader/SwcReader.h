@@ -32,7 +32,7 @@
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
-
+#include "zstr.h"
 
 #include <iostream>
 #include <fstream>
@@ -222,8 +222,8 @@ namespace nsol
   SwcReaderTemplated< SWC_READER_TEMPLATE_CLASS_NAMES >::readMorphology(
     const std::string& fileName, bool reposition_ )
   {
-    std::ifstream inFile;
-    inFile.open( fileName, std::ios::in );
+    //Open as zstr::ifstream to support transparent zlib decompression
+    zstr::ifstream inFile (fileName);
 
     //! Opening file check
     if ( ( inFile.rdstate( ) & std::ifstream::failbit ) != 0 )
@@ -231,7 +231,6 @@ namespace nsol
       Log::log( std::string( "Error opening file: " ) + fileName, LOG_LEVEL_WARNING );
 
       return nullptr;
-
     }
 
     std::string lineString;
@@ -252,8 +251,8 @@ namespace nsol
       if ( lineString[lineString.find_first_not_of( " \r\t" )] != '#' )
       {
         //! Verifies there are 7 fields ( or more, if comments are present )
-        unsigned int fields =
-          1 + ( unsigned int )std::count_if( lineString.begin( ), lineString.end( ),
+        size_t fields =
+          1 + std::count_if( lineString.begin( ), lineString.end( ),
             []( unsigned char c )
               {
                 return std::isspace( c );
@@ -309,8 +308,6 @@ namespace nsol
         }
       }
     }
-
-    inFile.close( );
 
     //! Adds children to TSwcLine elements created
     for ( const auto& line : lines )
