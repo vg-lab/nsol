@@ -61,6 +61,7 @@ namespace nsol
   {
     NSOL_DEBUG_CHECK( neurite_, "neurite is null" );
     _neurites.push_back( neurite_ );
+    _sections.push_back( neurite_->firstSection( ));
     return neurite_;
   }
 

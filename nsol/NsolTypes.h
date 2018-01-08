@@ -28,7 +28,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <nsol/defines.h>
 
 // Visual Studio Warning disable.
@@ -65,9 +65,14 @@ namespace nsol
 
 #endif
 
+  typedef ::Eigen::Vector3i Vec3i;
   typedef ::Eigen::Vector3f Vec3f;
   typedef ::Eigen::Matrix4f Matrix4_4f;
+  typedef std::vector< Vec3i > Vec3is;
   typedef ::Eigen::Vector4f Vec4f;
+  typedef Vec3is* Vec3isPtr;
+  typedef std::vector< Vec4f > Vec4fs;
+  typedef Vec4fs* Vec4fsPtr;
   #define Matrix4_4fIdentity Matrix4_4f::Identity()
 
   static const nsol::Matrix4_4f __VISUAL_STATIC_CONST_MATRIX4_4f__;
@@ -77,6 +82,7 @@ namespace nsol
   class Dendrite;
   class ImportanceNode;
   class MiniColumn;
+  class Morphology;
   class Neurite;
   class Neuron;
   class NeuronMorphology;
@@ -99,6 +105,7 @@ namespace nsol
   typedef std::shared_ptr< Dendrite > DendritePtr;
   typedef std::shared_ptr< ImportanceNode > ImportanceNodePtr;
   typedef std::shared_ptr< MiniColumn > MiniColumnPtr;
+  typedef std::shared_ptr< Morphology > MorphologyPtr;
   typedef std::shared_ptr< Neurite > NeuritePtr;
   typedef std::shared_ptr< Neuron > NeuronPtr;
   typedef std::shared_ptr< NeuronMorphology > NeuronMorphologyPtr;
@@ -133,6 +140,7 @@ namespace nsol
   typedef Dendrite* DendritePtr;
   typedef ImportanceNode* ImportanceNodePtr;
   typedef MiniColumn* MiniColumnPtr;
+  typedef Morphology* MorphologyPtr;
   typedef Neurite* NeuritePtr;
   typedef Neuron* NeuronPtr;
   typedef NeuronMorphology* NeuronMorphologyPtr;

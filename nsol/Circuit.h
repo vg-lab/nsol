@@ -27,8 +27,6 @@
 #include "Synapse.h"
 #include "Container/Synapses.h"
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 #include <iostream>
 #include <set>
 

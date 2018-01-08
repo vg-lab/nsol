@@ -62,10 +62,15 @@ include(Common)
 common_find_package(Boost COMPONENTS unit_test_framework)
 common_find_package(Eigen3 SYSTEM REQUIRED)
 common_find_package(Qt5Core)
+common_find_package(HDF5 COMPONENTS C CXX)
 common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
 common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
 
 list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
+
+if(HDF5_FOUND)
+  list(APPEND NSOL_PUBLIC_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIRS})
+endif()
 
 if(FIRES_FOUND)
   list(APPEND NSOL_DEPENDENT_LIBRARIES FiReS)

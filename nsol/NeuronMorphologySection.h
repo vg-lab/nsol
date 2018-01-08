@@ -57,10 +57,10 @@ namespace nsol
 
     /**
      * Method to set the gid of the neuron morphology section.
-     * @param gid
+     * @param id
      */
     NSOL_API
-    void id (unsigned int id_ );
+    void id ( unsigned int id );
 
     /**
      * Gets the parent Neurite of the Neuron Morphology Section
@@ -74,7 +74,7 @@ namespace nsol
      * @param neurite pointer to parent neurite
      */
     NSOL_API
-    void neurite( NeuritePtr neurite_ );
+    void neurite( NeuritePtr neurite );
 
      /**
      * Gets the parent Section of this Section
@@ -88,32 +88,32 @@ namespace nsol
      * @param parent pointer to parent Section
      */
     NSOL_API
-    void parent( SectionPtr parent_ );
+    void parent( SectionPtr parent );
 
-/**
+    /**
      * Adds child Section to this Section
      * @param section pointer to the section to be added
      */
     NSOL_API
-    void addChild( SectionPtr section_ );
+    void addChild( SectionPtr section );
 
     /**
      * Return the children sections
      * @return container of children sections
      */
     NSOL_API
-    Sections & children( void );
+    Sections& children( void );
 
     NSOL_API
-    const Sections & children( void ) const;
+    const Sections& children( void ) const;
 
     /**
      * Adds a Node at the end of Section
-     * @param Node pointer to the Node to add.
+     * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
     NSOL_API
-    virtual void addNode( NodePtr node_ );
+    virtual void addNode( NodePtr node );
 
     /**
      * Gets the first Node of the Section.
@@ -128,7 +128,7 @@ namespace nsol
      * @param firstNode pointer to the Node.
      */
     NSOL_API
-    virtual void firstNode( NodePtr firstNode_ );
+    virtual void firstNode( NodePtr firstNode );
 
     /**
      * Gets the last Node of the Section.
@@ -143,7 +143,7 @@ namespace nsol
      * @return pointer to SectionStats object
      */
     NSOL_API
-    virtual NeuronMorphologySectionStats * stats( void );
+    virtual NeuronMorphologySectionStats* stats( void );
 
     NSOL_API
     virtual SectionPtr clone( void ) const;

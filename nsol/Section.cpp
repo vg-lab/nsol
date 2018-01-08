@@ -68,23 +68,91 @@ namespace nsol
   void Section::addBackwardNeighbour( SectionPtr section_ )
   {
     if ( section_ )
-      _backwardSections.push_back( section_ );
+    {
+      bool isSection = false;
+      for ( auto section: _backwardSections )
+      {
+        if (( isSection = (section == section_)))
+          break;
+      }
+      if ( !isSection )
+        _backwardSections.push_back( section_ );
+    }
   }
 
   void Section::addForwardNeighbour( SectionPtr section_ )
   {
     if ( section_ )
-      _forwardSections.push_back( section_ );
+    {
+      bool isSection = false;
+      for ( auto section: _forwardSections )
+      {
+        if (( isSection = (section == section_)))
+          break;
+      }
+      if ( !isSection )
+        _forwardSections.push_back( section_ );
+    }
+  }
+
+  bool Section::deleteBackwardNeighbour( SectionPtr section_ )
+  {
+    bool deletedNeighbour = false;
+    for ( auto it = _backwardSections.begin( );  it != _backwardSections.end( );
+          it++ )
+    {
+      if ( *it == section_ )
+      {
+        deletedNeighbour = true;
+        _backwardSections.erase( it );
+        it--;
+      }
+    }
+    return deletedNeighbour;
+  }
+
+  bool Section::deleteForwardNeighbour( SectionPtr section_ )
+  {
+    bool deletedNeighbour = false;
+    for ( auto it = _forwardSections.begin( );  it != _forwardSections.end( );
+          it++ )
+    {
+      if ( *it == section_ )
+      {
+        deletedNeighbour = true;
+        _forwardSections.erase( it );
+        it--;
+      }
+    }
+    return deletedNeighbour;
   }
 
   void Section::addNeighbour( SectionPtr section_, NodePtr node_ )
   {
-    if ( _nodes.size( ) > 0 )
+    if ( section_ && _nodes.size( ) > 0 )
     {
       if ( node_ ==  _nodes.front( ))
-        _backwardSections.push_back( section_ );
-      else if ( node_ ==  _nodes.back( ))
-        _forwardSections.push_back( section_ );
+      {
+        bool isSection = false;
+        for ( auto section: _backwardSections )
+        {
+          if (( isSection = (section == section_)))
+            break;
+        }
+        if ( !isSection )
+          _backwardSections.push_back( section_ );
+      }
+      if ( node_ ==  _nodes.back( ))
+      {
+        bool isSection = false;
+        for ( auto section: _forwardSections )
+        {
+          if (( isSection = (section == section_)))
+            break;
+        }
+        if ( !isSection )
+          _forwardSections.push_back( section_ );
+      }
     }
   }
 

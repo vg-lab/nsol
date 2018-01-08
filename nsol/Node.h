@@ -36,42 +36,83 @@ namespace nsol
   public:
 
     NSOL_API
-    Node( const Vec3f & point = Vec3f(0,0,0),
-          const int & id = 0,
-          const float & radius = 0.0f );
+    Node( const Vec3f & initPoint = Vec3f(0,0,0),
+          const int & initId = 0,
+          const float & initRadius = 0.0f )
+        : _point( initPoint )
+        , _radius( initRadius )
+        , _id( initId )
+    {
+    }
 
     NSOL_API
-    virtual ~Node( void );
+    virtual ~Node( void )
+    {
+    }
 
     NSOL_API
-    virtual void point( const Vec3f & point_ );
+    virtual void point( const Vec3f & point_ )
+    {
+        _point = point_;
+    }
 
     NSOL_API
-    Vec3f point( void ) const;
+    Vec3f point( void ) const
+    {
+        return _point;
+    }
 
     NSOL_API
-    virtual void radius( const float radius_ );
+    virtual void radius( const float radius_ )
+    {
+        _radius = radius_;
+    }
 
     NSOL_API
-    float radius( void ) const;
+    float radius( void ) const
+    {
+        return _radius;
+    }
+
+    /**
+     * Set the node id
+     * @return node id
+     */
+    NSOL_API
+    virtual void id( const int id_ )
+    {
+        _id = id_;
+    }
+
+    /**
+     * Get the node id
+     * @return node id
+     */
+    NSOL_API
+    int id( void ) const
+    {
+        return _id;
+    }
 
     NSOL_API
-    int & id( void );
+    virtual NodePtr clone( void ) const
+    {
+        return new Node( _point, _id, _radius );
+    }
 
     NSOL_API
-    int id( void ) const;
+    bool operator == ( const Node & other ) const
+    {
+      return ( ( this->_id == other._id ) &&
+               ( this->_radius == other._radius ) &&
+               ( this->_point == other._point ) );
+    }
 
     NSOL_API
-    virtual NodePtr clone( void ) const;
-
-    NSOL_API
-    Node & operator = ( const Node & other );
-
-    NSOL_API
-    bool operator == ( Node & other ) const;
-
-    NSOL_API
-    bool operator != ( Node & other ) const;
+    bool operator != ( const Node & other ) const
+    {
+      return ! ( *this == other );
+    }
 
     NSOL_API
     virtual NodePtr asNode( void )
