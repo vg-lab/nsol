@@ -27,11 +27,6 @@ set(NSOL_PUBLIC_HEADERS
   NsolTypes.h
   Object.h
   ObjectWithProperties.h
-  Reader/EspINAXMLReader/Segmentation.h
-  Reader/EspINAXMLReader/Skeleton.h
-  Reader/EspINAXMLReader/SkeletonEdge.h
-  Reader/EspINAXMLReader/SkeletonNode.h
-  Reader/EspINAXMLReader/SkeletonStroke.h
   Section.h
   Simplifier.h
   Soma.h
@@ -56,11 +51,11 @@ set(NSOL_PUBLIC_HEADERS
   Synapse.h
   MorphologySynapse.h
   Circuit.h
+  Reader/EspINASkeletonReader.h
   # templated classes at last
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
   Reader/BrionReader.h
-  Reader/EspINAXMLReader/EspINAXMLReader.h
   Reader/SwcReader.h
   Reader/VasculatureReader.h
   Reader/VectorsReader.h
@@ -86,11 +81,6 @@ set(NSOL_SOURCES
   Node.cpp
   Object.cpp
   ObjectWithProperties.cpp
-  Reader/EspINAXMLReader/Segmentation.cpp
-  Reader/EspINAXMLReader/Skeleton.cpp
-  Reader/EspINAXMLReader/SkeletonEdge.cpp
-  Reader/EspINAXMLReader/SkeletonNode.cpp
-  Reader/EspINAXMLReader/SkeletonStroke.cpp
   Section.cpp
   Simplifier.cpp
   Soma.cpp
@@ -113,10 +103,15 @@ set(NSOL_SOURCES
   MorphologySynapse.cpp
   Circuit.cpp
   Writer/XmlSceneWriter.cpp
+  Reader/EspINASkeletonReader.cpp
   )
 
 if (HDF5_FOUND)
   set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC ${HDF5_LIBRARIES})
+endif()
+
+if (neurosegmentations_FOUND)
+  set(NSOL_LINK_LIBRARIES ${NSOL_LINK_LIBRARIES} PUBLIC neurosegmentations)
 endif()
 
 if (BRION_FOUND)

@@ -1,3 +1,4 @@
 # -*- mode: cmake -*-
 # git_subproject(Brion https://github.com/BlueBrain/Brion.git 5396f1e)
 # git_subproject(FiReS https://github.com/gmrvvis/FiReS.git b63cdd97)
+git_subproject(neurosegmentations https://gitlab.gmrv.es/jguerrero/neurosegmentations.git 904c3f5c)
