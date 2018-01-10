@@ -46,6 +46,15 @@ namespace nsol
 
   public:
 
+    /**
+     * Creates a generic morphology using a vector of points and segments.
+     * @param points_ each point or node is represented by four floats
+     * (position {x,y,z} and radius).
+     * @param segments_ each segment is represented by two unsigned integers
+     * (indices of the two nodes belonging to the segment). Indices must have
+     * values from 0 to (#points-1).
+     * @return MorphologyPtr a generic morphology.
+     */
     MorphologyPtr loadMorphology(
       const std::vector< float >& points_,
       const std::vector< unsigned int >& segments_ );
