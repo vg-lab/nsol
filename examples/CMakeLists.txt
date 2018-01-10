@@ -1,8 +1,5 @@
 if ( NSOL_WITH_EXAMPLES )
 
-  add_executable(nsolSwcReader SwcReader.cpp)
-  target_link_libraries(nsolSwcReader nsol)
-
   if( BRION_FOUND )
     set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
     set( NSOLBRIONMORPHOLOGYREADER_LINK_LIBRARIES nsol )
@@ -25,12 +22,24 @@ if ( NSOL_WITH_EXAMPLES )
     list( APPEND NSOL_EXAMPLES_FILES ${NSOLCIRCUITLOADERSUMMARY_SOURCES} )
   endif( )
 
+
+  set( NSOLSWCREADER_SOURCES SwcReader.cpp )
+  set( NSOLSWCREADER_LINK_LIBRARIES nsol )
+  common_application( nsolSwcReader NOHELP )
+  list( APPEND NSOL_EXAMPLES_FILES ${NSOLSWCREADER_SOURCES} )
+
+  set( NSOLASCTOSWCTEST_SOURCES AscToSwcTest.cpp )
+  set( NSOLASCTOSWCTEST_LINK_LIBRARIES nsol )
+  common_application( nsolAscToSwcTest NOHELP )
+  list( APPEND NSOL_EXAMPLES_FILES ${NSOLASCTOSWCTEST_SOURCES} )
+
   if( HDF5_FOUND )
     set( NSOLVASCULATUREMORPHOLOGYREADER_SOURCES vasculatureMorphologyReader.cpp )
     set( NSOLVASCULATUREMORPHOLOGYREADER_LINK_LIBRARIES nsol )
     common_application( nsolVasculatureMorphologyReader NOHELP )
     list( APPEND NSOL_EXAMPLES_FILES ${NSOLVASCULATUREMORPHOLOGYREADER_SOURCES} )
   endif( )
+
 
   set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )
   set( NSOLEXTRACTNEURONSTATS_LINK_LIBRARIES nsol )

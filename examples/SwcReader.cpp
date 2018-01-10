@@ -20,81 +20,103 @@
 
 #include <nsol/nsol.h>
 
-#include <assert.h>
-
 #include <iostream>
 
 #include <stack>
 
 using namespace nsol;
-using namespace std;
+
+enum
+{
+  SWC_READER_ERROR_INCORRECT_MORPHOLOGY = -1,
+  SWC_READER_ERROR_INCORRECT_PARAMETERS = -2
+};
 
 int main(int argc, char *argv[])
 {
 
-  SwcReader r;
-  SwcWriter w;
+  SwcReader swcReader;
+  SwcWriter swcWriter;
+  std::string importFilename,exportFilename;
 
-  if ( argc < 2 )
+  if ( argc == 1 )
   {
-    std::cerr << "Error: swc file parameter needed." << std::endl;
-    return -1;
+    std::cout << "SWC filename to import: ";
+    std::cin >> importFilename;
+    std::cout << "SWC filename to export: ";
+    std::cin >> exportFilename;
+  }
+  else if ( argc == 2 )
+  {
+    std::cout << "SWC filename to export: ";
+    std::cin >> exportFilename;
+    importFilename = argv[1];
+  }
+  else if ( argc == 3 )
+  {
+    importFilename = argv[1];
+    exportFilename = argv[2];
+  }
+  else
+  {
+    std::cerr << "Incorrect use of nsolSwcReader: [importFilename] [exportFilename]." << std::endl;
+    return SWC_READER_ERROR_INCORRECT_PARAMETERS;
+  }
+  std::cout << "Reading from SWC file: " << importFilename << std::endl;
+
+  NeuronMorphologyPtr neuronMorphology = swcReader.readMorphology( importFilename );
+
+  if ( !neuronMorphology ) {
+    std::cerr << "Error: neuronMorphology not recognised." << std::endl;
+    return SWC_READER_ERROR_INCORRECT_MORPHOLOGY;
   }
 
-  cout << "Reading file " << argv[1] << endl;
 
-  NeuronMorphologyPtr n = r.readMorphology(argv[1]);
+  std::cout << "Exporting to SWC file: " << exportFilename << std::endl;
 
-  if (!n)
-    return -1;
+  swcWriter.writeMorphology( exportFilename, neuronMorphology );
 
-  string filename;
+  Neurites neurites = neuronMorphology->neurites( );
 
-  cout << "Filename to export: ";
-  cin >> filename;
-
-  w.writeMorphology(filename, n);
-
-  Neurites neurites = n->neurites();
-
-  int j = 0;
-  NSOL_FOREACH( neurite, neurites )
+  int neuriteNumber = 0;
+  for ( const auto& neurite : neurites )
   {
-    std::cout << "  Neurite " << j << endl;;
-    j++;
+    std::cout << "  Neurite " << neuriteNumber << std::endl;;
+    neuriteNumber++;
 
     int numSections = 0;
     int numNodes = 1;
-    std::stack< SectionPtr > sPS;
-    sPS.push( (*neurite)->firstSection( ));
+    std::stack< SectionPtr > sectionStack;
+    sectionStack.push( neurite->firstSection( ) );
 
 
-    while( ! sPS.empty( ))
+    while( ! sectionStack.empty( ) )
     {
       NeuronMorphologySectionPtr section =
-        dynamic_cast< NeuronMorphologySectionPtr >( sPS.top( ));
-      sPS.pop( );
-      numSections ++;
+        dynamic_cast< NeuronMorphologySectionPtr >( sectionStack.top( ) );
+      sectionStack.pop( );
+      ++numSections;
 
-      if ( section->firstNode( ))
-        numNodes += ( unsigned int ) section->nodes( ).size(  ) - 1;
+      if ( section->firstNode( ) )
+        numNodes += ( unsigned int ) section->nodes( ).size( ) - 1;
 
-      cout << "    Section-> number of nodes: "
-           << section->nodes( ).size( ) << endl;
-      cout << "      First Node: " << section->firstNode( )->id( )
-           << " End Node: " << section->lastNode( )->id( ) << endl;
+      std::cout << "    Section-> number of nodes: "
+        << section->nodes( ).size( ) << std::endl;
+      std::cout << "      First Node: " << section->firstNode( )->id( )
+        << ", End Node: " << section->lastNode( )->id( ) << std::endl;
 
-      if (section->children( ).size( ) > 0 )
-        NSOL_FOREACH( sec, section->children( ))
+      if ( !section->children( ).empty( ) )
+        for( auto&  sec : section->children( ) )
         {
           if( section->lastNode( ) !=
-              dynamic_cast< NeuronMorphologySectionPtr >( *sec )->firstNode( ))
-            cout << "Inconherencia entre nodos" << endl;
-          sPS.push( *sec );
+              dynamic_cast< NeuronMorphologySectionPtr >
+              ( sec )->firstNode( ) )
+            std::cout << "Node Incoherence." << std::endl;
+          sectionStack.push( sec );
         }
     }
-    cout << " Number of sections " << numSections;
-    cout << " number of nodes " << numNodes << endl;
+    std::cout << " Number of sections " << numSections;
+    std::cout << " number of nodes " << numNodes << std::endl;
   }
 
 //  for (Neurites::iterator it = neurites.begin(); it != neurites.end(); ++it)
@@ -238,5 +260,5 @@ int main(int argc, char *argv[])
 ////  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
 ////  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
 
-  delete n;
+  delete neuronMorphology;
 }
