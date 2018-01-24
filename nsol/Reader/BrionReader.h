@@ -347,8 +347,10 @@ namespace nsol
       unsigned int gid = neuronIds[i];
       Matrix4_4f transform = Matrix4_4fIdentity;
 
-      float yRotation =
-                      boost::lexical_cast< float >( data[i][7] ) * (toRadians);
+      float yRotation = boost::lexical_cast< float >( data[i][7] );
+      if ( std::isnan( yRotation ))
+        yRotation = 0.0f;
+      yRotation *= (toRadians);
       transform( 0, 0 ) = cos( yRotation );
       transform( 0, 2 ) = sin( yRotation );
       transform( 2, 0 ) = -sin( yRotation );
