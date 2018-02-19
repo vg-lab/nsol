@@ -132,7 +132,7 @@ namespace nsol
 
     /**
      * Gets the last Node of the Section.
-     * @return pointer to the firts Node, null in case it doesn't have any
+     * @return pointer to the last Node, null in case it doesn't have any
      */
     NSOL_API
     NodePtr lastNode( void );

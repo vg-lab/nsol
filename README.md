@@ -11,10 +11,10 @@ gmrv@gmrv.es
 ## Introduction
 
 nsol is a library that provides data structures to handle basic neuroscientific 
-data, mainly cortex morphologies and structures as Spine, Soma, Neuron, Colum, etc...
+data, mainly cortex morphologies and structures as Spine, Soma, Neuron, Column, etc...
 It also provides some readers and writers to load and store dataset in swc 
 (as used by [NeuroMorpho](http://neuromorpho.org/)) and XML file formats.   
-It also reads circuits and morphologies throught [Brion](https://github.com/BlueBrain/Brion),
+It also reads circuits and morphologies using [Brion](https://github.com/BlueBrain/Brion),
 which is an optional dependency.  
 It is used in projects as
 [NeuroScheme](https://hbp-hpc-platform.fz-juelich.de/?hbp_software=neuroscheme),
@@ -35,7 +35,7 @@ It is used in projects as
 
 ## Building
 
-nsol has been succesfully built and used on Ubuntu 17.04/16.04, Mac OSX
+nsol has been successfully built and used on Ubuntu 17.04/16.04, Mac OSX
 Yosemite/Capitan/Sierra and Windows 7/8/10 (Visual Studio 2015 Win64). 
 The following steps should be enough to build it under linux/Mac OSX:
 
