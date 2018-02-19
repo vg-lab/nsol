@@ -244,14 +244,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()
@@ -275,14 +275,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()
@@ -306,14 +306,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()
@@ -325,14 +325,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()
@@ -351,14 +351,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()
@@ -377,14 +377,14 @@ int main( int argc, char* argv[ ])
 
                     cout << " - [Presynaptic Node] id: "
                          << preSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << preSynNode->point().x()
                          <<" ,"<< preSynNode->point().y()
                          <<" ,"<< preSynNode->point().z()
                          << " ]" << endl;
                     cout << " - [Postsynaptic Node] id: "
                          << postSynNode->id() << endl;
-                    cout << " postion: [ "
+                    cout << " position: [ "
                                << postSynNode->point().x()
                          <<" ,"<< postSynNode->point().y()
                          <<" ,"<< postSynNode->point().z()

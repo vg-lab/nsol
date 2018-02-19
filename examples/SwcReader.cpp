@@ -227,10 +227,10 @@ int main(int argc, char *argv[])
 //
 //  std::cout << "##############################################"<< std::endl;
 //
-//  // std::cout << "Total lenght:" << n->length() << std::endl;
-//  // std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
-//  // std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
-//  // std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+//  // std::cout << "Total length:" << n->length() << std::endl;
+//  // std::cout << "Neurites length:" << n->neuritesLength() << std::endl;
+//  // std::cout << "Dendrites length:" << n->dendritesLength() << std::endl;
+//  // std::cout << "Axon length:" << n->axonLength() << std::endl;
 //  // std::cout << "Mean radius first section:" << n->dendrites()->begin()[0]->firstSection()- << std::endl;
 //  // std::cout << "Mean radius first section:"
 //  //           << SectionStats::meanRadius(
@@ -246,19 +246,19 @@ int main(int argc, char *argv[])
 ////
 ////  dendrite->firstSection()->removeSegment(dendrite->firstSection()->_firstSegment->next());
 ////
-////  std::cout << "Total lenght:" << n->length() << std::endl;
-////  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
-////  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
-////  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+////  std::cout << "Total length:" << n->length() << std::endl;
+////  std::cout << "Neurites length:" << n->neuritesLength() << std::endl;
+////  std::cout << "Dendrites length:" << n->dendritesLength() << std::endl;
+////  std::cout << "Axon length:" << n->axonLength() << std::endl;
 ////
 ////  std::cout << "###############COLLAPSE SECTION#############"<< std::endl;
 ////
 ////  dendrite->firstSection()->fuseSection();
 ////
-////  std::cout << "Total lenght:" << n->length() << std::endl;
-////  std::cout << "Neurites lenght:" << n->neuritesLength() << std::endl;
-////  std::cout << "Dendrites lenght:" << n->dendritesLength() << std::endl;
-////  std::cout << "Axon lenght:" << n->axonLength() << std::endl;
+////  std::cout << "Total length:" << n->length() << std::endl;
+////  std::cout << "Neurites length:" << n->neuritesLength() << std::endl;
+////  std::cout << "Dendrites length:" << n->dendritesLength() << std::endl;
+////  std::cout << "Axon length:" << n->axonLength() << std::endl;
 
   delete neuronMorphology;
 }
