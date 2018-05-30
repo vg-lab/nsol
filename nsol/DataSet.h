@@ -157,115 +157,108 @@ namespace nsol
 
       brain::Circuit brainCircuit( *_blueConfig );
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
-      const brain::Synapses& brainSynapses = brainCircuit.
-                                        getAfferentSynapses( gidSetBrain,
-                                              brain::SynapsePrefetch::all );
+      const brain::Synapses& brainSynapses = brainCircuit.getAfferentSynapses(
+          gidSetBrain, brain::SynapsePrefetch::all );
 
-      if( _circuit.synapses().size() != brainSynapses.size() )
+      std::cout << "Loading synapse positions and sections..." << std::endl;
+
+      if( _circuit.synapses( ).size( ) != brainSynapses.size( ))
       {
-        Log::log("Not exist correspondence of the neurons data "
-                 "between NSOL and BRION", LOG_LEVEL_WARNING );
+        Log::log( "There is no correspondence between NSOL and BRION data.",
+                  LOG_LEVEL_WARNING );
         return;
       }
 
-      for( unsigned int i = 0; i < _circuit.synapses().size(); ++i )
-      {
-        const brain::Synapse& brainSynapse = brainSynapses[ i ];
-        MorphologySynapsePtr synapse = dynamic_cast<MorphologySynapsePtr>
-                                       ( _circuit.synapses()[i] );
+      typedef std::unordered_map< unsigned int,
+          NeuronMorphologySectionPtr > TGidSectionMap;
 
-        if( synapse == nullptr )
+      std::unordered_map< unsigned int, TGidSectionMap > neuronSectionMap;
+
+      for( auto neuron : _neurons )
+      {
+
+        TGidSectionMap neuronSections;
+        auto morphology = neuron.second->morphology( );
+        for( auto neurite : morphology->neurites( ))
         {
-          Log::log("Inconsistent type of synapse.", LOG_LEVEL_WARNING );
-          return;
+          for( auto section : neurite->sections( ))
+          {
+            auto mSection = dynamic_cast< NeuronMorphologySectionPtr>( section );
+
+            neuronSections.insert( std::make_pair( mSection->id( ), mSection ));
+
+          }
+        }
+        neuronSectionMap.insert( std::make_pair( neuron.first, neuronSections ));
+      }
+
+      auto synapses = _circuit.synapses( );
+
+#ifdef NSOL_USE_OPENMP
+      #pragma omp parallel for
+#endif
+      for( int i = 0; i < ( int ) _circuit.synapses( ).size( ); ++i )
+      {
+
+        auto synapse = synapses[ i ];
+        auto brainSynapse = brainSynapses[ i ];
+
+        // Check type
+        auto morphologySynapse = dynamic_cast< MorphologySynapsePtr >( synapse );
+        if( !morphologySynapse )
+        {
+          Log::log( "Inconsistent type of synapse.", LOG_LEVEL_ERROR );
+          continue;
         }
 
-        vmml::Vector3f brainPreSynPos  = brainSynapse.
-                                              getPresynapticSurfacePosition();
-        vmml::Vector3f brainPostSynPos = brainSynapse.
-                                              getPostsynapticSurfacePosition();
+        unsigned int gidPre = synapse->preSynapticNeuron( );
+        unsigned int gidPost = synapse->postSynapticNeuron( );
 
-        synapse->preSynapticSurfacePosition( Vec3f( brainPreSynPos.x(),
-                                                        brainPreSynPos.y(),
-                                                        brainPreSynPos.z()));
 
-        synapse->postSynapticSurfacePosition( Vec3f( brainPostSynPos.x(),
-                                                         brainPostSynPos.y(),
-                                                         brainPostSynPos.z()));
+        // Set positions
+        auto positionPre = brainSynapse.getPresynapticSurfacePosition( );
+        auto positionPost = brainSynapse.getPostsynapticSurfacePosition( );
 
-        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
-                         nitPre = _neurons.find( synapse->preSynapticNeuron( ));
-        std::unordered_map< unsigned int, NeuronPtr >::const_iterator
-                        nitPost = _neurons.find( synapse->postSynapticNeuron( ));
 
-        if (( nitPre  == _neurons.end( ))||
-            ( nitPost == _neurons.end( )))
+        morphologySynapse->preSynapticSurfacePosition( Vec3f( positionPre.x( ),
+                                                              positionPre.y( ),
+                                                              positionPre.z( )));
+        morphologySynapse->postSynapticSurfacePosition( Vec3f( positionPost.x( ),
+                                                               positionPost.y( ),
+                                                               positionPost.z( )));
+
+
+        // Check both neurons exist
+        if (( _neurons.find( gidPre ) == _neurons.end( )) ||
+            ( _neurons.find( gidPost ) == _neurons.end( )))
+        {
+          std::cout << "Neurons " << gidPre << " or " << gidPost << " not found." << std::endl;
          continue;
+        }
 
-        NeuronPtr preSynapticNeuron = nitPre->second;
-        NeuronPtr postSynapticNeuron = nitPost->second;
+        unsigned int sectionIDPre = brainSynapse.getPresynapticSectionID( );
+        unsigned int sectionIDPost = brainSynapse.getPostsynapticSectionID( );
 
-        // Computing pre-synaptic section..
-        bool found = false;
-        NeuronMorphologySectionPtr preSynSection = nullptr;
-        unsigned int brainIDSection = brainSynapse.getPresynapticSectionID();
+        // Check presynaptic section exists
+        auto neuronSectionsPre = neuronSectionMap.find( gidPre );
+        auto sectionPre = neuronSectionsPre->second.find( sectionIDPre );
 
-        Neurites neuritesPre = preSynapticNeuron->morphology()->neurites();
-        NSOL_FOREACH( neuriteIt, neuritesPre )
+        if( sectionPre == neuronSectionsPre->second.end( ))
         {
-          if( found ) break;
+          continue;
+        }
+        // Check postsynaptic section exists
+        auto neuronSectionsPost = neuronSectionMap.find( gidPost );
+        auto sectionPost = neuronSectionsPost->second.find( sectionIDPost );
 
-          const NeuritePtr neurite = (*neuriteIt);
-          Sections sections = neurite->sections();
-
-          NSOL_FOREACH( sectionIt, sections )
-          {
-            const NeuronMorphologySectionPtr section =
-              dynamic_cast< NeuronMorphologySectionPtr>( *(sectionIt));
-            if( section->id() == brainIDSection )
-            {
-              found = true;
-              preSynSection = section;
-
-              break;
-            }
-          }// for all sections of one neurite
-        }// for all neurites
-
-
-        // Computing post-synaptic section..
-        found = false;
-
-        NeuronMorphologySectionPtr postSynSection = nullptr;
-        brainIDSection = brainSynapse.getPostsynapticSectionID();
-
-        Neurites neuritesPost = postSynapticNeuron->morphology()->neurites();
-        NSOL_FOREACH( neuriteIt, neuritesPost )
+        if( sectionPost == neuronSectionsPost->second.end( ))
         {
-          if( found ) break;
+          continue;
+        }
 
-          const NeuritePtr neurite = (*neuriteIt);
-          Sections sections = neurite->sections();
-
-          NSOL_FOREACH( sectionIt, sections )
-          {
-            const NeuronMorphologySectionPtr section =
-              dynamic_cast< NeuronMorphologySectionPtr >( *( sectionIt ));
-
-            if( section->id() == brainIDSection )
-            {
-              found = true;
-              postSynSection = section;
-
-              break;
-            }
-          }// for all sections of one neurite
-        }// for all neurites
-
-        synapse->preSynapticSection( preSynSection );
-        synapse->postSynapticSection( postSynSection );
-
-      }// all synapses
+        morphologySynapse->preSynapticSection( sectionPre->second );
+        morphologySynapse->postSynapticSection( sectionPost->second );
+      }
 
 #else
     void loadBlueConfigConnectivityWithMorphologies( )

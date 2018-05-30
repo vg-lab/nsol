@@ -66,6 +66,7 @@ common_find_package(Qt5Core)
 common_find_package(HDF5 COMPONENTS C CXX)
 common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
 common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
+common_find_package(OpenMP)
 
 list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
 
@@ -84,6 +85,10 @@ endif()
 if( BRION_FOUND )
   list(APPEND NSOL_DEPENDENT_LIBRARIES Brion)
 endif( )
+
+if ( OPENMP_FOUND )
+  list( APPEND NSOL_DEPENDENT_LIBRARIES OpenMP )
+endif ( )
 
 common_find_package_post()
 
