@@ -491,45 +491,26 @@ namespace nsol
     Nodes* nodes = &section_->nodes( );
     if ( nodes->size(  ) < 3 )
       return;
-    for ( unsigned int i = 1; i < nodes->size( ) - 1; i++ )
+    for ( unsigned int i = 0; i < nodes->size( ) - 1; i++ )
     {
       if ( nodes->size( ) < 3 )
         break;
-      auto distPre = ((*nodes)[i]->point( ) - (*nodes)[i-1]->point( )).norm( );
-      auto distPost = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
-      auto maxRadiusPre =
-        std::max((*nodes)[i]->radius( ), (*nodes)[i - 1]->radius( ));
-      auto maxRadiusPost =
-        std::max((*nodes)[i]->radius( ), (*nodes)[i + 1]->radius( ));
 
-      if ( i == 1 )
+      float dist = ((*nodes)[i]->point( ) - (*nodes)[i+1]->point( )).norm( );
+      float maxRadius =
+        std::max((*nodes)[i]->radius( ), (*nodes)[i+1]->radius( ));
+
+      if ( dist <= maxRadius )
       {
-        if ( distPre <= maxRadiusPre )
+        if ( i == nodes->size( ) - 2 )
         {
-          /* delete nodes->at(1); */
-          nodes->erase( nodes->begin( ) + 1 );
-          i--;
-        }
-        else if ( distPost <= maxRadiusPost )
-        {
-          nodes->erase( nodes->begin( ) + 2 );
-          i--;
-        }
-      }
-      else if ( i == ( nodes->size( ) - 2 ))
-      {
-        if ( distPost <= maxRadiusPost  )
-        {
-          /* delete nodes->at(i); */
           nodes->erase( nodes->begin( ) + i );
+        }
+        else
+        {
+          nodes->erase( nodes->begin( ) + i + 1 );
           i--;
         }
-      }
-      else if ( distPost <= maxRadiusPost )
-      {
-        /* delete nodes->at( i + 1 ); */
-        nodes->erase( nodes->begin( ) + i + 1 );
-        i--;
       }
     }
   }

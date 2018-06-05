@@ -65,11 +65,14 @@ namespace nsol
 
 #endif
 
+  typedef ::Eigen::Vector2i Vec2i;
   typedef ::Eigen::Vector3i Vec3i;
   typedef ::Eigen::Vector3f Vec3f;
   typedef ::Eigen::Matrix4f Matrix4_4f;
+  typedef std::vector< Vec2i > Vec2is;
   typedef std::vector< Vec3i > Vec3is;
   typedef ::Eigen::Vector4f Vec4f;
+  typedef Vec2is* Vec2isPtr;
   typedef Vec3is* Vec3isPtr;
   typedef std::vector< Vec4f > Vec4fs;
   typedef Vec4fs* Vec4fsPtr;

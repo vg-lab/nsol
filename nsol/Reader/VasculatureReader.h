@@ -92,8 +92,19 @@ namespace nsol
 
     dataset = file.openDataSet("/edges" );
     dataset.getSpace( ).getSimpleExtentDims( dims );
-    Vec3isPtr edgesData( new Vec3is( dims[0] ));
-    dataset.read( edgesData->data( ), H5::PredType::NATIVE_INT );
+
+    Vec2isPtr edgesData( new Vec2is( dims[0] ));
+    if ( dims[1] == 2 )
+      dataset.read( edgesData->data( ), H5::PredType::NATIVE_INT );
+    else
+      if( dims[1] == 3 )
+      {
+        Vec3isPtr edgesData3( new Vec3is( dims[0]));
+        dataset.read( edgesData3->data( ), H5::PredType::NATIVE_INT );
+        for( unsigned int i = 0; i < dims[0]; i++ )
+          edgesData->at( i ) = Vec2i( edgesData3->at(i).block< 2, 1 >( 0, 0 ));
+        edgesData3->clear( );
+      }
 
     morpho = new MORPHOLOGY( );
 
