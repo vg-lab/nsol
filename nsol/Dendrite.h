@@ -64,6 +64,9 @@ namespace nsol
     NSOL_API
     TDendriteType & dendriteType( void );
 
+    NSOL_API
+    virtual NeuritePtr clone( void ) const final;
+
   protected:
 
     //! Type of dendrite

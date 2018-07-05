@@ -163,6 +163,12 @@ namespace nsol
   NeuritePtr Neurite::clone( void ) const
   {
     NeuritePtr neurite = new Neurite( _neuriteType );
+    _clone( neurite );
+    return neurite;
+  }
+
+  void Neurite::_clone( NeuritePtr neurite ) const
+  {
     NeuronMorphologySectionPtr firstSec =
       dynamic_cast< NeuronMorphologySectionPtr >( _firstSection->clone( ));
 
@@ -198,7 +204,6 @@ namespace nsol
         newSections.push( newChildSec );
       }
     }
-    return neurite;
   }
 
   bool Neurite::operator == ( Neurite & other )

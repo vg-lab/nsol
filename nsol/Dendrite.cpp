@@ -37,6 +37,13 @@ namespace nsol
     return _dendriteType;
   }
 
+  NeuritePtr Dendrite::clone( void ) const
+  {
+    auto dendrite = new Dendrite( _dendriteType );
+    _clone( dendrite );
+    return dendrite;
+  }
+
 } // namespace nsol
 
 // EOF

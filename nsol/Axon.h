@@ -37,6 +37,9 @@ namespace nsol
     NSOL_API
     Axon ( void );
 
+    NSOL_API
+    virtual NeuritePtr clone( void ) const final;
+
   };
 
 }
