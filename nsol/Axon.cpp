@@ -29,6 +29,12 @@ namespace nsol
   {
   }
 
+  NeuritePtr Axon::clone( void ) const
+  {
+    auto axon = new Axon;
+    _clone( axon );
+    return axon;
+  }
 }
 
 // EOF

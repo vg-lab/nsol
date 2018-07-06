@@ -144,6 +144,9 @@ namespace nsol {
 
     NSOL_API
     void _addBranchCount( unsigned int numBranches );
+  
+    NSOL_API
+    void _clone( NeuritePtr neurite ) const;
 
     TNeuriteType _neuriteType;
 
