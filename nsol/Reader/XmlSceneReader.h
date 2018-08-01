@@ -30,7 +30,7 @@
 #include <QFileInfo>
 #endif
 
-#include "BrionReader.h"
+#include "BrainReader.h"
 #include "SwcReader.h"
 #include <map>
 

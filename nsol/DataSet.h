@@ -40,7 +40,7 @@
 #include "Reader/SwcReader.h"
 
 #ifdef NSOL_USE_BRION
-#include "Reader/BrionReader.h"
+#include "Reader/BrainReader.h"
 #else
 #include <set>
 #endif

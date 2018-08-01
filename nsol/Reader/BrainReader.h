@@ -46,7 +46,7 @@
 namespace nsol
 {
 
-#define BRION_READER_TEMPLATE_CLASSES            \
+#define BRAIN_READER_TEMPLATE_CLASSES            \
   class NODE,                                         \
     class NEURONMORPHOLOGYSECTION,                    \
     class DENDRITE,                                   \
@@ -57,7 +57,7 @@ namespace nsol
     class MINICOLUMN,                                 \
     class COLUMN
 
-#define BRION_READER_TEMPLATE_CLASS_NAMES        \
+#define BRAIN_READER_TEMPLATE_CLASS_NAMES        \
   NODE,                                               \
     NEURONMORPHOLOGYSECTION,                          \
     DENDRITE,                                         \
@@ -68,18 +68,18 @@ namespace nsol
     MINICOLUMN,                                       \
     COLUMN
 
-  template < BRION_READER_TEMPLATE_CLASSES >
-  class BrionReaderTemplated
+  template < BRAIN_READER_TEMPLATE_CLASSES >
+  class BrainReaderTemplated
   {
 
   public:
 
     NeuronMorphologyPtr
-    loadMorphology( brion::Morphology* brionMorphology_,
+    loadMorphology( brain::neuron::Morphology* brainMorphology_,
                     bool reposition_ = true );
 
     NeuronMorphologyPtr
-    loadMorphology( const brion::URI& uri_,
+    loadMorphology( const brain::URI& uri_,
                     bool reposition_ = true );
 
     NeuronMorphologyPtr
@@ -111,9 +111,9 @@ namespace nsol
       const std::string& target_ );
 
 
-  }; // BrionReaderTemplated
+  }; // BrainReaderTemplated
 
-  typedef BrionReaderTemplated<
+  typedef BrainReaderTemplated<
     Node,
     NeuronMorphologySection,
     Dendrite,
@@ -122,9 +122,9 @@ namespace nsol
     NeuronMorphology,
     Neuron,
     MiniColumn,
-    Column > BrionReader;
+    Column > BrainReader;
 
-   typedef BrionReaderTemplated<
+   typedef BrainReaderTemplated<
      Node,
      NeuronMorphologySectionStats,
      DendriteStats,
@@ -133,9 +133,9 @@ namespace nsol
      NeuronMorphologyStats,
      Neuron,
      MiniColumnStats,
-     ColumnStats > BrionReaderStats;
+     ColumnStats > BrainReaderStats;
 
-   typedef BrionReaderTemplated<
+   typedef BrainReaderTemplated<
      NodeCached,
      NeuronMorphologySectionCachedStats,
      DendriteCachedStats,
@@ -144,20 +144,20 @@ namespace nsol
      NeuronMorphologyCachedStats,
      Neuron,
      MiniColumnStats,
-     ColumnStats > BrionReaderCachedStats;
+     ColumnStats > BrainReaderCachedStats;
 
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
-  BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
-    brion::Morphology* brionMorpho_,
+  BrainReaderTemplated< BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
+    brain::neuron::Morphology* brainMorpho_,
     bool reposition_ )
   {
     NeuronMorphologyPtr nsolMorpho = new NEURONMORPHOLOGY( );
 
-    const auto& points = brionMorpho_->getPoints( );
-    const auto& sections = brionMorpho_->getSections( );
-    const auto& sectionTypes = brionMorpho_->getSectionTypes( );
+    const auto& points = brainMorpho_->getPoints( );
+    const auto& sections = brainMorpho_->getSections( );
+    const auto& sectionTypes = brainMorpho_->getSectionTypes( );
 
     //Id of each node as loaded from file
     unsigned int nodeId = 1;
@@ -185,7 +185,7 @@ namespace nsol
       {
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = points[i];
+          brain::Vector4f point = points[i];
           nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
                                nodeId++, point.w( ) / 2.0f );
           soma->addNode( nsolNode );
@@ -231,7 +231,7 @@ namespace nsol
 
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = points[i];
+          brain::Vector4f point = points[i];
           nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
                                nodeId++, point.w( ) / 2.0f );
           nsolSection->addNode( nsolNode );
@@ -268,33 +268,33 @@ namespace nsol
     return nsolMorpho;
   }
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
-  BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
-    const brion::URI& uri_,
+  BrainReaderTemplated< BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
+    const brain::URI& uri_,
     bool reposition_ )
   {
-    brion::Morphology* brionMorpho = new brion::Morphology(
+    brain::neuron::Morphology* brainMorpho = new brain::neuron::Morphology(
       servus::URI( uri_.getPath( )));
 
-    NeuronMorphologyPtr nsolMorpho = loadMorphology( brionMorpho, reposition_ );
-    delete brionMorpho;
+    NeuronMorphologyPtr nsolMorpho = loadMorphology( brainMorpho, reposition_ );
+    delete brainMorpho;
     return nsolMorpho;
   }
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
-  BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
+  BrainReaderTemplated< BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadMorphology(
     const std::string& path_,
     bool reposition_ )
   {
-    return loadMorphology( brion::URI( path_ ), reposition_ );
+    return loadMorphology( brain::URI( path_ ), reposition_ );
   }
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   NeuronPtr
-  BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadNeuron(
+  BrainReaderTemplated
+  < BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadNeuron(
     const std::string& path_,
     const unsigned int gid_,
     const unsigned int layer_,
@@ -310,10 +310,10 @@ namespace nsol
     return neuron;
   }
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   void
-  BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigHierarchy(
+  BrainReaderTemplated
+  < BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigHierarchy(
     Columns& columns_,
     NeuronsMap& neurons_,
     const brion::BlueConfig& blueConfig_,
@@ -322,21 +322,21 @@ namespace nsol
     columns_.clear( );
     neurons_.clear( );
 
-    brion::Circuit circuit( blueConfig_.getCircuitSource( ));
-    brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
+    brain::Circuit circuit( blueConfig_.getCircuitSource( ));
+    brain::GIDSet gidSet = blueConfig_.parseTarget( target_ );
 
     uint32_t attributes =
-      brion::NEURON_COLUMN_GID | brion::NEURON_MINICOLUMN_GID |
-      brion::NEURON_LAYER | brion::NEURON_MTYPE | brion::NEURON_POSITION_X |
-      brion::NEURON_POSITION_Y | brion::NEURON_POSITION_Z |
+      brion::NEURON_COLUMN_GID | brain::NEURON_MINICOLUMN_GID |
+      brion::NEURON_LAYER | brain::NEURON_MTYPE | brain::NEURON_POSITION_X |
+      brion::NEURON_POSITION_Y | brain::NEURON_POSITION_Z |
       brion::NEURON_ROTATION;
 
-    brion::Strings functionTypes =
-      circuit.getTypes( brion::NEURONCLASS_FUNCTION_CLASS );
-    brion::Strings morphologyTypes =
-      circuit.getTypes( brion::NEURONCLASS_MORPHOLOGY_CLASS );
+    brain::Strings functionTypes =
+      circuit.getTypes( brain::NEURONCLASS_FUNCTION_CLASS );
+    brain::Strings morphologyTypes =
+      circuit.getTypes( brain::NEURONCLASS_MORPHOLOGY_CLASS );
 
-    const brion::NeuronMatrix& data = circuit.get( gidSet, attributes );
+    const brain::NeuronMatrix& data = circuit.get( gidSet, attributes );
 
     std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
 
@@ -437,19 +437,19 @@ namespace nsol
     }
   }
 
-  template < BRION_READER_TEMPLATE_CLASSES >
+  template < BRAIN_READER_TEMPLATE_CLASSES >
   void
-  BrionReaderTemplated
-  < BRION_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigConnectivity(
+  BrainReaderTemplated
+  < BRAIN_READER_TEMPLATE_CLASS_NAMES >::loadBlueConfigConnectivity(
     NeuronsMap& neurons_,
     Circuit& circuit_,
-    const brion::BlueConfig& blueConfig_,
+    const brain::BlueConfig& blueConfig_,
     const std::string& target_ )
   {
     circuit_.clear();
 
     brain::Circuit brainCircuit( blueConfig_);
-    brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
+    brain::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
     const brain::Synapses& brainSynapses = brainCircuit.
                                            getAfferentSynapses( gidSetBrain,
@@ -485,5 +485,5 @@ namespace nsol
 
 }
 
-#endif // __NSOL_BRION_READER__
-#endif // NSOL_USE_BRION
+#endif // __NSOL_BRAIN_READER__
+#endif // NSOL_USE_BRAIN

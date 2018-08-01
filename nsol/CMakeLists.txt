@@ -54,7 +54,7 @@ set(NSOL_PUBLIC_HEADERS
   # templated classes at last
   Writer/SwcWriter.h
   Writer/XmlSceneWriter.h
-  Reader/BrionReader.h
+  Reader/BrainReader.h
   Reader/SwcReader.h
   Reader/AscReader.h
   Reader/VasculatureReader.h
