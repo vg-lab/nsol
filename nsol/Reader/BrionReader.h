@@ -41,6 +41,8 @@
 #include <brion/brion.h>
 
 #include <string>
+
+#include <boost/filesystem.hpp>
 #include <vmmlib/vmmlib.h>
 
 namespace nsol
@@ -322,118 +324,154 @@ namespace nsol
     columns_.clear( );
     neurons_.clear( );
 
-    brion::Circuit circuit( blueConfig_.getCircuitSource( ));
-    brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
-
-    uint32_t attributes =
-      brion::NEURON_COLUMN_GID | brion::NEURON_MINICOLUMN_GID |
-      brion::NEURON_LAYER | brion::NEURON_MTYPE | brion::NEURON_POSITION_X |
-      brion::NEURON_POSITION_Y | brion::NEURON_POSITION_Z |
-      brion::NEURON_ROTATION;
-
-    brion::Strings functionTypes =
-      circuit.getTypes( brion::NEURONCLASS_FUNCTION_CLASS );
-    brion::Strings morphologyTypes =
-      circuit.getTypes( brion::NEURONCLASS_MORPHOLOGY_CLASS );
-
-    const brion::NeuronMatrix& data = circuit.get( gidSet, attributes );
-
-    std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
-
-    float toRadians = (M_PI/180.f);
-
-    for ( unsigned int i = 0; i < gidSet.size( ); i++ )
+    std::string circuitPath = blueConfig_.getCircuitSource( ).getPath( );
+    auto fileExt = boost::filesystem::extension( circuitPath );
+    if (( fileExt.compare( ".mvd" ) == 0 ) |
+        ( fileExt.compare( ".mvd2" ) == 0 ))
     {
-      unsigned int gid = neuronIds[i];
-      Matrix4_4f transform = Matrix4_4fIdentity;
+      brion::Circuit circuit( blueConfig_.getCircuitSource( ));
+      brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
 
-      float yRotation = boost::lexical_cast< float >( data[i][7] );
-      if ( std::isnan( yRotation ))
-        yRotation = 0.0f;
-      yRotation *= (toRadians);
-      transform( 0, 0 ) = cos( yRotation );
-      transform( 0, 2 ) = sin( yRotation );
-      transform( 2, 0 ) = -sin( yRotation );
-      transform( 2, 2 ) = cos( yRotation );
+      uint32_t attributes =
+        brion::NEURON_COLUMN_GID | brion::NEURON_MINICOLUMN_GID |
+        brion::NEURON_LAYER | brion::NEURON_MTYPE | brion::NEURON_POSITION_X |
+        brion::NEURON_POSITION_Y | brion::NEURON_POSITION_Z |
+        brion::NEURON_ROTATION;
 
-      Vec3f translationVec( boost::lexical_cast< float >( data[i][4] ),
-                            boost::lexical_cast< float >( data[i][5] ),
-                            boost::lexical_cast< float >( data[i][6] ));
-      transform( 0, 3 ) = translationVec.x( );
-      transform( 1, 3 ) = translationVec.y( );
-      transform( 2, 3 ) = translationVec.z( );
+      brion::Strings functionTypes =
+        circuit.getTypes( brion::NEURONCLASS_FUNCTION_CLASS );
+      brion::Strings morphologyTypes =
+        circuit.getTypes( brion::NEURONCLASS_MORPHOLOGY_CLASS );
 
-      unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] )
-                               + 1 );
+      const brion::NeuronMatrix& data = circuit.get( gidSet, attributes );
 
-      unsigned int miniColumnId = boost::lexical_cast< uint16_t >( data[i][1] );
-      unsigned int columnId = boost::lexical_cast< uint16_t >( data[i][0] );
-      std::string mType =
-        morphologyTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
-      std::string eType =
-        functionTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
+      std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
 
-      Neuron::TMorphologicalType morphoType = Neuron::UNDEFINED;
-      Neuron::TFunctionalType functionalType =
-        Neuron::UNDEFINED_FUNCTIONAL_TYPE;
+      float toRadians = (M_PI/180.f);
 
-      if( mType == "PYR" )
-        morphoType = Neuron::PYRAMIDAL;
-      else if( mType == "INT" )
-        morphoType = Neuron::INTERNEURON;
-
-      if( eType == "EXC" )
-        functionalType = Neuron::EXCITATORY;
-      else if( eType == "INH" )
-        functionalType = Neuron::INHIBITORY;
-
-      // std::cout << "*****************" << std::endl;
-      // std::cout << "Gid: " << gid << std::endl;
-      // std::cout << "Layer: " << layer << std::endl;
-      // std::cout << "Transform matrix:\n " << transform << std::endl;
-      // std::cout << "MiniColumn: " << miniColumnId << std::endl;
-      // std::cout << "Column: " << columnId << std::endl;
-      // std::cout << "Morphology type: " << morphoType << std::endl;
-      // std::cout << "Electric type: " << functionalType << std::endl;
-
-      MiniColumnPtr miniColumn = nullptr;
-      ColumnPtr column = nullptr;
-
-      for ( auto col: columns_ )
+      for ( unsigned int i = 0; i < gidSet.size( ); i++ )
       {
-        if ( col->id( ) == columnId )
+        unsigned int gid = neuronIds[i];
+        Matrix4_4f transform = Matrix4_4fIdentity;
+        float yRotation = boost::lexical_cast< float >( data[i][7] );
+        if ( std::isnan( yRotation ))
+          yRotation = 0.0f;
+        yRotation *= (toRadians);
+        transform( 0, 0 ) = cos( yRotation );
+        transform( 0, 2 ) = sin( yRotation );
+        transform( 2, 0 ) = -sin( yRotation );
+        transform( 2, 2 ) = cos( yRotation );
+
+        Vec3f translationVec( boost::lexical_cast< float >( data[i][4] ),
+                              boost::lexical_cast< float >( data[i][5] ),
+                              boost::lexical_cast< float >( data[i][6] ));
+        transform( 0, 3 ) = translationVec.x( );
+        transform( 1, 3 ) = translationVec.y( );
+        transform( 2, 3 ) = translationVec.z( );
+
+        unsigned short layer = ( boost::lexical_cast< uint16_t >( data[i][2] )
+                                 + 1 );
+
+        unsigned int miniColumnId = boost::lexical_cast< uint16_t >( data[i][1] );
+        unsigned int columnId = boost::lexical_cast< uint16_t >( data[i][0] );
+        std::string mType =
+          morphologyTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
+        std::string eType =
+          functionTypes[ boost::lexical_cast< uint16_t >( data[i][3] )];
+
+        Neuron::TMorphologicalType morphoType = Neuron::UNDEFINED;
+        Neuron::TFunctionalType functionalType =
+          Neuron::UNDEFINED_FUNCTIONAL_TYPE;
+
+        if( mType == "PYR" )
+          morphoType = Neuron::PYRAMIDAL;
+        else if( mType == "INT" )
+          morphoType = Neuron::INTERNEURON;
+
+        if( eType == "EXC" )
+          functionalType = Neuron::EXCITATORY;
+        else if( eType == "INH" )
+          functionalType = Neuron::INHIBITORY;
+
+        // std::cout << "*****************" << std::endl;
+        // std::cout << "Gid: " << gid << std::endl;
+        // std::cout << "Layer: " << layer << std::endl;
+        // std::cout << "Transform matrix:\n " << transform << std::endl;
+        // std::cout << "MiniColumn: " << miniColumnId << std::endl;
+        // std::cout << "Column: " << columnId << std::endl;
+        // std::cout << "Morphology type: " << morphoType << std::endl;
+        // std::cout << "Electric type: " << functionalType << std::endl;
+
+        MiniColumnPtr miniColumn = nullptr;
+        ColumnPtr column = nullptr;
+
+        for ( auto col: columns_ )
         {
-          column = col;
-          break;
+          if ( col->id( ) == columnId )
+          {
+            column = col;
+            break;
+          }
         }
-      }
 
-      if ( !column )
-      {
-        column = new COLUMN( columnId );
-        columns_.push_back( column );
-      }
-
-
-      for( auto miniCol: column->miniColumns( ))
-      {
-        if ( miniCol->id( ) == miniColumnId )
+        if ( !column )
         {
-          miniColumn = miniCol;
-          break;
+          column = new COLUMN( columnId );
+          columns_.push_back( column );
         }
-      }
 
-      if( !miniColumn )
+
+        for( auto miniCol: column->miniColumns( ))
+        {
+          if ( miniCol->id( ) == miniColumnId )
+          {
+            miniColumn = miniCol;
+            break;
+          }
+        }
+
+        if( !miniColumn )
+        {
+          miniColumn = new MINICOLUMN( column, miniColumnId );
+          column->addMiniColumn( miniColumn );
+        }
+
+        Neuron* neuron = new NEURON( nullptr, layer, gid, transform, miniColumn,
+                                     morphoType, functionalType );
+        miniColumn->addNeuron( neuron );
+        neurons_[ gid ] = neuron;
+      }
+    }
+    else if ( fileExt.compare( ".mvd3" ) == 0 )
+    {
+      ColumnPtr column = new COLUMN( 1 );
+      MiniColumnPtr minicolumn = new MINICOLUMN( column, 1 );
+      column->addMiniColumn( minicolumn );
+
+      brain::Circuit circuit( blueConfig_ );
+      brion::GIDSet gidSet = blueConfig_.parseTarget( target_ );
+      auto transforms = circuit.getTransforms( gidSet );
+
+      std::vector< unsigned int > neuronIds( gidSet.begin( ), gidSet.end( ));
+
+      for ( unsigned int i = 0; i < gidSet.size( ); i++ )
       {
-        miniColumn = new MINICOLUMN( column, miniColumnId );
-        column->addMiniColumn( miniColumn );
-      }
+        auto layer = 1;
+        unsigned int gid = neuronIds[i];
+        Matrix4_4f transform = Matrix4_4f::Identity( );
+        if (  i < transforms.size( ))
+          for ( unsigned int j = 0; j < 4; j++ )
+            for ( unsigned int k = 0; k < 4; k++)
+              transform( j, k ) = transforms[i]( k, j );
+        auto morphoType =  Neuron::UNDEFINED;
+        auto functionalType = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
-      Neuron* neuron = new NEURON( nullptr, layer, gid, transform, miniColumn,
-                                   morphoType, functionalType );
-      miniColumn->addNeuron( neuron );
-      neurons_[ gid ] = neuron;
+        std::cout << gid << std::endl;
+        Neuron* neuron = new NEURON( nullptr, layer, gid, transform, minicolumn,
+                                     morphoType, functionalType );
+        minicolumn->addNeuron( neuron );
+        neurons_[ gid ] = neuron;
+      }
     }
   }
 
