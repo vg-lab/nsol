@@ -118,8 +118,8 @@ namespace nsol
                              COLUMN > brionReader;
 
        brionReader.loadBlueConfigConnectivity( _neurons,
-                                                    _circuit,
-                                                   *_blueConfig, _target );
+                                               _circuit,
+                                               *_blueConfig, _target );
 #else
     void loadBlueConfigConnectivity( )
     {
@@ -331,12 +331,12 @@ namespace nsol
       if( !_blueConfig )
         return;
 
-      const brion::Circuit circuit( _blueConfig->getCircuitSource( ));
+      const brain::Circuit circuit( *_blueConfig );
       const std::string morphologySource =
         _blueConfig->getMorphologySource( ).getPath( );
 
-      const brion::NeuronMatrix& data = circuit.get(
-        neuronIds_, brion::NEURON_MORPHOLOGY_NAME );
+      const auto morphologyLabels = circuit.getMorphologyNames(
+        neuronIds_ );
 
       BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON,
                             SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
@@ -345,7 +345,7 @@ namespace nsol
       int i = 0;
       for( auto id: neuronIds_ )
       {
-        std::string morphologyLabel = data[i][0];
+        std::string morphologyLabel = morphologyLabels[i];
         i++;
         _loadMorphology( id, morphologySource, morphologyLabel,
                          brionReader );

@@ -59,7 +59,8 @@ endif()
 
 include(Common)
 
-common_find_package(Boost COMPONENTS unit_test_framework)
+common_find_package(Boost COMPONENTS unit_test_framework system filesystem
+  SYSTEM REQUIRED)
 common_find_package(Eigen3 SYSTEM REQUIRED)
 common_find_package(Qt5Core)
 common_find_package(HDF5 COMPONENTS C CXX)
