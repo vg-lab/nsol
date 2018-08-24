@@ -41,7 +41,7 @@ namespace nsol
 
   }
 
-  unsigned int NeuronMorphologySection::id( void )
+  unsigned int NeuronMorphologySection::id( void ) const
   {
       return _id;
   }
