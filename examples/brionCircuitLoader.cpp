@@ -170,7 +170,7 @@ int main( int argc, char* argv[ ])
     cout << " EXECUTING CircuitLoader... " << endl;
     cout << endl; cout << endl; cout << endl;
 
-    Circuit circuit = dataSet.circuit();
+    Circuit& circuit = dataSet.circuit();
 
     std::set<SynapsePtr> synapses = circuit.synapses( Circuit::ALL );
 

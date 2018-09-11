@@ -27,6 +27,7 @@ namespace nsol
 
   MorphologySynapse::MorphologySynapse( void )
   : Synapse( )
+  , _gid( 0 )
   , _preSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
   , _postSynapticSurfacePosition( Vec3f( 0.0f, 0.0f, 0.0f ))
   , _preSynapticSection( nullptr )
@@ -35,7 +36,8 @@ namespace nsol
   }
 
   MorphologySynapse::MorphologySynapse( const MorphologySynapse& other_ )
-  : Synapse( )
+  : Synapse( other_ )
+  , _gid( other_._gid )
   , _preSynapticSurfacePosition( other_.preSynapticSurfacePosition( ))
   , _postSynapticSurfacePosition( other_.postSynapticSurfacePosition( ))
   , _preSynapticSection( other_.preSynapticSection( ))
@@ -47,63 +49,51 @@ namespace nsol
   {
   }
 
+  unsigned int MorphologySynapse::gid( void ) const
+  {
+    return _gid;
+  }
+
+  void MorphologySynapse::gid( unsigned int gid_ )
+  {
+    _gid = gid_;
+  }
+
   MorphologySynapse::TSynapseType MorphologySynapse::synapseType( void ) const
   {
-    // -- Treatment of synapse type -- //
-    MorphologySynapse::TSynapseType synapseType_ =
-                                                  MorphologySynapse::UNDEFINED;
 
-    if( _preSynapticSection == nullptr )
+    if( !_postSynapticSection )
     {
-      if( _postSynapticSection == nullptr )
+      if( !_preSynapticSection )
+        return SOMATOSOMATIC;
+
+      switch( _preSynapticSection->neurite( )->neuriteType( ) )
       {
-        return MorphologySynapse::SOMATOSOMATIC;
+        case Neurite::DENDRITE:
+          return DENDROSOMATIC;
+        case Neurite::AXON:
+          return AXOSOMATIC;
       }
-      else
+    }
+    else
+    {
+      auto typePre = _preSynapticSection->neurite( )->neuriteType( );
+
+      if( typePre == Neurite::DENDRITE )
+        return DENDRODENDRITIC;
+
+      auto typePost = _postSynapticSection->neurite( )->neuriteType( );
+
+      if( typePre == Neurite::AXON )
       {
-        return synapseType_;
+        if( typePost == Neurite::DENDRITE )
+          return AXODENDRITIC;
+        else if( typePost == Neurite::AXON )
+          return AXOAXONIC;
       }
     }
 
-    Neurite::TNeuriteType neuritePresynaptic, neuritePostsynaptic;
-    neuritePresynaptic  = Neurite::DENDRITE;
-    neuritePostsynaptic = Neurite::DENDRITE;
-
-    this->_calculateSynapticSection( neuritePresynaptic,
-                                     MorphologySynapse::PRESYNAPTICSECTION );
-    this->_calculateSynapticSection( neuritePostsynaptic,
-                                     MorphologySynapse::POSTSYNAPTICSECTION );
-
-    // Checking type of synapse...
-    if( neuritePresynaptic == Neurite::DENDRITE ) // 1st Checkup
-    {
-      if( _postSynapticSection == nullptr )
-      {
-        return MorphologySynapse::DENDROSOMATIC;
-      }
-      if( neuritePostsynaptic == Neurite::DENDRITE )
-      {
-        return MorphologySynapse::DENDRODENDRITIC;
-      }
-    }
-
-    if( neuritePresynaptic == Neurite::AXON ) // 2nd Checkup
-    {
-      if( _postSynapticSection == nullptr )
-      {
-        return MorphologySynapse::AXOSOMATIC;
-      }
-      if( neuritePostsynaptic == Neurite::DENDRITE )
-      {
-        return MorphologySynapse::AXODENDRITIC;
-      }
-      if( neuritePostsynaptic == Neurite::AXON )
-      {
-        return MorphologySynapse::AXOAXONIC;
-      }
-    }
-
-    return synapseType_;
+    return UNDEFINED;
   }
 
   void MorphologySynapse::preSynapticSurfacePosition
@@ -145,30 +135,10 @@ namespace nsol
     _postSynapticSection = section_;
   }
 
-  NeuronMorphologySectionPtr MorphologySynapse::postSynapticSection(
-    void ) const
+  NeuronMorphologySectionPtr MorphologySynapse::postSynapticSection( void ) const
   {
     return _postSynapticSection;
   }
-
-  MorphologySynapse&
-  MorphologySynapse::operator = ( const MorphologySynapse& other_ )
-  {
-    if (this != &other_)
-    {
-      this->preSynapticNeuron( other_.preSynapticNeuron( ));
-      this->postSynapticNeuron( other_.postSynapticNeuron( ));
-      this->weight( other_.weight( ));
-
-      this->preSynapticSurfacePosition( other_.preSynapticSurfacePosition( ));
-      this->postSynapticSurfacePosition( other_.postSynapticSurfacePosition( ));
-      this->preSynapticSection( other_.preSynapticSection( ));
-      this->postSynapticSection( other_.postSynapticSection( ));
-    }
-
-    return *this;
-  }
-
 
 } // namespace nsol
 

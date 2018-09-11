@@ -110,8 +110,13 @@ namespace nsol
       NeuronsMap& neurons_,
       Circuit& circuit_,
       const brion::BlueConfig& blueConfig_,
-      const std::string& target_ );
+      const std::string& target_,
+      bool loadMorphologicalData = false );
 
+  protected:
+
+    Vec3f _calculatePosition( const Vec3fs& sectionNodes, unsigned int segmentID,
+                              float distance );
 
   }; // BrionReaderTemplated
 
@@ -269,6 +274,26 @@ namespace nsol
     }
     return nsolMorpho;
   }
+
+  template < BRION_READER_TEMPLATE_CLASSES >
+  Vec3f
+  BrionReaderTemplated< BRION_READER_TEMPLATE_CLASS_NAMES >::_calculatePosition(
+      const Vec3fs& sectionNodes, unsigned int segmentID, float distance )
+  {
+    Vec3f result;
+
+    auto start = sectionNodes[ segmentID ];
+    auto end = sectionNodes[ segmentID + 1 ];
+
+    Vec3f direction = ( end - start );
+
+    direction.normalize( );
+
+    result = start + direction * distance;
+
+    return result;
+  }
+
 
   template < BRION_READER_TEMPLATE_CLASSES >
   NeuronMorphologyPtr
@@ -482,44 +507,206 @@ namespace nsol
     NeuronsMap& neurons_,
     Circuit& circuit_,
     const brion::BlueConfig& blueConfig_,
-    const std::string& target_ )
+    const std::string& target_,
+    bool loadMorphologicalData )
   {
     circuit_.clear();
 
     brain::Circuit brainCircuit( blueConfig_);
     brion::GIDSet gidSetBrain = brainCircuit.getGIDs( target_ );
 
-    const brain::Synapses& brainSynapses = brainCircuit.
-                                           getAfferentSynapses( gidSetBrain,
-                                              brain::SynapsePrefetch::all );
+    // Load brain synapses with only attributes to avoid crash.
+    const brain::Synapses& brainSynapses =
+        brainCircuit.getAfferentSynapses( gidSetBrain,
+                                          brain::SynapsePrefetch::attributes );
 
-    // number of efferent synapses it is the same that afferent synapses
-    for( brain::Synapses::const_iterator it = brainSynapses.begin();
-                                           it != brainSynapses.end(); ++it)
+    std::vector< MorphologySynapsePtr > synapseVector( brainSynapses.size( ),
+                                                       nullptr );
+
+    typedef std::unordered_map< unsigned int,
+        NeuronMorphologySectionPtr > TGidSectionMap;
+
+    std::unordered_map< unsigned int, TGidSectionMap > neuronSectionMap;
+
+    // Load neuron gid to neuron pointer and section id to section pointer maps
+    for( auto neuron : neurons_ )
     {
-      const brain::Synapse& brainSynapse = (*it);
 
-      MorphologySynapsePtr afferent_synapse = MorphologySynapsePtr(
-                                                     new MorphologySynapse( ));
+      TGidSectionMap neuronSections;
+      auto morphology = neuron.second->morphology( );
+      for( auto neurite : morphology->neurites( ))
+      {
+        for( auto section : neurite->sections( ))
+        {
+          auto mSection = dynamic_cast< NeuronMorphologySectionPtr >( section );
 
-      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPre = neurons_
-                                         .find(brainSynapse.getPresynapticGID());
-      std::unordered_map< unsigned int, NeuronPtr >::iterator nitPost = neurons_
-                                         .find(brainSynapse.getPostsynapticGID());
+          neuronSections.insert( std::make_pair( mSection->id( ), mSection ));
 
-      if (( nitPre  == neurons_.end( ))||
-          ( nitPost == neurons_.end( )))
-          break;
+        }
+      }
 
-      afferent_synapse->preSynapticNeuron( nitPre->second->gid( ));
-      afferent_synapse->postSynapticNeuron( nitPost->second->gid( ));
-
-      afferent_synapse->weight( 0.0f );
-
-      circuit_.addSynapse( afferent_synapse );
-
+      neuronSectionMap.insert( std::make_pair( neuron.first, neuronSections ));
     }
+
+    bool computePositions = false;
+    if( loadMorphologicalData )
+    {
+
+      // Test if position files are present
+      try
+      {
+        auto brainSynapse = brainSynapses[ 0 ];
+        brainSynapse.getPresynapticSurfacePosition( );
+      }
+      catch( ... )
+      {
+        Log::log( "Computing positions...", LOG_LEVEL_VERBOSE );
+        computePositions = true;
+      }
+    }
+
+#ifdef NSOL_USE_OPENMP
+    #pragma omp parallel for
+#endif
+    for( unsigned int i = 0; i < brainSynapses.size( ); ++i )
+    {
+      auto brainSynapse = brainSynapses[ i ];
+
+      unsigned int gidPre = brainSynapse.getPresynapticGID( );
+      unsigned int gidPost = brainSynapse.getPostsynapticGID( );
+
+      auto neuronPre = neurons_.find( gidPre );
+      auto neuronPost = neurons_.find( gidPost );
+
+      // DISCARD INCOMPLETE AND INVALID SYNAPSES
+      // Check if both neurons have been loaded from given BlueConfig target
+      if (( neuronPre  == neurons_.end( )) ||
+          ( neuronPost == neurons_.end( )))
+      {
+        continue;
+      }
+      // Check if both sections exist
+      unsigned int sectionIdPre = brainSynapse.getPresynapticSectionID( );
+      unsigned int sectionIdPost = brainSynapse.getPostsynapticSectionID( );
+
+      // Check presynaptic section exists
+      auto neuronSectionsPre = neuronSectionMap.find( gidPre );
+      auto neuronSectionsPost = neuronSectionMap.find( gidPost );
+      auto sectionPre = neuronSectionsPre->second.find( sectionIdPre );
+      auto sectionPost = neuronSectionsPost->second.find( sectionIdPost );
+
+      if(( sectionIdPre != 0 &&
+          sectionPre == neuronSectionsPre->second.end( )) ||
+          ( sectionIdPost != 0 &&
+            sectionPost == neuronSectionsPost->second.end( )))
+      {
+        continue;
+      }
+
+      // Check if both segment IDs are in range considering section nodes
+      unsigned int segmentIdxPre = brainSynapse.getPresynapticSegmentID( );
+      unsigned int segmentIdxPost = brainSynapse.getPostsynapticSegmentID( );
+
+      if( loadMorphologicalData )
+      {
+        if( sectionPre->second->nodes( ).empty( ) ||
+            segmentIdxPre >= sectionPre->second->nodes( ).size( ) - 1 ||
+            ( sectionIdPost != 0 &&
+            ( sectionPost->second->nodes( ).empty( ) ||
+              segmentIdxPost >= sectionPost->second->nodes( ).size( ) - 1 )))
+          continue;
+      }
+
+      MorphologySynapsePtr afferentSynapse = new MorphologySynapse( );
+
+      afferentSynapse->preSynapticNeuron( neuronPre->second->gid( ));
+      afferentSynapse->postSynapticNeuron( neuronPost->second->gid( ));
+
+      afferentSynapse->weight( 0.0f );
+
+      if( loadMorphologicalData )
+      {
+
+        Vec3f positionPre;
+        Vec3f positionPost;
+
+        if( !computePositions )
+        {
+          // Set positionsPre
+          auto posPre = brainSynapse.getPresynapticSurfacePosition( );
+          auto posPost = brainSynapse.getPostsynapticSurfacePosition( );
+
+          positionPre = Vec3f( posPre.x( ), posPre.y( ), posPre.z( ));
+          positionPost = Vec3f( posPost.x( ), posPost.y( ), posPost.z( ));
+
+        }
+        else
+        {
+
+          positionPre =
+              _calculatePosition( sectionPre->second->nodes( ).positions( ),
+                                  segmentIdxPre,
+                                  brainSynapse.getPresynapticDistance( ));
+
+          // if section id equals zero, synapse is assigned to soma
+          if( sectionIdPost == 0 )
+          {
+            auto soma = neuronPost->second->morphology( )->soma( );
+
+            Vec3fs nodes;
+            nodes.reserve( 2 );
+            nodes.emplace_back( soma->center( ));
+            nodes.emplace_back( positionPre );
+
+            positionPost = _calculatePosition( nodes, 0, soma->maxRadius( ));
+          }
+          // dendritic synapse
+          else
+          {
+            positionPost =
+                _calculatePosition( sectionPost->second->nodes( ).positions( ),
+                                    segmentIdxPost,
+                                    brainSynapse.getPostsynapticDistance( ));
+          }
+
+          auto transform = neuronPre->second->transform( );
+          Vec4f aux = Vec4f( positionPre.x( ), positionPre.y( ), positionPre.z( ), 1);
+
+          positionPre = ( transform * aux ).block< 3, 1 >( 0, 0 );
+
+          transform = neuronPost->second->transform( );
+          aux = Vec4f( positionPost.x( ), positionPost.y( ), positionPost.z( ), 1);
+
+          positionPost = ( transform * aux ).block< 3, 1 >( 0, 0 );
+
+        }
+
+        afferentSynapse->preSynapticSurfacePosition( positionPre );
+        afferentSynapse->preSynapticSection( sectionPre->second );
+
+        afferentSynapse->postSynapticSurfacePosition( positionPost );
+
+        afferentSynapse->postSynapticSection(
+            ( sectionIdPost == 0 ) ? nullptr : sectionPost->second );
+
+      }
+
+      afferentSynapse->gid( i + 1 );
+
+#ifndef NSOL_USE_OPENMP
+      circuit_.addSynapse( afferentSynapse );
+#else
+      synapseVector[ i ] = afferentSynapse;
+#endif
+    } // for each synapse
+
+#ifdef NSOL_USE_OPENMP
+    circuit_.addSynapses( synapseVector );
+#endif
+
+    std::cout << "Loaded " << circuit_.numberOfSynapses( ) << " synapses." << std::endl;
   }
+
 
 }
 

@@ -59,6 +59,19 @@ namespace nsol
     NSOL_API
     DataSet( void );
 
+#ifdef NSOL_USE_BRION
+
+    const brion::BlueConfig* blueConfig( void ) const
+    {
+      return _blueConfig;
+    }
+
+    const std::string& blueConfigTarget( void ) const
+    {
+      return _target;
+    }
+
+#endif
 
     template < class NODE = Node,
                class NEURONMORPHOLOGYSECTION = NeuronMorphologySection,
@@ -81,10 +94,10 @@ namespace nsol
       _blueConfig = new brion::BlueConfig( blueConfig_ );
       _target = target_;
 
-      brionReader. loadBlueConfigHierarchy( _columns,
-                                            _neurons,
-                                            *_blueConfig,
-                                            _target );
+      brionReader.loadBlueConfigHierarchy( _columns,
+                                           _neurons,
+                                           *_blueConfig,
+                                           _target );
 
 #else
     void loadBlueConfigHierarchy( const std::string& /*blueConfig_*/,
@@ -105,7 +118,7 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigConnectivity( void )
+    void loadBlueConfigConnectivity( bool loadMorphologicalData = false )
     {
       if( !_blueConfig || _target.empty( ))
       {
@@ -117,9 +130,9 @@ namespace nsol
                              SOMA, NEURONMORPHOLOGY, NEURON, MINICOLUMN,
                              COLUMN > brionReader;
 
-       brionReader.loadBlueConfigConnectivity( _neurons,
-                                               _circuit,
-                                               *_blueConfig, _target );
+       brionReader.loadBlueConfigConnectivity( _neurons, _circuit,
+                                               *_blueConfig, _target,
+                                               loadMorphologicalData );
 #else
     void loadBlueConfigConnectivity( )
     {
@@ -137,7 +150,7 @@ namespace nsol
                class MINICOLUMN = MiniColumn,
                class COLUMN = Column >
 #ifdef NSOL_USE_BRION
-    void loadBlueConfigConnectivityWithMorphologies( )
+    void loadBlueConfigConnectivityWithMorphologies( void )
     {
       if( !_blueConfig || _target.empty())
       {
@@ -153,112 +166,7 @@ namespace nsol
                                              nsol::NeuronMorphology,
                                              nsol::Neuron,
                                              nsol::MiniColumn,
-                                             nsol::Column >( );
-
-      brain::Circuit brainCircuit( *_blueConfig );
-      brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
-      const brain::Synapses& brainSynapses = brainCircuit.getAfferentSynapses(
-          gidSetBrain, brain::SynapsePrefetch::all );
-
-      std::cout << "Loading synapse positions and sections..." << std::endl;
-
-      if( _circuit.synapses( ).size( ) != brainSynapses.size( ))
-      {
-        Log::log( "There is no correspondence between NSOL and BRION data.",
-                  LOG_LEVEL_WARNING );
-        return;
-      }
-
-      typedef std::unordered_map< unsigned int,
-          NeuronMorphologySectionPtr > TGidSectionMap;
-
-      std::unordered_map< unsigned int, TGidSectionMap > neuronSectionMap;
-
-      for( auto neuron : _neurons )
-      {
-
-        TGidSectionMap neuronSections;
-        auto morphology = neuron.second->morphology( );
-        for( auto neurite : morphology->neurites( ))
-        {
-          for( auto section : neurite->sections( ))
-          {
-            auto mSection = dynamic_cast< NeuronMorphologySectionPtr>( section );
-
-            neuronSections.insert( std::make_pair( mSection->id( ), mSection ));
-
-          }
-        }
-        neuronSectionMap.insert( std::make_pair( neuron.first, neuronSections ));
-      }
-
-      auto synapses = _circuit.synapses( );
-
-#ifdef NSOL_USE_OPENMP
-      #pragma omp parallel for
-#endif
-      for( int i = 0; i < ( int ) _circuit.synapses( ).size( ); ++i )
-      {
-
-        auto synapse = synapses[ i ];
-        auto brainSynapse = brainSynapses[ i ];
-
-        // Check type
-        auto morphologySynapse = dynamic_cast< MorphologySynapsePtr >( synapse );
-        if( !morphologySynapse )
-        {
-          Log::log( "Inconsistent type of synapse.", LOG_LEVEL_ERROR );
-          continue;
-        }
-
-        unsigned int gidPre = synapse->preSynapticNeuron( );
-        unsigned int gidPost = synapse->postSynapticNeuron( );
-
-
-        // Set positions
-        auto positionPre = brainSynapse.getPresynapticSurfacePosition( );
-        auto positionPost = brainSynapse.getPostsynapticSurfacePosition( );
-
-
-        morphologySynapse->preSynapticSurfacePosition( Vec3f( positionPre.x( ),
-                                                              positionPre.y( ),
-                                                              positionPre.z( )));
-        morphologySynapse->postSynapticSurfacePosition( Vec3f( positionPost.x( ),
-                                                               positionPost.y( ),
-                                                               positionPost.z( )));
-
-
-        // Check both neurons exist
-        if (( _neurons.find( gidPre ) == _neurons.end( )) ||
-            ( _neurons.find( gidPost ) == _neurons.end( )))
-        {
-          std::cout << "Neurons " << gidPre << " or " << gidPost << " not found." << std::endl;
-         continue;
-        }
-
-        unsigned int sectionIDPre = brainSynapse.getPresynapticSectionID( );
-        unsigned int sectionIDPost = brainSynapse.getPostsynapticSectionID( );
-
-        // Check presynaptic section exists
-        auto neuronSectionsPre = neuronSectionMap.find( gidPre );
-        auto sectionPre = neuronSectionsPre->second.find( sectionIDPre );
-
-        if( sectionPre == neuronSectionsPre->second.end( ))
-        {
-          continue;
-        }
-        // Check postsynaptic section exists
-        auto neuronSectionsPost = neuronSectionMap.find( gidPost );
-        auto sectionPost = neuronSectionsPost->second.find( sectionIDPost );
-
-        if( sectionPost == neuronSectionsPost->second.end( ))
-        {
-          continue;
-        }
-
-        morphologySynapse->preSynapticSection( sectionPre->second );
-        morphologySynapse->postSynapticSection( sectionPost->second );
-      }
+                                             nsol::Column >( true );
 
 #else
     void loadBlueConfigConnectivityWithMorphologies( )
@@ -591,6 +499,9 @@ namespace nsol
 
   protected:
 
+    Vec3f _calculatePosition( const Vec3fs& sectionNodes,
+                              unsigned int segmentID, float distance ) const;
+
     //! Entry for cortical hierarchy in form o a container of cortial columns
     Columns _columns;
 
@@ -604,9 +515,11 @@ namespace nsol
     std::map< std::string, NeuronMorphologyPtr > _morphologies;
 
 #ifdef NSOL_USE_BRION
+
     brion::BlueConfig* _blueConfig;
 
     std::string _target;
+
 #endif
 
 

@@ -113,14 +113,6 @@ namespace nsol
 
     ///@}
 
-    /** @name Operators */
-    ///@{
-
-    NSOL_API
-    virtual Synapse& operator = (const Synapse& other_ );
-
-    ///@}
-
   protected:
 
     //! GID Presynaptic neuron

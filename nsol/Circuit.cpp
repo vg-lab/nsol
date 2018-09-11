@@ -34,10 +34,7 @@ namespace nsol
 
   Circuit::~Circuit( void )
   {
-    _preSynapticConnections.clear( );
-    _postSynapticConnections.clear( );
-
-    _synapses.clear();
+    clear( );
   }
 
   //
@@ -53,15 +50,44 @@ namespace nsol
                                    synapse_->postSynapticNeuron( ), synapse_ ));
   }
 
+  void Circuit::addSynapses( const std::vector< SynapsePtr >& synapses )
+  {
+    _synapses.reserve( _synapses.size( ) + synapses.size( ));
+    for( auto synapse : synapses )
+    {
+      if( synapse )
+      {
+        addSynapse( synapse );
+      }
+    }
+
+    _synapses.shrink_to_fit( );
+  }
+
+  void Circuit::addSynapses( const std::vector< MorphologySynapsePtr >& synapses )
+  {
+    _synapses.reserve( _synapses.size( ) + synapses.size( ));
+    for( auto synapse : synapses )
+    {
+      if( synapse )
+      {
+        addSynapse(( SynapsePtr )synapse );
+      }
+    }
+
+    _synapses.shrink_to_fit( );
+  }
+
   void Circuit::clear( void )
   {
     _preSynapticConnections.clear( );
-    _postSynapticConnections.clear( );    
+    _postSynapticConnections.clear( );
 
-    for( auto synapse: _synapses )
+    for( auto synapse : _synapses )
     {
       delete( synapse );
     }
+
     _synapses.clear( );
   }
 
@@ -72,7 +98,7 @@ namespace nsol
 
 
   /** Efferents and afferents synapses **/
-  std::vector< SynapsePtr > Circuit::synapses( void ) const
+  const std::vector< SynapsePtr >& Circuit::synapses( void ) const
   {
      return _synapses;
   }

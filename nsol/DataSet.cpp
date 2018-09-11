@@ -125,4 +125,19 @@ namespace nsol
     return _neurons;
   }
 
+  Vec3f DataSet::_calculatePosition( const Vec3fs& sectionNodes,
+                                     unsigned int segmentID, float distance ) const
+  {
+    Vec3f result;
+
+    auto start = sectionNodes[ segmentID ];
+    auto end = sectionNodes[ segmentID + 1 ];
+
+    Vec3f direction = ( end - start );
+    direction.normalize( );
+
+    result = direction * distance;
+    return result;
+  }
+
 } // namespace nsol

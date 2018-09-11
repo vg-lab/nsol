@@ -78,6 +78,11 @@ namespace nsol
     NSOL_API
     void addSynapse( SynapsePtr synapse_ );
 
+    NSOL_API
+    void addSynapses( const std::vector< SynapsePtr >& synapses );
+
+    NSOL_API
+    void addSynapses( const std::vector< MorphologySynapsePtr >& synapses );
     /**
      * Method to clear all the connections
      * of all the circuit.
@@ -102,7 +107,7 @@ namespace nsol
      * @return vector with all the ordered synapses by its gid
      */
     NSOL_API
-    std::vector< SynapsePtr > synapses( void ) const;
+    const std::vector< SynapsePtr >& synapses( void ) const;
 
     /**
      * Method to get all the synapses from the circuit.
