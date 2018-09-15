@@ -31,7 +31,7 @@
 namespace nsol
 {
 
-  class MorphologySynapse : public virtual Synapse
+  class MorphologySynapse : public Synapse
   {
 
   public:
@@ -83,6 +83,18 @@ namespace nsol
     ///@{
 
     /**
+     * GID getter
+     */
+    NSOL_API unsigned int gid( void ) const;
+
+    /**
+     * GID setter
+     *
+     * Note: Zero as default value.
+     */
+    NSOL_API void gid( unsigned int gid_ );
+
+    /**
      * Method to get the type of the synapse.
      */
     NSOL_API
@@ -116,7 +128,7 @@ namespace nsol
      */
     NSOL_API
     void
-    postSynapticSurfacePosition(const Vec3f& position_ );
+    postSynapticSurfacePosition( const Vec3f& position_ );
 
     /**
      * Method to add a presynaptic section to the synapse.
@@ -125,7 +137,7 @@ namespace nsol
      */
     NSOL_API
     void preSynapticSection(
-      const  NeuronMorphologySectionPtr preSynapticSection_ );
+        const NeuronMorphologySectionPtr preSynapticSection_ );
 
     /**
      * Method to get the presynaptic section.
@@ -140,8 +152,7 @@ namespace nsol
      * @see Synapse
      */
     NSOL_API
-    void postSynapticSection(
-      const  NeuronMorphologySectionPtr section_ );
+    void postSynapticSection( const NeuronMorphologySectionPtr section_ );
 
     /**
      * Method to get the postsynaptic section.
@@ -152,52 +163,10 @@ namespace nsol
 
     ///@}
 
-    /** @name Operators */
-    ///@{
-
-    NSOL_API
-    virtual MorphologySynapse& operator =
-    ( const MorphologySynapse& other_ );
-
-    ///@}
-
-
-  private:
-
-    int
-    _calculateSynapticSection( Neurite::TNeuriteType& neuriteType_,
-                               TSynapticSectionType synapticSectionType_ ) const
-    {
-      NeuritePtr neurite = nullptr;
-
-      switch( synapticSectionType_ )
-      {
-        case MorphologySynapse::PRESYNAPTICSECTION:
-         {
-          if( _preSynapticSection == nullptr )
-           return -1;
-          neurite = _preSynapticSection->neurite( );
-         }
-         break;
-        case MorphologySynapse::POSTSYNAPTICSECTION:
-         {
-          if( _postSynapticSection == nullptr )
-           return -1;
-          neurite = _postSynapticSection->neurite( );
-         }
-         break;
-        default:
-         return -1;
-      }
-
-      neuriteType_ = neurite->neuriteType();
-
-      return 0;
-    }
-
-
-
   protected:
+
+    //! Synapse GID (default value zero)
+    unsigned int _gid;
 
     //! Presynaptic surface position
     Vec3f _preSynapticSurfacePosition;

@@ -53,7 +53,7 @@ namespace nsol
      * @return gid
      */
     NSOL_API
-    unsigned int id( void );
+    unsigned int id( void ) const;
 
     /**
      * Method to set the gid of the neuron morphology section.

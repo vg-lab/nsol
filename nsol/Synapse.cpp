@@ -74,18 +74,6 @@ namespace nsol
     return _weight;
   }
 
-  Synapse& Synapse::operator = ( const Synapse& other_ )
-  {
-    if (this != &other_)
-    {
-      this->preSynapticNeuron( other_.preSynapticNeuron( ));
-      this->postSynapticNeuron( other_.postSynapticNeuron( ));
-      this->weight( other_.weight( ));
-    }
-
-    return *this;
-  }
-
 } // namespace nsol
 
 // EOF

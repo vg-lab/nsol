@@ -69,6 +69,7 @@ namespace nsol
   typedef ::Eigen::Vector3f Vec3f;
   typedef ::Eigen::Matrix4f Matrix4_4f;
   typedef std::vector< Vec3i > Vec3is;
+  typedef std::vector< Vec3f > Vec3fs;
   typedef ::Eigen::Vector4f Vec4f;
   typedef Vec3is* Vec3isPtr;
   typedef std::vector< Vec4f > Vec4fs;

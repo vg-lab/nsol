@@ -30,7 +30,18 @@ namespace nsol
 
   class Nodes : public NsolVector<NodePtr>
   {
+  public:
 
+    NsolVector< Vec3f > positions( void ) const
+    {
+      NsolVector< Vec3f > result;
+      result.reserve( size( ));
+
+      for( auto node : *this )
+        result.emplace_back( node->point( ));
+
+      return result;
+    }
 
   protected:
 
