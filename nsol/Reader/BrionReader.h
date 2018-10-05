@@ -418,15 +418,6 @@ namespace nsol
         else if( eType == "INH" )
           functionalType = Neuron::INHIBITORY;
 
-        // std::cout << "*****************" << std::endl;
-        // std::cout << "Gid: " << gid << std::endl;
-        // std::cout << "Layer: " << layer << std::endl;
-        // std::cout << "Transform matrix:\n " << transform << std::endl;
-        // std::cout << "MiniColumn: " << miniColumnId << std::endl;
-        // std::cout << "Column: " << columnId << std::endl;
-        // std::cout << "Morphology type: " << morphoType << std::endl;
-        // std::cout << "Electric type: " << functionalType << std::endl;
-
         MiniColumnPtr miniColumn = nullptr;
         ColumnPtr column = nullptr;
 
@@ -487,11 +478,10 @@ namespace nsol
         if (  i < transforms.size( ))
           for ( unsigned int j = 0; j < 4; j++ )
             for ( unsigned int k = 0; k < 4; k++)
-              transform( j, k ) = transforms[i]( k, j );
+              transform( j, k ) = transforms[i]( j, k );
         auto morphoType =  Neuron::UNDEFINED;
         auto functionalType = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
-        std::cout << gid << std::endl;
         Neuron* neuron = new NEURON( nullptr, layer, gid, transform, minicolumn,
                                      morphoType, functionalType );
         minicolumn->addNeuron( neuron );
