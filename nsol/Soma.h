@@ -101,6 +101,12 @@ namespace nsol
     NSOL_API
     void addNode( NodePtr node );
 
+    /**
+     * Method to force the compute of the soma parameters (center and radii)
+     */
+    NSOL_API
+    void computeParams( void );
+
     NSOL_API
     virtual const SomaStats * stats( void ) const
     {

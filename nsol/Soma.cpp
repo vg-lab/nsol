@@ -78,6 +78,11 @@ namespace nsol
     _recalculateParams();
   }
 
+  void Soma::computeParams( void )
+  {
+    _recalculateParams( );
+  }
+
   SomaPtr Soma::clone( void ) const
   {
     SomaPtr newSoma = new Soma( );
