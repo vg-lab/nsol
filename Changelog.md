@@ -2,6 +2,15 @@
 
 ## git master
 
+## 0.4.0
+
+* [!86] Updated license file to LGPLv3.
+* [!85] Added method to force the recompute of the soma parameters
+* [!84] Fixed neuron transformation matrix load error
+* [!81] Connectivity load improvement
+* [!83] Added support to load mvd3 format circuit files in BrionReader and DataSet.…
+* [!82] Fix clone method for Dendrite and Axon objects
+
 ## 0.3.0
 
 * [!79] Spelling
