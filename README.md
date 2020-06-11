@@ -1,11 +1,12 @@
-[![build status](https://gitlab.gmrv.es/nsviz/nsol/badges/master/build.svg)](https://gitlab.gmrv.es/nsviz/nsol/commits/master)
-[![coverage report](https://gitlab.gmrv.es/nsviz/nsol/badges/master/coverage.svg)](https://gitlab.gmrv.es/nsviz/nsol/commits/master)
+[![build status](https://gitlab.vglab.es/nsviz/nsol/badges/master/build.svg)](https://gitlab.vglab.es/nsviz/nsol/commits/master)
+[![coverage report](https://gitlab.vglab.es/nsviz/nsol/badges/master/coverage.svg)](https://gitlab.vglab.es/nsviz/nsol/commits/master)
 
 
 # NSOL - Neuroscience Objects Library
-(c) 2015. GMRV / URJC
+(c) 2015. GMRV / VGLAB / URJC
 
 www.gmrv.es
+www.vglab.es
 gmrv@gmrv.es
 
 ## Introduction
@@ -40,7 +41,7 @@ Yosemite/Capitan/Sierra and Windows 7/8/10 (Visual Studio 2015 Win64).
 The following steps should be enough to build it under linux/Mac OSX:
 
 ~~~~~~~~~~~~~
-git clone --recursive https://github.com/gmrvvis/nsol
+git clone --recursive https://github.com/vg-lab/nsol
 mkdir nsol/build && cd nsol/build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCLONE_SUBPROJECTS=ON
 make
@@ -59,5 +60,5 @@ file and dumps some statistics about it, use the command:
 
 You can access the online API documentation generated from the source 
 (using [Doxygen](http://doxygen.org/) ) in 
-https://gmrvvis.github.io/doc/nsol/
+https://vg-lab.github.io/doc/nsol/
 
