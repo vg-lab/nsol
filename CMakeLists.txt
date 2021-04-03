@@ -65,7 +65,7 @@ common_find_package(Eigen3 SYSTEM REQUIRED)
 common_find_package(Qt5Core)
 common_find_package(HDF5 COMPONENTS C CXX)
 common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
-common_find_package(Brion ${NSOL_OPTS_FIND_ARGS})
+common_find_package(Brion SYSTEM ${NSOL_OPTS_FIND_ARGS})
 common_find_package(OpenMP)
 
 list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)

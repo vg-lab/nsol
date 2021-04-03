@@ -12,6 +12,25 @@ Ubuntu-Optional-Deps:
   - export BUILD_GENERATOR="Ninja"
   - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
   - bash .gitlab-ci.sh
+ except:
+  - master
+ tags:
+  - ubuntu
+
+Ubuntu-Optional-Deps-master:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export BUILD_OPTIONALS_SUBPROJECTS=1
+  - export CMAKE_EXTRA_TARGETS="nsol-tests"
+  - export BUILD_GENERATOR="Ninja"
+  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
+  - export DOCKER_REPO="gitlabci@gmrv.es:apps.private"
+  - bash .gitlab-ci.sh
+ only:
+  - master  
  tags:
   - ubuntu
 
