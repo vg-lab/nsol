@@ -16,6 +16,11 @@ if ( NSOL_WITH_EXAMPLES )
     common_application( nsolConnectivityMatrix NOHELP )
     list( APPEND NSOL_EXAMPLES_FILES ${NSOLCONNECTIVITYMATRIX_SOURCES} )
 
+    set( NSOLBLUECONFIGCONNECTIVITYTOTXT_SOURCES BlueConfigConnectivityToTxt.cpp )
+    set( NSOLBLUECONFIGCONNECTIVITYTOTXT_LINK_LIBRARIES nsol )
+    common_application( nsolBlueConfigConnectivityToTxt NOHELP )
+    list( APPEND NSOL_EXAMPLES_FILES ${NSOLBLUECONFIGCONNECTIVITYTOTXT_SOURCES} )
+
     set( NSOLCIRCUITLOADERSUMMARY_SOURCES nsolCircuitLoaderSummary.cpp )
     set( NSOLCIRCUITLOADERSUMMARY_LINK_LIBRARIES nsol )
     common_application( nsolCircuitLoaderSummary NOHELP )
