@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2014-2017 GMRV/URJC.
+ * Copyright (c) 2014-2017 VG-Lab/URJC.
  *
  * Authors: Pablo Toharia <pablo.toharia@urjc.es>
  *
- * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ * This file is part of nsol <https://github.com/vg-lab/nsol>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 3.0 as published
@@ -24,7 +24,7 @@
  * @brief
  * @author  Pablo Toharia <pablo.toharia@urjc.es>
  * @date
- * @remarks  (c) GMRV/URJC. All rights reserved.
+ * @remarks  (c) VG-Lab/URJC. All rights reserved.
             Do not distribute without further notice.
  */
 #ifndef __NSOL_ERROR__
