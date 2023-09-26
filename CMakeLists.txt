@@ -1,9 +1,9 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
 #   NSOL - NeuroScience Objects Library
-#   2014-2017 (c) GMRV / URJC
-#   gmrv@gmrv.es
-#   www.gmrv.es
+#   2014-2017 (c) VG-Lab / URJC
+#   vg-lab@vg-lab.es
+#   www.vg-lab.es
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
@@ -34,7 +34,7 @@ include(GitExternal)
 
 # description
 set(NSOL_DESCRIPTION "Nsol - Neuroscience Objects Library")
-set(COMMON_PROJECT_DOMAIN gmrv.es)
+set(COMMON_PROJECT_DOMAIN vg-lab.es)
 
 option( NSOL_WITH_EXAMPLES "NSOL_WITH_EXAMPLES" ON )
 option( NSOL_WITH_TESTS "NSOL_WITH_TESTS" ON )

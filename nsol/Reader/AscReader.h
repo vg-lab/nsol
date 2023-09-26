@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2014-2017 GMRV/URJC.
+ * Copyright (c) 2014-2017 VG-Lab/URJC.
  *
  * Authors: Pablo Toharia <pablo.toharia@urjc.es>
  *          Iago Calvo Lista
  *          Fernando Lucas Pérez
  *
- * This file is part of nsol <https://github.com/gmrvvis/nsol>
+ * This file is part of nsol <https://github.com/vg-lab/nsol>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 3.0 as published

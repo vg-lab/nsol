@@ -3,11 +3,11 @@
 
 
 # NSOL - Neuroscience Objects Library
-(c) 2015. GMRV / VGLAB / URJC
+(c) 2015. VG-Lab / VGLAB / URJC
 
-www.gmrv.es
+www.vg-lab.es
 www.vglab.es
-gmrv@gmrv.es
+vg-lab@vg-lab.es
 
 ## Introduction
 
@@ -19,7 +19,7 @@ It also reads circuits and morphologies using [Brion](https://github.com/BlueBra
 which is an optional dependency.  
 It is used in projects as
 [NeuroScheme](https://hbp-hpc-platform.fz-juelich.de/?hbp_software=neuroscheme),
-[ViSimpl](http://gmrv.es/visimpl/) and [NeuroLOTs](http://gmrv.es/neurotessmesh/)
+[ViSimpl](http://vg-lab.es/visimpl/) and [NeuroLOTs](http://vg-lab.es/neurotessmesh/)
 
 ## Dependencies
 
