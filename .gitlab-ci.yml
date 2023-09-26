@@ -27,7 +27,7 @@ Ubuntu-Optional-Deps-master:
   - export CMAKE_EXTRA_TARGETS="nsol-tests"
   - export BUILD_GENERATOR="Ninja"
   - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
-  - export DOCKER_REPO="gitlabci@vg-lab.es:apps.private"
+  # - export DOCKER_REPO="gitlabci@vg-lab.es:apps.private"
   - bash .gitlab-ci.sh
  only:
   - master  
