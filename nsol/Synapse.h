@@ -111,6 +111,11 @@ namespace nsol
     NSOL_API
     float weight( void ) const;
 
+    /** \brief Operator =. Included to avoid warning in modern gcc versions.
+     *
+     */
+    Synapse& operator=(const Synapse&) = default;
+
     ///@}
 
   protected:

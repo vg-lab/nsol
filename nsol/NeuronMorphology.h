@@ -33,6 +33,7 @@
 #include "Container/Dendrites.h"
 #include "Container/Neurites.h"
 #include "Container/Neurons.h"
+#include "Container/Axons.h"
 
 #include <string>
 
@@ -76,7 +77,7 @@ namespace nsol
     /**
      * Method to add a new neurite to the neuron.
      * @param neurite pointer to the neurite to be added.
-     * @return pointer to the added neurite
+     * @return pointer to the added neurite.
      */
     NSOL_API
     NeuritePtr addNeurite( NeuritePtr neurite );
@@ -106,18 +107,19 @@ namespace nsol
     Dendrites * apicalDendrites( void ) const;
 
     /**
-     * Method to get the first apical dendrite
-     * @return pointer to the apical dendrite. nullptr in case not found.
+     * Method to get the first apical dendrite.
+     * @return pointer to the apical dendrite.
      */
     NSOL_API
     DendritePtr apicalDendrite( void ) const;
 
     /**
-     * Returns axon if exists
-     * @return pointer to the axon or nullptr in case it doens't exist
+     * Method to get all the axons in a container.
+     * Memory for the container is allocated.
+     * @return pointer to the container of Axons.
      */
     NSOL_API
-    AxonPtr axon( void ) const;
+    Axons * axons() const;
 
 
     NSOL_API

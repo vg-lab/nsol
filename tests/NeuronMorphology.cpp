@@ -100,13 +100,13 @@ void checkMorphology( NeuronMorphologyPtr neuronMorphology )
   BOOST_CHECK_EQUAL( numApicals, 1 );
 
   BOOST_CHECK( neuronMorphology->apicalDendrite( ) != nullptr );
-  BOOST_CHECK( neuronMorphology->axon( ) != nullptr );
+  BOOST_CHECK( neuronMorphology->axons( )->empty() != true );
   BOOST_CHECK_EQUAL( neuronMorphology, neuronMorphology );
   BOOST_CHECK_EQUAL( neuronMorphology->parentNeurons( ).size( ), 0 );
 
   Neurites neurites = neuronMorphology->neurites( );
   unsigned int numSomaNodes =
-    ( unsigned int ) neuronMorphology->soma( )->nodes().size( );
+    static_cast<unsigned int>(neuronMorphology->soma( )->nodes().size( ));
   unsigned int numBranches = 0;
   unsigned int numBifurcations = 0;
   unsigned int numNeuritesNodes = 0;
@@ -117,7 +117,7 @@ void checkMorphology( NeuronMorphologyPtr neuronMorphology )
     numBifurcations += neurite->numBifurcations( );
     for ( auto section: neurite->sections( ) )
     {
-      numNeuritesNodes += ( unsigned int ) section->nodes( ).size( );
+      numNeuritesNodes += static_cast<unsigned int>(section->nodes( ).size( ));
     }
   }
 
@@ -148,12 +148,9 @@ BOOST_AUTO_TEST_CASE( neuronMorphology_dentrites )
 
   const NeuronMorphologyPtr neuronMorphology2 = new NeuronMorphology( );
   BOOST_CHECK( neuronMorphology2->apicalDendrite( ) == nullptr );
-  BOOST_CHECK( neuronMorphology2->axon( ) == nullptr );
+  BOOST_CHECK( neuronMorphology2->axons( )->empty() == true );
   BOOST_CHECK_EQUAL( neuronMorphology2->neurites( ).size( ), 0 );
-
-
 }
-
 
 BOOST_AUTO_TEST_CASE( neuronmorphology_stats)
 {

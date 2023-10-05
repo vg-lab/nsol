@@ -69,6 +69,151 @@ namespace nsol
       DEEP_CEREBELLAR_NUCLEI
     } TMorphologicalType;
 
+    /** \brief Returns the string of the given morphological type.
+     * \param[in] type Morphological type.
+     *
+     */
+    static std::string typeToString(const TMorphologicalType type)
+    {
+      std::string typeStr = "Undefined";
+
+      switch(type)
+      {
+        case PYRAMIDAL:
+          typeStr = "Pyramidal";
+          break;
+        case INTERNEURON:
+          typeStr = "Interneuron";
+          break;
+        case BASKET:
+          typeStr = "Basket";
+          break;
+        case STELLATE:
+          typeStr = "Stellate";
+          break;
+        case GOLGI:
+          typeStr = "Golgi";
+          break;
+        case GRANULE:
+          typeStr = "Granule";
+          break;
+        case LUGARO:
+          typeStr = "Lugaro";
+          break;
+        case UNIPOLAR_BRUSH:
+          typeStr = "Unipolar brush";
+          break;
+        case PURKINJE:
+          typeStr = "Purkinje";
+          break;
+        case CHANDELIER:
+          typeStr = "Chandelier";
+          break;
+        case INFERIOR_OLIVE:
+          typeStr = "Inferior olive";
+          break;
+        case DEEP_CEREBELLAR_NUCLEI:
+          typeStr = "Deep cerebellar nuclei";
+          break;
+        case UNDEFINED:
+          // fall through
+        default:
+          break;
+      }
+
+      return typeStr;
+    }
+
+    /** \brief Returns the color assigned to the type. Colors are now
+     * "random", should use the ones defined in other HDF5 activity
+     * file. TODO: change colors.
+     * \param[in] type Morphological type.
+     *
+     */
+    static Eigen::Vector3f typeToColor(const TMorphologicalType type)
+    {
+      Eigen::Vector3f color{0,0,0};
+
+      auto hex2float = [](int v){ return static_cast<float>(v)/255.f; };
+
+      switch(type)
+      {
+        case PYRAMIDAL:
+          color = { 1,0,0 };
+          break;
+        case INTERNEURON:
+          color = { 0,1,0 };
+          break;
+        case BASKET: // F37735
+          color = { hex2float(0xF3), hex2float(0x77), hex2float(0x35) };
+          break;
+        case STELLATE: // FFC425
+          color = { hex2float(0xFF), hex2float(0xC4), hex2float(0x25) };
+          break;
+        case GOLGI: // 332EBC
+          color = { hex2float(0x33), hex2float(0x2E), hex2float(0xBC) };
+          break;
+        case GRANULE: // E62214
+          color = { hex2float(0xE6), hex2float(0x22), hex2float(0x14) };
+          break;
+        case LUGARO:
+          color = { 0,1,1 };
+          break;
+        case UNIPOLAR_BRUSH:
+          color = { 1,0,0.5 };
+          break;
+        case PURKINJE: // 0F8944
+          color = { hex2float(0x0F), hex2float(0x89), hex2float(0x44) };
+          break;
+        case CHANDELIER:
+          color = { 1,0.5,0.5 };
+          break;
+        case INFERIOR_OLIVE:
+          color = { 0.5,0,0 };
+          break;
+        case DEEP_CEREBELLAR_NUCLEI:
+          color = { 0,0.5,0 };
+          break;
+        case UNDEFINED:
+          // fall through
+        default:
+          break;
+      }
+
+      return color;
+    }
+
+    static Eigen::Vector3f layerToColor(const unsigned short layer)
+    {
+      Eigen::Vector3f color{0,0,0};
+
+      switch(layer)
+      {
+        case 1:
+          color = { 1,0,0 };
+          break;
+        case 2:
+          color = { 1,1,0 };
+          break;
+        case 3:
+          color = { 0,1,0 };
+          break;
+        case 4:
+          color = { 0,1,1 };
+          break;
+        case 5:
+          color = { 0,0,1 };
+          break;
+        case 6:
+          color = { 1,0,1 };
+          break;
+        default:
+          break;
+      }
+
+      return color;
+    }
+
     //! Type of neuron based in neuron functionality
     typedef enum : uint8_t
     {
@@ -77,7 +222,41 @@ namespace nsol
       EXCITATORY
     } TFunctionalType;
 
+    static std::string functionToString(const TFunctionalType type)
+    {
+      std::string typeStr = "Undefined";
 
+      switch(type)
+      {
+        case INHIBITORY: typeStr = "Inhibitory"; break;
+        case EXCITATORY: typeStr = "Excitatory"; break;
+        default:
+        case UNDEFINED_FUNCTIONAL_TYPE:
+          break;
+      }
+
+      return typeStr;
+    }
+
+    static Eigen::Vector3f functionToColor(const TFunctionalType type)
+    {
+      Eigen::Vector3f color{0,0,0};
+
+      switch(type)
+      {
+        case INHIBITORY:
+          color = { 1,0,0 };
+          break;
+        case EXCITATORY:
+          color = { 0,0,1 };
+          break;
+        case UNDEFINED_FUNCTIONAL_TYPE:
+        default:
+          break;
+      }
+
+      return color;
+    }
 
     NSOL_API
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,

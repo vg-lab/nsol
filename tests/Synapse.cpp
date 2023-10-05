@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE( synapse_map )
   {
     sm.addSynapse( 0, synapse1 );
   }
-  catch( std::exception e )
+  catch( std::exception &e )
   {
     std::cout << e.what( ) << std::endl;
   }
