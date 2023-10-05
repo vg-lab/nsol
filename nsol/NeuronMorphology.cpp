@@ -28,13 +28,11 @@ namespace nsol
   NeuronMorphology::NeuronMorphology( void )
     : _soma( nullptr )
   {
-
   }
 
   NeuronMorphology::NeuronMorphology( SomaPtr soma_ )
     : _soma( soma_ )
   {
-
   }
 
   NeuronMorphology::~NeuronMorphology( void )
@@ -77,7 +75,24 @@ namespace nsol
       if ( dend )
         tmpDendrites->push_back( dend );
     }
+
     return tmpDendrites;
+  }
+
+  Axons * NeuronMorphology::axons() const
+  {
+    Axons * tmpAxons = new Axons;
+
+    NSOL_CONST_FOREACH( it, _neurites )
+    {
+
+      AxonPtr axon = NSOL_DYNAMIC_CAST( Axon, *it );
+
+      if ( axon )
+        tmpAxons->push_back( axon );
+    }
+
+    return tmpAxons;
   }
 
   Dendrites * NeuronMorphology::basalDendrites(void) const
@@ -126,18 +141,6 @@ namespace nsol
 
     return nullptr;
   }
-
-  AxonPtr NeuronMorphology::axon( void ) const
-  {
-    for ( const auto& neurite : _neurites )
-    {
-      auto axon_ = NSOL_DYNAMIC_CAST( Axon, neurite );
-      if ( axon_ )
-        return axon_;
-    }
-    return nullptr;
-  }
-
 
   Neurites & NeuronMorphology::neurites( void )
   {

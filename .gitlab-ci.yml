@@ -66,35 +66,35 @@ Ubuntu-Subproject:
  tags:
   - ubuntu
 
-#OSX-Optional-Deps:
-# stage: build
-# script:
-#  - date
-#  - hostname
-#  - uname -a
-#  - export BUILD_OPTIONALS_SUBPROJECTS=1
-#  - module load Qt-5.9.1
-#  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-#  - export BUILD_GENERATOR="Ninja"
-#  - export CMAKE_OSX_ARCHITECTURES=x86_64
-#  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
-#  - bash .gitlab-ci.sh
-# tags:
-#  - osx-sierra
+    #OSX-Optional-Deps:
+    # stage: build
+    # script:
+    #  - date
+    #  - hostname
+    #  - uname -a
+    #  - export BUILD_OPTIONALS_SUBPROJECTS=1
+    #  - module load Qt-5.9.1
+    #  - export CMAKE_EXTRA_TARGETS="nsol-tests"
+    #  - export BUILD_GENERATOR="Ninja"
+    #  - export CMAKE_OSX_ARCHITECTURES=x86_64
+    #  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
+    #  - bash .gitlab-ci.sh
+    # tags:
+    #  - osx-sierra
 
-#OSX-Subproject:
-# stage: build
-# script:
-#  - date
-#  - hostname
-#  - uname -a
-#  - module load Qt-5.9.1
-#  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-#  - export BUILD_GENERATOR="Ninja"
-#  - export CMAKE_OSX_ARCHITECTURES=x86_64
-#  - bash .gitlab-ci.sh
-# tags:
-#  - osx-sierra
+    #OSX-Subproject:
+    # stage: build
+    # script:
+    #  - date
+    #  - hostname
+    #  - uname -a
+    #  - module load Qt-5.9.1
+    #  - export CMAKE_EXTRA_TARGETS="nsol-tests"
+    #  - export BUILD_GENERATOR="Ninja"
+    #  - export CMAKE_OSX_ARCHITECTURES=x86_64
+    # - bash .gitlab-ci.sh
+    #tags:
+    # - osx-sierra
 
 Win7:
  stage: build

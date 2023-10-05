@@ -161,6 +161,11 @@ namespace nsol
     NSOL_API
     NeuronMorphologySectionPtr postSynapticSection( void ) const;
 
+    /** \brief Operator =. Included to avoid warning in modern gcc versions.
+     *
+     */
+    MorphologySynapse& operator=(const nsol::MorphologySynapse&) = default;
+
     ///@}
 
   protected:

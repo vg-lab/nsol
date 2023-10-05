@@ -45,13 +45,8 @@
 #include <set>
 #endif
 
-
-
-
 namespace nsol
 {
-
-
   class DataSet
   {
   public:
@@ -307,7 +302,7 @@ namespace nsol
     NSOL_API
     bool addNeuron( const NeuronPtr neuron )
     {
-      if ( _neurons.find( (unsigned int)neuron->gid( )) != _neurons.end( ))
+      if ( _neurons.find( static_cast<unsigned int>(neuron->gid( ))) != _neurons.end( ))
       {
         Log::log( std::string( "Warning: neuron with gid " ) +
                   std::to_string( neuron->gid( )) +
