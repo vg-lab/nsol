@@ -333,14 +333,14 @@ namespace nsol
       const Neuron::TMorphologicalType type_ = Neuron::PYRAMIDAL )
     {
       NeuronPtr neuron;
-#ifdef NSOL_USE_BRION
-      BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
-                            NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN  >
-        brionReader;
+// #ifdef NSOL_USE_BRION
+//       BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
+//                             NEURONMORPHOLOGY, NEURON, MINICOLUMN, COLUMN  >
+//         brionReader;
 
-      neuron =  brionReader.loadNeuron( file_, gid_, layer_, transform_,
-                                        type_ );
-#else
+//       neuron =  brionReader.loadNeuron( file_, gid_, layer_, transform_,
+//                                         type_ );
+// #else
       SwcReaderTemplated< NODE, NEURONMORPHOLOGYSECTION, DENDRITE, AXON, SOMA,
                           NEURONMORPHOLOGY, NEURON > swcReader;
       neuron = swcReader.readNeuron( file_ );
@@ -349,12 +349,13 @@ namespace nsol
       neuron->transform( ) = transform_;
       neuron->morphologicalType( ) = type_;
 
-#endif
+// #endif
       if ( neuron && !addNeuron( neuron ))
       {
         delete neuron;
-        return nullptr;
+        neuron = nullptr;
       }
+      
       return neuron;
     }
 

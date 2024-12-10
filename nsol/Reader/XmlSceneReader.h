@@ -344,20 +344,21 @@ namespace nsol
                     NeuronMorphologyPtr neuronMorphology = nullptr;
                     if ( morphologies.find( swc ) == morphologies.end( ))
                     {
-#ifdef NSOL_USE_BRION
-                    BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
-                                          DENDRITE, AXON, SOMA,
-                                          NEURONMORPHOLOGY, NEURON,
-                                          MINICOLUMN, COLUMN > brionReader;
-                     neuronMorphology = brionReader.loadMorphology( swc );
-#else
+                      
+// #ifdef NSOL_USE_BRION
+//                     BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
+//                                           DENDRITE, AXON, SOMA,
+//                                           NEURONMORPHOLOGY, NEURON,
+//                                           MINICOLUMN, COLUMN > brionReader;
+//                      neuronMorphology = brionReader.loadMorphology( swc );
+// #else
                      SwcReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
                                          DENDRITE, AXON, SOMA,
                                          NEURONMORPHOLOGY, NEURON> swcReader;
                      neuronMorphology = swcReader.readMorphology( swc );
-#endif
-                      if ( neuronMorphology )
-                        morphologies[ swc ] = neuronMorphology;
+// #endif
+                    if ( neuronMorphology )
+                      morphologies[ swc ] = neuronMorphology;
                     }
                     else
                     {
