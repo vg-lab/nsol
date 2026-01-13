@@ -344,18 +344,20 @@ namespace nsol
                     NeuronMorphologyPtr neuronMorphology = nullptr;
                     if ( morphologies.find( swc ) == morphologies.end( ))
                     {
-#ifdef NSOL_USE_BRION
-                    BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
-                                          DENDRITE, AXON, SOMA,
-                                          NEURONMORPHOLOGY, NEURON,
-                                          MINICOLUMN, COLUMN > brionReader;
-                     neuronMorphology = brionReader.loadMorphology( swc );
-#else
+// @fpozas Commented because it fails due to locale numeric differences (commas vs points, again... sigh)
+//
+// #ifdef NSOL_USE_BRION
+//                     BrionReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
+//                                           DENDRITE, AXON, SOMA,
+//                                           NEURONMORPHOLOGY, NEURON,
+//                                           MINICOLUMN, COLUMN > brionReader;
+//                      neuronMorphology = brionReader.loadMorphology( swc );
+// #else
                      SwcReaderTemplated< NODE, NEURONMORPHOLOGYSECTION,
                                          DENDRITE, AXON, SOMA,
                                          NEURONMORPHOLOGY, NEURON> swcReader;
                      neuronMorphology = swcReader.readMorphology( swc );
-#endif
+// #endif
                       if ( neuronMorphology )
                         morphologies[ swc ] = neuronMorphology;
                     }

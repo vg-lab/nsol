@@ -109,7 +109,7 @@ namespace nsol
       }
 
       Neurites neurites = morphology->neurites();
-      unsigned int type;
+      unsigned int type = SWC_SOMA;
 
       //Writing neurites
       for (Neurites::iterator it = neurites.begin();

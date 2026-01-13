@@ -324,8 +324,8 @@ namespace nsol
     columns_.clear( );
     neurons_.clear( );
 
-    std::string circuitPath = blueConfig_.getCircuitSource( ).getPath( );
-    auto fileExt = boost::filesystem::extension( circuitPath );
+    const std::string circuitPath = blueConfig_.getCircuitSource( ).getPath( );
+    const auto fileExt = boost::filesystem::path(circuitPath).extension().string();
     if (( fileExt.compare( ".mvd" ) == 0 ) |
         ( fileExt.compare( ".mvd2" ) == 0 ))
     {

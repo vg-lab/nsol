@@ -38,6 +38,7 @@
 #include "Container/Sections.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
+#include "Reader/SnuddaReader.h"
 
 #ifdef NSOL_USE_BRION
 #include "Reader/BrionReader.h"
@@ -45,13 +46,8 @@
 #include <set>
 #endif
 
-
-
-
 namespace nsol
 {
-
-
   class DataSet
   {
   public:
@@ -157,9 +153,7 @@ namespace nsol
 
       brain::Circuit brainCircuit( *_blueConfig );
       brion::GIDSet gidSetBrain = brainCircuit.getGIDs( _target );
-      const brain::Synapses& brainSynapses = brainCircuit.
-                                        getAfferentSynapses( gidSetBrain,
-                                              brain::SynapsePrefetch::all );
+      const brain::Synapses& brainSynapses = brainCircuit.getAfferentSynapses( gidSetBrain, brain::SynapsePrefetch::all );
 
       if( _circuit.synapses().size() != brainSynapses.size() )
       {
@@ -542,6 +536,16 @@ namespace nsol
 
     NSOL_API
     void writeXmlScene( const std::string& xmlSceneFile );
+
+    /** \brief Loads a Snudda dataset.
+     * \param[in] hdf5Network filename on disk of the HDF5 file containing scene data.
+     * \param[in] dataRepo filename on disk of the directory containing scene morphologies and activity.
+     */
+    NSOL_API
+    void loadSnuddaScene(const std::string &hdf5Network, const std::string &dataRepo)
+    {
+      SnuddaSceneReader::loadSnudda(hdf5Network, dataRepo, _columns, _circuit, _neurons, _morphologies);
+    }
 
   private:
 

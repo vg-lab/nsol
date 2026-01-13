@@ -155,6 +155,9 @@ namespace nsol
     /** @name Operators */
     ///@{
 
+
+    using Synapse::operator=;
+
     NSOL_API
     virtual MorphologySynapse& operator =
     ( const MorphologySynapse& other_ );

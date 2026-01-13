@@ -60,6 +60,7 @@ set(NSOL_PUBLIC_HEADERS
   Reader/VasculatureReader.h
   Reader/VectorsReader.h
   Reader/XmlSceneReader.h
+  Reader/SnuddaReader.h
   )
 
 set(NSOL_HEADERS )

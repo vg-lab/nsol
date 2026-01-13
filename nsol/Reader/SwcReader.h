@@ -32,6 +32,7 @@
 #include "../Stats/DendriteCachedStats.h"
 #include "../Stats/AxonCachedStats.h"
 #include "../Stats/NeuronMorphologyCachedStats.h"
+#include "../Stats/SomaStats.h"
 
 
 #include <iostream>
@@ -92,7 +93,6 @@ namespace nsol
     NeuronMorphologyPtr readMorphology( const std::string& fileName,
       bool reposition_ = false );
 
-
     protected:
 
     //! SWC element types
@@ -121,7 +121,6 @@ namespace nsol
       unsigned int id;
       NeuronMorphologySectionPtr parent;
     } TReadNeuriteStackElem;
-
 
     /**
      * Reads a Neurite from a processed SWC file, calls _ReadSection

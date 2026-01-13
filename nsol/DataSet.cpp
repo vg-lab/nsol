@@ -25,7 +25,6 @@
 #include "error.h"
 #include "Writer/XmlSceneWriter.h"
 
-
 namespace nsol
 {
 
