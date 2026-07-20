@@ -9,3 +9,7 @@ ci.*
 jambs*
 .cproject
 .project
+build
+.vscode
+.cache
+_CPack_Packages/
