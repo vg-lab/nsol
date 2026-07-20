@@ -172,9 +172,7 @@ namespace nsol
 
     for ( unsigned int sectId = 0; sectId < sections.size(); sectId++ )
     {
-      int fatherSectId = sections[sectId].y;
       brion::SectionType sectType = sectionTypes[sectId];
-      brion::SectionType fatherSectType = sectionTypes[fatherSectId];
 
       int startNode = sections[sectId].x;
       int endNode = sectId == sections.size( ) - 1 ?
@@ -198,6 +196,9 @@ namespace nsol
       }
       else
       {
+        int fatherSectId = sections[sectId].y;
+        brion::SectionType fatherSectType = sectionTypes[fatherSectId];
+
         nsolSection = new NEURONMORPHOLOGYSECTION( );
         nsolSection->id( sectId );
         nsolSections[sectId] = nsolSection;
