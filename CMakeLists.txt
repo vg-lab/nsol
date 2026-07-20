@@ -1,108 +1,185 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#
-#   NSOL - NeuroScience Objects Library
-#   2014-2017 (c) VG-Lab / URJC
-#   vg-lab@vg-lab.es
-#   www.vg-lab.es
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(nsol VERSION 0.4.1 )
-set(nsol_VERSION_ABI 4)
+cmake_minimum_required(VERSION 3.25)
 
-# Disable in source building
-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-  message(FATAL "no in source building allowed.")
+project(nsol
+  VERSION 0.4.1
+  LANGUAGES CXX
+  DESCRIPTION "NeuroScience Objects Library"
+)
+string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
+
+# Prevent in-source builds
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "In-source builds are not allowed. Please create a separate build directory.")
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
-  ${CMAKE_SOURCE_DIR}/CMake/common)
-
-if(NOT EXISTS ${CMAKE_SOURCE_DIR}/CMake/common/Common.cmake)
-  message(FATAL_ERROR "CMake/common missing, run: git submodule update --init")
-endif()
-
+# Set default build type if not specified
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif(NOT CMAKE_BUILD_TYPE)
-
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-  add_definitions(-DDEBUG)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
 endif()
 
-include(GitExternal)
+# Include custom modules
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-# description
-set(NSOL_DESCRIPTION "Nsol - Neuroscience Objects Library")
-set(COMMON_PROJECT_DOMAIN vg-lab.es)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option( NSOL_WITH_EXAMPLES "NSOL_WITH_EXAMPLES" ON )
-option( NSOL_WITH_TESTS "NSOL_WITH_TESTS" ON )
+# Options
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(BUILD_DOCS "Build documentation" ON)
+option(NSOL_WITH_EXAMPLES "Build examples" ON)
+option(NSOL_WITH_TESTS "Build tests" ON)
+option(NSOL_OPTIONALS_AS_REQUIRED "Force optional dependencies as required" OFF)
 
-# Option to build with shared pointers or raw pointers
-# TODO option(NSOL_WITH_SHARED_PTR "WITH_SHARED_PTR" OFF)
+option(NSOL_WITH_LOGGING "Enable logging" ON)
+option(NSOL_USE_SHARED_PTR "" OFF)
 
-option( NSOL_WITH_LOGGING "NSOL_WITH_LOGGING" ON )
-if ( NSOL_WITH_LOGGING )
-  add_definitions( -DNSOL_WITH_LOGGING )
-endif( )
+# Dependencies
+find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework filesystem)
+find_package(Eigen3 REQUIRED NO_MODULE)
+# find_package(Qt5 COMPONENTS Core)
+# find_package(HDF5 COMPONENTS C CXX)
+# find_package(OpenMP)
 
-option( NSOL_OPTIONALS_AS_REQUIRED
-  "Force optional dependencies as required" OFF )
-
-if ( NSOL_OPTIONALS_AS_REQUIRED )
-  set( NSOL_OPTS_FIND_ARGS "REQUIRED" )
-else()
-  set( NSOL_OPTS_FIND_ARGS "" )
+# Optional dependencies
+set(NSOL_OPTS_FIND_ARGS "")
+if(NSOL_OPTIONALS_AS_REQUIRED)
+  set(NSOL_OPTS_FIND_ARGS REQUIRED)
 endif()
 
+find_package(Qt5 ${NSOL_OPTS_FIND_ARGS} QUIET COMPONENTS Core)
+find_package(HDF5 ${NSOL_OPTS_FIND_ARGS} QUIET COMPONENTS C CXX)
+find_package(OpenMP ${NSOL_OPTS_FIND_ARGS} QUIET)
+# find_package(FiReS ${NSOL_OPTS_FIND_ARGS} QUIET)
+# find_package(Brion ${NSOL_OPTS_FIND_ARGS} QUIET)
 
-include(Common)
+include(FetchContent)
+FetchContent_Declare(
+    Brion
+    GIT_REPOSITORY https://github.com/vg-lab/Brion.git
+    GIT_SHALLOW ON
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(Brion)
+option(NSOL_USE_BRION "" ON)
 
-common_find_package(Boost COMPONENTS unit_test_framework system filesystem
-  SYSTEM REQUIRED)
-common_find_package(Eigen3 SYSTEM REQUIRED)
-common_find_package(Qt5Core)
-common_find_package(HDF5 COMPONENTS C CXX)
-common_find_package(FiReS ${NSOL_OPTS_FIND_ARGS})
-common_find_package(Brion SYSTEM ${NSOL_OPTS_FIND_ARGS})
-common_find_package(OpenMP)
+FetchContent_Declare(
+    FiReS
+    GIT_REPOSITORY https://github.com/vg-lab/FiReS.git
+    GIT_SHALLOW ON
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(FiReS)
+option(NSOL_USE_FIRES "" ON)
 
-list(APPEND NSOL_DEPENDENT_LIBRARIES Eigen3)
+# Definitions
+option(NSOL_USE_HDF5 "" ${HDF5_FOUND})
+option(NSOL_USE_QT5CORE "" ${Qt5Core_FOUND})
+option(NSOL_USE_OPENMP "" ${OpenMP_FOUND})
+# option(NSOL_USE_BRION "" ${Brion_FOUND})
+# option(NSOL_USE_FIRES "" ${FiReS_FOUND})
 
-if(HDF5_FOUND)
-  list(APPEND NSOL_PUBLIC_INCLUDE_DIRECTORIES ${HDF5_INCLUDE_DIRS})
-endif()
+# Add subdirectories
+add_subdirectory(${PROJECT_NAME_LOWER})
 
-if(FIRES_FOUND)
-  list(APPEND NSOL_DEPENDENT_LIBRARIES FiReS)
-endif()
-
-if(QT5CORE_FOUND)
-  list(APPEND NSOL_DEPENDENT_LIBRARIES Qt5Core)
-endif()
-
-if( BRION_FOUND )
-  list(APPEND NSOL_DEPENDENT_LIBRARIES Brion)
-endif( )
-
-if ( OPENMP_FOUND )
-  list( APPEND NSOL_DEPENDENT_LIBRARIES OpenMP )
-endif ( )
-
-common_find_package_post()
-
-add_subdirectory(nsol)
-add_subdirectory(tests)
-add_subdirectory(examples)
 add_subdirectory(testData)
 
-set(DOCS README.md LICENSE.txt)
-install( FILES ${DOCS} DESTINATION share/nsol COMPONENT dev)
+# Don't build tests when others include the library
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND NSOL_WITH_TESTS)
+  include(CTest)
+  add_subdirectory(tests)
+endif()
 
-set(DOXYGEN_MAINPAGE_MD README.md )
-set(DOXYGEN_EXTRA_INPUT ${PROJECT_SOURCE_DIR}/README.md)
-include(DoxygenRule)
+# Don't build examples when others include the library
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND NSOL_WITH_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
-include(CPackConfig)
-include(CTest)
+# Define installation directory variables
+include(GNUInstallDirs)
+
+# Create an export
+install(TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME_LOWER}
+  FILE_SET public_headers DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILE_SET public_headers_generated DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install the project targets file
+install(EXPORT ${PROJECT_NAME}Targets
+  FILE ${PROJECT_NAME_LOWER}-targets.cmake
+  NAMESPACE ${PROJECT_NAME}::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}
+)
+
+# Include the CMake module that provides helpers for creating package config files
+include(CMakePackageConfigHelpers)
+
+# Generate the project-specific cmake config file
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/project-config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}
+)
+
+# Generate the project-specific cmake config version file
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+# Install the cmake config files
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}
+)
+
+# Install repo data
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/README.md"
+  "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt"
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}
+)
+
+# Allow the configured project-config.cmake in the build directory to be used by
+# other projects, without needing it to be installed
+export(EXPORT ${PROJECT_NAME}Targets
+  NAMESPACE ${PROJECT_NAME}::
+  FILE ${PROJECT_NAME_LOWER}-targets.cmake
+)
+
+# Generate documentation
+find_package(Doxygen)
+if(DOXYGEN_FOUND AND BUILD_DOCS)
+  set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs_doxygen)
+  set(DOXYFILE_IN ${PROJECT_SOURCE_DIR}/cmake/Doxyfile.in)
+  set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+  configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
+
+  doxygen_add_docs(
+    ${PROJECT_NAME}_doxygen
+    CONFIG_FILE ${DOXYFILE_OUT}
+  )
+
+  install(DIRECTORY
+    ${DOXYGEN_OUTPUT_DIR}/html
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    COMPONENT ${PROJECT_NAME}_documentation
+    OPTIONAL
+  )
+endif()
+
+# Packaging
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE.txt")
+set(CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README.md")
+set(CPACK_SOURCE_GENERATOR "TGZ")
+include(CPack)

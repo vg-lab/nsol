@@ -23,7 +23,7 @@
 #ifndef __NSOL_SIMPLIFIER__
 #define __NSOL_SIMPLIFIER__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "NsolTypes.h"
 
@@ -56,7 +56,7 @@ namespace nsol
      * Returns the instance of the singelton class
      * @return the Simplifier instance
      */
-    NSOL_API
+    NSOL_EXPORT
     static Simplifier* Instance( );
 
     /**
@@ -69,14 +69,14 @@ namespace nsol
      * @param clone_ if true the morphology is clone before the simplification
      *        if false the simplification is made over the orignal morphology
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr simplify(
       NeuronMorphologyPtr morpho_,
       TSimplificationMethod simplMethod_ = DELETE_ALL,
       float tolerance_ = 0.1,
       bool clone_ = false );
 
-    NSOL_API
+    NSOL_EXPORT
     MorphologyPtr simplify(
       MorphologyPtr morpho_,
       TSimplificationMethod simplMethod_ = DELETE_ALL,
@@ -90,7 +90,7 @@ namespace nsol
      * @param clone_ if true the morphology is clone before the correction
      *        if false the correction is made over the orignal morphology
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr adaptSoma(
       NeuronMorphologyPtr morpho_,
       bool clone_ = false );
@@ -104,7 +104,7 @@ namespace nsol
      * @param clone_ if true the morphology is clone before the correction
      *        if false the correction is made over the orignal morphology
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr adaptBifurcations(
       NeuronMorphologyPtr morpho_,
       float tolerance_ = 0.9f,
@@ -116,7 +116,7 @@ namespace nsol
      * @param clone_ if true the morphology is clone before the cutout
      *        if false the cutout is made over the orignal morphology
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr cutout(
       NeuronMorphologyPtr morpho_,
       bool clone_ = false );
@@ -127,14 +127,14 @@ namespace nsol
      * segment that they represent
      * @param morpho_ neuronal morphology to unify sections
      */
-    NSOL_API
+    NSOL_EXPORT
     MorphologyPtr repairSections(
       MorphologyPtr morpho_ );
 
-    NSOL_API
+    NSOL_EXPORT
     Simplifier( Simplifier const& ) = delete;
 
-    NSOL_API
+    NSOL_EXPORT
     void operator = ( Simplifier const& ) = delete;
 
   private:

@@ -43,7 +43,6 @@
 #include <string>
 
 #include <boost/filesystem.hpp>
-#include <vmmlib/vmmlib.h>
 
 namespace nsol
 {
@@ -175,13 +174,13 @@ namespace nsol
 
     for ( unsigned int sectId = 0; sectId < sections.size(); sectId++ )
     {
-      int fatherSectId = sections[sectId].y( );
+      int fatherSectId = sections[sectId].y;
       brion::SectionType sectType = sectionTypes[sectId];
       brion::SectionType fatherSectType = sectionTypes[fatherSectId];
 
-      int startNode = sections[sectId].x( );
+      int startNode = sections[sectId].x;
       int endNode = sectId == sections.size( ) - 1 ?
-        points.size( ) : sections[sectId+1].x( );
+        points.size( ) : sections[sectId+1].x;
 
       NODE* nsolNode = nullptr;
       NEURONMORPHOLOGYSECTION* nsolSection = nullptr;
@@ -192,9 +191,9 @@ namespace nsol
       {
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = points[i];
-          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
-                               nodeId++, point.w( ) / 2.0f );
+          auto point = points[i];
+          nsolNode = new NODE( Vec3f( point.x, point.y, point.z),
+                               nodeId++, point.w / 2.0f );
           soma->addNode( nsolNode );
         }
         nsolSections[sectId] = nullptr;
@@ -238,9 +237,9 @@ namespace nsol
 
         for ( int i = startNode; i < endNode; i++ )
         {
-          brion::Vector4f point = points[i];
-          nsolNode = new NODE( Vec3f( point.x( ), point.y( ), point.z( )),
-                               nodeId++, point.w( ) / 2.0f );
+          auto point = points[i];
+          nsolNode = new NODE( Vec3f( point.x, point.y, point.z),
+                               nodeId++, point.w / 2.0f );
           nsolSection->addNode( nsolNode );
         }
       }
@@ -302,7 +301,7 @@ namespace nsol
     bool reposition_ )
   {
     brion::Morphology* brionMorpho = new brion::Morphology(
-      servus::URI( uri_.getPath( )));
+      brion::URI( uri_.getPath( )));
 
     NeuronMorphologyPtr nsolMorpho = loadMorphology( brionMorpho, reposition_ );
     delete brionMorpho;
@@ -350,7 +349,7 @@ namespace nsol
     neurons_.clear( );
 
     std::string circuitPath = blueConfig_.getCircuitSource( ).getPath( );
-    auto fileExt = boost::filesystem::extension( circuitPath );
+    auto fileExt = boost::filesystem::path( circuitPath ).extension( ).string( );
     if (( fileExt.compare( ".mvd" ) == 0 ) |
         ( fileExt.compare( ".mvd2" ) == 0 ))
     {
@@ -478,7 +477,7 @@ namespace nsol
         if (  i < transforms.size( ))
           for ( unsigned int j = 0; j < 4; j++ )
             for ( unsigned int k = 0; k < 4; k++)
-              transform( j, k ) = transforms[i]( j, k );
+              transform( j, k ) = transforms[i][k][j];
         auto morphoType =  Neuron::UNDEFINED;
         auto functionalType = Neuron::UNDEFINED_FUNCTIONAL_TYPE;
 
@@ -626,8 +625,8 @@ namespace nsol
           auto posPre = brainSynapse.getPresynapticSurfacePosition( );
           auto posPost = brainSynapse.getPostsynapticSurfacePosition( );
 
-          positionPre = Vec3f( posPre.x( ), posPre.y( ), posPre.z( ));
-          positionPost = Vec3f( posPost.x( ), posPost.y( ), posPost.z( ));
+          positionPre = Vec3f( posPre.x, posPre.y, posPre.z);
+          positionPost = Vec3f( posPost.x, posPost.y, posPost.z);
 
         }
         else

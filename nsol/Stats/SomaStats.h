@@ -44,16 +44,16 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     SomaStats( );
 
     /**
      * Destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~SomaStats( );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual const SomaStats * stats( void ) const;
 
     virtual float getStat( TSomaStat stat ) const;

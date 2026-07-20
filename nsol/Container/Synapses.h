@@ -35,7 +35,7 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     void addSynapse( unsigned int neuronGID_, SynapsePtr synapse_ );
 
   private:

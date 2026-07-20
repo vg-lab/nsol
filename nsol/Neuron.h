@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURON__
 #define __NSOL_NEURON__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "NsolTypes.h"
 #include "Object.h"
 #include "NeuronMorphology.h"
@@ -258,7 +258,7 @@ namespace nsol
       return color;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     Neuron( const NeuronMorphologyPtr neuronMorphology = nullptr,
             const unsigned short layer = 0,
             const unsigned int gid = 0,
@@ -267,94 +267,94 @@ namespace nsol
             const TMorphologicalType morphologicalType = UNDEFINED,
             const TFunctionalType functionalType = UNDEFINED_FUNCTIONAL_TYPE );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Neuron( void );
 
-    NSOL_API
+    NSOL_EXPORT
     bool hasMorphology() const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool isMorphologyLoaded( ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // NeuronMorphologyPtr createMorphology( void );
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr morphology( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual void morphology( NeuronMorphologyPtr morphology );
 
     /**
      * Method to get the transformation matrix of the neuron.
      * @return transformation matrix
      */
-    NSOL_API
+    NSOL_EXPORT
     Matrix4_4f & transform( void );
 
     /**
      * Method to get-set the layer of the neuron.
      * @return layer
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned short & layer( void );
 
     /**
      * Method to get-set the layer of the neuron.
      * @return layer
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned int & gid( void );
 
-    NSOL_API
+    NSOL_EXPORT
     void miniColumn(MiniColumnPtr miniColumn);
 
-    NSOL_API
+    NSOL_EXPORT
     MiniColumnPtr &miniColumn( void );
 
     /**
      * Method to get the neuron type based in morphology.
      * @return neuron type
      */
-    NSOL_API
+    NSOL_EXPORT
     TMorphologicalType & morphologicalType();
 
     /**
      * Method to get the neuron type based in functionality.
      * @return neuron type
      */
-    NSOL_API
+    NSOL_EXPORT
     TFunctionalType & functionalType();
 
     /**
      * Method to know if the neuron is pyramidal type.
      * @return bool
      */
-    NSOL_API
+    NSOL_EXPORT
     bool isPyramidal( void );
 
     /**
      * Method to know if the neuron is internuron type.
      * @return bool
      */
-    NSOL_API
+    NSOL_EXPORT
     bool isInterneuron( void );
 
     /**
      * Method to know if the neuron is excitatory type.
      * @return bool
      */
-    NSOL_API
+    NSOL_EXPORT
     bool isExcitatory( void );
 
     /**
      * Method to know if the neuron is inhibitory type.
      * @return bool
      */
-    NSOL_API
+    NSOL_EXPORT
     bool isInhibitory( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronPtr asNeuron( void )
     {
       return this;

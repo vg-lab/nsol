@@ -22,7 +22,7 @@
 #ifndef __NSOL_DENDRITE__
 #define __NSOL_DENDRITE__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Neurite.h"
 
 namespace nsol
@@ -57,14 +57,14 @@ namespace nsol
       return os;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     Dendrite ( TDendriteType dendriteType = BASAL );
 
     //! Get the type of neurite
-    NSOL_API
+    NSOL_EXPORT
     TDendriteType & dendriteType( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuritePtr clone( void ) const final;
 
   protected:

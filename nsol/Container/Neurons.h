@@ -22,7 +22,7 @@
 #ifndef __NSOL__NEURONS__
 #define __NSOL__NEURONS__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include <nsol/NsolTypes.h>
 #include <unordered_map>
 
@@ -35,7 +35,7 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     bool addNeuron( NeuronPtr neuron );
   };
 }

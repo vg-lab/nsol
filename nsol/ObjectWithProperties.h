@@ -22,7 +22,7 @@
 #ifndef __NSOL_OBJECT_USE_PROPERTIES__
 #define __NSOL_OBJECT_USE_PROPERTIES__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Object.h"
 #include "NsolTypes.h"
 
@@ -41,13 +41,13 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     ObjectWithProperties( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ~ObjectWithProperties( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ObjectWithPropertiesPtr properties( void );
 
     virtual ObjectPtr create( void )

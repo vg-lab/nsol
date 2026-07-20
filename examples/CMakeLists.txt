@@ -1,110 +1,185 @@
-if ( NSOL_WITH_EXAMPLES )
+if(NSOL_WITH_EXAMPLES)
 
-  if( BRION_FOUND )
-    set( NSOLBRIONMORPHOLOGYREADER_SOURCES brionMorphologyReader.cpp )
-    set( NSOLBRIONMORPHOLOGYREADER_LINK_LIBRARIES nsol )
-    common_application( nsolBrionMorphologyReader NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLBRIONMORPHOLOGYREADER_SOURCES} )
+  # Function to create and install an example application
+  function(add_project_example)
+    set(options)
+    set(oneValueArgs TARGET_NAME)
+    set(multiValueArgs SOURCES LINK_LIBRARIES)
+    cmake_parse_arguments(PARSE_ARGV 0 ARG "${options}" "${oneValueArgs}" "${multiValueArgs}")
 
-    set( NSOLBRIONCIRCUITLOADER_SOURCES brionCircuitLoader.cpp )
-    set( NSOLBRIONCIRCUITLOADER_LINK_LIBRARIES nsol )
-    common_application( nsolBrionCircuitLoader NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLBRIONCIRCUITLOADER_SOURCES} )
+    if(NOT ARG_TARGET_NAME OR NOT ARG_SOURCES)
+      message(FATAL_ERROR "TARGET_NAME and SOURCES are required arguments")
+    endif()
 
-    set( NSOLCONNECTIVITYMATRIX_SOURCES nsolConnectivityMatrix.cpp )
-    set( NSOLCONNECTIVITYMATRIX_LINK_LIBRARIES nsol )
-    common_application( nsolConnectivityMatrix NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLCONNECTIVITYMATRIX_SOURCES} )
+    add_executable(${ARG_TARGET_NAME} ${ARG_SOURCES})
+    target_link_libraries(${ARG_TARGET_NAME} PRIVATE ${PROJECT_NAME} ${ARG_LINK_LIBRARIES})
 
-    set( NSOLBLUECONFIGCONNECTIVITYTOTXT_SOURCES BlueConfigConnectivityToTxt.cpp )
-    set( NSOLBLUECONFIGCONNECTIVITYTOTXT_LINK_LIBRARIES nsol )
-    common_application( nsolBlueConfigConnectivityToTxt NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLBLUECONFIGCONNECTIVITYTOTXT_SOURCES} )
+    # Get current parent scope value and create a local copy
+    set(PROJECT_EXAMPLES_FILES_VAR "${${PROJECT_NAME}_EXAMPLES_FILES}")
+    set(current_examples ${PROJECT_EXAMPLES_FILES_VAR})
+    
+    # Convert to CMake list and append new sources
+    list(APPEND current_examples ${ARG_SOURCES})
+    
+    # Remove duplicates and update parent scope
+    list(REMOVE_DUPLICATES current_examples)
+    set(${PROJECT_NAME}_EXAMPLES_FILES "${current_examples}" PARENT_SCOPE)
 
-    set( NSOLCIRCUITLOADERSUMMARY_SOURCES nsolCircuitLoaderSummary.cpp )
-    set( NSOLCIRCUITLOADERSUMMARY_LINK_LIBRARIES nsol )
-    common_application( nsolCircuitLoaderSummary NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLCIRCUITLOADERSUMMARY_SOURCES} )
-  endif( )
+    # Create all examples target
+    if(NOT TARGET ${PROJECT_NAME}_all_examples)
+      add_custom_target(${PROJECT_NAME}_all_examples)
+    endif()
 
+    # Add example to global examples target
+    add_dependencies(${PROJECT_NAME}_all_examples ${ARG_TARGET_NAME})
+  endfunction()
 
-  set( NSOLSWCREADER_SOURCES SwcReader.cpp )
-  set( NSOLSWCREADER_LINK_LIBRARIES nsol )
-  common_application( nsolSwcReader NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLSWCREADER_SOURCES} )
+  # Add examples
+  add_project_example(
+    TARGET_NAME nsolExampleSwcReader
+    SOURCES
+      SwcReader.cpp
+  )
 
-  set( NSOLASCTOSWCTEST_SOURCES AscToSwcTest.cpp )
-  set( NSOLASCTOSWCTEST_LINK_LIBRARIES nsol )
-  common_application( nsolAscToSwcTest NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLASCTOSWCTEST_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleAscToSwcTest
+    SOURCES
+      AscToSwcTest.cpp
+  )
 
-  if( HDF5_FOUND )
-    set( NSOLVASCULATUREMORPHOLOGYREADER_SOURCES vasculatureMorphologyReader.cpp )
-    set( NSOLVASCULATUREMORPHOLOGYREADER_LINK_LIBRARIES nsol )
-    common_application( nsolVasculatureMorphologyReader NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLVASCULATUREMORPHOLOGYREADER_SOURCES} )
-  endif( )
+  add_project_example(
+    TARGET_NAME nsolExampleExtractNeuronStats
+    SOURCES
+      extractNeuronStats.cpp
+    LINK_LIBRARIES
+      Boost::filesystem
+  )
 
+  add_project_example(
+    TARGET_NAME nsolExampleSectionStats
+    SOURCES
+      sectionStats.cpp
+  )
 
-  set( NSOLEXTRACTNEURONSTATS_SOURCES extractNeuronStats.cpp )
-  set( NSOLEXTRACTNEURONSTATS_LINK_LIBRARIES nsol )
-  common_application( nsolExtractNeuronStats NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLEXTRACTNEURONSTATS_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleRadiusStat
+    SOURCES
+      radiusStat.cpp
+  )
 
-  set( NSOLSECTIONSTATS_SOURCES sectionStats.cpp )
-  set( NSOLSECTIONSTATS_LINK_LIBRARIES nsol )
-  common_application( nsolSectionStats NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLSECTIONSTATS_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleNeuriteStats
+    SOURCES
+      neuriteStats.cpp
+  )
 
-  set( NSOLRADIUSSTAT_SOURCES radiusStat.cpp )
-  set( NSOLRADIUSSTAT_LINK_LIBRARIES nsol )
-  common_application( nsolRadiusStat NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLRADIUSSTAT_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleNeuronStats
+    SOURCES
+      neuronStats.cpp
+  )
 
-  set( NSOLNEURITESTATS_SOURCES neuriteStats.cpp )
-  set( NSOLNEURITESTATS_LINK_LIBRARIES nsol )
-  common_application( nsolNeuriteStats NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLNEURITESTATS_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleMiniColumnStats
+    SOURCES
+      miniColumnStats.cpp
+    LINK_LIBRARIES
+      Boost::filesystem
+  )
 
-  set( NSOLNEURONSTATS_SOURCES neuronStats.cpp )
-  set( NSOLNEURONSTATS_LINK_LIBRARIES nsol )
-  common_application( nsolNeuronStats NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLNEURONSTATS_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleColumnStats
+    SOURCES
+      columnStats.cpp
+    LINK_LIBRARIES
+      Boost::filesystem
+  )
 
-  set( NSOLMINICOLUMNSTATS_SOURCES miniColumnStats.cpp )
-  set( NSOLMINICOLUMNSTATS_LINK_LIBRARIES nsol )
-  common_application( nsolMiniColumnStats NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLMINICOLUMNSTATS_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleDataset
+    SOURCES
+      dataset.cpp
+    LINK_LIBRARIES
+      Boost::filesystem
+  )
 
-  set( NSOLCOLUMNSTATS_SOURCES columnStats.cpp )
-  set( NSOLCOLUMNSTATS_LINK_LIBRARIES nsol )
-  common_application( nsolColumnStats NOHELP )
+  add_project_example(
+    TARGET_NAME nsolExampleSimplifier
+    SOURCES
+      simplifier.cpp
+  )
 
-  set( NSOLDATASET_SOURCES dataset.cpp )
-  set( NSOLDATASET_LINK_LIBRARIES nsol )
-  common_application( nsolDataset NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLDATASET_SOURCES} )
+  add_project_example(
+    TARGET_NAME nsolExampleBlueConfig2XmlScene
+    SOURCES
+      blueConfig2XmlScene.cpp
+    LINK_LIBRARIES
+      Boost::filesystem
+  )
 
-  set( NSOLSIMPLIFIER_SOURCES simplifier.cpp )
-  set( NSOLSIMPLIFIER_LINK_LIBRARIES nsol )
-  common_application( nsolSimplifier NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLSIMPLIFIER_SOURCES} )
+  if(NSOL_USE_HDF5)
+    add_project_example(
+      TARGET_NAME nsolExampleVasculatureMorphologyReader
+      SOURCES
+        vasculatureMorphologyReader.cpp
+    )
+  endif()
 
+  if(NSOL_USE_QT5CORE)
+    add_project_example(
+      TARGET_NAME nsolExampleScene
+      SOURCES
+        scene.cpp
+    )
+  endif()
 
-  set( NSOLBLUECONFIG2XMLSCENE_SOURCES blueConfig2XmlScene.cpp )
-  set( NSOLBLUECONFIG2XMLSCENE_LINK_LIBRARIES nsol )
-  common_application( nsolBlueConfig2XmlScene NOHELP )
-  list( APPEND NSOL_EXAMPLES_FILES ${NSOLBLUECONFIG2XMLSCENE_SOURCES} )
+  if(NSOL_USE_BRION)
+    add_project_example(
+      TARGET_NAME nsolExampleBrionMorphologyReader
+      SOURCES
+        brionMorphologyReader.cpp
+    )
 
-  if ( QT5CORE_FOUND )
-    set( NSOLSCENE_SOURCES scene.cpp )
-    set( NSOLSCENE_LINK_LIBRARIES nsol )
-    common_application( nsolScene NOHELP )
-    list( APPEND NSOL_EXAMPLES_FILES ${NSOLSCENE_SOURCES} )
-  endif( )
+    add_project_example(
+      TARGET_NAME nsolExampleBrionCircuitLoader
+      SOURCES
+        brionCircuitLoader.cpp
+      LINK_LIBRARIES
+        Boost::filesystem
+    )
 
-  include(InstallFiles)
-  install_files(share/nsol/examples FILES ${NSOL_EXAMPLES_FILES} COMPONENT
-    examples )
+    add_project_example(
+      TARGET_NAME nsolExampleConnectivityMatrix
+      SOURCES
+        nsolConnectivityMatrix.cpp
+      LINK_LIBRARIES
+        Boost::filesystem
+    )
 
-endif( NSOL_WITH_EXAMPLES )
+    add_project_example(
+      TARGET_NAME nsolExampleBlueConfigConnectivityToTxt
+      SOURCES
+        BlueConfigConnectivityToTxt.cpp
+      LINK_LIBRARIES
+        Boost::filesystem
+    )
+
+    add_project_example(
+      TARGET_NAME nsolExampleCircuitLoaderSummary
+      SOURCES
+        nsolCircuitLoaderSummary.cpp
+      LINK_LIBRARIES
+        Boost::filesystem
+    )
+  endif()
+
+  # Define installation directory variables
+  include(GNUInstallDirs)
+
+  # Install examples source files
+  install(FILES ${${PROJECT_NAME}_EXAMPLES_FILES}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME_LOWER}/examples
+    COMPONENT ${PROJECT_NAME}_examples
+  )
+
+endif()

@@ -44,11 +44,11 @@ namespace nsol
 
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     AxonCachedStats( void );
 
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual AxonNeuriteStats * stats( void )
     // {
     //   return this;
@@ -58,7 +58,7 @@ namespace nsol
      * Returns object as AxonCachedStats
      * @return pointer to AxonCachedStats object
      */
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual NeuriteStats * stats( void )
     // {
     //   return this;

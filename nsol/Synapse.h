@@ -22,7 +22,7 @@
 #ifndef __NSOL_SYNAPSE__
 #define __NSOL_SYNAPSE__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include <nsol/NsolTypes.h>
 #include <nsol/Neuron.h>
 
@@ -46,20 +46,20 @@ namespace nsol
     /**
      * Default Synapse constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     Synapse( void );
 
     /**
      * Copy constructor
      * @param other_ synapse to be copied
      */
-    NSOL_API
+    NSOL_EXPORT
     Synapse( const Synapse& other_ );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Synapse( void );
 
     ///@}
@@ -71,7 +71,7 @@ namespace nsol
      * Method to get the gid of the presynaptic neuron.
      * @return gid of the presynaptic neuron.
      */
-    NSOL_API
+    NSOL_EXPORT
     uint32_t preSynapticNeuron( void ) const;
 
     /**
@@ -79,14 +79,14 @@ namespace nsol
      * @param neuronID_ gid of the presynaptic neuron.
      * @see Neuron
      */
-    NSOL_API
+    NSOL_EXPORT
     void preSynapticNeuron(const uint32_t neuronID_ );
 
     /**
       * Method to get the gid of the postsynaptic neuron.
       * @return gid of the postsynaptic neuron.
       */
-    NSOL_API
+    NSOL_EXPORT
     uint32_t postSynapticNeuron( void ) const;
 
     /**
@@ -94,21 +94,21 @@ namespace nsol
      * @param neuronID_ gid of the postsynaptic neuron.
      * @see Neuron
      */
-    NSOL_API
+    NSOL_EXPORT
     void postSynapticNeuron( const uint32_t neuronID_ );
 
     /**
      * Method to set the synaptic weight.
      * @param weight_ synaptic weight.
      */
-    NSOL_API
+    NSOL_EXPORT
     void weight( const float weight_ );
 
     /**
      * Method to get the synaptic weight.
      * @return synaptic weight.
      */
-    NSOL_API
+    NSOL_EXPORT
     float weight( void ) const;
 
     /** \brief Operator =. Included to avoid warning in modern gcc versions.

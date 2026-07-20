@@ -22,7 +22,7 @@
 #ifndef __NSOL_IMPORTANCENODE__
 #define __NSOL_IMPORTANCENODE__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Node.h"
 
 namespace nsol
@@ -33,19 +33,19 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     ImportanceNode( const Vec3f & point = Vec3f(0,0,0),
                     const int & id = 0,
                     const float & radius = 0.0f );
 
 
-    NSOL_API
+    NSOL_EXPORT
     unsigned int & importance( void );
 
-    NSOL_API
+    NSOL_EXPORT
     unsigned int importance( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NodePtr clone( void ) const;
 
   protected:

@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY__
 #define __NSOL_NEURON_MORPHOLOGY__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "Morphology.h"
 #include "Node.h"
@@ -57,13 +57,13 @@ namespace nsol
      * Default Neuron class constructor.
      * TODO: construct protected objects
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphology( void );
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphology( SomaPtr soma );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NeuronMorphology( void );
 
     /**
@@ -71,7 +71,7 @@ namespace nsol
      * @param soma pointer to the soma to be setted.
      * @return pointer to the setted soma
      */
-    NSOL_API
+    NSOL_EXPORT
     SomaPtr soma( SomaPtr soma );
 
     /**
@@ -79,7 +79,7 @@ namespace nsol
      * @param neurite pointer to the neurite to be added.
      * @return pointer to the added neurite.
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuritePtr addNeurite( NeuritePtr neurite );
 
     /**
@@ -87,7 +87,7 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    NSOL_API
+    NSOL_EXPORT
     Dendrites * dendrites( void ) const;
 
     /**
@@ -95,7 +95,7 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    NSOL_API
+    NSOL_EXPORT
     Dendrites * basalDendrites( void ) const;
 
     /**
@@ -103,14 +103,14 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Dendrites
      */
-    NSOL_API
+    NSOL_EXPORT
     Dendrites * apicalDendrites( void ) const;
 
     /**
      * Method to get the first apical dendrite.
      * @return pointer to the apical dendrite.
      */
-    NSOL_API
+    NSOL_EXPORT
     DendritePtr apicalDendrite( void ) const;
 
     /**
@@ -118,47 +118,47 @@ namespace nsol
      * Memory for the container is allocated.
      * @return pointer to the container of Axons.
      */
-    NSOL_API
+    NSOL_EXPORT
     Axons * axons() const;
 
 
-    NSOL_API
+    NSOL_EXPORT
     virtual Neurites & neurites( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Neurites & neurites( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual Neurons & parentNeurons( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Neurons & parentNeurons( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     SomaPtr soma( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronMorphologyStats * stats( void )
     {
       return nullptr;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     void addParentNeuron( NeuronPtr neuron );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronMorphologyPtr asNeuronMorphology( void )
     {
       return this;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronMorphologyPtr clone( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator == ( NeuronMorphology & other );
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator != ( NeuronMorphology & other );
 
   protected:

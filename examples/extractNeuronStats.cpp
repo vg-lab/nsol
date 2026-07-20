@@ -23,7 +23,7 @@
  */
 
 #include <nsol/nsol.h>
-#include <Eigen/Geometry>
+#include <eigen3/Eigen/Geometry>
 
 void usageMessage( char* programName )
 {

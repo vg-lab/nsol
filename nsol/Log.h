@@ -22,7 +22,7 @@
 #ifndef __NSOL_LOG__
 #define __NSOL_LOG__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include <iostream>
 
 namespace nsol
@@ -49,28 +49,28 @@ namespace nsol
      * Set current log level
      * @param logLevel level to be set
      */
-    NSOL_API
+    NSOL_EXPORT
     static void setLogLevel( const TLogLevel logLevel );
 
     /**
      * Get current log level
      * @return current log level
      */
-    NSOL_API
+    NSOL_EXPORT
     static TLogLevel logLevel( void );
 
     /**
      * Set current output stream
      * @param stream output stream to be set
      */
-    NSOL_API
+    NSOL_EXPORT
     static void setStream( std::ostream& stream );
 
     /**
      * Get current output stream
      * @return current output stream
      */
-    NSOL_API
+    NSOL_EXPORT
     static const std::ostream& stream( void );
 
     /**
@@ -78,7 +78,7 @@ namespace nsol
      * @param msg message to log
      * @param level level of the message
      */
-    NSOL_API
+    NSOL_EXPORT
     static void log( const std::string& msg,
                      const TLogLevel level = LOG_LEVEL_VERBOSE );
 
@@ -88,12 +88,12 @@ namespace nsol
      * @param level level of the message
      * @param stream stream where log will be written
      */
-    NSOL_API
+    NSOL_EXPORT
     static void log( const std::string& msg,
                      std::ostream& stream,
                      const TLogLevel level = LOG_LEVEL_VERBOSE );
 
-    NSOL_API
+    NSOL_EXPORT
     static TLogLevel stringToLogLevel( std::string logLevelString );
   protected:
 

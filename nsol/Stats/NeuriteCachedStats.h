@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURITE_CACHED_STATS__
 #define __NSOL_NEURITE_CACHED_STATS__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "Cached.h"
 #include "NeuriteStats.h"
@@ -52,13 +52,13 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuriteCachedStats( TNeuriteType neuriteType = DENDRITE );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NeuriteCachedStats( void );
 
     /**
@@ -67,19 +67,19 @@ namespace nsol
      * dirty state to parent neurite. id value has to be one from
      * TNeuriteCachedValues (checked only on debug compiling).
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( unsigned int id );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent neurite
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent neurite
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void firstSection( NeuronMorphologySectionPtr section );
 
 
@@ -91,7 +91,7 @@ namespace nsol
      * @param agg aggregation used
      * @return stat value using the aggregation given
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual float getStat( TNeuriteStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 

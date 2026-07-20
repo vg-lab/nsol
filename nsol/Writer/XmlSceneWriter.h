@@ -22,7 +22,7 @@
 #ifndef __NSOL__XML_SCENE_WRITER__
 #define __NSOL__XML_SCENE_WRITER__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "../Container/Columns.h"
 #include <map>
 
@@ -47,7 +47,7 @@ namespace nsol
      *                                    set to be relative to the xml
      * @return true if everything went ok
      */
-    NSOL_API
+    NSOL_EXPORT
     static bool writeToXml( const std::string& fileName,
                             const Columns& columns,
                             std::map< std::string, NeuronMorphologyPtr >

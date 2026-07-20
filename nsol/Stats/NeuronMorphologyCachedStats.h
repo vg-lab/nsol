@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY_CACHED_STATS__
 #define __NSOL_NEURON_MORPHOLOGY_CACHED_STATS__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "Cached.h"
 #include "NeuronMorphologyStats.h"
@@ -74,14 +74,14 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyCachedStats( void )
       : NeuronMorphologyStats( )
     {
     }
 
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyCachedStats( SomaPtr soma_ )
       : NeuronMorphologyStats( soma_ )
     {
@@ -90,10 +90,10 @@ namespace nsol
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NeuronMorphologyCachedStats( void ) {}
 
-    NSOL_API
+    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologyStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
@@ -104,63 +104,63 @@ namespace nsol
      * dirty state to parent neuronmorphology. id value has to be one from
      * TNeuronMorphologyCachedValues (checked only on debug compiling).
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( unsigned int id );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent
      * neuron morphology
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticVolume( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonVolume( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticVolume( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float somaVolume( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float volume( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticSurface( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonSurface( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticSurface( void ) const;
 
-    // // NSOL_API
+    // // NSOL_EXPORT
     // // virtual float somaSurface( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float surface( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticLength( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonLength( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticLength( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int dendriticBifurcations( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int axonBifurcations( void ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int neuriticBifurcations( void ) const;
 
 

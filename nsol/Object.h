@@ -22,7 +22,7 @@
 #ifndef __NSOL_OBJECT__
 #define __NSOL_OBJECT__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "NsolTypes.h"
 
 namespace nsol
@@ -32,35 +32,35 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     Object( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Object( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ColumnPtr asColumn( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual MiniColumnPtr asMiniColumn( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual
     NeuronPtr asNeuron( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual
     NeuronMorphologyPtr asNeuronMorphology( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual
     SectionPtr asSection( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual
     NodePtr asNode( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ObjectWithProperties* properties( void );
 
     virtual ObjectPtr create( void )

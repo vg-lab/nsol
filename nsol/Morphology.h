@@ -22,7 +22,7 @@
 #ifndef __NSOL_MORPHOLOGY__
 #define __NSOL_MORPHOLOGY__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "NsolTypes.h"
 #include "Section.h"
@@ -41,13 +41,13 @@ namespace nsol
     /*
      * Default Morphology class constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     Morphology( void ) { }
 
     /*
      * Default Morphology class destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Morphology( void ) { }
 
     /*

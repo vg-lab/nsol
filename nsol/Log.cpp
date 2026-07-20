@@ -24,9 +24,6 @@
 #include <string>
 #include <iostream>
 
-#include <nsol/defines.h>
-
-
 namespace nsol
 {
 

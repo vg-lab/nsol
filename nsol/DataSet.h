@@ -22,7 +22,7 @@
 #ifndef __NSOL_DATASET__
 #define __NSOL_DATASET__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "error.h"
 #include "Log.h"
 #include "NsolTypes.h"
@@ -51,7 +51,7 @@ namespace nsol
   {
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     DataSet( void );
 
 #ifdef NSOL_USE_BRION
@@ -275,31 +275,31 @@ namespace nsol
     }
 
 
-    NSOL_API
+    NSOL_EXPORT
     void unloadMorphologies( void );
 
-    NSOL_API
+    NSOL_EXPORT
     void close( void );
 
-    NSOL_API
+    NSOL_EXPORT
     Columns& columns( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Columns& columns( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     Circuit& circuit( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Circuit& circuit( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronsMap& neurons( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const NeuronsMap& neurons( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool addNeuron( const NeuronPtr neuron )
     {
       if ( _neurons.find( static_cast<unsigned int>(neuron->gid( ))) != _neurons.end( ))
@@ -437,7 +437,7 @@ namespace nsol
                                       _neurons, _morphologies );
     }
 
-    NSOL_API
+    NSOL_EXPORT
     void writeXmlScene( const std::string& xmlSceneFile );
 
   private:

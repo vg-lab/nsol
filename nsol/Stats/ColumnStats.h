@@ -68,11 +68,11 @@ namespace nsol
       COLUMN_NUM_STATS
     } TColumnStat;
 
-    NSOL_API
+    NSOL_EXPORT
     ColumnStats( const unsigned short id = 0 );
 
 
-    NSOL_API
+    NSOL_EXPORT
     float getStat( TColumnStat stat,
                    TAggregation miniColAgg = /*TAggregation::*/TOTAL,
                    TAggregation neuronAgg = /*TAggregation::*/TOTAL ) const;
@@ -81,7 +81,7 @@ namespace nsol
      * Returns object as ColumnStats
      * @return pointer to ColumnStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ColumnStats * stats( void );
 
   }; // class ColumnStats

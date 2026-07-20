@@ -22,7 +22,7 @@
 #ifndef __NSOL_AXON__
 #define __NSOL_AXON__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Neurite.h"
 
 namespace nsol
@@ -34,10 +34,10 @@ namespace nsol
 
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     Axon ( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuritePtr clone( void ) const final;
 
   };

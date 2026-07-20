@@ -23,7 +23,7 @@
 #ifndef __NSOL_CIRCUIT__
 #define __NSOL_CIRCUIT__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Synapse.h"
 #include "Container/Synapses.h"
 
@@ -56,13 +56,13 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     Circuit( void );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Circuit( void ) ;
 
     ///@}
@@ -75,26 +75,26 @@ namespace nsol
      * Method to add a connection into the cirtuit.
      * @param synapse_ synapse to add to this circuit
      */
-    NSOL_API
+    NSOL_EXPORT
     void addSynapse( SynapsePtr synapse_ );
 
-    NSOL_API
+    NSOL_EXPORT
     void addSynapses( const std::vector< SynapsePtr >& synapses );
 
-    NSOL_API
+    NSOL_EXPORT
     void addSynapses( const std::vector< MorphologySynapsePtr >& synapses );
     /**
      * Method to clear all the connections
      * of all the circuit.
      */
-    NSOL_API
+    NSOL_EXPORT
     void clear( void );
 
     /**
      * Method to get the total number of connections of the circuit.
      * @return total numbers of synapses
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned int numberOfSynapses( void ) const;
 
     ///@}
@@ -106,7 +106,7 @@ namespace nsol
      * Method to get all the synapses from the circuit.
      * @return vector with all the ordered synapses by its gid
      */
-    NSOL_API
+    NSOL_EXPORT
     const std::vector< SynapsePtr >& synapses( void ) const;
 
     /**
@@ -114,7 +114,7 @@ namespace nsol
      * @param dataType_ Data type
      * @return subset with all the synapses
      */
-    NSOL_API
+    NSOL_EXPORT
     std::set< SynapsePtr > synapses( TDataType dataType_ ) const;
 
     /**
@@ -123,7 +123,7 @@ namespace nsol
      * @param dataType_ Data type
      * @return all the synapses of this neuron.
      */
-    NSOL_API
+    NSOL_EXPORT
     std::set< SynapsePtr >
     synapses(uint32_t neuronGID_, TDataType dataType_ ) const;
 
@@ -133,7 +133,7 @@ namespace nsol
      * @param dataType_ Data type
      * @return all the synapses of this subset of neurons.
      */
-    NSOL_API
+    NSOL_EXPORT
     std::set< SynapsePtr >
     synapses(const std::set< uint32_t > &gidsNeurons_,
               TDataType dataType_ ) const;

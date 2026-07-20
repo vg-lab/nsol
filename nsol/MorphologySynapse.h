@@ -22,7 +22,7 @@
 #ifndef __NSOL_COMPARTMENTSYNAPSE__
 #define __NSOL_COMPARTMENTSYNAPSE__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include <nsol/NsolTypes.h>
 #include <nsol/Neuron.h>
 #include <nsol/Synapse.h>
@@ -61,20 +61,20 @@ namespace nsol
     /**
      * Default MorphologySynapse constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     MorphologySynapse( void );
 
     /**
      * Copy constructor
      * @param other_ MorphologySynapseto be copied
      */
-    NSOL_API
+    NSOL_EXPORT
     MorphologySynapse( const MorphologySynapse& other_ );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~MorphologySynapse( void );
 
     ///@}
@@ -85,33 +85,33 @@ namespace nsol
     /**
      * GID getter
      */
-    NSOL_API unsigned int gid( void ) const;
+    NSOL_EXPORT unsigned int gid( void ) const;
 
     /**
      * GID setter
      *
      * Note: Zero as default value.
      */
-    NSOL_API void gid( unsigned int gid_ );
+    NSOL_EXPORT void gid( unsigned int gid_ );
 
     /**
      * Method to get the type of the synapse.
      */
-    NSOL_API
+    NSOL_EXPORT
     TSynapseType synapseType( void ) const;
 
     /**
      * Method to get the presynaptic surface position.
      * @return presynaptic surface position.
      */
-    NSOL_API
+    NSOL_EXPORT
     Vec3f preSynapticSurfacePosition( void ) const;
 
     /**
      * Method to set presynaptic surface position to the synapse.
      * @param presynaptic_surface_position_ presynaptic surface position.
      */
-    NSOL_API
+    NSOL_EXPORT
     void
     preSynapticSurfacePosition( const Vec3f& presynaptic_surface_position_ );
 
@@ -119,14 +119,14 @@ namespace nsol
      * Method to get the postsynaptic surface position.
      * @return postsynaptic surface position.
      */
-    NSOL_API
+    NSOL_EXPORT
     Vec3f postSynapticSurfacePosition( void ) const;
 
     /**
      * Method to set postsynaptic surface position to the synapse.
      * @param position_ postsynaptic surface position.
      */
-    NSOL_API
+    NSOL_EXPORT
     void
     postSynapticSurfacePosition( const Vec3f& position_ );
 
@@ -135,7 +135,7 @@ namespace nsol
      * @param preSynapticSection_ presynaptic section.
      * @see Synapse
      */
-    NSOL_API
+    NSOL_EXPORT
     void preSynapticSection(
         const NeuronMorphologySectionPtr preSynapticSection_ );
 
@@ -143,7 +143,7 @@ namespace nsol
      * Method to get the presynaptic section.
      * @return pointer to the presynaptic section.
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySectionPtr preSynapticSection( void ) const;
 
     /**
@@ -151,14 +151,14 @@ namespace nsol
      * @param section_ postsynaptic section.
      * @see Synapse
      */
-    NSOL_API
+    NSOL_EXPORT
     void postSynapticSection( const NeuronMorphologySectionPtr section_ );
 
     /**
      * Method to get the postsynaptic section.
      * @return pointer to the postsynaptic section.
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySectionPtr postSynapticSection( void ) const;
 
     /** \brief Operator =. Included to avoid warning in modern gcc versions.

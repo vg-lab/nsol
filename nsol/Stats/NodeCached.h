@@ -22,7 +22,7 @@
 #ifndef __NSOL_NODE_CACHED__
 #define __NSOL_NODE_CACHED__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "Cached.h"
 #include "SegmentStats.h"
@@ -48,7 +48,7 @@ namespace nsol
     /*
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     NodeCached( const Vec3f & point_ = Vec3f(0,0,0),
                 const int & id_ = 0,
                 const float & radius_ = 0.0f );
@@ -56,7 +56,7 @@ namespace nsol
     /*
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NodeCached( void );
 
     /*
@@ -65,7 +65,7 @@ namespace nsol
      * specific property
      * @param id property to propagate dirtiness
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( unsigned int id );
 
     /*
@@ -73,7 +73,7 @@ namespace nsol
      * propagate dirtiness to parent section for all
      * property
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
     /*
@@ -82,7 +82,7 @@ namespace nsol
      * dirtiness to parents
      * @param radius new radius to be set
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void radius( const float radius );
 
     /*
@@ -91,7 +91,7 @@ namespace nsol
      * dirtiness to parents
      * @param point new point to be set
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void point( const Vec3f & point );
 
   }; // class NodeCached

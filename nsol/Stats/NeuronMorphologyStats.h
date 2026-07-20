@@ -68,13 +68,13 @@ namespace nsol
     } TNeuronMorphologyStat;
 
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyStats( void )
       : NeuronMorphology( )
     {
     }
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyStats( SomaPtr soma_ )
       : NeuronMorphology( soma_ )
     {
@@ -84,10 +84,10 @@ namespace nsol
      * Returns object as NeuronMorphologyStats
      * @return pointer to NeuronMorphologyStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronMorphologyStats * stats( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologyStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 

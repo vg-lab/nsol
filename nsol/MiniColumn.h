@@ -22,7 +22,7 @@
 #ifndef __NSOL_MINICOLUMN__
 #define __NSOL_MINICOLUMN__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Object.h"
 #include "Neuron.h"
 #include "Container/Neurons.h"
@@ -52,7 +52,7 @@ namespace nsol
      * @param column pointer to parent column.
      * @param id id of the minicolumn.
      */
-    NSOL_API
+    NSOL_EXPORT
     MiniColumn( const ColumnPtr column = nullptr,
                 const unsigned short id = 0 );
 
@@ -60,13 +60,13 @@ namespace nsol
      * Copy constructor
      * @param other column to be copied
      */
-    NSOL_API
+    NSOL_EXPORT
     MiniColumn( const MiniColumn & other );
 
     /**
      * Default destructur
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~MiniColumn();
 
     ///@}
@@ -78,14 +78,14 @@ namespace nsol
      * Method to get-set mini column id.
      * @return refenrence to mini column id
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned short & id( void );
 
     /**
      * Method to get the column id as const.
      * @return id of the minicolumn
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned short id( void ) const;
 
     ///@}
@@ -97,14 +97,14 @@ namespace nsol
      * Method to set the column of this minicolumn
      * @param column pointer to the column
      */
-    NSOL_API
+    NSOL_EXPORT
     void column( ColumnPtr column );
 
     /**
      * Method to get the column of this minicolumn
      * @return pointer to the column
      */
-    NSOL_API
+    NSOL_EXPORT
     ColumnPtr column( void ) const;
 
     ///@}
@@ -118,7 +118,7 @@ namespace nsol
      * @param neuron pointer to neuron to add. If null new neuron is created
      * @return pointer to the added neuron
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronPtr addNeuron( NeuronPtr neuron );
 
     /**
@@ -126,27 +126,27 @@ namespace nsol
      * @param neuron pointer to the neuron to be removed
      * @return true if neuron removed false otherwise
      */
-    NSOL_API
+    NSOL_EXPORT
     bool removeNeuron( NeuronPtr neuron );
 
     /**
      * Method to get neurons.
      * @return neurons of the mimi column
      */
-    NSOL_API
+    NSOL_EXPORT
     Neurons & neurons( void );
 
     /**
      * Method to get neurons.
      * @return neurons of the mimi column
      */
-    NSOL_API
+    NSOL_EXPORT
     Neurons neurons( void ) const;
 
     /**
      * Method to clear the neurons container.
      */
-    NSOL_API
+    NSOL_EXPORT
     void clearNeurons( void );
 
 
@@ -160,7 +160,7 @@ namespace nsol
      *        neurons of all layers will be counted.
      * @return number of neurons that match the criteria
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned int numberOfNeurons(bool all = true,
                                  Neuron::TMorphologicalType neuronType =
                                  Neuron::PYRAMIDAL,
@@ -172,13 +172,13 @@ namespace nsol
     /** @name Operators */
     ///@{
 
-    NSOL_API
+    NSOL_EXPORT
     MiniColumn & operator = (const MiniColumn & other);
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator == (MiniColumn & other ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator != (MiniColumn & other ) const;
 
     ///@}
@@ -187,13 +187,13 @@ namespace nsol
      * Returns object as MiniColumnStats
      * @return pointer to MiniColumnStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual MiniColumnStats * stats( void )
     {
       return nullptr;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     virtual MiniColumnPtr asMiniColumn( void )
     {
       return this;

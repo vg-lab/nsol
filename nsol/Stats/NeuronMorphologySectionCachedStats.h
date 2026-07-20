@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY_SECTION_CACHED_STATS__
 #define __NSOL_NEURON_MORPHOLOGY_SECTION_CACHED_STATS__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 
 #include "Cached.h"
 #include "NeuronMorphologySectionStats.h"
@@ -62,13 +62,13 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySectionCachedStats( void );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NeuronMorphologySectionCachedStats( void );
 
     /**
@@ -77,13 +77,13 @@ namespace nsol
      * dirty state to parent neurite. id value has to be one from
      * TNeuronMorphologySectionCachedValues (checked only on debug compiling).
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty(unsigned int id_ );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent neurite
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
     /**
@@ -94,34 +94,34 @@ namespace nsol
      * @return pointer to the node added
      *         (for compatibility with older nsol versions)
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void addNode( NodePtr node = nullptr );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual void firstNode( NodePtr firstNode_ );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologySectionStat stat ) const;
 
     // /**
     //  * Computes volume of the section
     //  * @return volume of section
     //  */
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float volume( void ) const;
 
     // /**
     //  * Computes surface of the section
     //  * @return surface of section
     //  */
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float surface( void ) const;
 
     // /**
     //  * Computes length of the section
     //  * @return length of section
     //  */
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float length( void ) const;
 
 

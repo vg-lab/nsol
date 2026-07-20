@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY_SECTION__
 #define __NSOL_NEURON_MORPHOLOGY_SECTION__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "Section.h"
 
 namespace nsol
@@ -39,72 +39,72 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySection( void );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~NeuronMorphologySection( );
 
     /**
      * Method to get the gid of the neuron morphology section.
      * @return gid
      */
-    NSOL_API
+    NSOL_EXPORT
     unsigned int id( void ) const;
 
     /**
      * Method to set the gid of the neuron morphology section.
      * @param id
      */
-    NSOL_API
+    NSOL_EXPORT
     void id ( unsigned int id );
 
     /**
      * Gets the parent Neurite of the Neuron Morphology Section
      * @return pointer to the parent Neurite
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuritePtr neurite( void );
 
     /**
      * Sets the parent neurite of this Neuron Morphology Section
      * @param neurite pointer to parent neurite
      */
-    NSOL_API
+    NSOL_EXPORT
     void neurite( NeuritePtr neurite );
 
      /**
      * Gets the parent Section of this Section
      * @return pointer to the parent Section
      */
-    NSOL_API
+    NSOL_EXPORT
     SectionPtr parent( void );
 
     /**
      * Sets the parent Section of this Section
      * @param parent pointer to parent Section
      */
-    NSOL_API
+    NSOL_EXPORT
     void parent( SectionPtr parent );
 
     /**
      * Adds child Section to this Section
      * @param section pointer to the section to be added
      */
-    NSOL_API
+    NSOL_EXPORT
     void addChild( SectionPtr section );
 
     /**
      * Return the children sections
      * @return container of children sections
      */
-    NSOL_API
+    NSOL_EXPORT
     Sections& children( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Sections& children( void ) const;
 
     /**
@@ -112,14 +112,14 @@ namespace nsol
      * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void addNode( NodePtr node );
 
     /**
      * Gets the first Node of the Section.
      * @return pointer to the first Node, null in case it doesn't have any
      */
-    NSOL_API
+    NSOL_EXPORT
     NodePtr firstNode( void );
 
     /**
@@ -127,14 +127,14 @@ namespace nsol
      * reimplementation for cached objects and dirty state propagation
      * @param firstNode pointer to the Node.
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void firstNode( NodePtr firstNode );
 
     /**
      * Gets the last Node of the Section.
      * @return pointer to the last Node, null in case it doesn't have any
      */
-    NSOL_API
+    NSOL_EXPORT
     NodePtr lastNode( void );
 
 
@@ -142,13 +142,13 @@ namespace nsol
      * Returns object as SectionStats
      * @return pointer to SectionStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuronMorphologySectionStats* stats( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual SectionPtr clone( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual SectionPtr asNeuronMorphologySection( void )
     {
       return this;

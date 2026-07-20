@@ -22,7 +22,7 @@
 #ifndef __NSOL_SECTION__
 #define __NSOL_SECTION__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "error.h"
 #include "NsolTypes.h"
 #include "Container/Sections.h"
@@ -40,47 +40,47 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_API
+    NSOL_EXPORT
     Section( void );
 
     /**
      * Default destructor
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Section( );
 
     /**
      * Gets the backward neighbour sections of this section
      * @return container of the backward neighbour sections
      */
-    NSOL_API
+    NSOL_EXPORT
     Sections& backwardNeighbors( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Sections& backwardNeighbors( void ) const;
 
     /**
      * Gets the forward neighbour sections of this section
      * @return container of the forward neighbour sections
      */
-    NSOL_API
+    NSOL_EXPORT
     Sections& forwardNeighbors( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Sections& forwardNeighbors( void ) const;
 
     /**
      * Adds backward neighbour section to this section
      * @param section pointer to the section to be added
      */
-    NSOL_API
+    NSOL_EXPORT
     void addBackwardNeighbour( SectionPtr section );
 
     /**
      * Adds forward neighbour section to this section
      * @param section pointer to the section to be added
      */
-    NSOL_API
+    NSOL_EXPORT
     void addForwardNeighbour( SectionPtr section );
 
     /**
@@ -88,7 +88,7 @@ namespace nsol
      * @param section pointer to the section to be deleted
      * @return true if the given section is in the backward sections
      */
-    NSOL_API
+    NSOL_EXPORT
     bool deleteBackwardNeighbour( SectionPtr section_ );
 
     /**
@@ -96,7 +96,7 @@ namespace nsol
      * @param section pointer to the section to be deleted
      * @return true if the given section is in the forward sections
      */
-    NSOL_API
+    NSOL_EXPORT
     bool deleteForwardNeighbour( SectionPtr section_ );
 
     /**
@@ -105,17 +105,17 @@ namespace nsol
      * @param section pointer to the section to be added
      * @param node pointer to the node between sections
      */
-    NSOL_API
+    NSOL_EXPORT
     void addNeighbour( SectionPtr section, NodePtr node );
 
     /**
      * Return the middle Nodes
      * @return container of middle Nodes
      */
-    NSOL_API
+    NSOL_EXPORT
     Nodes& nodes( void );
 
-    NSOL_API
+    NSOL_EXPORT
     const Nodes& nodes( void ) const;
 
     /**
@@ -123,7 +123,7 @@ namespace nsol
      * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void addBackwardNode( NodePtr node );
 
     /**
@@ -131,33 +131,33 @@ namespace nsol
      * @param node pointer to the Node to add.
      *        Precondition: pointer is not null.
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual void addForwardNode( NodePtr node );
 
     /**
      * Gets the first Node of the Section.
      * @return pointer to the first Node, null in case it doesn't have any
      */
-    NSOL_API
+    NSOL_EXPORT
     NodePtr backwardNode( void );
 
     /**
      * Gets the last Node of the Section.
      * @return pointer to the first Node, null in case it doesn't have any
      */
-    NSOL_API
+    NSOL_EXPORT
     NodePtr forwardNode( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual SectionPtr clone( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator == ( Section & other ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator != ( Section & other ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual SectionPtr asSection( void )
     {
       return this;

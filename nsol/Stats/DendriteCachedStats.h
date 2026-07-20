@@ -44,10 +44,10 @@ namespace nsol
 
   public:
 
-    NSOL_API
+    NSOL_EXPORT
     DendriteCachedStats ( TDendriteType dendriteType_ = BASAL );
     
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuriteStats * stats( void )
     {
       return this;
@@ -57,7 +57,7 @@ namespace nsol
     //  * Returns object as DendriteCachedStats
     //  * @return pointer to DendriteCachedStats object
     //  */
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual NeuriteStats * stats( void )
     // {
     //   return this;

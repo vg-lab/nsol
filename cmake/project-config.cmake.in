@@ -1,0 +1,12 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Boost CONFIG COMPONENTS unit_test_framework system filesystem)
+find_dependency(Eigen3 NO_MODULE)
+find_dependency(Qt5 COMPONENTS Core)
+find_dependency(HDF5 COMPONENTS C CXX)
+find_dependency(OpenMP)
+find_dependency(FiReS)
+find_dependency(Brion)
+
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME_LOWER@-targets.cmake")

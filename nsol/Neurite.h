@@ -22,7 +22,7 @@
 #ifndef __NSOL_NEURITE__
 #define __NSOL_NEURITE__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "NsolTypes.h"
 #include "NeuronMorphologySection.h"
 
@@ -83,69 +83,69 @@ namespace nsol {
     }
 
     //! Default constructor
-    NSOL_API
+    NSOL_EXPORT
     Neurite( TNeuriteType neuriteType = DENDRITE );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual ~Neurite( void );
 
     //! Get the type of neurite
-    NSOL_API
+    NSOL_EXPORT
     TNeuriteType & neuriteType( void );
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr morphology( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologyPtr morphology( NeuronMorphologyPtr morphology );
 
-    NSOL_API
+    NSOL_EXPORT
     bool hasMorphology( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySectionPtr firstSection( void ) const ;
 
-    NSOL_API
+    NSOL_EXPORT
     virtual void firstSection( NeuronMorphologySectionPtr section );
 
-    NSOL_API
+    NSOL_EXPORT
     Sections sections( void ) const;
 
     //TODO: this methods should disappear
-    NSOL_API
+    NSOL_EXPORT
     void computeBranchBifurcations( void );
 
-    NSOL_API
+    NSOL_EXPORT
     unsigned int numBranches( void );
 
-    NSOL_API
+    NSOL_EXPORT
     unsigned int numBifurcations( void );
 
     /**
      * Returns object as NeuriteStats
      * @return pointer to NeuriteStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuriteStats * stats( void );
 
-    NSOL_API
+    NSOL_EXPORT
     virtual NeuritePtr clone( void ) const;
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator == ( Neurite & other );
 
-    NSOL_API
+    NSOL_EXPORT
     bool operator != ( Neurite & other );
 
   protected:
 
-    NSOL_API
+    NSOL_EXPORT
     void _addBifurcationCount( unsigned int numBifurcations );
 
-    NSOL_API
+    NSOL_EXPORT
     void _addBranchCount( unsigned int numBranches );
   
-    NSOL_API
+    NSOL_EXPORT
     void _clone( NeuritePtr neurite ) const;
 
     TNeuriteType _neuriteType;

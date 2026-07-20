@@ -28,8 +28,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
-#include <Eigen/Core>
-#include <nsol/defines.h>
+#include <eigen3/Eigen/Core>
 
 // Visual Studio Warning disable.
 #pragma warning( disable : 4250 )

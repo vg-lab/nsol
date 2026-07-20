@@ -56,13 +56,13 @@ namespace nsol
      * Returns object as SectionStats
      * @return pointer to SectionStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     NeuronMorphologySectionStats * stats( void )
     {
       return this;
     }
 
-    NSOL_API
+    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologySectionStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 

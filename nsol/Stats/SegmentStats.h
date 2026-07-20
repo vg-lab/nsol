@@ -22,7 +22,7 @@
 #ifndef __NSOL_SEGMENT_STATS__
 #define __NSOL_SEGMENT_STATS__
 
-#include <nsol/api.h>
+#include <nsol/nsol_export.h>
 #include "../NsolTypes.h"
 #include "../Node.h"
 
@@ -45,10 +45,10 @@ namespace nsol
     } TSegmentStat;
 
 
-    NSOL_API
+    NSOL_EXPORT
     SegmentStats * stats( void );
 
-    NSOL_API
+    NSOL_EXPORT
     static float getStat( TSegmentStat stat,
                           const NodePtr begin,
                           const NodePtr end);

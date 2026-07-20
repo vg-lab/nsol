@@ -68,12 +68,12 @@ namespace nsol
       MINI_COLUMN_NUM_STATS
     } TMiniColumnStat;
 
-    NSOL_API
+    NSOL_EXPORT
     MiniColumnStats( const ColumnPtr column = nullptr,
                      const unsigned short id = 0 );
 
 
-    NSOL_API
+    NSOL_EXPORT
     float getStat( TMiniColumnStat stat,
                    TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
@@ -82,57 +82,57 @@ namespace nsol
      * Returns object as MiniColumnStats
      * @return pointer to MiniColumnStats object
      */
-    NSOL_API
+    NSOL_EXPORT
     virtual MiniColumnStats * stats( void );
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticVolume( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonVolume( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticVolume( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float somaVolume( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float volume( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticSurface( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonSurface( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticSurface( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float somaSurface( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float surface( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float dendriticLength( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float axonLength( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual float neuriticLength( TAggregation op = TOTAL ) const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int dendriticBifurcations( TAggregation op = TOTAL )
     //   const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int axonBifurcations( TAggregation op = TOTAL )
     //   const;
 
-    // NSOL_API
+    // NSOL_EXPORT
     // virtual unsigned int neuriticBifurcations( TAggregation op = TOTAL )
     //   const;
 
