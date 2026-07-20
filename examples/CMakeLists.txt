@@ -51,8 +51,6 @@ if(NSOL_WITH_EXAMPLES)
     TARGET_NAME nsolExampleExtractNeuronStats
     SOURCES
       extractNeuronStats.cpp
-    LINK_LIBRARIES
-      Boost::filesystem
   )
 
   add_project_example(
@@ -83,24 +81,18 @@ if(NSOL_WITH_EXAMPLES)
     TARGET_NAME nsolExampleMiniColumnStats
     SOURCES
       miniColumnStats.cpp
-    LINK_LIBRARIES
-      Boost::filesystem
   )
 
   add_project_example(
     TARGET_NAME nsolExampleColumnStats
     SOURCES
       columnStats.cpp
-    LINK_LIBRARIES
-      Boost::filesystem
   )
 
   add_project_example(
     TARGET_NAME nsolExampleDataset
     SOURCES
       dataset.cpp
-    LINK_LIBRARIES
-      Boost::filesystem
   )
 
   add_project_example(
@@ -113,8 +105,6 @@ if(NSOL_WITH_EXAMPLES)
     TARGET_NAME nsolExampleBlueConfig2XmlScene
     SOURCES
       blueConfig2XmlScene.cpp
-    LINK_LIBRARIES
-      Boost::filesystem
   )
 
   if(NSOL_USE_HDF5)
@@ -144,32 +134,24 @@ if(NSOL_WITH_EXAMPLES)
       TARGET_NAME nsolExampleBrionCircuitLoader
       SOURCES
         brionCircuitLoader.cpp
-      LINK_LIBRARIES
-        Boost::filesystem
     )
 
     add_project_example(
       TARGET_NAME nsolExampleConnectivityMatrix
       SOURCES
         nsolConnectivityMatrix.cpp
-      LINK_LIBRARIES
-        Boost::filesystem
     )
 
     add_project_example(
       TARGET_NAME nsolExampleBlueConfigConnectivityToTxt
       SOURCES
         BlueConfigConnectivityToTxt.cpp
-      LINK_LIBRARIES
-        Boost::filesystem
     )
 
     add_project_example(
       TARGET_NAME nsolExampleCircuitLoaderSummary
       SOURCES
         nsolCircuitLoaderSummary.cpp
-      LINK_LIBRARIES
-        Boost::filesystem
     )
   endif()
 

@@ -42,8 +42,6 @@
 
 #include <string>
 
-#include <boost/filesystem.hpp>
-
 namespace nsol
 {
 
@@ -349,7 +347,7 @@ namespace nsol
     neurons_.clear( );
 
     std::string circuitPath = blueConfig_.getCircuitSource( ).getPath( );
-    auto fileExt = boost::filesystem::path( circuitPath ).extension( ).string( );
+    auto fileExt = std::filesystem::path( circuitPath ).extension( ).string( );
     if (( fileExt.compare( ".mvd" ) == 0 ) |
         ( fileExt.compare( ".mvd2" ) == 0 ))
     {
