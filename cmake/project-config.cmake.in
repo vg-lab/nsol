@@ -1,7 +1,7 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
-find_dependency(Boost CONFIG COMPONENTS unit_test_framework system filesystem)
+find_dependency(Boost CONFIG COMPONENTS unit_test_framework)
 find_dependency(Eigen3 NO_MODULE)
 find_dependency(Qt5 COMPONENTS Core)
 find_dependency(HDF5 COMPONENTS C CXX)

@@ -202,6 +202,5 @@ target_link_libraries(${PROJECT_NAME}
     "$<$<BOOL:${NSOL_USE_QT5CORE}>:Qt5::Core>"
     "$<$<BOOL:${NSOL_USE_FIRES}>:FiReS::FiReS>"
   PRIVATE
-    Boost::filesystem
     "$<$<BOOL:${NSOL_USE_OPENMP}>:OpenMP::OpenMP_CXX>"
 )

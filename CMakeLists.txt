@@ -34,7 +34,7 @@ option(NSOL_WITH_LOGGING "Enable logging" ON)
 option(NSOL_USE_SHARED_PTR "" OFF)
 
 # Dependencies
-find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework filesystem)
+find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework)
 find_package(Eigen3 REQUIRED NO_MODULE)
 # find_package(Qt5 COMPONENTS Core)
 # find_package(HDF5 COMPONENTS C CXX)
@@ -46,9 +46,9 @@ if(NSOL_OPTIONALS_AS_REQUIRED)
   set(NSOL_OPTS_FIND_ARGS REQUIRED)
 endif()
 
-find_package(Qt5 ${NSOL_OPTS_FIND_ARGS} QUIET COMPONENTS Core)
-find_package(HDF5 ${NSOL_OPTS_FIND_ARGS} QUIET COMPONENTS C CXX)
-find_package(OpenMP ${NSOL_OPTS_FIND_ARGS} QUIET)
+find_package(Qt5 ${NSOL_OPTS_FIND_ARGS} COMPONENTS Core)
+find_package(HDF5 ${NSOL_OPTS_FIND_ARGS} COMPONENTS C CXX)
+find_package(OpenMP ${NSOL_OPTS_FIND_ARGS})
 # find_package(FiReS ${NSOL_OPTS_FIND_ARGS} QUIET)
 # find_package(Brion ${NSOL_OPTS_FIND_ARGS} QUIET)
 
