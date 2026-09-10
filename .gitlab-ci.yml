@@ -1,110 +1,22 @@
-stages:
- - build
+stages: [run]
 
-Ubuntu-Optional-Deps:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - export BUILD_OPTIONALS_SUBPROJECTS=1
-  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Ninja"
-  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
-  - bash .gitlab-ci.sh
- except:
-  - master
- tags:
-  - ubuntu
+include:
+  - component: $CI_SERVER_FQDN/common/ci-shared/cmake-workflow@main
+    inputs:
+      job_prefix: debug
+      image: "docker.io/ubuntu:24.04"
+      before_script:
+        - apt update
+        - DEBIAN_FRONTEND=noninteractive apt install -y git doxygen g++ cmake ninja-build libboost-all-dev libeigen3-dev qtbase5-dev libhdf5-dev libomp-dev libglm-dev
+      workflow_preset: "debug-test"
+      build_dir: "build/debug"
 
-Ubuntu-Optional-Deps-master:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - export BUILD_OPTIONALS_SUBPROJECTS=1
-  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Ninja"
-  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
-  # - export DOCKER_REPO="gitlabci@vg-lab.es:apps.private"
-  - bash .gitlab-ci.sh
- only:
-  - master  
- tags:
-  - ubuntu
-
-Ubuntu-Subproject-master:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - export COVERAGE=ON
-  - export CMAKE_EXTRA_TARGETS="nsol-tests doxygen"
-  - export BUILD_GENERATOR="Ninja"
-  - export DEPLOY_DOC_REPO="git@github.com:vg-lab/vg-lab.github.io"
-  - export GITHUB_MIRROR_URL="git@github.com:vg-lab/nsol"
-  - bash .gitlab-ci.sh
- only:
-  - master
- tags:
-  - ubuntu
-
-Ubuntu-Subproject:
- stage: build
- script:
-  - date
-  - hostname
-  - uname -a
-  - export COVERAGE=ON
-  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-  - export BUILD_GENERATOR="Ninja"
-  - bash .gitlab-ci.sh
- except:
-  - master
- tags:
-  - ubuntu
-
-    #OSX-Optional-Deps:
-    # stage: build
-    # script:
-    #  - date
-    #  - hostname
-    #  - uname -a
-    #  - export BUILD_OPTIONALS_SUBPROJECTS=1
-    #  - module load Qt-5.9.1
-    #  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-    #  - export BUILD_GENERATOR="Ninja"
-    #  - export CMAKE_OSX_ARCHITECTURES=x86_64
-    #  - export CMAKE_EXTRA_ARGS="-DCLONE_SUBPROJECTS=ON"
-    #  - bash .gitlab-ci.sh
-    # tags:
-    #  - osx-sierra
-
-    #OSX-Subproject:
-    # stage: build
-    # script:
-    #  - date
-    #  - hostname
-    #  - uname -a
-    #  - module load Qt-5.9.1
-    #  - export CMAKE_EXTRA_TARGETS="nsol-tests"
-    #  - export BUILD_GENERATOR="Ninja"
-    #  - export CMAKE_OSX_ARCHITECTURES=x86_64
-    # - bash .gitlab-ci.sh
-    #tags:
-    # - osx-sierra
-
-Win7:
- stage: build
- script:
-  - call %ENVFILESDIR%\Boost-1.64-vs14-x64.bat
-  - call %ENVFILESDIR%\Qt-5.9-vs14.bat
-  - call %ENVFILESDIR%\eigen-3.1.2-vs12-x64.bat
-  - set CMAKE_EXTRA_TARGETS=RUN_TESTS
-  - set BUILD_GENERATOR=Visual Studio 14 Win64
-  - set PATH=%PATH%;"c:\\Program Files\\Git\\bin"
-  - bash.exe --login .gitlab-ci.sh
- tags:
-  - win7
+  - component: $CI_SERVER_FQDN/common/ci-shared/cmake-workflow@main
+    inputs:
+      job_prefix: debug-unstable
+      image: "docker.io/debian:unstable"
+      before_script:
+        - apt update
+        - DEBIAN_FRONTEND=noninteractive apt install -y git doxygen g++ cmake ninja-build libboost-all-dev libeigen3-dev qtbase5-dev libhdf5-dev libomp-dev libglm-dev
+      workflow_preset: "debug-test"
+      build_dir: "build/debug"
