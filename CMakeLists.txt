@@ -32,6 +32,8 @@ option(NSOL_OPTIONALS_AS_REQUIRED "Force optional dependencies as required" OFF)
 
 option(NSOL_WITH_LOGGING "Enable logging" ON)
 option(NSOL_USE_SHARED_PTR "" OFF)
+option(NSOL_USE_BRION "" ON)
+option(NSOL_USE_FIRES "" ON)
 
 # Dependencies
 find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework)
@@ -52,24 +54,26 @@ find_package(OpenMP ${NSOL_OPTS_FIND_ARGS})
 # find_package(FiReS ${NSOL_OPTS_FIND_ARGS} QUIET)
 # find_package(Brion ${NSOL_OPTS_FIND_ARGS} QUIET)
 
-include(FetchContent)
-FetchContent_Declare(
-    Brion
-    GIT_REPOSITORY https://github.com/vg-lab/Brion.git
-    GIT_SHALLOW ON
-    FIND_PACKAGE_ARGS
-)
-FetchContent_MakeAvailable(Brion)
-option(NSOL_USE_BRION "" ON)
+if(NSOL_USE_BRION)
+  include(FetchContent)
+  FetchContent_Declare(
+      Brion
+      GIT_REPOSITORY https://github.com/vg-lab/Brion.git
+      GIT_SHALLOW ON
+      FIND_PACKAGE_ARGS
+  )
+  FetchContent_MakeAvailable(Brion)
+endif()
 
-FetchContent_Declare(
-    FiReS
-    GIT_REPOSITORY https://github.com/vg-lab/FiReS.git
-    GIT_SHALLOW ON
-    FIND_PACKAGE_ARGS
-)
-FetchContent_MakeAvailable(FiReS)
-option(NSOL_USE_FIRES "" ON)
+if(NSOL_USE_FIRES)
+  FetchContent_Declare(
+      FiReS
+      GIT_REPOSITORY https://github.com/vg-lab/FiReS.git
+      GIT_SHALLOW ON
+      FIND_PACKAGE_ARGS
+  )
+  FetchContent_MakeAvailable(FiReS)
+endif()
 
 # Definitions
 option(NSOL_USE_HDF5 "" ${HDF5_FOUND})
