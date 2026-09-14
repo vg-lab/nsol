@@ -16,7 +16,9 @@
       "binaryDir": "${sourceDir}/build/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "BUILD_DOCS": "OFF"
+        "BUILD_DOCS": "OFF",
+        "NSOL_USE_BRION": "OFF",
+        "NSOL_USE_FIRES": "OFF"
       }
     },
     {
@@ -25,7 +27,10 @@
       "displayName": "Debug Extra",
       "description": "Debug build with extra features",
       "binaryDir": "${sourceDir}/build/debug-extra",
-      "cacheVariables": {}
+      "cacheVariables": {
+        "NSOL_USE_BRION": "ON",
+        "NSOL_USE_FIRES": "ON"
+      }
     },
     {
       "name": "release",
@@ -34,7 +39,9 @@
       "description": "Release build",
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "NSOL_USE_BRION": "OFF",
+        "NSOL_USE_FIRES": "OFF"
       }
     },
     {
@@ -43,7 +50,10 @@
       "displayName": "Release Extra",
       "description": "Release build with extra features",
       "binaryDir": "${sourceDir}/build/release-extra",
-      "cacheVariables": {}
+      "cacheVariables": {
+        "NSOL_USE_BRION": "ON",
+        "NSOL_USE_FIRES": "ON"
+      }
     },
     {
       "name": "debug-clang",
