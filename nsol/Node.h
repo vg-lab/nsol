@@ -29,13 +29,12 @@
 namespace nsol
 {
 
-  class Node
+  class NSOL_EXPORT Node
     : public virtual Object
   {
 
   public:
 
-    NSOL_EXPORT
     Node( const Vec3f & initPoint = Vec3f(0,0,0),
           const int & initId = 0,
           const float & initRadius = 0.0f )
@@ -45,30 +44,25 @@ namespace nsol
     {
     }
 
-    NSOL_EXPORT
     virtual ~Node( void )
     {
     }
 
-    NSOL_EXPORT
     virtual void point( const Vec3f & point_ )
     {
         _point = point_;
     }
 
-    NSOL_EXPORT
     Vec3f point( void ) const
     {
         return _point;
     }
 
-    NSOL_EXPORT
     virtual void radius( const float radius_ )
     {
         _radius = radius_;
     }
 
-    NSOL_EXPORT
     float radius( void ) const
     {
         return _radius;
@@ -78,7 +72,6 @@ namespace nsol
      * Set the node id
      * @return node id
      */
-    NSOL_EXPORT
     virtual void id( const int id_ )
     {
         _id = id_;
@@ -88,19 +81,16 @@ namespace nsol
      * Get the node id
      * @return node id
      */
-    NSOL_EXPORT
     int id( void ) const
     {
         return _id;
     }
 
-    NSOL_EXPORT
     virtual NodePtr clone( void ) const
     {
         return new Node( _point, _id, _radius );
     }
 
-    NSOL_EXPORT
     bool operator == ( const Node & other ) const
     {
       return ( ( this->_id == other._id ) &&
@@ -108,13 +98,11 @@ namespace nsol
                ( this->_point == other._point ) );
     }
 
-    NSOL_EXPORT
     bool operator != ( const Node & other ) const
     {
       return ! ( *this == other );
     }
 
-    NSOL_EXPORT
     virtual NodePtr asNode( void )
     {
       return this;

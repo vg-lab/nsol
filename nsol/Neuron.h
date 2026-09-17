@@ -276,9 +276,6 @@ namespace nsol
     NSOL_EXPORT
     bool isMorphologyLoaded( ) const;
 
-    // NSOL_EXPORT
-    // NeuronMorphologyPtr createMorphology( void );
-
     NSOL_EXPORT
     NeuronMorphologyPtr morphology( void ) const;
 

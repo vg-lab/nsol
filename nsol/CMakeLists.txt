@@ -56,6 +56,7 @@ set(NSOL_PUBLIC_HEADERS
   Reader/AscReader.h
   Reader/VectorsReader.h
   Reader/XmlSceneReader.h
+  Reader/SnuddaReader.h
 )
 
 if(HDF5_FOUND AND NSOL_USE_HDF5)

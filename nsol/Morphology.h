@@ -32,7 +32,7 @@ namespace nsol
 {
 
   /*! \class Morphology */
-  class Morphology
+  class NSOL_EXPORT Morphology
     : public virtual Object
   {
 
@@ -41,13 +41,11 @@ namespace nsol
     /*
      * Default Morphology class constructor
      */
-    NSOL_EXPORT
     Morphology( void ) { }
 
     /*
      * Default Morphology class destructor
      */
-    NSOL_EXPORT
     virtual ~Morphology( void ) { }
 
     /*

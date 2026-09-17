@@ -42,7 +42,7 @@ namespace nsol
    *
    *  Example: @include examples/neuronStats.cpp
    */
-  class NeuronMorphologyCachedStats
+  class NSOL_EXPORT NeuronMorphologyCachedStats
     : public virtual NeuronMorphologyStats
     , public Cached<>
   {
@@ -74,14 +74,12 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_EXPORT
     NeuronMorphologyCachedStats( void )
       : NeuronMorphologyStats( )
     {
     }
 
 
-    NSOL_EXPORT
     NeuronMorphologyCachedStats( SomaPtr soma_ )
       : NeuronMorphologyStats( soma_ )
     {
@@ -90,10 +88,8 @@ namespace nsol
     /**
      * Default destructor
      */
-    NSOL_EXPORT
     virtual ~NeuronMorphologyCachedStats( void ) {}
 
-    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologyStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 
@@ -104,14 +100,12 @@ namespace nsol
      * dirty state to parent neuronmorphology. id value has to be one from
      * TNeuronMorphologyCachedValues (checked only on debug compiling).
      */
-    NSOL_EXPORT
     virtual void setAndPropagateDirty( unsigned int id );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent
      * neuron morphology
      */
-    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
 

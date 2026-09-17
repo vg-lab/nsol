@@ -38,6 +38,7 @@
 #include "Container/Sections.h"
 #include "Reader/XmlSceneReader.h"
 #include "Reader/SwcReader.h"
+#include "Reader/SnuddaReader.h"
 
 #ifdef NSOL_USE_BRION
 #include "Reader/BrionReader.h"
@@ -47,12 +48,11 @@
 
 namespace nsol
 {
-  class DataSet
+  class NSOL_EXPORT DataSet
   {
   public:
 
-    NSOL_EXPORT
-    DataSet( void );
+        DataSet( void );
 
 #ifdef NSOL_USE_BRION
 
@@ -275,31 +275,22 @@ namespace nsol
     }
 
 
-    NSOL_EXPORT
     void unloadMorphologies( void );
 
-    NSOL_EXPORT
     void close( void );
 
-    NSOL_EXPORT
     Columns& columns( void );
 
-    NSOL_EXPORT
     const Columns& columns( void ) const;
 
-    NSOL_EXPORT
     Circuit& circuit( void );
 
-    NSOL_EXPORT
     const Circuit& circuit( void ) const;
 
-    NSOL_EXPORT
     NeuronsMap& neurons( void );
 
-    NSOL_EXPORT
     const NeuronsMap& neurons( void ) const;
 
-    NSOL_EXPORT
     bool addNeuron( const NeuronPtr neuron )
     {
       if ( _neurons.find( static_cast<unsigned int>(neuron->gid( ))) != _neurons.end( ))
@@ -437,8 +428,16 @@ namespace nsol
                                       _neurons, _morphologies );
     }
 
-    NSOL_EXPORT
     void writeXmlScene( const std::string& xmlSceneFile );
+
+    /** \brief Loads a Snudda dataset.
+     * \param[in] hdf5Network filename on disk of the HDF5 file containing scene data.
+     * \param[in] dataRepo filename on disk of the directory containing scene morphologies and activity.
+     */
+    void loadSnuddaScene(const std::string &hdf5Network, const std::string &dataRepo)
+    {
+      SnuddaSceneReader::loadSnudda(hdf5Network, dataRepo, _columns, _circuit, _neurons, _morphologies);
+    }
 
   private:
 

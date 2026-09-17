@@ -42,11 +42,11 @@ namespace nsol
    *
    *  Example: @include examples/sectionStats.cpp
    */
-  class NeuronMorphologySectionCachedStats
+  class NSOL_EXPORT NeuronMorphologySectionCachedStats
     : public NeuronMorphologySectionStats
     , public Cached<>
   {
-
+    using NeuronMorphologySectionStats::getStat;
 
   public:
 
@@ -62,13 +62,11 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_EXPORT
     NeuronMorphologySectionCachedStats( void );
 
     /**
      * Default destructor
      */
-    NSOL_EXPORT
     virtual ~NeuronMorphologySectionCachedStats( void );
 
     /**
@@ -77,13 +75,11 @@ namespace nsol
      * dirty state to parent neurite. id value has to be one from
      * TNeuronMorphologySectionCachedValues (checked only on debug compiling).
      */
-    NSOL_EXPORT
     virtual void setAndPropagateDirty(unsigned int id_ );
 
     /**
      * Set dirty all cached stats and propagates dirty to parent neurite
      */
-    NSOL_EXPORT
     virtual void setAndPropagateDirty( void );
 
     /**
@@ -94,13 +90,10 @@ namespace nsol
      * @return pointer to the node added
      *         (for compatibility with older nsol versions)
      */
-    NSOL_EXPORT
     virtual void addNode( NodePtr node = nullptr );
 
-    NSOL_EXPORT
     virtual void firstNode( NodePtr firstNode_ );
 
-    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologySectionStat stat ) const;
 
     // /**

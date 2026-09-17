@@ -37,7 +37,7 @@ namespace nsol
    *
    * Example: @include examples/sectionStats.cpp
    */
-  class NeuronMorphologySectionStats : public NeuronMorphologySection
+  class NSOL_EXPORT NeuronMorphologySectionStats : public NeuronMorphologySection
   {
 
   public:
@@ -56,13 +56,11 @@ namespace nsol
      * Returns object as SectionStats
      * @return pointer to SectionStats object
      */
-    NSOL_EXPORT
     NeuronMorphologySectionStats * stats( void )
     {
       return this;
     }
 
-    NSOL_EXPORT
     virtual float getStat( TNeuronMorphologySectionStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 

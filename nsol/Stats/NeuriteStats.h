@@ -36,7 +36,7 @@ namespace nsol
    *
    * Example: @include examples/neuriteStats.cpp
    */
-  class NeuriteStats : public virtual Neurite
+  class NSOL_EXPORT NeuriteStats : public virtual Neurite
   {
 
   public:
@@ -56,14 +56,12 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_EXPORT
     NeuriteStats( TNeuriteType neuriteType = DENDRITE );
 
     /**
      * Returns object as NeuriteStats
      * @return pointer to NeuriteStats object
      */
-    NSOL_EXPORT
     virtual NeuriteStats * stats( void )
     {
       return this;
@@ -75,7 +73,6 @@ namespace nsol
      * @param agg aggregation used
      * @return stat value using the aggregation given
      */
-    NSOL_EXPORT
     virtual float getStat( TNeuriteStat stat,
                            TAggregation agg = /*TAggregation::*/TOTAL ) const;
 

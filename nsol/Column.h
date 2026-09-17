@@ -39,7 +39,7 @@ namespace nsol
     Columns provides pointers to minicolumns and methods
     for different morphological values computation.
   */
-  class Column
+  class NSOL_EXPORT Column
     : public virtual Object
   {
 
@@ -52,27 +52,23 @@ namespace nsol
      * Default constructor
      * @param id id of the column.
      */
-    NSOL_EXPORT
     Column( unsigned short id = 0 );
 
     /**
      * Copy constructor
      * @param other column to be copied
      */
-    NSOL_EXPORT
     Column( const Column & other );
 
     /**
      * Default destructur
      */
-    NSOL_EXPORT
     virtual ~Column( void ) ;
 
     /**
      * Returns object as MiniColumnStats
      * @return pointer to MiniColumnStats object
      */
-    NSOL_EXPORT
     virtual ColumnStats * stats( void )
     {
       return nullptr;
@@ -88,14 +84,12 @@ namespace nsol
      * Method to get-set the column id.
      * @return column id
      */
-    NSOL_EXPORT
     unsigned short & id( void );
 
     /**
      * Method to get the column id.
      * @return reference to column id
      */
-    NSOL_EXPORT
     unsigned short id( void ) const;
 
 
@@ -108,7 +102,6 @@ namespace nsol
      * Method to add a mini column.
      * @param miniColumn minicolumn to add to this column
      */
-    NSOL_EXPORT
     void addMiniColumn( MiniColumnPtr miniColumn );
 
     /**
@@ -116,34 +109,29 @@ namespace nsol
      * @param miniColumn pointer to the minicolumn to be removed
      * @return true if minicolumn removed false otherwise
      */
-    NSOL_EXPORT
     bool removeMiniColumn( MiniColumnPtr miniColumn );
 
     /**
      * Method to clear mini columns.
      */
-    NSOL_EXPORT
     void clearMiniColumns( void );
 
     /**
      * Method to get minicolumns.
      * @return minicolumns of the column
      */
-    NSOL_EXPORT
     MiniColumns & miniColumns( void );
 
     /**
      * Method to get minicolumns as const.
      * @return minicolumns of the column
      */
-    NSOL_EXPORT
     MiniColumns miniColumns( void ) const;
 
     /**
      * Method to get the number of minicolumns.
      * @return numbers of minicolumns
      */
-    NSOL_EXPORT
     unsigned int numberOfMiniColumns( void ) const;
 
     ///@}
@@ -152,13 +140,10 @@ namespace nsol
     /** @name Operators */
     ///@{
 
-    NSOL_EXPORT
     Column & operator = ( const Column & other );
 
-    NSOL_EXPORT
     bool operator == ( Column & other ) const;
 
-    NSOL_EXPORT
     bool operator != ( Column & other ) const;
 
     ///@}
@@ -173,7 +158,6 @@ namespace nsol
      *        neurons of all layers will be counted.
      * @return number of neurons that match the criteria
      */
-    NSOL_EXPORT
     unsigned int
     numberOfNeurons( const bool all = true,
                      const Neuron::TMorphologicalType neuronType =
@@ -181,7 +165,6 @@ namespace nsol
                      const unsigned int layer = 0 ) const;
 
 
-    NSOL_EXPORT
     virtual ColumnPtr asColumn( void )
     {
       return this;

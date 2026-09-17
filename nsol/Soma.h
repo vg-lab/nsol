@@ -35,7 +35,7 @@ namespace nsol
     This class represents the soma and holds a container of the nodes
     that have been traced of its contour
   */
-  class Soma
+  class NSOL_EXPORT Soma
   {
 
   public:
@@ -43,83 +43,69 @@ namespace nsol
     /**
      * Default constructor
      */
-    NSOL_EXPORT
     Soma( void );
 
     /**
      * Destructor
      */
-    NSOL_EXPORT
     virtual ~Soma( void );
 
     /**
      * Method to get the center of the soma
      * @return center of the soma
      */
-    NSOL_EXPORT
     Vec3f center( void ) const;
 
     /**
      * Method to get the container of nodes
      * @return container with all the nodes of the soma
      */
-    NSOL_EXPORT
     Nodes & nodes( void );
 
     /**
      * Method to get the max radius of the soma
      * @return max radius of the soma
      */
-    NSOL_EXPORT
     const float & maxRadius( void ) const;
 
     /**
      * Method to get the min radius of the soma
      * @return min radius of the soma
      */
-    NSOL_EXPORT
     const float & minRadius( void ) const;
 
     /**
      * Method to get the mean radius of the soma
      * @return mean radius of the soma
      */
-    NSOL_EXPORT
     const float & meanRadius( void ) const;
 
     /**
      * Method to set the center of the soma
      * @param center_ New center of the soma
      */
-    NSOL_EXPORT
     void center( const Vec3f & center_ );
 
     /**
      * Method to add a node to the soma
      * @param node pointer to the node to add
      */
-    NSOL_EXPORT
     void addNode( NodePtr node );
 
     /**
      * Method to force the compute of the soma parameters (center and radii)
      */
-    NSOL_EXPORT
     void computeParams( void );
 
-    NSOL_EXPORT
     virtual const SomaStats * stats( void ) const
     {
       return nullptr;
     }
 
-    NSOL_EXPORT
     virtual SomaPtr clone( void ) const;
 
-    NSOL_EXPORT
     bool operator == ( Soma & other );
 
-    NSOL_EXPORT
     bool operator != ( Soma & other );
 
   protected:

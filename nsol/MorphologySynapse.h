@@ -161,6 +161,8 @@ namespace nsol
     NSOL_EXPORT
     NeuronMorphologySectionPtr postSynapticSection( void ) const;
 
+    using Synapse::operator=;
+
     /** \brief Operator =. Included to avoid warning in modern gcc versions.
      *
      */

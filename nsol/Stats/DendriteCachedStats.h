@@ -37,17 +37,15 @@ namespace nsol
    *
    * Example: @include examples/neuriteStats.cpp
    */
-  class DendriteCachedStats
+  class NSOL_EXPORT DendriteCachedStats
     : public DendriteStats
     , public NeuriteCachedStats
   {
 
   public:
 
-    NSOL_EXPORT
     DendriteCachedStats ( TDendriteType dendriteType_ = BASAL );
     
-    NSOL_EXPORT
     virtual NeuriteStats * stats( void )
     {
       return this;

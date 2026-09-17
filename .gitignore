@@ -13,3 +13,5 @@ build
 .vscode
 .cache
 _CPack_Packages/
+build/*
+CMakeUserPresets.json
