@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(nsol
-  VERSION 0.4.1
+  VERSION 1.0.0
   LANGUAGES CXX
   DESCRIPTION "NeuroScience Objects Library"
 )
