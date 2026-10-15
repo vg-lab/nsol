@@ -28,83 +28,80 @@
 namespace nsol
 {
 
-  //! Log levels suported
-  typedef enum
-  {
-    LOG_LEVEL_ERROR = 0,
-    LOG_LEVEL_WARNING,
-    LOG_LEVEL_VERBOSE,
-    LOG_LEVEL_UNKNOWN
-  } TLogLevel;
-
-  /**
-   * Static class to log output
-   *
-   */
-  class Log
-  {
-  public:
+    //! Log levels suported
+    typedef enum
+    {
+        LOG_LEVEL_ERROR = 0,
+        LOG_LEVEL_WARNING,
+        LOG_LEVEL_VERBOSE,
+        LOG_LEVEL_UNKNOWN
+    } TLogLevel;
 
     /**
-     * Set current log level
-     * @param logLevel level to be set
+     * Static class to log output
+     *
      */
-    NSOL_EXPORT
-    static void setLogLevel( const TLogLevel logLevel );
+    class Log
+    {
+      public:
+        /**
+         * Set current log level
+         * @param logLevel level to be set
+         */
+        NSOL_EXPORT
+        static void setLogLevel(const TLogLevel logLevel);
 
-    /**
-     * Get current log level
-     * @return current log level
-     */
-    NSOL_EXPORT
-    static TLogLevel logLevel( void );
+        /**
+         * Get current log level
+         * @return current log level
+         */
+        NSOL_EXPORT
+        static TLogLevel logLevel(void);
 
-    /**
-     * Set current output stream
-     * @param stream output stream to be set
-     */
-    NSOL_EXPORT
-    static void setStream( std::ostream& stream );
+        /**
+         * Set current output stream
+         * @param stream output stream to be set
+         */
+        NSOL_EXPORT
+        static void setStream(std::ostream& stream);
 
-    /**
-     * Get current output stream
-     * @return current output stream
-     */
-    NSOL_EXPORT
-    static const std::ostream& stream( void );
+        /**
+         * Get current output stream
+         * @return current output stream
+         */
+        NSOL_EXPORT
+        static const std::ostream& stream(void);
 
-    /**
-     * Method to log out a message in a specific level
-     * @param msg message to log
-     * @param level level of the message
-     */
-    NSOL_EXPORT
-    static void log( const std::string& msg,
-                     const TLogLevel level = LOG_LEVEL_VERBOSE );
+        /**
+         * Method to log out a message in a specific level
+         * @param msg message to log
+         * @param level level of the message
+         */
+        NSOL_EXPORT
+        static void log(const std::string& msg,
+                        const TLogLevel level = LOG_LEVEL_VERBOSE);
 
-    /**
-     * Method to log out a message in a specific level to a specific stream
-     * @param msg message to log
-     * @param level level of the message
-     * @param stream stream where log will be written
-     */
-    NSOL_EXPORT
-    static void log( const std::string& msg,
-                     std::ostream& stream,
-                     const TLogLevel level = LOG_LEVEL_VERBOSE );
+        /**
+         * Method to log out a message in a specific level to a specific stream
+         * @param msg message to log
+         * @param level level of the message
+         * @param stream stream where log will be written
+         */
+        NSOL_EXPORT
+        static void log(const std::string& msg, std::ostream& stream,
+                        const TLogLevel level = LOG_LEVEL_VERBOSE);
 
-    NSOL_EXPORT
-    static TLogLevel stringToLogLevel( std::string logLevelString );
-  protected:
+        NSOL_EXPORT
+        static TLogLevel stringToLogLevel(std::string logLevelString);
 
-    //! Current log level. This can be overwritten with proper value
-    //! assigned to environment variable NSOL_LOG_LEVEL
-    static TLogLevel _logLevel;
+      protected:
+        //! Current log level. This can be overwritten with proper value
+        //! assigned to environment variable NSOL_LOG_LEVEL
+        static TLogLevel _logLevel;
 
-    //! Current stream to write log to
-    static std::ostream* _stream;
-
-  };
-}
+        //! Current stream to write log to
+        static std::ostream* _stream;
+    };
+} // namespace nsol
 
 #endif

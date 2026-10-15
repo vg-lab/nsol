@@ -33,93 +33,89 @@
 using namespace nsol;
 using namespace std;
 
-void usageMessage( char* programName )
+void usageMessage(char* programName)
 {
-  std::cerr << std::endl
-            << "Usage: "
-            << programName << "\t"
-            << " -bc file_name -target target_name" << std::endl
-            << std::endl << std::endl;
-  exit(-1);
+    std::cerr << std::endl
+              << "Usage: " << programName << "\t"
+              << " -bc file_name -target target_name" << std::endl
+              << std::endl
+              << std::endl;
+    exit(-1);
 }
 
-int main( int argc, char* argv[ ])
+int main(int argc, char* argv[])
 {
-  std::string blueConfig;
-  std::string target = std::string( "" );
+    std::string blueConfig;
+    std::string target = std::string("");
 
-  for( int i = 1; i < argc; i++ )
-  {
-    if( std::strcmp( argv[ i ], "-bc" ) == 0 )
-    {
-      if( ++i < argc )
-      {
-        blueConfig = std::string( argv[ i ]);
-      }
-      else
-        usageMessage( argv[0] );
+    for (int i = 1; i < argc; i++) {
+        if (std::strcmp(argv[i], "-bc") == 0) {
+            if (++i < argc) {
+                blueConfig = std::string(argv[i]);
+            } else {
+                usageMessage(argv[0]);
+            }
+        }
+        if (std::strcmp(argv[i], "-target") == 0) {
+            if (++i < argc) {
+                target = std::string(argv[i]);
+            } else {
+                usageMessage(argv[0]);
+            }
+        }
     }
-    if( std::strcmp( argv[ i ], "-target" ) == 0 )
-    {
-      if( ++i < argc )
-      {
-        target = std::string( argv[ i ] );
-      }
-      else
-        usageMessage( argv[0] );
+
+    if (blueConfig.empty() || target.empty()) {
+        usageMessage(argv[0]);
     }
-  }
 
-  if ( blueConfig.empty( ) || target.empty( ))
-  {
-    usageMessage( argv[0] );
-  }
+    DataSet dataSet;
 
-  DataSet dataSet;
+    cout << "Open BlueConfig ..." << endl;
 
-  cout << "Open BlueConfig ..." << endl;
+    dataSet.loadBlueConfigHierarchy(blueConfig, target);
+    dataSet.loadAllMorphologies();
+    dataSet.loadBlueConfigConnectivity();
 
-  dataSet.loadBlueConfigHierarchy( blueConfig, target );
-  dataSet.loadAllMorphologies( );
-  dataSet.loadBlueConfigConnectivity( );
+    cout << " EXECUTING CircuitLoader... " << endl;
+    cout << endl;
+    cout << endl;
+    cout << endl;
 
-  cout << " EXECUTING CircuitLoader... " << endl;
-  cout << endl; cout << endl; cout << endl;
+    NeuronsMap neuronsMap = dataSet.neurons();
+    Circuit circuit = dataSet.circuit();
 
-  NeuronsMap neuronsMap = dataSet.neurons();
-  Circuit circuit = dataSet.circuit();
+    std::cout << "-     SUMMARY OF CONNECTIVITY DATA     -" << std::endl;
+    std::cout << "  - Number of synapses: "
+              << circuit.synapses(Circuit::PRESYNAPTICCONNECTIONS).size()
+              << std::endl;
+    std::cout << "  - Number of neurons: " << neuronsMap.size() << std::endl;
 
-  std::cout << "-     SUMMARY OF CONNECTIVITY DATA     -"<< std::endl;
-  std::cout << "  - Number of synapses: "<< circuit.synapses
-                  ( Circuit::PRESYNAPTICCONNECTIONS ).size() << std::endl;
-  std::cout << "  - Number of neurons: "<< neuronsMap.size() << std::endl;
+    unsigned int totalSynapsesPerNeuron = 0;
+    unsigned int maxSynapsesPerNeurons = 0;
+    float meanSynapsesPerNeuron = 0.0f;
 
-  unsigned int totalSynapsesPerNeuron = 0;
-  unsigned int maxSynapsesPerNeurons = 0;
-  float meanSynapsesPerNeuron = 0.0f;
+    for (const auto& pair : neuronsMap) {
+        unsigned int numSynapses =
+            circuit.synapses(pair.first, Circuit::PRESYNAPTICCONNECTIONS).size()
+            + circuit.synapses(pair.first, Circuit::POSTSYNAPTICCONNECTIONS)
+                  .size();
 
-  for( const auto& pair: neuronsMap )
-  {
-    unsigned int numSynapses =
-        circuit.synapses( pair.first, Circuit::PRESYNAPTICCONNECTIONS ).size() +
-        circuit.synapses( pair.first, Circuit::POSTSYNAPTICCONNECTIONS ).size();
+        if (numSynapses > maxSynapsesPerNeurons) {
+            maxSynapsesPerNeurons = numSynapses;
+        }
 
-    if( numSynapses >  maxSynapsesPerNeurons)
-     maxSynapsesPerNeurons = numSynapses;
+        totalSynapsesPerNeuron += numSynapses;
+    }
 
-    totalSynapsesPerNeuron += numSynapses;
-  }
+    meanSynapsesPerNeuron =
+        std::roundf(totalSynapsesPerNeuron / neuronsMap.size());
 
-  meanSynapsesPerNeuron = std::roundf
-                                 ( totalSynapsesPerNeuron / neuronsMap.size() );
+    std::cout << "  - Maximun number of synapses per neuron: "
+              << maxSynapsesPerNeurons << std::endl;
 
-  std::cout << "  - Maximun number of synapses per neuron: "
-            << maxSynapsesPerNeurons << std::endl;
+    std::cout << "  - Mean of number of synapses per neuron: "
+              << meanSynapsesPerNeuron << std::endl;
 
-  std::cout << "  - Mean of number of synapses per neuron: "
-            << meanSynapsesPerNeuron
-            << std::endl;
-
-  return 0;
-
+    return 0;
 }

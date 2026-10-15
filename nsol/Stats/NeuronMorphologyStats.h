@@ -27,72 +27,68 @@
 namespace nsol
 {
 
-  /** \class NeuronMorphologyStats
-   *  \brief This class allows to compute stats for sections
-   *
-   *  Using this class instead of NeuronMorphology when constructing the
-   *  hierarchy allows to call the method stats from base NeuronMorphology
-   *  class and get the corresponding volume, surface and length.
-   *
-   * Example: @include examples/neuronStats.cpp
-   */
-  class NeuronMorphologyStats
-    : public NeuronMorphology
-  {
-
-  public:
-
-    typedef enum
-    {
-      // Volume
-      DENDRITIC_VOLUME,
-      AXON_VOLUME,
-      NEURITIC_VOLUME,
-      SOMA_VOLUME,
-      VOLUME,
-      // Surface
-      DENDRITIC_SURFACE,
-      AXON_SURFACE,
-      NEURITIC_SURFACE,
-      SOMA_SURFACE,
-      SURFACE,
-      // Length
-      DENDRITIC_LENGTH,
-      AXON_LENGTH,
-      NEURITIC_LENGTH,
-      // Bifurcations
-      DENDRITIC_BIFURCATIONS,
-      AXON_BIFURCATIONS,
-      NEURITIC_BIFURCATIONS,
-      NEURON_MORPHOLOGY_NUM_STATS
-    } TNeuronMorphologyStat;
-
-
-    NSOL_EXPORT
-    NeuronMorphologyStats( void )
-      : NeuronMorphology( )
-    {
-    }
-
-    NSOL_EXPORT
-    NeuronMorphologyStats( SomaPtr soma_ )
-      : NeuronMorphology( soma_ )
-    {
-    }
-
-    /**
-     * Returns object as NeuronMorphologyStats
-     * @return pointer to NeuronMorphologyStats object
+    /** \class NeuronMorphologyStats
+     *  \brief This class allows to compute stats for sections
+     *
+     *  Using this class instead of NeuronMorphology when constructing the
+     *  hierarchy allows to call the method stats from base NeuronMorphology
+     *  class and get the corresponding volume, surface and length.
+     *
+     * Example: @include examples/neuronStats.cpp
      */
-    NSOL_EXPORT
-    virtual NeuronMorphologyStats * stats( void );
+    class NeuronMorphologyStats : public NeuronMorphology
+    {
+      public:
+        typedef enum
+        {
+            // Volume
+            DENDRITIC_VOLUME,
+            AXON_VOLUME,
+            NEURITIC_VOLUME,
+            SOMA_VOLUME,
+            VOLUME,
+            // Surface
+            DENDRITIC_SURFACE,
+            AXON_SURFACE,
+            NEURITIC_SURFACE,
+            SOMA_SURFACE,
+            SURFACE,
+            // Length
+            DENDRITIC_LENGTH,
+            AXON_LENGTH,
+            NEURITIC_LENGTH,
+            // Bifurcations
+            DENDRITIC_BIFURCATIONS,
+            AXON_BIFURCATIONS,
+            NEURITIC_BIFURCATIONS,
+            NEURON_MORPHOLOGY_NUM_STATS
+        } TNeuronMorphologyStat;
 
-    NSOL_EXPORT
-    virtual float getStat( TNeuronMorphologyStat stat,
-                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
+        NSOL_EXPORT
+        NeuronMorphologyStats(void) :
+            NeuronMorphology()
+        {
+        }
 
+        NSOL_EXPORT
+        NeuronMorphologyStats(SomaPtr soma_) :
+            NeuronMorphology(soma_)
+        {
+        }
 
-  }; // class NeuronMorphologyStats
+        /**
+         * Returns object as NeuronMorphologyStats
+         * @return pointer to NeuronMorphologyStats object
+         */
+        NSOL_EXPORT
+        virtual NeuronMorphologyStats* stats(void);
+
+        NSOL_EXPORT
+        virtual float getStat(
+            TNeuronMorphologyStat stat,
+            TAggregation agg = /*TAggregation::*/ TOTAL) const;
+
+    }; // class NeuronMorphologyStats
 
 } // namespace nsol
 

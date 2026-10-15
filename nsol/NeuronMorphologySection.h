@@ -28,141 +28,136 @@
 namespace nsol
 {
 
-  class NeuronMorphologySectionStats;
+    class NeuronMorphologySectionStats;
 
-  class NeuronMorphologySection
-    : public Section
-  {
-
-  public:
-
-    /**
-     * Default constructor
-     */
-    NSOL_EXPORT
-    NeuronMorphologySection( void );
-
-    /**
-     * Default destructor
-     */
-    NSOL_EXPORT
-    virtual ~NeuronMorphologySection( );
-
-    /**
-     * Method to get the gid of the neuron morphology section.
-     * @return gid
-     */
-    NSOL_EXPORT
-    unsigned int id( void ) const;
-
-    /**
-     * Method to set the gid of the neuron morphology section.
-     * @param id
-     */
-    NSOL_EXPORT
-    void id ( unsigned int id );
-
-    /**
-     * Gets the parent Neurite of the Neuron Morphology Section
-     * @return pointer to the parent Neurite
-     */
-    NSOL_EXPORT
-    NeuritePtr neurite( void );
-
-    /**
-     * Sets the parent neurite of this Neuron Morphology Section
-     * @param neurite pointer to parent neurite
-     */
-    NSOL_EXPORT
-    void neurite( NeuritePtr neurite );
-
-     /**
-     * Gets the parent Section of this Section
-     * @return pointer to the parent Section
-     */
-    NSOL_EXPORT
-    SectionPtr parent( void );
-
-    /**
-     * Sets the parent Section of this Section
-     * @param parent pointer to parent Section
-     */
-    NSOL_EXPORT
-    void parent( SectionPtr parent );
-
-    /**
-     * Adds child Section to this Section
-     * @param section pointer to the section to be added
-     */
-    NSOL_EXPORT
-    void addChild( SectionPtr section );
-
-    /**
-     * Return the children sections
-     * @return container of children sections
-     */
-    NSOL_EXPORT
-    Sections& children( void );
-
-    NSOL_EXPORT
-    const Sections& children( void ) const;
-
-    /**
-     * Adds a Node at the end of Section
-     * @param node pointer to the Node to add.
-     *        Precondition: pointer is not null.
-     */
-    NSOL_EXPORT
-    virtual void addNode( NodePtr node );
-
-    /**
-     * Gets the first Node of the Section.
-     * @return pointer to the first Node, null in case it doesn't have any
-     */
-    NSOL_EXPORT
-    NodePtr firstNode( void );
-
-    /**
-     * Sets first Node of the Section. This method is virtual to allow
-     * reimplementation for cached objects and dirty state propagation
-     * @param firstNode pointer to the Node.
-     */
-    NSOL_EXPORT
-    virtual void firstNode( NodePtr firstNode );
-
-    /**
-     * Gets the last Node of the Section.
-     * @return pointer to the last Node, null in case it doesn't have any
-     */
-    NSOL_EXPORT
-    NodePtr lastNode( void );
-
-
-    /**
-     * Returns object as SectionStats
-     * @return pointer to SectionStats object
-     */
-    NSOL_EXPORT
-    virtual NeuronMorphologySectionStats* stats( void );
-
-    NSOL_EXPORT
-    virtual SectionPtr clone( void ) const;
-
-    NSOL_EXPORT
-    virtual SectionPtr asNeuronMorphologySection( void )
+    class NeuronMorphologySection : public Section
     {
-      return this;
-    }
+      public:
+        /**
+         * Default constructor
+         */
+        NSOL_EXPORT
+        NeuronMorphologySection(void);
 
-  protected:
+        /**
+         * Default destructor
+         */
+        NSOL_EXPORT
+        virtual ~NeuronMorphologySection();
 
-    //! Unique id
-    unsigned int _id;
+        /**
+         * Method to get the gid of the neuron morphology section.
+         * @return gid
+         */
+        NSOL_EXPORT
+        unsigned int id(void) const;
 
-    //! Parent neurite of the section
-    NeuritePtr _neurite;
+        /**
+         * Method to set the gid of the neuron morphology section.
+         * @param id
+         */
+        NSOL_EXPORT
+        void id(unsigned int id);
 
-  }; // class Neuron Morphology Section
+        /**
+         * Gets the parent Neurite of the Neuron Morphology Section
+         * @return pointer to the parent Neurite
+         */
+        NSOL_EXPORT
+        NeuritePtr neurite(void);
+
+        /**
+         * Sets the parent neurite of this Neuron Morphology Section
+         * @param neurite pointer to parent neurite
+         */
+        NSOL_EXPORT
+        void neurite(NeuritePtr neurite);
+
+        /**
+         * Gets the parent Section of this Section
+         * @return pointer to the parent Section
+         */
+        NSOL_EXPORT
+        SectionPtr parent(void);
+
+        /**
+         * Sets the parent Section of this Section
+         * @param parent pointer to parent Section
+         */
+        NSOL_EXPORT
+        void parent(SectionPtr parent);
+
+        /**
+         * Adds child Section to this Section
+         * @param section pointer to the section to be added
+         */
+        NSOL_EXPORT
+        void addChild(SectionPtr section);
+
+        /**
+         * Return the children sections
+         * @return container of children sections
+         */
+        NSOL_EXPORT
+        Sections& children(void);
+
+        NSOL_EXPORT
+        const Sections& children(void) const;
+
+        /**
+         * Adds a Node at the end of Section
+         * @param node pointer to the Node to add.
+         *        Precondition: pointer is not null.
+         */
+        NSOL_EXPORT
+        virtual void addNode(NodePtr node);
+
+        /**
+         * Gets the first Node of the Section.
+         * @return pointer to the first Node, null in case it doesn't have any
+         */
+        NSOL_EXPORT
+        NodePtr firstNode(void);
+
+        /**
+         * Sets first Node of the Section. This method is virtual to allow
+         * reimplementation for cached objects and dirty state propagation
+         * @param firstNode pointer to the Node.
+         */
+        NSOL_EXPORT
+        virtual void firstNode(NodePtr firstNode);
+
+        /**
+         * Gets the last Node of the Section.
+         * @return pointer to the last Node, null in case it doesn't have any
+         */
+        NSOL_EXPORT
+        NodePtr lastNode(void);
+
+        /**
+         * Returns object as SectionStats
+         * @return pointer to SectionStats object
+         */
+        NSOL_EXPORT
+        virtual NeuronMorphologySectionStats* stats(void);
+
+        NSOL_EXPORT
+        virtual SectionPtr clone(void) const;
+
+        NSOL_EXPORT
+        virtual SectionPtr asNeuronMorphologySection(void)
+        {
+            return this;
+        }
+
+      protected:
+        //! Unique id
+        unsigned int _id;
+
+        //! Parent neurite of the section
+        NeuritePtr _neurite;
+
+    }; // class Neuron Morphology Section
 
 } // namespace nsol
 

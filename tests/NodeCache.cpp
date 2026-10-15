@@ -28,15 +28,20 @@
 
 using namespace nsol;
 
-
-BOOST_AUTO_TEST_CASE( nodecache_constructor )
+BOOST_AUTO_TEST_CASE(nodecache_constructor)
 {
-  NeuriteStats* neuriteStats = new NeuriteStats( );
+    NeuriteStats* neuriteStats = new NeuriteStats();
 
-  BOOST_CHECK( neuriteStats->stats( ) == neuriteStats );
+    BOOST_CHECK(neuriteStats->stats() == neuriteStats);
 
-  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::STD_DEV ) == 0.0f );
-  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::MIN ) == 0.0f );
-  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::MAX ) == 0.0f );
-  BOOST_CHECK( neuriteStats->getStat( NeuriteStats::SURFACE, TAggregation::VARIANCE ) == 0.0f );
+    BOOST_CHECK(
+        neuriteStats->getStat(NeuriteStats::SURFACE, TAggregation::STD_DEV)
+        == 0.0f);
+    BOOST_CHECK(neuriteStats->getStat(NeuriteStats::SURFACE, TAggregation::MIN)
+                == 0.0f);
+    BOOST_CHECK(neuriteStats->getStat(NeuriteStats::SURFACE, TAggregation::MAX)
+                == 0.0f);
+    BOOST_CHECK(
+        neuriteStats->getStat(NeuriteStats::SURFACE, TAggregation::VARIANCE)
+        == 0.0f);
 }

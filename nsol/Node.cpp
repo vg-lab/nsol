@@ -26,7 +26,6 @@
 namespace nsol
 {
 
-
 } // namespace nsol
 
 // EOF

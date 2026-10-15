@@ -22,14 +22,13 @@
 #ifndef __NSOL_SPINE__
 #define __NSOL_SPINE__
 
-namespace nsol {
+namespace nsol
+{
 
-  class Spine {
-    
-    
-  };
+    class Spine
+    {
+    };
 
-
-}
+} // namespace nsol
 
 #endif

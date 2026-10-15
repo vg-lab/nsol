@@ -24,68 +24,55 @@
  */
 #include <nsol/nsol.h>
 
-void usageMessage( char* programName )
+void usageMessage(char* programName)
 {
-  std::cerr << std::endl
-            << "Usage: "
-            << programName << "\t"
-            << " -bc file_name -target target_name" << std::endl
-            << "\t\t\t\t\t  -o output_file_name ] " << std::endl
-            << std::endl << std::endl;
-  exit(-1);
+    std::cerr << std::endl
+              << "Usage: " << programName << "\t"
+              << " -bc file_name -target target_name" << std::endl
+              << "\t\t\t\t\t  -o output_file_name ] " << std::endl
+              << std::endl
+              << std::endl;
+    exit(-1);
 }
 
-int main ( int argc, char ** argv )
+int main(int argc, char** argv)
 {
+    std::string blueConfig;
+    std::string target = std::string("");
+    std::string outFile;
 
-  std::string blueConfig;
-  std::string target = std::string( "" );
-  std::string outFile;
-
-    for( int i = 1; i < argc; i++ )
-  {
-    if( std::strcmp( argv[ i ], "-bc" ) == 0 )
-    {
-      if( ++i < argc )
-      {
-        blueConfig = std::string( argv[ i ]);
-      }
-      else
-        usageMessage( argv[0] );
-
+    for (int i = 1; i < argc; i++) {
+        if (std::strcmp(argv[i], "-bc") == 0) {
+            if (++i < argc) {
+                blueConfig = std::string(argv[i]);
+            } else {
+                usageMessage(argv[0]);
+            }
+        }
+        if (std::strcmp(argv[i], "-target") == 0) {
+            if (++i < argc) {
+                target = std::string(argv[i]);
+            } else {
+                usageMessage(argv[0]);
+            }
+        }
+        if (std::strcmp(argv[i], "-o") == 0) {
+            if (++i < argc) {
+                outFile = std::string(argv[i]);
+            } else {
+                usageMessage(argv[0]);
+            }
+        }
     }
-    if( std::strcmp( argv[ i ], "-target" ) == 0 )
-    {
-      if( ++i < argc )
-      {
-        target = std::string( argv[ i ] );
-      }
-      else
-        usageMessage( argv[0] );
-    }
-    if( std::strcmp( argv[ i ], "-o" ) == 0 )
-    {
-      if( ++i < argc )
-      {
-        outFile = std::string( argv[ i ] );
-      }
-      else
-        usageMessage( argv[0] );
-    }
-  }
 
-    if ( blueConfig.empty( ) |
-         target.empty( ) ||
-         outFile.empty( ))
-    {
-      usageMessage( argv[0] );
+    if (blueConfig.empty() | target.empty() || outFile.empty()) {
+        usageMessage(argv[0]);
     }
 
     nsol::DataSet dataSet;
 
-    dataSet.loadBlueConfigHierarchy( blueConfig, target );
-    dataSet.loadAllMorphologies( );
-    dataSet.writeXmlScene( outFile );
+    dataSet.loadBlueConfigHierarchy(blueConfig, target);
+    dataSet.loadAllMorphologies();
+    dataSet.writeXmlScene(outFile);
     return 0;
-
 }

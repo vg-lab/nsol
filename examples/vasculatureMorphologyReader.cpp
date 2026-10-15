@@ -25,27 +25,25 @@
 #include <nsol/nsol.h>
 #include <iostream>
 
-int main( int argc, char* argv[ ] )
+int main(int argc, char* argv[])
 {
-  nsol::VasculatureReader r;
+    nsol::VasculatureReader r;
 
-  if( argc < 2 )
-  {
-    std::cerr << "Error: morphology input file parameter needed" << std::endl;
-    return -1;
-  }
+    if (argc < 2) {
+        std::cerr << "Error: morphology input file parameter needed"
+                  << std::endl;
+        return -1;
+    }
 
-  std::cout << "Reading file " << argv[1] << std::endl;
+    std::cout << "Reading file " << argv[1] << std::endl;
 
-  nsol::MorphologyPtr morphology =
-    r.loadMorphology( std::string( argv[1] ));
+    nsol::MorphologyPtr morphology = r.loadMorphology(std::string(argv[1]));
 
-  if( !morphology )
-  {
-    std::cerr << "Error: morphology not loaded " << std::endl;
-    return -1;
-  }
-  std::cout << "Number of section: " << morphology->sections( ).size( )
-            << std::endl;
-  return 0;
+    if (!morphology) {
+        std::cerr << "Error: morphology not loaded " << std::endl;
+        return -1;
+    }
+    std::cout << "Number of section: " << morphology->sections().size()
+              << std::endl;
+    return 0;
 }

@@ -27,39 +27,33 @@
 namespace nsol
 {
 
-
-  class SomaStats : public Soma
-  {
-
-  public:
-
-    typedef enum
+    class SomaStats : public Soma
     {
-      SURFACE = 0,
-      VOLUME,
-      SOMA_NUM_STATS
-    } TSomaStat;
+      public:
+        typedef enum
+        {
+            SURFACE = 0,
+            VOLUME,
+            SOMA_NUM_STATS
+        } TSomaStat;
 
+        /**
+         * Default constructor
+         */
+        NSOL_EXPORT
+        SomaStats();
 
-    /**
-     * Default constructor
-     */
-    NSOL_EXPORT
-    SomaStats( );
+        /**
+         * Destructor
+         */
+        NSOL_EXPORT
+        virtual ~SomaStats();
 
-    /**
-     * Destructor
-     */
-    NSOL_EXPORT
-    virtual ~SomaStats( );
+        NSOL_EXPORT
+        virtual const SomaStats* stats(void) const;
 
-    NSOL_EXPORT
-    virtual const SomaStats * stats( void ) const;
-
-    virtual float getStat( TSomaStat stat ) const;
-
-
-  };
+        virtual float getStat(TSomaStat stat) const;
+    };
 
 } // namespace nsol
 

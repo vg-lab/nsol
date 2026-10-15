@@ -38,156 +38,134 @@
 namespace nsol
 {
 
-  class SwcWriter
-  {
-
-  public:
-
-    typedef enum
+    class SwcWriter
     {
-      SWC_SOMA = 1, SWC_AXON = 2, SWC_DENDRITE = 3, SWC_APICAL = 4
-    } TSwcNodeType;
-
-    typedef struct
-    {
-      unsigned int id;
-      Vec3f xyz;
-      float radius;
-    } TSwcLine;
-
-    bool writeMorphology(const char *fileName, NeuronMorphologyPtr morphology)
-    {
-      return this->writeMorphology(std::string(fileName), morphology);
-    }
-
-    bool writeMorphology(const std::string& fileName, NeuronMorphologyPtr morphology)
-    {
-
-      if (!morphology)
-      {
-        std::cerr << "Error neuron " << std::endl;
-        return false;
-      }
-
-      std::ofstream outFile;
-      outFile.open(fileName, std::ios::out);
-
-      //Opening file checking
-      if ((outFile.rdstate() & std::ofstream::failbit) != 0)
-      {
-        std::cerr << "Error opening file " << fileName << std::endl;
-        return false;
-      }
-
-      int parent = -1;
-
-//      TODO: remove this initial line restriction
-      outFile << "#File exporter" << std::endl;
-
-      //Writing soma
-      for (NsolVector<NodePtr>::iterator it =
-             morphology->soma()->nodes().begin();
-           it != morphology->soma()->nodes().end(); ++it)
-      {
-        outFile << " "
-                << (*it)->id()
-                << " "
-                << int( SWC_SOMA )
-                << " "
-                << (*it)->point()[0]
-                << " "
-                << (*it)->point()[1]
-                << " "
-                << (*it)->point()[2]
-                << " "
-                << (*it)->radius()
-                << " "
-                << parent
-                << std::endl;
-
-        parent = (*it)->id();
-      }
-
-      Neurites neurites = morphology->neurites();
-      unsigned int type;
-
-      //Writing neurites
-      for (Neurites::iterator it = neurites.begin();
-           it != neurites.end(); ++it)
-      {
-        if (NSOL_DYNAMIC_CAST( Dendrite, *it ))
+      public:
+        typedef enum
         {
-          if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::APICAL)
-            type = SWC_APICAL;
-          else if (NSOL_DYNAMIC_CAST( Dendrite, *it )->dendriteType() == Dendrite::BASAL)
-            type = SWC_DENDRITE;
+            SWC_SOMA = 1,
+            SWC_AXON = 2,
+            SWC_DENDRITE = 3,
+            SWC_APICAL = 4
+        } TSwcNodeType;
+
+        typedef struct
+        {
+            unsigned int id;
+            Vec3f xyz;
+            float radius;
+        } TSwcLine;
+
+        bool writeMorphology(const char* fileName,
+                             NeuronMorphologyPtr morphology)
+        {
+            return this->writeMorphology(std::string(fileName), morphology);
         }
-        else if (NSOL_DYNAMIC_CAST( Axon, *it ))
-          type = SWC_AXON;
 
-        NeuronMorphologySectionPtr fSection = (*it)->firstSection();
-
-        std::stack<SectionPtr> sPS;
-        sPS.push(fSection);
-
-        std::map<unsigned int, NodePtr> nodePtrMap;
-        std::map<unsigned int, int> nodeParentId;
-
-        nodePtrMap[ fSection->firstNode( )->id( ) ] = fSection->firstNode( );
-        nodeParentId[ fSection->firstNode( )->id( ) ] = 1;
-
-        while (!sPS.empty())
+        bool writeMorphology(const std::string& fileName,
+                             NeuronMorphologyPtr morphology)
         {
-          NeuronMorphologySectionPtr lS =
-            dynamic_cast< NeuronMorphologySectionPtr >( sPS.top( ));
-          sPS.pop();
-
-          NSOL_FOREACH( node, lS->nodes() )
-          {
-            if ( (*node) != lS->firstNode( ) )
-            {
-              nodePtrMap[( *node )->id( )] = *node;
-              nodeParentId[( *node )->id( )] = parent;
+            if (!morphology) {
+                std::cerr << "Error neuron " << std::endl;
+                return false;
             }
-            parent = ( *node )->id( );
-          }
 
-          if (lS->children().size() > 0)
-            for (unsigned int i = 0; i < lS->children().size(); ++i)
-              sPS.push(lS->children()[i]);
+            std::ofstream outFile;
+            outFile.open(fileName, std::ios::out);
+
+            // Opening file checking
+            if ((outFile.rdstate() & std::ofstream::failbit) != 0) {
+                std::cerr << "Error opening file " << fileName << std::endl;
+                return false;
+            }
+
+            int parent = -1;
+
+            //      TODO: remove this initial line restriction
+            outFile << "#File exporter" << std::endl;
+
+            // Writing soma
+            for (NsolVector<NodePtr>::iterator it =
+                     morphology->soma()->nodes().begin();
+                 it != morphology->soma()->nodes().end(); ++it) {
+                outFile << " " << (*it)->id() << " " << int(SWC_SOMA) << " "
+                        << (*it)->point()[0] << " " << (*it)->point()[1] << " "
+                        << (*it)->point()[2] << " " << (*it)->radius() << " "
+                        << parent << std::endl;
+
+                parent = (*it)->id();
+            }
+
+            Neurites neurites = morphology->neurites();
+            unsigned int type;
+
+            // Writing neurites
+            for (Neurites::iterator it = neurites.begin(); it != neurites.end();
+                 ++it) {
+                if (NSOL_DYNAMIC_CAST(Dendrite, *it)) {
+                    if (NSOL_DYNAMIC_CAST(Dendrite, *it)->dendriteType()
+                        == Dendrite::APICAL) {
+                        type = SWC_APICAL;
+                    } else if (NSOL_DYNAMIC_CAST(Dendrite, *it)->dendriteType()
+                               == Dendrite::BASAL) {
+                        type = SWC_DENDRITE;
+                    }
+                } else if (NSOL_DYNAMIC_CAST(Axon, *it)) {
+                    type = SWC_AXON;
+                }
+
+                NeuronMorphologySectionPtr fSection = (*it)->firstSection();
+
+                std::stack<SectionPtr> sPS;
+                sPS.push(fSection);
+
+                std::map<unsigned int, NodePtr> nodePtrMap;
+                std::map<unsigned int, int> nodeParentId;
+
+                nodePtrMap[fSection->firstNode()->id()] = fSection->firstNode();
+                nodeParentId[fSection->firstNode()->id()] = 1;
+
+                while (!sPS.empty()) {
+                    NeuronMorphologySectionPtr lS =
+                        dynamic_cast<NeuronMorphologySectionPtr>(sPS.top());
+                    sPS.pop();
+
+                    NSOL_FOREACH(node, lS->nodes())
+                    {
+                        if ((*node) != lS->firstNode()) {
+                            nodePtrMap[(*node)->id()] = *node;
+                            nodeParentId[(*node)->id()] = parent;
+                        }
+                        parent = (*node)->id();
+                    }
+
+                    if (lS->children().size() > 0) {
+                        for (unsigned int i = 0; i < lS->children().size();
+                             ++i) {
+                            sPS.push(lS->children()[i]);
+                        }
+                    }
+                }
+
+                for (std::map<unsigned int, NodePtr>::iterator nodeIt =
+                         nodePtrMap.begin();
+                     nodeIt != nodePtrMap.end(); ++nodeIt) {
+                    outFile << " " << nodeIt->second->id() << " " << type << " "
+                            << nodeIt->second->point()[0] << " "
+                            << nodeIt->second->point()[1] << " "
+                            << nodeIt->second->point()[2] << " "
+                            << nodeIt->second->radius() << " "
+                            << nodeParentId[nodeIt->second->id()] << std::endl;
+
+                    parent = nodeParentId[nodeIt->second->id()];
+                }
+            }
+
+            outFile.close();
+
+            return true;
         }
-
-        for (std::map<unsigned int, NodePtr>::iterator nodeIt =
-               nodePtrMap.begin(); nodeIt != nodePtrMap.end(); ++nodeIt)
-        {
-
-          outFile << " "
-                  << nodeIt->second->id()
-                  << " "
-                  << type
-                  << " "
-                  << nodeIt->second->point()[0]
-                  << " "
-                  << nodeIt->second->point()[1]
-                  << " "
-                  << nodeIt->second->point()[2]
-                  << " "
-                  << nodeIt->second->radius()
-                  << " "
-                  << nodeParentId[nodeIt->second->id()]
-                  << std::endl;
-
-          parent = nodeParentId[nodeIt->second->id()];
-        }
-
-      }
-
-     outFile.close();
-
-     return true;
-
-    }
-  };
-}
+    };
+} // namespace nsol
 
 #endif

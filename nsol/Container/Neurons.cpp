@@ -22,23 +22,21 @@
 #include "Neurons.h"
 #include "../Neuron.h"
 
-
 namespace nsol
 {
 
-  bool NeuronsMap::addNeuron( Neuron* neuron )
-  {
-    if ( this->find( neuron->gid( )) != this->end( ))
+    bool NeuronsMap::addNeuron(Neuron* neuron)
     {
-      Log::log( std::string( "Warning: neuron with gid " ) +
-                std::to_string( neuron->gid( )) +
-                std::string( "already exists in the dataset" ),
-                LOG_LEVEL_WARNING );
-      return false;
-    }
+        if (this->find(neuron->gid()) != this->end()) {
+            Log::log(std::string("Warning: neuron with gid ")
+                         + std::to_string(neuron->gid())
+                         + std::string("already exists in the dataset"),
+                     LOG_LEVEL_WARNING);
+            return false;
+        }
 
-    ( *this )[ neuron->gid( ) ] = neuron;
-    return true;
-  }
+        (*this)[neuron->gid()] = neuron;
+        return true;
+    }
 
 } // namespace nsol

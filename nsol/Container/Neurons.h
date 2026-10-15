@@ -29,15 +29,14 @@
 namespace nsol
 {
 
-  typedef NsolVector< NeuronPtr > Neurons;
+    typedef NsolVector<NeuronPtr> Neurons;
 
-  class NeuronsMap : public std::unordered_map< unsigned int, NeuronPtr >
-  {
-  public:
-
-    NSOL_EXPORT
-    bool addNeuron( NeuronPtr neuron );
-  };
-}
+    class NeuronsMap : public std::unordered_map<unsigned int, NeuronPtr>
+    {
+      public:
+        NSOL_EXPORT
+        bool addNeuron(NeuronPtr neuron);
+    };
+} // namespace nsol
 
 #endif /* _NSOL_NEURONS_H_ */

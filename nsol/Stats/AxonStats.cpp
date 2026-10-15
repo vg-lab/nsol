@@ -24,8 +24,8 @@
 namespace nsol
 {
 
-    AxonStats::AxonStats( void )
-      : Neurite( Neurite::AXON )
+    AxonStats::AxonStats(void) :
+        Neurite(Neurite::AXON)
     {
     }
 

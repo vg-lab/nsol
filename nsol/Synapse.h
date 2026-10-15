@@ -26,110 +26,105 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Neuron.h>
 
-
 namespace nsol
 {
 
-  /*! \class Synapse
-    \brief A class to represent synapses.
+    /*! \class Synapse
+      \brief A class to represent synapses.
 
-    TODO: extend long description
-  */
-  class Synapse
-  {
+      TODO: extend long description
+    */
+    class Synapse
+    {
+      public:
+        /** @name Constructors and destructors  */
+        ///@{
 
-  public:
+        /**
+         * Default Synapse constructor
+         */
+        NSOL_EXPORT
+        Synapse(void);
 
-    /** @name Constructors and destructors  */
-    ///@{
+        /**
+         * Copy constructor
+         * @param other_ synapse to be copied
+         */
+        NSOL_EXPORT
+        Synapse(const Synapse& other_);
 
-    /**
-     * Default Synapse constructor
-     */
-    NSOL_EXPORT
-    Synapse( void );
+        /**
+         * Default destructor
+         */
+        NSOL_EXPORT
+        virtual ~Synapse(void);
 
-    /**
-     * Copy constructor
-     * @param other_ synapse to be copied
-     */
-    NSOL_EXPORT
-    Synapse( const Synapse& other_ );
+        ///@}
 
-    /**
-     * Default destructor
-     */
-    NSOL_EXPORT
-    virtual ~Synapse( void );
+        /** @name getters and setters methods */
+        ///@{
 
-    ///@}
+        /**
+         * Method to get the gid of the presynaptic neuron.
+         * @return gid of the presynaptic neuron.
+         */
+        NSOL_EXPORT
+        uint32_t preSynapticNeuron(void) const;
 
-    /** @name getters and setters methods */
-    ///@{
+        /**
+         * Method to add a presynaptic neuron to the synapse.
+         * @param neuronID_ gid of the presynaptic neuron.
+         * @see Neuron
+         */
+        NSOL_EXPORT
+        void preSynapticNeuron(const uint32_t neuronID_);
 
-    /**
-     * Method to get the gid of the presynaptic neuron.
-     * @return gid of the presynaptic neuron.
-     */
-    NSOL_EXPORT
-    uint32_t preSynapticNeuron( void ) const;
+        /**
+         * Method to get the gid of the postsynaptic neuron.
+         * @return gid of the postsynaptic neuron.
+         */
+        NSOL_EXPORT
+        uint32_t postSynapticNeuron(void) const;
 
-    /**
-     * Method to add a presynaptic neuron to the synapse.
-     * @param neuronID_ gid of the presynaptic neuron.
-     * @see Neuron
-     */
-    NSOL_EXPORT
-    void preSynapticNeuron(const uint32_t neuronID_ );
+        /**
+         * Method to add a postsynaptic neuron to the synapse.
+         * @param neuronID_ gid of the postsynaptic neuron.
+         * @see Neuron
+         */
+        NSOL_EXPORT
+        void postSynapticNeuron(const uint32_t neuronID_);
 
-    /**
-      * Method to get the gid of the postsynaptic neuron.
-      * @return gid of the postsynaptic neuron.
-      */
-    NSOL_EXPORT
-    uint32_t postSynapticNeuron( void ) const;
+        /**
+         * Method to set the synaptic weight.
+         * @param weight_ synaptic weight.
+         */
+        NSOL_EXPORT
+        void weight(const float weight_);
 
-    /**
-     * Method to add a postsynaptic neuron to the synapse.
-     * @param neuronID_ gid of the postsynaptic neuron.
-     * @see Neuron
-     */
-    NSOL_EXPORT
-    void postSynapticNeuron( const uint32_t neuronID_ );
+        /**
+         * Method to get the synaptic weight.
+         * @return synaptic weight.
+         */
+        NSOL_EXPORT
+        float weight(void) const;
 
-    /**
-     * Method to set the synaptic weight.
-     * @param weight_ synaptic weight.
-     */
-    NSOL_EXPORT
-    void weight( const float weight_ );
+        /** \brief Operator =. Included to avoid warning in modern gcc versions.
+         *
+         */
+        Synapse& operator=(const Synapse&) = default;
 
-    /**
-     * Method to get the synaptic weight.
-     * @return synaptic weight.
-     */
-    NSOL_EXPORT
-    float weight( void ) const;
+        ///@}
 
-    /** \brief Operator =. Included to avoid warning in modern gcc versions.
-     *
-     */
-    Synapse& operator=(const Synapse&) = default;
+      protected:
+        //! GID Presynaptic neuron
+        uint32_t _preSynapticNeuron;
 
-    ///@}
+        //! GID Postsynaptic neuron
+        uint32_t _postSynapticNeuron;
 
-  protected:
-
-    //! GID Presynaptic neuron
-    uint32_t _preSynapticNeuron;
-
-    //! GID Postsynaptic neuron
-    uint32_t _postSynapticNeuron;
-
-    //! The synaptic weight
-    float _weight;
-
-  };
+        //! The synaptic weight
+        float _weight;
+    };
 
 } // namespace nsol
 

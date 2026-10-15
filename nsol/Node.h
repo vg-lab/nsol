@@ -29,104 +29,97 @@
 namespace nsol
 {
 
-  class Node
-    : public virtual Object
-  {
-
-  public:
-
-    NSOL_EXPORT
-    Node( const Vec3f & initPoint = Vec3f(0,0,0),
-          const int & initId = 0,
-          const float & initRadius = 0.0f )
-        : _point( initPoint )
-        , _radius( initRadius )
-        , _id( initId )
+    class Node : public virtual Object
     {
-    }
+      public:
+        NSOL_EXPORT
+        Node(const Vec3f& initPoint = Vec3f(0, 0, 0), const int& initId = 0,
+             const float& initRadius = 0.0f) :
+            _point(initPoint),
+            _radius(initRadius),
+            _id(initId)
+        {
+        }
 
-    NSOL_EXPORT
-    virtual ~Node( void )
-    {
-    }
+        NSOL_EXPORT
+        virtual ~Node(void)
+        {
+        }
 
-    NSOL_EXPORT
-    virtual void point( const Vec3f & point_ )
-    {
-        _point = point_;
-    }
+        NSOL_EXPORT
+        virtual void point(const Vec3f& point_)
+        {
+            _point = point_;
+        }
 
-    NSOL_EXPORT
-    Vec3f point( void ) const
-    {
-        return _point;
-    }
+        NSOL_EXPORT
+        Vec3f point(void) const
+        {
+            return _point;
+        }
 
-    NSOL_EXPORT
-    virtual void radius( const float radius_ )
-    {
-        _radius = radius_;
-    }
+        NSOL_EXPORT
+        virtual void radius(const float radius_)
+        {
+            _radius = radius_;
+        }
 
-    NSOL_EXPORT
-    float radius( void ) const
-    {
-        return _radius;
-    }
+        NSOL_EXPORT
+        float radius(void) const
+        {
+            return _radius;
+        }
 
-    /**
-     * Set the node id
-     * @return node id
-     */
-    NSOL_EXPORT
-    virtual void id( const int id_ )
-    {
-        _id = id_;
-    }
+        /**
+         * Set the node id
+         * @return node id
+         */
+        NSOL_EXPORT
+        virtual void id(const int id_)
+        {
+            _id = id_;
+        }
 
-    /**
-     * Get the node id
-     * @return node id
-     */
-    NSOL_EXPORT
-    int id( void ) const
-    {
-        return _id;
-    }
+        /**
+         * Get the node id
+         * @return node id
+         */
+        NSOL_EXPORT
+        int id(void) const
+        {
+            return _id;
+        }
 
-    NSOL_EXPORT
-    virtual NodePtr clone( void ) const
-    {
-        return new Node( _point, _id, _radius );
-    }
+        NSOL_EXPORT
+        virtual NodePtr clone(void) const
+        {
+            return new Node(_point, _id, _radius);
+        }
 
-    NSOL_EXPORT
-    bool operator == ( const Node & other ) const
-    {
-      return ( ( this->_id == other._id ) &&
-               ( this->_radius == other._radius ) &&
-               ( this->_point == other._point ) );
-    }
+        NSOL_EXPORT
+        bool operator==(const Node& other) const
+        {
+            return ((this->_id == other._id) && (this->_radius == other._radius)
+                    && (this->_point == other._point));
+        }
 
-    NSOL_EXPORT
-    bool operator != ( const Node & other ) const
-    {
-      return ! ( *this == other );
-    }
+        NSOL_EXPORT
+        bool operator!=(const Node& other) const
+        {
+            return !(*this == other);
+        }
 
-    NSOL_EXPORT
-    virtual NodePtr asNode( void )
-    {
-      return this;
-    }
+        NSOL_EXPORT
+        virtual NodePtr asNode(void)
+        {
+            return this;
+        }
 
-  protected:
-
-    Vec3f _point;
-    float _radius;
-    int _id;
-
-  };
+      protected:
+        Vec3f _point;
+        float _radius;
+        int _id;
+    };
 
 } // namespace nsol
 

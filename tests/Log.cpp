@@ -28,53 +28,52 @@
 
 using namespace nsol;
 
-BOOST_AUTO_TEST_CASE( logger_levels )
+BOOST_AUTO_TEST_CASE(logger_levels)
 {
-    Log::setLogLevel( TLogLevel::LOG_LEVEL_ERROR );
+    Log::setLogLevel(TLogLevel::LOG_LEVEL_ERROR);
 
-    BOOST_CHECK_EQUAL( Log::logLevel( ), TLogLevel::LOG_LEVEL_ERROR );
+    BOOST_CHECK_EQUAL(Log::logLevel(), TLogLevel::LOG_LEVEL_ERROR);
 
-    std::string ERROR( "ERROR" );
-    std::string WARNING( "WARNING" );
-    std::string VERBOSE( "VERBOSE" );
-    std::string LEVEL_UNKNOWN( "" );
+    std::string ERROR("ERROR");
+    std::string WARNING("WARNING");
+    std::string VERBOSE("VERBOSE");
+    std::string LEVEL_UNKNOWN("");
 
-    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_ERROR,
-                       Log::stringToLogLevel( ERROR ) );
-    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_WARNING,
-                       Log::stringToLogLevel( WARNING ) );
-    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_VERBOSE,
-                       Log::stringToLogLevel( VERBOSE ) );
-    BOOST_CHECK_EQUAL( TLogLevel::LOG_LEVEL_UNKNOWN,
-                       Log::stringToLogLevel( LEVEL_UNKNOWN ) );
+    BOOST_CHECK_EQUAL(TLogLevel::LOG_LEVEL_ERROR, Log::stringToLogLevel(ERROR));
+    BOOST_CHECK_EQUAL(TLogLevel::LOG_LEVEL_WARNING,
+                      Log::stringToLogLevel(WARNING));
+    BOOST_CHECK_EQUAL(TLogLevel::LOG_LEVEL_VERBOSE,
+                      Log::stringToLogLevel(VERBOSE));
+    BOOST_CHECK_EQUAL(TLogLevel::LOG_LEVEL_UNKNOWN,
+                      Log::stringToLogLevel(LEVEL_UNKNOWN));
 }
 
-std::string toString( const std::ostream& str )
+std::string toString(const std::ostream& str)
 {
     std::ostringstream ss;
     ss << str.rdbuf();
     return ss.str();
 }
 
-BOOST_AUTO_TEST_CASE( logger_stream )
+BOOST_AUTO_TEST_CASE(logger_stream)
 {
-	#define LOG_FOO_MESSAGE "Hello from Nsol"
-	std::ostringstream os;
-	os.flush( );
-	Log::setStream( os );
+#define LOG_FOO_MESSAGE "Hello from Nsol"
+    std::ostringstream os;
+    os.flush();
+    Log::setStream(os);
 
-	Log::log( LOG_FOO_MESSAGE, TLogLevel::LOG_LEVEL_ERROR );
-	std::string str = toString( Log::stream( ) );
+    Log::log(LOG_FOO_MESSAGE, TLogLevel::LOG_LEVEL_ERROR);
+    std::string str = toString(Log::stream());
 
-	/*std::stringstream ss;
-	ss.flush( );
-	ss << LOG_FOO_MESSAGE << std::endl;
+    /*std::stringstream ss;
+    ss.flush( );
+    ss << LOG_FOO_MESSAGE << std::endl;
 
-	std::string str2 = ss.str( );
+    std::string str2 = ss.str( );
 
-	BOOST_CHECK_EQUAL( str, str2 );
+    BOOST_CHECK_EQUAL( str, str2 );
 
-	// TODO: BOOST_CHECK_EQUAL( str, std::string( LOG_FOO_MESSAGE ) );*/
+    // TODO: BOOST_CHECK_EQUAL( str, std::string( LOG_FOO_MESSAGE ) );*/
 }
 
 // EOF

@@ -22,39 +22,34 @@
 #include "Synapses.h"
 #include "../Synapse.h"
 
-
 namespace nsol
 {
 
-  bool SynapsesMap::_checkSynapseRepeated( unsigned int neuronGID_,
-                                           Synapse* synapse_ )
-  {
-    auto values = this->equal_range( neuronGID_ );
-    for( auto value = values.first; value != values.second; ++value )
+    bool SynapsesMap::_checkSynapseRepeated(unsigned int neuronGID_,
+                                            Synapse* synapse_)
     {
-      if( value->second == synapse_ )
-      {
-        NSOL_THROW( std::string( "Warning: synapse with neuron gid " ) +
-                    std::to_string( neuronGID_ ) +
-                    std::string( "already exists in the dataset" ) );
-        return false;
-      }
+        auto values = this->equal_range(neuronGID_);
+        for (auto value = values.first; value != values.second; ++value) {
+            if (value->second == synapse_) {
+                NSOL_THROW(std::string("Warning: synapse with neuron gid ")
+                           + std::to_string(neuronGID_)
+                           + std::string("already exists in the dataset"));
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    return true;
-  }
-
-  void SynapsesMap::addSynapse( unsigned int neuronGID_, Synapse* synapse_ )
-  {
-    bool isAdded = _checkSynapseRepeated( neuronGID_, synapse_ );
-    NSOL_DEBUG_CHECK( isAdded,
-                      "The synapse already exists into the dataset." );
-
-    if( isAdded )
+    void SynapsesMap::addSynapse(unsigned int neuronGID_, Synapse* synapse_)
     {
-      this->insert( std::make_pair( neuronGID_, synapse_ ));
-    }
+        bool isAdded = _checkSynapseRepeated(neuronGID_, synapse_);
+        NSOL_DEBUG_CHECK(isAdded,
+                         "The synapse already exists into the dataset.");
 
-  }
+        if (isAdded) {
+            this->insert(std::make_pair(neuronGID_, synapse_));
+        }
+    }
 
 } // namespace nsol

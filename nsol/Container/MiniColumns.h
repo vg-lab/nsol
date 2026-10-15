@@ -26,16 +26,14 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Container/Neurons.h>
 
-namespace nsol {
+namespace nsol
+{
 
-  class MiniColumns : public NsolVector< MiniColumnPtr > 
-  {
+    class MiniColumns : public NsolVector<MiniColumnPtr>
+    {
+      protected:
+    };
 
-
-  protected:
-
-  };
-
-}
+} // namespace nsol
 
 #endif /* _NSOL_MINICOLUMNS_H_ */

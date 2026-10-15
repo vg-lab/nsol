@@ -21,14 +21,13 @@
  */
 #include "DendriteStats.h"
 
-
 namespace nsol
 {
 
-  DendriteStats::DendriteStats ( TDendriteType dendriteType_ )
-    : NeuriteStats( )
-    , Dendrite( dendriteType_ )
-  {
-  }
-  
+    DendriteStats::DendriteStats(TDendriteType dendriteType_) :
+        NeuriteStats(),
+        Dendrite(dendriteType_)
+    {
+    }
+
 } // namespace nsol

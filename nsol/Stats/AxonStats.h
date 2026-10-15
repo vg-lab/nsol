@@ -28,43 +28,38 @@
 namespace nsol
 {
 
-  /** \class AxonStats
-   *  \brief This class allows to compute stats for axons
-   *
-   *  Using this class instead of Axon when constructing the
-   *  hierarchy allows to call the method stats from base Axon
-   *  class and get the corresponding volume, surface and length.
-   *
-   * Example: @include examples/neuriteStats.cpp
-   */
-  class AxonStats
-    : public Axon
-    , public virtual NeuriteStats
-  {
-
-  public:
-
-    NSOL_EXPORT
-    AxonStats( void );
-
-
-    // NSOL_EXPORT
-    // virtual AxonNeuriteStats * stats( void )
-    // {
-    //   return this;
-    // }
-
-    /**
-     * Returns object as AxonStats
-     * @return pointer to AxonStats object
+    /** \class AxonStats
+     *  \brief This class allows to compute stats for axons
+     *
+     *  Using this class instead of Axon when constructing the
+     *  hierarchy allows to call the method stats from base Axon
+     *  class and get the corresponding volume, surface and length.
+     *
+     * Example: @include examples/neuriteStats.cpp
      */
-    // NSOL_EXPORT
-    // virtual NeuriteStats * stats( void )
-    // {
-    //   return this;
-    // }
+    class AxonStats : public Axon, public virtual NeuriteStats
+    {
+      public:
+        NSOL_EXPORT
+        AxonStats(void);
 
-  }; // class AxonStats
+        // NSOL_EXPORT
+        // virtual AxonNeuriteStats * stats( void )
+        // {
+        //   return this;
+        // }
+
+        /**
+         * Returns object as AxonStats
+         * @return pointer to AxonStats object
+         */
+        // NSOL_EXPORT
+        // virtual NeuriteStats * stats( void )
+        // {
+        //   return this;
+        // }
+
+    }; // class AxonStats
 
 } // namespace nsol
 

@@ -26,99 +26,95 @@
 
 using namespace nsol;
 
-BOOST_AUTO_TEST_CASE( neuron_morphology_section_constructor )
+BOOST_AUTO_TEST_CASE(neuron_morphology_section_constructor)
 {
+    NeuronMorphologySection section;
+    BOOST_CHECK(!section.neurite());
+    BOOST_CHECK(!section.parent());
+    BOOST_CHECK_EQUAL(section.nodes().size(), 0);
+    BOOST_CHECK_EQUAL(section.children().size(), 0);
+    BOOST_CHECK_EQUAL(section.id(), 0);
 
-  NeuronMorphologySection section;
-  BOOST_CHECK( !section.neurite( ));
-  BOOST_CHECK( !section.parent( ));
-  BOOST_CHECK_EQUAL( section.nodes( ).size( ), 0 );
-  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
-  BOOST_CHECK_EQUAL( section.id( ), 0 );
+    const unsigned int newId = 1;
+    section.id(newId);
+    BOOST_CHECK_EQUAL(section.id(), newId);
 
-  const unsigned int newId  = 1;
-  section.id( newId );
-  BOOST_CHECK_EQUAL( section.id( ), newId );
+    BOOST_CHECK_EQUAL(section.children().size(), 0);
 
-  BOOST_CHECK_EQUAL( section.children( ).size( ), 0 );
+    const NeuronMorphologySection section2;
+    BOOST_CHECK_EQUAL(section2.children().size(), 0);
 
-  NeuronMorphologySection const section2;
-  BOOST_CHECK_EQUAL( section2.children( ).size( ), 0 );
-
-  BOOST_CHECK( section.firstNode( ) == nullptr );
-  BOOST_CHECK( section.lastNode( ) == nullptr );
+    BOOST_CHECK(section.firstNode() == nullptr);
+    BOOST_CHECK(section.lastNode() == nullptr);
 }
 
-BOOST_AUTO_TEST_CASE( neuron_morphology_section_desconstructor )
+BOOST_AUTO_TEST_CASE(neuron_morphology_section_desconstructor)
 {
-  NeuronMorphologySectionPtr section = new NeuronMorphologySection( );
-  NodePtr node;
-  float x = 0.0f;
-  float y = 0.0f;
-  float z = 0.0f;
-  float radius = 1.0f;
-  for( unsigned int i = 0; i < 10; i++ )
-  {
-    node = new Node( Vec3f( x, y, z ), i+1, radius );
-    section->addNode( node );
-    x += 0.1f;
-    y += 0.1f;
-    z += 0.1f;
-    radius += 0.1f;
-  }
-  node = new Node( Vec3f( x, y, z ), 0, radius );
-  section->firstNode( node );
-  NeuronMorphologySectionPtr section2 =
-    dynamic_cast< NeuronMorphologySectionPtr >( section->clone( ));
-  section2->firstNode( node );
+    NeuronMorphologySectionPtr section = new NeuronMorphologySection();
+    NodePtr node;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float radius = 1.0f;
+    for (unsigned int i = 0; i < 10; i++) {
+        node = new Node(Vec3f(x, y, z), i + 1, radius);
+        section->addNode(node);
+        x += 0.1f;
+        y += 0.1f;
+        z += 0.1f;
+        radius += 0.1f;
+    }
+    node = new Node(Vec3f(x, y, z), 0, radius);
+    section->firstNode(node);
+    NeuronMorphologySectionPtr section2 =
+        dynamic_cast<NeuronMorphologySectionPtr>(section->clone());
+    section2->firstNode(node);
 
-  delete section;
-  delete section2;
-  delete node;
+    delete section;
+    delete section2;
+    delete node;
 }
 
-BOOST_AUTO_TEST_CASE( neuron_morphology_section_clone )
+BOOST_AUTO_TEST_CASE(neuron_morphology_section_clone)
 {
-  // Construction of neuron morphology section and clone neuron
-  // morphology section
-  NeuronMorphologySection section;
-  float x = 0.0f;
-  float y = 0.0f;
-  float z = 0.0f;
-  float radius = 1.0f;
-  NodePtr node, cloneNode;
-  for( unsigned int i = 0; i < 10; i++ )
-  {
-    node = new Node( Vec3f( x, y, z ), i+1, radius );
-    section.addNode( node );
-    x += 0.1f;
-    y += 0.1f;
-    z += 0.1f;
-    radius += 0.1f;
-  }
-  node = new Node( Vec3f( x, y, z ), 0, radius );
-  section.firstNode( node );
-  NeuronMorphologySectionPtr cloneSection =
-    dynamic_cast< NeuronMorphologySectionPtr >( section.clone( ));
-  cloneSection->firstNode( node );
+    // Construction of neuron morphology section and clone neuron
+    // morphology section
+    NeuronMorphologySection section;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float radius = 1.0f;
+    NodePtr node, cloneNode;
+    for (unsigned int i = 0; i < 10; i++) {
+        node = new Node(Vec3f(x, y, z), i + 1, radius);
+        section.addNode(node);
+        x += 0.1f;
+        y += 0.1f;
+        z += 0.1f;
+        radius += 0.1f;
+    }
+    node = new Node(Vec3f(x, y, z), 0, radius);
+    section.firstNode(node);
+    NeuronMorphologySectionPtr cloneSection =
+        dynamic_cast<NeuronMorphologySectionPtr>(section.clone());
+    cloneSection->firstNode(node);
 
-  // Tests
-  BOOST_CHECK_EQUAL( section.nodes( ).size( ), cloneSection->nodes( ).size( ));
-  for ( unsigned int i = 1; i < section.nodes( ).size( ); i++ )
-  {
-    node = section.nodes( )[i];
-    cloneNode = cloneSection->nodes( )[i];
+    // Tests
+    BOOST_CHECK_EQUAL(section.nodes().size(), cloneSection->nodes().size());
+    for (unsigned int i = 1; i < section.nodes().size(); i++) {
+        node = section.nodes()[i];
+        cloneNode = cloneSection->nodes()[i];
 
-    BOOST_CHECK( node != cloneNode );
-    BOOST_CHECK( *node == *cloneNode );
-  }
+        BOOST_CHECK(node != cloneNode);
+        BOOST_CHECK(*node == *cloneNode);
+    }
 }
 
-BOOST_AUTO_TEST_CASE( neuron_morphology_section_stats)
+BOOST_AUTO_TEST_CASE(neuron_morphology_section_stats)
 {
-  NeuronMorphologySection s;
-  BOOST_CHECK( s.stats( ) == nullptr );
+    NeuronMorphologySection s;
+    BOOST_CHECK(s.stats() == nullptr);
 
-  NeuronMorphologySectionStats ss;
-  BOOST_CHECK( ss.stats( ) == &ss );
+    NeuronMorphologySectionStats ss;
+    BOOST_CHECK(ss.stats() == &ss);
 }

@@ -29,15 +29,15 @@
 
 using namespace nsol;
 
-BOOST_AUTO_TEST_CASE( swc_writer )
+BOOST_AUTO_TEST_CASE(swc_writer)
 {
-  SwcWriter sw;
-  BOOST_CHECK( !sw.writeMorphology( "foo.txt", nullptr ) );
+    SwcWriter sw;
+    BOOST_CHECK(!sw.writeMorphology("foo.txt", nullptr));
 
-  NeuronMorphologyPtr neuronMorphology;
+    NeuronMorphologyPtr neuronMorphology;
 
-  SwcReader swcReader;
-  neuronMorphology = swcReader.readMorphology( NSOL_EXAMPLE_NEURON_SWC );
+    SwcReader swcReader;
+    neuronMorphology = swcReader.readMorphology(NSOL_EXAMPLE_NEURON_SWC);
 
-  BOOST_CHECK( sw.writeMorphology( "foo.txt", neuronMorphology ) );
+    BOOST_CHECK(sw.writeMorphology("foo.txt", neuronMorphology));
 }

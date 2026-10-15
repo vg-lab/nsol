@@ -28,10 +28,10 @@
 namespace nsol
 {
 
-  class Neurites : public NsolVector<NeuritePtr>
-  {
-  };
+    class Neurites : public NsolVector<NeuritePtr>
+    {
+    };
 
-}
+} // namespace nsol
 
 #endif

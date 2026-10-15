@@ -25,14 +25,16 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Axon.h>
 
-namespace nsol {
+namespace nsol
+{
 
-  /** \class Axons
-   * \brief Container for a list of axons.
-   */
-  class Axons : public NsolVector< AxonPtr > {
-  };
+    /** \class Axons
+     * \brief Container for a list of axons.
+     */
+    class Axons : public NsolVector<AxonPtr>
+    {
+    };
 
-}
+} // namespace nsol
 
 #endif

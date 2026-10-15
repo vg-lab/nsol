@@ -33,144 +33,133 @@
 namespace nsol
 {
 
-  /*! \class Circuit
-    \brief A class to represent connections between neurons.
-    TODO: extend long description
-  */
-  class Circuit
-  {
-
-  public:
-
-    //! Possible types of data to get
-    typedef enum
+    /*! \class Circuit
+      \brief A class to represent connections between neurons.
+      TODO: extend long description
+    */
+    class Circuit
     {
-      ALL = 0,
-      PRESYNAPTICCONNECTIONS,
-      POSTSYNAPTICCONNECTIONS
-    }TDataType;
+      public:
+        //! Possible types of data to get
+        typedef enum
+        {
+            ALL = 0,
+            PRESYNAPTICCONNECTIONS,
+            POSTSYNAPTICCONNECTIONS
+        } TDataType;
 
-    /** @name Constructors and destructors  */
-    ///@{
+        /** @name Constructors and destructors  */
+        ///@{
 
-    /**
-     * Default constructor
-     */
-    NSOL_EXPORT
-    Circuit( void );
+        /**
+         * Default constructor
+         */
+        NSOL_EXPORT
+        Circuit(void);
 
-    /**
-     * Default destructor
-     */
-    NSOL_EXPORT
-    virtual ~Circuit( void ) ;
+        /**
+         * Default destructor
+         */
+        NSOL_EXPORT
+        virtual ~Circuit(void);
 
-    ///@}
+        ///@}
 
+        /** @name Connections related methods */
+        ///@{
 
-    /** @name Connections related methods */
-    ///@{
+        /**
+         * Method to add a connection into the cirtuit.
+         * @param synapse_ synapse to add to this circuit
+         */
+        NSOL_EXPORT
+        void addSynapse(SynapsePtr synapse_);
 
-    /**
-     * Method to add a connection into the cirtuit.
-     * @param synapse_ synapse to add to this circuit
-     */
-    NSOL_EXPORT
-    void addSynapse( SynapsePtr synapse_ );
+        NSOL_EXPORT
+        void addSynapses(const std::vector<SynapsePtr>& synapses);
 
-    NSOL_EXPORT
-    void addSynapses( const std::vector< SynapsePtr >& synapses );
+        NSOL_EXPORT
+        void addSynapses(const std::vector<MorphologySynapsePtr>& synapses);
+        /**
+         * Method to clear all the connections
+         * of all the circuit.
+         */
+        NSOL_EXPORT
+        void clear(void);
 
-    NSOL_EXPORT
-    void addSynapses( const std::vector< MorphologySynapsePtr >& synapses );
-    /**
-     * Method to clear all the connections
-     * of all the circuit.
-     */
-    NSOL_EXPORT
-    void clear( void );
+        /**
+         * Method to get the total number of connections of the circuit.
+         * @return total numbers of synapses
+         */
+        NSOL_EXPORT
+        unsigned int numberOfSynapses(void) const;
 
-    /**
-     * Method to get the total number of connections of the circuit.
-     * @return total numbers of synapses
-     */
-    NSOL_EXPORT
-    unsigned int numberOfSynapses( void ) const;
+        ///@}
 
-    ///@}
+        /** @name Afferent & Efferent synapses related methods */
+        ///@{
 
-    /** @name Afferent & Efferent synapses related methods */
-    ///@{
+        /**
+         * Method to get all the synapses from the circuit.
+         * @return vector with all the ordered synapses by its gid
+         */
+        NSOL_EXPORT
+        const std::vector<SynapsePtr>& synapses(void) const;
 
-    /**
-     * Method to get all the synapses from the circuit.
-     * @return vector with all the ordered synapses by its gid
-     */
-    NSOL_EXPORT
-    const std::vector< SynapsePtr >& synapses( void ) const;
+        /**
+         * Method to get all the synapses from the circuit.
+         * @param dataType_ Data type
+         * @return subset with all the synapses
+         */
+        NSOL_EXPORT
+        std::set<SynapsePtr> synapses(TDataType dataType_) const;
 
-    /**
-     * Method to get all the synapses from the circuit.
-     * @param dataType_ Data type
-     * @return subset with all the synapses
-     */
-    NSOL_EXPORT
-    std::set< SynapsePtr > synapses( TDataType dataType_ ) const;
+        /**
+         * Method to get all the sinapses of the neuron into the circuit.
+         * @param neuronGID_ neuron id
+         * @param dataType_ Data type
+         * @return all the synapses of this neuron.
+         */
+        NSOL_EXPORT
+        std::set<SynapsePtr> synapses(uint32_t neuronGID_,
+                                      TDataType dataType_) const;
 
-    /**
-     * Method to get all the sinapses of the neuron into the circuit.
-     * @param neuronGID_ neuron id
-     * @param dataType_ Data type
-     * @return all the synapses of this neuron.
-     */
-    NSOL_EXPORT
-    std::set< SynapsePtr >
-    synapses(uint32_t neuronGID_, TDataType dataType_ ) const;
+        /**
+         * Method to get all the sinapses from a subset of neurons.
+         * @param gidsNeurons_ subset of ids neurons
+         * @param dataType_ Data type
+         * @return all the synapses of this subset of neurons.
+         */
+        NSOL_EXPORT
+        std::set<SynapsePtr> synapses(const std::set<uint32_t>& gidsNeurons_,
+                                      TDataType dataType_) const;
 
-    /**
-     * Method to get all the sinapses from a subset of neurons.
-     * @param gidsNeurons_ subset of ids neurons
-     * @param dataType_ Data type
-     * @return all the synapses of this subset of neurons.
-     */
-    NSOL_EXPORT
-    std::set< SynapsePtr >
-    synapses(const std::set< uint32_t > &gidsNeurons_,
-              TDataType dataType_ ) const;
+        ///@}
 
-    ///@}
+      private:
+        void _calculateConnections(unsigned int& neuronGID_,
+                                   std::set<SynapsePtr>& synapses_,
+                                   TDataType& dataType_) const;
 
-  private:
+        void _calculatePresynapticConnections(
+            unsigned int& neuronGID_, std::set<SynapsePtr>& synapses_) const;
 
-    void
-    _calculateConnections( unsigned int& neuronGID_,
-                           std::set< SynapsePtr >& synapses_ ,
-                           TDataType &dataType_ ) const;
+        void _calculatePostsynapticConnections(
+            unsigned int& neuronGID_, std::set<SynapsePtr>& synapses_) const;
 
-    void
-    _calculatePresynapticConnections( unsigned int& neuronGID_,
-                                      std::set< SynapsePtr >& synapses_ ) const;
+      protected:
+        //! Container with all the connections between neurons
+        std::vector<SynapsePtr> _synapses;
 
-    void
-    _calculatePostsynapticConnections( unsigned int& neuronGID_,
-                                      std::set< SynapsePtr >& synapses_ ) const;
+        //! Container with all the efferents connections into the circuit
+        SynapsesMap _preSynapticConnections;
 
-  protected:
+        //! Container with all the afferents connections into the circuit
+        SynapsesMap _postSynapticConnections;
 
-    //! Container with all the connections between neurons
-    std::vector< SynapsePtr > _synapses;
-
-    //! Container with all the efferents connections into the circuit
-    SynapsesMap _preSynapticConnections;
-
-    //! Container with all the afferents connections into the circuit
-    SynapsesMap _postSynapticConnections;
-
-
-  }; // class Circuit
+    }; // class Circuit
 
 } // namespace nsol
-
 
 #endif // CIRCUIT_H
 // EOF

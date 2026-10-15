@@ -22,58 +22,53 @@
 #ifndef __NSOL_NEURON_MORPHOLOGY_SECTION_STATS__
 #define __NSOL_NEURON_MORPHOLOGY_SECTION_STATS__
 
-
 #include "../NeuronMorphologySection.h"
 
 namespace nsol
 {
 
-  /** \class SectionStats
-   *  \brief This class allows to compute stats for sections
-   *
-   *  Using this class instead of Neuron Morphology Section when constructing
-   *  the hierarchy allows to call the method stats from base Section
-   *  class and get the corresponding volume, surface and length.
-   *
-   * Example: @include examples/sectionStats.cpp
-   */
-  class NeuronMorphologySectionStats : public NeuronMorphologySection
-  {
-
-  public:
-
-    //! Stats that can be computed for Section
-    typedef enum
-    {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      RADIUS,
-      NEURON_MORPHOLOGY_SECTION_NUM_STATS
-    } TNeuronMorphologySectionStat;
-
-    /**
-     * Returns object as SectionStats
-     * @return pointer to SectionStats object
+    /** \class SectionStats
+     *  \brief This class allows to compute stats for sections
+     *
+     *  Using this class instead of Neuron Morphology Section when constructing
+     *  the hierarchy allows to call the method stats from base Section
+     *  class and get the corresponding volume, surface and length.
+     *
+     * Example: @include examples/sectionStats.cpp
      */
-    NSOL_EXPORT
-    NeuronMorphologySectionStats * stats( void )
+    class NeuronMorphologySectionStats : public NeuronMorphologySection
     {
-      return this;
-    }
+      public:
+        //! Stats that can be computed for Section
+        typedef enum
+        {
+            SURFACE = 0,
+            VOLUME,
+            LENGTH,
+            RADIUS,
+            NEURON_MORPHOLOGY_SECTION_NUM_STATS
+        } TNeuronMorphologySectionStat;
 
-    NSOL_EXPORT
-    virtual float getStat( TNeuronMorphologySectionStat stat,
-                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
+        /**
+         * Returns object as SectionStats
+         * @return pointer to SectionStats object
+         */
+        NSOL_EXPORT
+        NeuronMorphologySectionStats* stats(void)
+        {
+            return this;
+        }
 
+        NSOL_EXPORT
+        virtual float getStat(
+            TNeuronMorphologySectionStat stat,
+            TAggregation agg = /*TAggregation::*/ TOTAL) const;
 
-  protected:
+      protected:
+        //! Segment stats
+        // SegmentStats _segmentStats;
 
-    //! Segment stats
-    //SegmentStats _segmentStats;
-
-
-  }; // class NeuronMorphologySectionStats
+    }; // class NeuronMorphologySectionStats
 
 } // namespace nsol
 

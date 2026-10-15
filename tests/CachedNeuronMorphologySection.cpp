@@ -23,22 +23,18 @@
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
-
-BOOST_AUTO_TEST_CASE( empty_cached_neuron_morphology_section )
+BOOST_AUTO_TEST_CASE(empty_cached_neuron_morphology_section)
 {
+    // nsol::CachedSection section;
 
-  // nsol::CachedSection section;
+    // BOOST_CHECK_EQUAL( section.dirty( ), true);
 
-  // BOOST_CHECK_EQUAL( section.dirty( ), true);
+    // section.dirty( ) = false;
+    // BOOST_CHECK_EQUAL( section.dirty( ), false);
 
-  // section.dirty( ) = false;
-  // BOOST_CHECK_EQUAL( section.dirty( ), false);
+    // section.setDirty( );
+    // BOOST_CHECK_EQUAL( section.dirty( ), true);
 
-  // section.setDirty( );
-  // BOOST_CHECK_EQUAL( section.dirty( ), true);
-
-  // section.setClean( );
-  // BOOST_CHECK_EQUAL( section.dirty( ), false);
-
-
+    // section.setClean( );
+    // BOOST_CHECK_EQUAL( section.dirty( ), false);
 }

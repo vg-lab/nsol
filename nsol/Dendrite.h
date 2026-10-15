@@ -28,55 +28,49 @@
 namespace nsol
 {
 
-  class Dendrite : public virtual Neurite
-  {
-
-  public:
-
-    //! Type of dendrite
-    typedef enum TDendriteType
+    class Dendrite : public virtual Neurite
     {
-      BASAL = 0,
-      APICAL
-    } TDendriteType;
+      public:
+        //! Type of dendrite
+        typedef enum TDendriteType
+        {
+            BASAL = 0,
+            APICAL
+        } TDendriteType;
 
-    friend std::ostream & operator<< ( std::ostream & os,
-                                       const TDendriteType & rhs)
-    {
-      switch ( rhs )
-      {
-      case BASAL:
-        return os << "BASAL";
-        break;
-      case APICAL:
-        return os << "APICAL";
-        break;
-      default:
-        return os << "UNDEFINED";
-      }
-      return os;
-    }
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const TDendriteType& rhs)
+        {
+            switch (rhs) {
+                case BASAL:
+                    return os << "BASAL";
+                    break;
+                case APICAL:
+                    return os << "APICAL";
+                    break;
+                default:
+                    return os << "UNDEFINED";
+            }
+            return os;
+        }
 
-    NSOL_EXPORT
-    Dendrite ( TDendriteType dendriteType = BASAL );
+        NSOL_EXPORT
+        Dendrite(TDendriteType dendriteType = BASAL);
 
-    //! Get the type of neurite
-    NSOL_EXPORT
-    TDendriteType & dendriteType( void );
+        //! Get the type of neurite
+        NSOL_EXPORT
+        TDendriteType& dendriteType(void);
 
-    NSOL_EXPORT
-    virtual NeuritePtr clone( void ) const final;
+        NSOL_EXPORT
+        virtual NeuritePtr clone(void) const final;
 
-  protected:
+      protected:
+        //! Type of dendrite
+        TDendriteType _dendriteType;
 
-    //! Type of dendrite
-    TDendriteType _dendriteType;
-
-  }; // class Dendrite
-
+    }; // class Dendrite
 
 } // namespace nsol
-
 
 #endif
 

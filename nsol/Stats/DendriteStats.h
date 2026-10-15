@@ -28,43 +28,39 @@
 namespace nsol
 {
 
-  /** \class DendriteStats
-   *  \brief This class allows to compute stats for dendrites
-   *
-   *  Using this class instead of Dendrite when constructing the
-   *  hierarchy allows to call the method stats from base Dendrite
-   *  class and get the corresponding volume, surface and length.
-   *
-   * Example: @include examples/neuriteStats.cpp
-   */
-  class DendriteStats
-    : public Dendrite
-    , public virtual NeuriteStats
-  //    , public DendriteStats
-  {
+    /** \class DendriteStats
+     *  \brief This class allows to compute stats for dendrites
+     *
+     *  Using this class instead of Dendrite when constructing the
+     *  hierarchy allows to call the method stats from base Dendrite
+     *  class and get the corresponding volume, surface and length.
+     *
+     * Example: @include examples/neuriteStats.cpp
+     */
+    class DendriteStats : public Dendrite, public virtual NeuriteStats
+    //    , public DendriteStats
+    {
+      public:
+        NSOL_EXPORT
+        DendriteStats(TDendriteType dendriteType_ = BASAL);
 
-  public:
+        // NSOL_EXPORT
+        // virtual NeuriteStats * stats( void )
+        // {
+        //   return this;
+        // }
 
-    NSOL_EXPORT
-    DendriteStats ( TDendriteType dendriteType_ = BASAL );
-    
-    // NSOL_EXPORT
-    // virtual NeuriteStats * stats( void )
-    // {
-    //   return this;
-    // }
+        // /**
+        //  * Returns object as DendriteStats
+        //  * @return pointer to DendriteStats object
+        //  */
+        // NSOL_EXPORT
+        // virtual NeuriteStats * stats( void )
+        // {
+        //   return this;
+        // }
 
-    // /**
-    //  * Returns object as DendriteStats
-    //  * @return pointer to DendriteStats object
-    //  */
-    // NSOL_EXPORT
-    // virtual NeuriteStats * stats( void )
-    // {
-    //   return this;
-    // }
-
-  }; // class DendriteStats
+    }; // class DendriteStats
 
 } // namespace nsol
 

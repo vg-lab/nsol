@@ -24,17 +24,17 @@
 namespace nsol
 {
 
-  Axon::Axon ( void )
-    : Neurite( Neurite::AXON )
-  {
-  }
+    Axon::Axon(void) :
+        Neurite(Neurite::AXON)
+    {
+    }
 
-  NeuritePtr Axon::clone( void ) const
-  {
-    auto axon = new Axon;
-    _clone( axon );
-    return axon;
-  }
-}
+    NeuritePtr Axon::clone(void) const
+    {
+        auto axon = new Axon;
+        _clone(axon);
+        return axon;
+    }
+} // namespace nsol
 
 // EOF

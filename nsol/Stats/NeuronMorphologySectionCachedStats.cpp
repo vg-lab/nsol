@@ -26,103 +26,106 @@
 namespace nsol
 {
 
+    NeuronMorphologySectionCachedStats::NeuronMorphologySectionCachedStats(
+        void) :
+        NeuronMorphologySectionStats(),
+        Cached()
+    {
+    }
 
-  NeuronMorphologySectionCachedStats::NeuronMorphologySectionCachedStats( void )
-    : NeuronMorphologySectionStats( )
-    , Cached( )
-  {
-  }
+    NeuronMorphologySectionCachedStats::~NeuronMorphologySectionCachedStats(
+        void)
+    {
+    }
 
-  NeuronMorphologySectionCachedStats::~NeuronMorphologySectionCachedStats(
-    void )
-  {
-  }
+    void NeuronMorphologySectionCachedStats::setAndPropagateDirty(
+        unsigned int id_)
+    {
+        NSOL_DEBUG_CHECK(id_ < NEURON_MORPHOLOGY_SECTION_NUM_STATS,
+                         "id not valid");
 
-  void NeuronMorphologySectionCachedStats::setAndPropagateDirty(
-    unsigned int id_ )
-  {
-    NSOL_DEBUG_CHECK( id_ < NEURON_MORPHOLOGY_SECTION_NUM_STATS,
-                      "id not valid" );
+        this->Cached::setAndPropagateDirty(id_);
+        auto cached = NSOL_DYNAMIC_CAST(Cached, this->neurite());
+        if (cached) {
+            cached->setAndPropagateDirty(id_);
+        }
+    }
 
-    this->Cached::setAndPropagateDirty( id_ );
-    auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
-    if ( cached )
-      cached->setAndPropagateDirty( id_ );
-  }
+    void NeuronMorphologySectionCachedStats::setAndPropagateDirty(void)
+    {
+        this->Cached::setAndPropagateDirty();
 
-  void NeuronMorphologySectionCachedStats::setAndPropagateDirty( void )
-  {
-    this->Cached::setAndPropagateDirty( );
+        auto cached = NSOL_DYNAMIC_CAST(Cached, this->neurite());
+        if (cached) {
+            cached->setAndPropagateDirty();
+        }
+    }
 
-    auto cached = NSOL_DYNAMIC_CAST( Cached, this->neurite( ));
-    if ( cached )
-      cached->setAndPropagateDirty( );
-  }
+    void NeuronMorphologySectionCachedStats::addNode(NodePtr node)
+    {
+        this->setAndPropagateDirty();
+        this->NeuronMorphologySection::addNode(node);
+    }
 
-  void NeuronMorphologySectionCachedStats::addNode( NodePtr node )
-  {
-    this->setAndPropagateDirty( );
-    this->NeuronMorphologySection::addNode( node );
-  }
+    void NeuronMorphologySectionCachedStats::firstNode(NodePtr firstNode_)
+    {
+        return this->NeuronMorphologySection::firstNode(firstNode_);
+        this->setAndPropagateDirty();
+    }
 
-  void NeuronMorphologySectionCachedStats::firstNode( NodePtr firstNode_ )
-  {
-    return this->NeuronMorphologySection::firstNode( firstNode_ );
-    this->setAndPropagateDirty( );
-  }
+    float NeuronMorphologySectionCachedStats::getStat(
+        TNeuronMorphologySectionStat stat) const
+    {
+        if (!this->dirty(stat)) {
+            return this->getValue(stat);
+        }
 
-  float NeuronMorphologySectionCachedStats::getStat(
-    TNeuronMorphologySectionStat stat ) const
-  {
-    if ( ! this->dirty( stat ))
-      return this->getValue( stat );
+        float statValue = this->NeuronMorphologySectionStats::getStat(stat);
+        this->cacheValue(stat, statValue);
 
-    float statValue = this->NeuronMorphologySectionStats::getStat( stat );
-    this->cacheValue( stat, statValue );
+        return statValue;
+    }
 
-    return statValue;
-  }
+    // float SectionCachedStats::volume( void ) const
+    // {
 
-  // float SectionCachedStats::volume( void ) const
-  // {
+    //   if ( ! this->dirty( SectionCachedStats::VOLUME ))
+    //     return this->getValue( SectionCachedStats::VOLUME );
 
-  //   if ( ! this->dirty( SectionCachedStats::VOLUME ))
-  //     return this->getValue( SectionCachedStats::VOLUME );
+    //   float accumVolume = this->SectionStats::volume( );
 
-  //   float accumVolume = this->SectionStats::volume( );
+    //   this->cacheValue( SectionCachedStats::SURFACE, accumVolume );
 
-  //   this->cacheValue( SectionCachedStats::SURFACE, accumVolume );
+    //   return accumVolume;
 
-  //   return accumVolume;
+    // }
 
-  // }
+    // float SectionCachedStats::surface( void ) const
+    // {
 
-  // float SectionCachedStats::surface( void ) const
-  // {
+    //   if ( ! this->dirty( SectionCachedStats::SURFACE ))
+    //     return this->getValue( SectionCachedStats::SURFACE );
 
-  //   if ( ! this->dirty( SectionCachedStats::SURFACE ))
-  //     return this->getValue( SectionCachedStats::SURFACE );
+    //   float accumSurface = this->SectionStats::surface( );
 
-  //   float accumSurface = this->SectionStats::surface( );
+    //   this->cacheValue( SectionCachedStats::SURFACE, accumSurface );
 
-  //   this->cacheValue( SectionCachedStats::SURFACE, accumSurface );
+    //   return accumSurface;
 
-  //   return accumSurface;
+    // }
 
-  // }
+    // float SectionCachedStats::length( void ) const
+    // {
 
-  // float SectionCachedStats::length( void ) const
-  // {
+    //   if ( ! this->dirty( SectionCachedStats::LENGTH ))
+    //     return this->getValue( SectionCachedStats::LENGTH );
 
-  //   if ( ! this->dirty( SectionCachedStats::LENGTH ))
-  //     return this->getValue( SectionCachedStats::LENGTH );
+    //   float accumLength = this->SectionStats::length( );
 
-  //   float accumLength = this->SectionStats::length( );
+    //   this->cacheValue( SectionCachedStats::SURFACE, accumLength );
 
-  //   this->cacheValue( SectionCachedStats::SURFACE, accumLength );
+    //   return accumLength;
 
-  //   return accumLength;
-
-  // }
+    // }
 
 } // namespace nsol

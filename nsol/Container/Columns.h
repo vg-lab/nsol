@@ -25,16 +25,14 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Column.h>
 
-namespace nsol 
+namespace nsol
 {
 
-  class Columns : public NsolVector< ColumnPtr >
-  {
+    class Columns : public NsolVector<ColumnPtr>
+    {
+      protected:
+    };
 
-  protected:
-
-  };
-
-}
+} // namespace nsol
 
 #endif /* _NSOL_COLUMNS_H_ */

@@ -31,37 +31,39 @@
 namespace nsol
 {
 
-  /*! \class Morphology */
-  class Morphology
-    : public virtual Object
-  {
+    /*! \class Morphology */
+    class Morphology : public virtual Object
+    {
+      public:
+        /*
+         * Default Morphology class constructor
+         */
+        NSOL_EXPORT
+        Morphology(void)
+        {
+        }
 
-  public:
+        /*
+         * Default Morphology class destructor
+         */
+        NSOL_EXPORT
+        virtual ~Morphology(void)
+        {
+        }
 
-    /*
-     * Default Morphology class constructor
-     */
-    NSOL_EXPORT
-    Morphology( void ) { }
+        /*
+         * Method that returns the morphology sections
+         * @return the morphology sections
+         */
+        Sections& sections(void)
+        {
+            return _sections;
+        }
 
-    /*
-     * Default Morphology class destructor
-     */
-    NSOL_EXPORT
-    virtual ~Morphology( void ) { }
-
-    /*
-     * Method that returns the morphology sections
-     * @return the morphology sections
-     */
-    Sections& sections( void ) { return _sections; }
-
-  protected:
-
-    //! Morphology sections
-    Sections _sections;
-
-  };
+      protected:
+        //! Morphology sections
+        Sections _sections;
+    };
 
 } // end namespace nsol
 

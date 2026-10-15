@@ -25,11 +25,13 @@
 #include <nsol/NsolTypes.h>
 #include <nsol/Dendrite.h>
 
-namespace nsol {
+namespace nsol
+{
 
-  class Dendrites : public NsolVector< DendritePtr > {
-  };
+    class Dendrites : public NsolVector<DendritePtr>
+    {
+    };
 
-}
+} // namespace nsol
 
 #endif

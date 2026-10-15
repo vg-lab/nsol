@@ -30,135 +30,123 @@
 
 #include <iostream>
 
+namespace nsol
+{
 
-namespace nsol {
+    class Dendrite;
+    class Axon;
+    class NeuriteStats;
 
-  class Dendrite;
-  class Axon;
-  class NeuriteStats;
-
-  class Neurite
-  {
-
-    template< class NODE,
-              class NEURONMORPHOLOGYSECTION,
-              class DENDRITE,
-              class AXON,
-              class SOMA,
-              class NEURONMORPHOLOGY,
-              class NEURON > friend class SwcReaderTemplated;
-
-    template< class NODE,
-        class NEURONMORPHOLOGYSECTION,
-        class DENDRITE,
-        class AXON,
-        class SOMA,
-        class NEURONMORPHOLOGY,
-        class NEURON > friend class AscReaderTemplated;
-
-  public:
-
-    //! Possible types of neurite
-    typedef enum
+    class Neurite
     {
-      DENDRITE = 0,
-      AXON
-    } TNeuriteType;
+        template<class NODE, class NEURONMORPHOLOGYSECTION, class DENDRITE,
+                 class AXON, class SOMA, class NEURONMORPHOLOGY, class NEURON>
+        friend class SwcReaderTemplated;
 
-    friend std::ostream & operator<< ( std::ostream & os,
-                                       const TNeuriteType & rhs)
-    {
-      switch ( rhs )
-      {
-      case DENDRITE:
-        return os << "DENDRITE";
-        break;
-      case AXON:
-        return os << "AXON";
-        break;
-      default:
-        return os << "UNDEFINED";
-      }
-      return os;
-    }
+        template<class NODE, class NEURONMORPHOLOGYSECTION, class DENDRITE,
+                 class AXON, class SOMA, class NEURONMORPHOLOGY, class NEURON>
+        friend class AscReaderTemplated;
 
-    //! Default constructor
-    NSOL_EXPORT
-    Neurite( TNeuriteType neuriteType = DENDRITE );
+      public:
+        //! Possible types of neurite
+        typedef enum
+        {
+            DENDRITE = 0,
+            AXON
+        } TNeuriteType;
 
-    NSOL_EXPORT
-    virtual ~Neurite( void );
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const TNeuriteType& rhs)
+        {
+            switch (rhs) {
+                case DENDRITE:
+                    return os << "DENDRITE";
+                    break;
+                case AXON:
+                    return os << "AXON";
+                    break;
+                default:
+                    return os << "UNDEFINED";
+            }
+            return os;
+        }
 
-    //! Get the type of neurite
-    NSOL_EXPORT
-    TNeuriteType & neuriteType( void );
+        //! Default constructor
+        NSOL_EXPORT
+        Neurite(TNeuriteType neuriteType = DENDRITE);
 
-    NSOL_EXPORT
-    NeuronMorphologyPtr morphology( void ) const;
+        NSOL_EXPORT
+        virtual ~Neurite(void);
 
-    NSOL_EXPORT
-    NeuronMorphologyPtr morphology( NeuronMorphologyPtr morphology );
+        //! Get the type of neurite
+        NSOL_EXPORT
+        TNeuriteType& neuriteType(void);
 
-    NSOL_EXPORT
-    bool hasMorphology( void ) const;
+        NSOL_EXPORT
+        NeuronMorphologyPtr morphology(void) const;
 
-    NSOL_EXPORT
-    NeuronMorphologySectionPtr firstSection( void ) const ;
+        NSOL_EXPORT
+        NeuronMorphologyPtr morphology(NeuronMorphologyPtr morphology);
 
-    NSOL_EXPORT
-    virtual void firstSection( NeuronMorphologySectionPtr section );
+        NSOL_EXPORT
+        bool hasMorphology(void) const;
 
-    NSOL_EXPORT
-    Sections sections( void ) const;
+        NSOL_EXPORT
+        NeuronMorphologySectionPtr firstSection(void) const;
 
-    //TODO: this methods should disappear
-    NSOL_EXPORT
-    void computeBranchBifurcations( void );
+        NSOL_EXPORT
+        virtual void firstSection(NeuronMorphologySectionPtr section);
 
-    NSOL_EXPORT
-    unsigned int numBranches( void );
+        NSOL_EXPORT
+        Sections sections(void) const;
 
-    NSOL_EXPORT
-    unsigned int numBifurcations( void );
+        // TODO: this methods should disappear
+        NSOL_EXPORT
+        void computeBranchBifurcations(void);
 
-    /**
-     * Returns object as NeuriteStats
-     * @return pointer to NeuriteStats object
-     */
-    NSOL_EXPORT
-    virtual NeuriteStats * stats( void );
+        NSOL_EXPORT
+        unsigned int numBranches(void);
 
-    NSOL_EXPORT
-    virtual NeuritePtr clone( void ) const;
+        NSOL_EXPORT
+        unsigned int numBifurcations(void);
 
-    NSOL_EXPORT
-    bool operator == ( Neurite & other );
+        /**
+         * Returns object as NeuriteStats
+         * @return pointer to NeuriteStats object
+         */
+        NSOL_EXPORT
+        virtual NeuriteStats* stats(void);
 
-    NSOL_EXPORT
-    bool operator != ( Neurite & other );
+        NSOL_EXPORT
+        virtual NeuritePtr clone(void) const;
 
-  protected:
+        NSOL_EXPORT
+        bool operator==(Neurite& other);
 
-    NSOL_EXPORT
-    void _addBifurcationCount( unsigned int numBifurcations );
+        NSOL_EXPORT
+        bool operator!=(Neurite& other);
 
-    NSOL_EXPORT
-    void _addBranchCount( unsigned int numBranches );
-  
-    NSOL_EXPORT
-    void _clone( NeuritePtr neurite ) const;
+      protected:
+        NSOL_EXPORT
+        void _addBifurcationCount(unsigned int numBifurcations);
 
-    TNeuriteType _neuriteType;
+        NSOL_EXPORT
+        void _addBranchCount(unsigned int numBranches);
 
-    NeuronMorphologySectionPtr _firstSection;
+        NSOL_EXPORT
+        void _clone(NeuritePtr neurite) const;
 
-    NeuronMorphologyPtr _morphology;
+        TNeuriteType _neuriteType;
 
-    unsigned int _numBranches;
+        NeuronMorphologySectionPtr _firstSection;
 
-    unsigned int _numBifurcations;
-  };
+        NeuronMorphologyPtr _morphology;
 
-}
+        unsigned int _numBranches;
+
+        unsigned int _numBifurcations;
+    };
+
+} // namespace nsol
 
 #endif

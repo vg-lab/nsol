@@ -24,54 +24,52 @@
 #include <nsol/nsol.h>
 #include "nsolTests.h"
 
-#define CHECK_AS( OBJ, C, MC, N, NM, SEC, NOD )    \
-  BOOST_CHECK( OBJ->properties( ) ==  nullptr );        \
-  BOOST_CHECK( OBJ->asColumn( ) ==  C );                \
-  BOOST_CHECK( OBJ->asMiniColumn( ) ==  MC );           \
-  BOOST_CHECK( OBJ->asNeuron( ) ==  N );                \
-  BOOST_CHECK( OBJ->asNeuronMorphology( ) ==  NM );     \
-  BOOST_CHECK( OBJ->asSection( ) ==  SEC );             \
-  BOOST_CHECK( OBJ->asNode( ) ==  NOD );                \
+#define CHECK_AS(OBJ, C, MC, N, NM, SEC, NOD)     \
+    BOOST_CHECK(OBJ->properties() == nullptr);    \
+    BOOST_CHECK(OBJ->asColumn() == C);            \
+    BOOST_CHECK(OBJ->asMiniColumn() == MC);       \
+    BOOST_CHECK(OBJ->asNeuron() == N);            \
+    BOOST_CHECK(OBJ->asNeuronMorphology() == NM); \
+    BOOST_CHECK(OBJ->asSection() == SEC);         \
+    BOOST_CHECK(OBJ->asNode() == NOD);
 
-BOOST_AUTO_TEST_CASE( test_object )
+BOOST_AUTO_TEST_CASE(test_object)
 {
-  nsol::ObjectPtr obj = new nsol::Object;
-  CHECK_AS( obj, 0, 0, 0, 0, 0, 0 );
+    nsol::ObjectPtr obj = new nsol::Object;
+    CHECK_AS(obj, 0, 0, 0, 0, 0, 0);
 
-  nsol::ObjectPtr obj2 = obj->create( );
-  CHECK_AS( obj2, 0, 0, 0, 0, 0, 0 );
-  delete obj2;
-  delete obj;
+    nsol::ObjectPtr obj2 = obj->create();
+    CHECK_AS(obj2, 0, 0, 0, 0, 0, 0);
+    delete obj2;
+    delete obj;
 
-  obj = new nsol::Column;
-  CHECK_AS( obj, obj, 0, 0, 0, 0, 0 );
-  delete obj;
+    obj = new nsol::Column;
+    CHECK_AS(obj, obj, 0, 0, 0, 0, 0);
+    delete obj;
 
-  obj = new nsol::MiniColumn;
-  CHECK_AS( obj, 0, obj, 0, 0, 0, 0 );
-  delete obj;
+    obj = new nsol::MiniColumn;
+    CHECK_AS(obj, 0, obj, 0, 0, 0, 0);
+    delete obj;
 
-  obj = new nsol::Neuron;
-  CHECK_AS( obj, 0, 0, obj, 0, 0, 0 );
-  delete obj;
+    obj = new nsol::Neuron;
+    CHECK_AS(obj, 0, 0, obj, 0, 0, 0);
+    delete obj;
 
-  obj = new nsol::NeuronMorphology( new nsol::Soma );
-  CHECK_AS( obj, 0, 0, 0, obj, 0, 0 );
-  delete obj;
+    obj = new nsol::NeuronMorphology(new nsol::Soma);
+    CHECK_AS(obj, 0, 0, 0, obj, 0, 0);
+    delete obj;
 
-  obj = new nsol::Section;
-  CHECK_AS( obj, 0, 0, 0, 0, obj, 0 );
-  delete obj;
+    obj = new nsol::Section;
+    CHECK_AS(obj, 0, 0, 0, 0, obj, 0);
+    delete obj;
 
-  obj = new nsol::Node;
-  CHECK_AS( obj, 0, 0, 0, 0, 0, obj );
-  delete obj;
-
-
+    obj = new nsol::Node;
+    CHECK_AS(obj, 0, 0, 0, 0, 0, obj);
+    delete obj;
 }
 
-BOOST_AUTO_TEST_CASE( test_valid_aggregation )
+BOOST_AUTO_TEST_CASE(test_valid_aggregation)
 {
-  BOOST_CHECK( validAggregation( nsol::TAggregation::TOTAL ) );
-  BOOST_CHECK( !validAggregation( nsol::TAggregation( -100 )));
+    BOOST_CHECK(validAggregation(nsol::TAggregation::TOTAL));
+    BOOST_CHECK(!validAggregation(nsol::TAggregation(-100)));
 }

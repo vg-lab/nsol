@@ -26,174 +26,165 @@
 namespace nsol
 {
 
-  float NeuronMorphologyCachedStats::getStat( TNeuronMorphologyStat stat,
-                                              TAggregation agg ) const
-  {
-    // Only totals are cached
-    if ( agg == /*TAggregation::*/TOTAL )
+    float NeuronMorphologyCachedStats::getStat(TNeuronMorphologyStat stat,
+                                               TAggregation agg) const
     {
-      if ( ! this->dirty( stat ))
-        return this->getValue( stat );
+        // Only totals are cached
+        if (agg == /*TAggregation::*/ TOTAL) {
+            if (!this->dirty(stat)) {
+                return this->getValue(stat);
+            }
 
-      float statValue =
-        this->NeuronMorphologyStats::getStat( stat, agg );
-      this->cacheValue( stat, statValue );
+            float statValue = this->NeuronMorphologyStats::getStat(stat, agg);
+            this->cacheValue(stat, statValue);
 
-      return statValue;
+            return statValue;
+        }
+
+        return this->NeuronMorphologyStats::getStat(stat, agg);
     }
 
-    return this->NeuronMorphologyStats::getStat( stat, agg );
-  }
+    void NeuronMorphologyCachedStats::setAndPropagateDirty(unsigned int id)
+    {
+        NSOL_DEBUG_CHECK(id < NEURON_MORPHOLOGY_NUM_STATS, "id not valid");
 
+        this->Cached::setAndPropagateDirty(id);
 
+        // TODO: analyze if it should propagate to neuron, which requires
+        //  a big refactor
+    }
 
-  void NeuronMorphologyCachedStats::setAndPropagateDirty( unsigned int id )
-  {
-    NSOL_DEBUG_CHECK( id < NEURON_MORPHOLOGY_NUM_STATS,
-                      "id not valid" );
+    void NeuronMorphologyCachedStats::setAndPropagateDirty(void)
+    {
+        this->Cached::setAndPropagateDirty();
 
-    this->Cached::setAndPropagateDirty( id );
+        // TODO: analyze if it should propagate to neuron, which requires
+        //  a big refactor
+    }
 
-    //TODO: analyze if it should propagate to neuron, which requires
-    // a big refactor
+    // #define NSOL_GET_UPDATE_CACHED_STAT( __STAT__, __METHOD__ )
+    //   if ( ! this->dirty( __STAT__ ))
+    //     return this->getValue( __STAT__ );
+    //
+    //   auto value = this->__METHOD__;
+    //   this->cacheValue( __STAT__, value );
+    //
+    //   return value;
 
-  }
+    //   float NeuronMorphologyCachedStats::dendriticVolume( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::DENDRITIC_VOLUME,
+    //       NeuronMorphologyStats::dendriticVolume( ));
+    //   }
 
-  void NeuronMorphologyCachedStats::setAndPropagateDirty( void )
-  {
-    this->Cached::setAndPropagateDirty( );
+    //   float NeuronMorphologyCachedStats::axonVolume( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::AXON_VOLUME,
+    //       NeuronMorphologyStats::axonVolume( ));  }
 
-    //TODO: analyze if it should propagate to neuron, which requires
-    // a big refactor
+    //   float NeuronMorphologyCachedStats::neuriticVolume( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::NEURITIC_VOLUME,
+    //       NeuronMorphologyStats::neuriticVolume( ));
+    //   }
 
-  }
+    //   // float NeuronMorphologyCachedStats::somaVolume( void ) const
+    //   // {
+    //   // }
 
-// #define NSOL_GET_UPDATE_CACHED_STAT( __STAT__, __METHOD__ )
-//   if ( ! this->dirty( __STAT__ ))
-//     return this->getValue( __STAT__ );
-//
-//   auto value = this->__METHOD__;
-//   this->cacheValue( __STAT__, value );
-//
-//   return value;
+    //   float NeuronMorphologyCachedStats::volume( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT( NeuronMorphologyStats::VOLUME,
+    //                                  NeuronMorphologyStats::volume( ));
+    //   }
 
+    //   //
+    //   // Surface related methods
+    //   //
 
-//   float NeuronMorphologyCachedStats::dendriticVolume( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::DENDRITIC_VOLUME,
-//       NeuronMorphologyStats::dendriticVolume( ));
-//   }
+    //   float NeuronMorphologyCachedStats::dendriticSurface( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::DENDRITIC_SURFACE,
+    //       NeuronMorphologyStats::dendriticSurface( ));
+    //   }
 
-//   float NeuronMorphologyCachedStats::axonVolume( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::AXON_VOLUME,
-//       NeuronMorphologyStats::axonVolume( ));  }
+    //   float NeuronMorphologyCachedStats::axonSurface( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::AXON_SURFACE,
+    //       NeuronMorphologyStats::axonSurface( ));
+    //   }
 
-//   float NeuronMorphologyCachedStats::neuriticVolume( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::NEURITIC_VOLUME,
-//       NeuronMorphologyStats::neuriticVolume( ));
-//   }
+    //   float NeuronMorphologyCachedStats::neuriticSurface( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::NEURITIC_SURFACE,
+    //       NeuronMorphologyStats::neuriticSurface( ));
+    //   }
 
-//   // float NeuronMorphologyCachedStats::somaVolume( void ) const
-//   // {
-//   // }
+    //   // float NeuronMorphologyCachedStats::somaSurface( void ) const
+    //   // {
+    //   // }
 
-//   float NeuronMorphologyCachedStats::volume( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT( NeuronMorphologyStats::VOLUME,
-//                                  NeuronMorphologyStats::volume( ));
-//   }
+    //   float NeuronMorphologyCachedStats::surface( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::SURFACE,
+    //       NeuronMorphologyStats::surface( ));
+    //   }
 
-//   //
-//   // Surface related methods
-//   //
+    //   //
+    //   // Length related methods
+    //   //
 
-//   float NeuronMorphologyCachedStats::dendriticSurface( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::DENDRITIC_SURFACE,
-//       NeuronMorphologyStats::dendriticSurface( ));
-//   }
+    //   float NeuronMorphologyCachedStats::dendriticLength( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::DENDRITIC_LENGTH,
+    //       NeuronMorphologyStats::dendriticLength( ));
+    //   }
 
-//   float NeuronMorphologyCachedStats::axonSurface( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::AXON_SURFACE,
-//       NeuronMorphologyStats::axonSurface( ));
-//   }
+    //   float NeuronMorphologyCachedStats::axonLength( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::AXON_LENGTH,
+    //       NeuronMorphologyStats::axonLength( ));  }
 
-//   float NeuronMorphologyCachedStats::neuriticSurface( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::NEURITIC_SURFACE,
-//       NeuronMorphologyStats::neuriticSurface( ));
-//   }
+    //   float NeuronMorphologyCachedStats::neuriticLength( void ) const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::NEURITIC_LENGTH,
+    //       NeuronMorphologyStats::neuriticLength( ));
+    //   }
 
-//   // float NeuronMorphologyCachedStats::somaSurface( void ) const
-//   // {
-//   // }
+    //   //
+    //   // Bifuractions methods
+    //   //
+    //   unsigned int NeuronMorphologyCachedStats::dendriticBifurcations( void )
+    //     const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::DENDRITIC_BIFURCATIONS,
+    //       NeuronMorphologyStats::dendriticBifurcations( ));
+    //   }
 
-//   float NeuronMorphologyCachedStats::surface( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::SURFACE,
-//       NeuronMorphologyStats::surface( ));
-//   }
+    //   unsigned int NeuronMorphologyCachedStats::axonBifurcations( void )
+    //     const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::AXON_BIFURCATIONS,
+    //       NeuronMorphologyStats::axonBifurcations( ));  }
 
+    //   unsigned int NeuronMorphologyCachedStats::neuriticBifurcations( void )
+    //     const
+    //   {
+    //     NSOL_GET_UPDATE_CACHED_STAT(
+    //       NeuronMorphologyStats::NEURITIC_BIFURCATIONS,
+    //       NeuronMorphologyStats::neuriticBifurcations( ));
+    //   }
 
-//   //
-//   // Length related methods
-//   //
-
-//   float NeuronMorphologyCachedStats::dendriticLength( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::DENDRITIC_LENGTH,
-//       NeuronMorphologyStats::dendriticLength( ));
-//   }
-
-//   float NeuronMorphologyCachedStats::axonLength( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::AXON_LENGTH,
-//       NeuronMorphologyStats::axonLength( ));  }
-
-//   float NeuronMorphologyCachedStats::neuriticLength( void ) const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::NEURITIC_LENGTH,
-//       NeuronMorphologyStats::neuriticLength( ));
-//   }
-
-//   //
-//   // Bifuractions methods
-//   //
-//   unsigned int NeuronMorphologyCachedStats::dendriticBifurcations( void )
-//     const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::DENDRITIC_BIFURCATIONS,
-//       NeuronMorphologyStats::dendriticBifurcations( ));
-//   }
-
-//   unsigned int NeuronMorphologyCachedStats::axonBifurcations( void )
-//     const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::AXON_BIFURCATIONS,
-//       NeuronMorphologyStats::axonBifurcations( ));  }
-
-//   unsigned int NeuronMorphologyCachedStats::neuriticBifurcations( void )
-//     const
-//   {
-//     NSOL_GET_UPDATE_CACHED_STAT(
-//       NeuronMorphologyStats::NEURITIC_BIFURCATIONS,
-//       NeuronMorphologyStats::neuriticBifurcations( ));
-//   }
-
-
-}
+} // namespace nsol

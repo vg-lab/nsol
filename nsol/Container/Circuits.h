@@ -28,13 +28,11 @@
 namespace nsol
 {
 
-  class Circuits : public NsolVector< CircuitPtr >
-  {
+    class Circuits : public NsolVector<CircuitPtr>
+    {
+      protected:
+    };
 
-  protected:
-
-  };
-
-}
+} // namespace nsol
 
 #endif /* __NSOL_CIRCUITS__ */

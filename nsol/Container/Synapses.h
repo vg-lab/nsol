@@ -29,21 +29,17 @@
 namespace nsol
 {
 
-  typedef NsolVector< SynapsePtr > Synapses;
+    typedef NsolVector<SynapsePtr> Synapses;
 
-  class SynapsesMap : public std::unordered_multimap< unsigned int, SynapsePtr >
-  {
-  public:
+    class SynapsesMap : public std::unordered_multimap<unsigned int, SynapsePtr>
+    {
+      public:
+        NSOL_EXPORT
+        void addSynapse(unsigned int neuronGID_, SynapsePtr synapse_);
 
-    NSOL_EXPORT
-    void addSynapse( unsigned int neuronGID_, SynapsePtr synapse_ );
-
-  private:
-
-    bool _checkSynapseRepeated( unsigned int neuronGID_, Synapse* synapse_ );
-
-  };
-}
+      private:
+        bool _checkSynapseRepeated(unsigned int neuronGID_, Synapse* synapse_);
+    };
+} // namespace nsol
 
 #endif // __NSOL_SYNAPSES_H_
-

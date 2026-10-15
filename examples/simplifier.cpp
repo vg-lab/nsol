@@ -26,49 +26,46 @@
 
 using namespace nsol;
 
-void printMorpho( NeuronMorphologyPtr morpho )
+void printMorpho(NeuronMorphologyPtr morpho)
 {
-  for ( auto neurite: morpho->neurites( ))
-  {
-    std::cout << "=== Neurite ===" << std::endl;
-    for ( auto section: neurite->sections( ))
-    {
-      std::cout << "==== Section ===" << std::endl;
-      for ( auto node: section->nodes( ))
-      {
-        std::cout << "Node: " << node->id( );
-        std::cout << "      (" <<  node->point( ).transpose( ) << ")"
-                  << std::endl;
-      }
+    for (auto neurite : morpho->neurites()) {
+        std::cout << "=== Neurite ===" << std::endl;
+        for (auto section : neurite->sections()) {
+            std::cout << "==== Section ===" << std::endl;
+            for (auto node : section->nodes()) {
+                std::cout << "Node: " << node->id();
+                std::cout << "      (" << node->point().transpose() << ")"
+                          << std::endl;
+            }
+        }
     }
-  }
 }
 
-int main( int argc, char* argv[ ])
+int main(int argc, char* argv[])
 {
-  if( argc < 2 )
-  {
-    std::cerr << "Error: morphology file parameters needed" << std::endl;
-    return -1;
-  }
+    if (argc < 2) {
+        std::cerr << "Error: morphology file parameters needed" << std::endl;
+        return -1;
+    }
 
-  NeuronMorphologyPtr morpho;
+    NeuronMorphologyPtr morpho;
 
 #ifdef NSOL_USE_BRION
-  BrionReader r;
-  morpho = r.loadMorphology( std::string( argv[1]) );
+    BrionReader r;
+    morpho = r.loadMorphology(std::string(argv[1]));
 #else
-  SwcReader r;
-  morpho = r.readMorphology( std::string(argv[1]) );
+    SwcReader r;
+    morpho = r.readMorphology(std::string(argv[1]));
 #endif
 
-  printMorpho( morpho );
+    printMorpho(morpho);
 
-  std::cout << "Simplificada" << std::endl;
+    std::cout << "Simplificada" << std::endl;
 
-  morpho = Simplifier::Instance( )->simplify( morpho, Simplifier::DIST_NODES, 5, true );
+    morpho = Simplifier::Instance()->simplify(morpho, Simplifier::DIST_NODES, 5,
+                                              true);
 
-  printMorpho( morpho );
+    printMorpho(morpho);
 
-  return 0;
+    return 0;
 }

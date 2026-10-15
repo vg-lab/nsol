@@ -25,24 +25,23 @@
 namespace nsol
 {
 
-  Dendrite::Dendrite( TDendriteType inDendriteType )
-    : Neurite( Neurite::DENDRITE )
-    , _dendriteType( inDendriteType )
-  {
+    Dendrite::Dendrite(TDendriteType inDendriteType) :
+        Neurite(Neurite::DENDRITE),
+        _dendriteType(inDendriteType)
+    {
+    }
 
-  }
+    Dendrite::TDendriteType& Dendrite::dendriteType(void)
+    {
+        return _dendriteType;
+    }
 
-  Dendrite::TDendriteType & Dendrite::dendriteType( void )
-  {
-    return _dendriteType;
-  }
-
-  NeuritePtr Dendrite::clone( void ) const
-  {
-    auto dendrite = new Dendrite( _dendriteType );
-    _clone( dendrite );
-    return dendrite;
-  }
+    NeuritePtr Dendrite::clone(void) const
+    {
+        auto dendrite = new Dendrite(_dendriteType);
+        _clone(dendrite);
+        return dendrite;
+    }
 
 } // namespace nsol
 

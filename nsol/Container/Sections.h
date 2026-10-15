@@ -26,13 +26,11 @@
 
 namespace nsol
 {
-  class Sections : public NsolVector<SectionPtr>
-  {
+    class Sections : public NsolVector<SectionPtr>
+    {
+      protected:
+    };
 
-  protected:
-
-  };
-
-}
+} // namespace nsol
 
 #endif

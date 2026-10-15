@@ -24,11 +24,9 @@
 namespace nsol
 {
 
-  AxonCachedStats::AxonCachedStats( void )
-    : Neurite( Neurite::AXON )
-  {
-  }
-
-
+    AxonCachedStats::AxonCachedStats(void) :
+        Neurite(Neurite::AXON)
+    {
+    }
 
 } // namespace nsol

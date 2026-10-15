@@ -29,31 +29,26 @@
 namespace nsol
 {
 
-  class SegmentStats
-  {
-
-  public:
-
-    //! Stats that can be computed for a segment
-    typedef enum
+    class SegmentStats
     {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      RADIUS,
-      SEGMENT_NUM_STATS
-    } TSegmentStat;
+      public:
+        //! Stats that can be computed for a segment
+        typedef enum
+        {
+            SURFACE = 0,
+            VOLUME,
+            LENGTH,
+            RADIUS,
+            SEGMENT_NUM_STATS
+        } TSegmentStat;
 
+        NSOL_EXPORT
+        SegmentStats* stats(void);
 
-    NSOL_EXPORT
-    SegmentStats * stats( void );
-
-    NSOL_EXPORT
-    static float getStat( TSegmentStat stat,
-                          const NodePtr begin,
-                          const NodePtr end);
-  }; // class SegmentStats
-
+        NSOL_EXPORT
+        static float getStat(TSegmentStat stat, const NodePtr begin,
+                             const NodePtr end);
+    }; // class SegmentStats
 
 } // namespace nsol
 

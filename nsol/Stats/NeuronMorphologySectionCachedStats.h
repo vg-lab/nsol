@@ -30,102 +30,98 @@
 namespace nsol
 {
 
-
-  /** \class SectionCachedStats
-   *  \brief This class allows to cache the stats for sections
-   *
-   *  Using this class instead of Section or NeuronMorphologySectionStats when
-   *  constructing the hierarchy allows to call the method stats from base
-   *  NeuronMorphologySection class and get the corresponding volume, surface
-   *  and length. If the cached value is dirty then the actual computation
-   *  process is done. In case is clean the cached value is returned directly.
-   *
-   *  Example: @include examples/sectionStats.cpp
-   */
-  class NeuronMorphologySectionCachedStats
-    : public NeuronMorphologySectionStats
-    , public Cached<>
-  {
-
-
-  public:
-
-    //! Stats that can be cached for NeuronMorphologySectionStats
-    // typedef enum
-    // {
-    //   SURFACE = 0,
-    //   VOLUME,
-    //   LENGTH,
-    //   SECTION_NUM_CACHED_VALUES
-    // } TNeuronMorphologySectionCachedValues;
-
-    /**
-     * Default constructor
+    /** \class SectionCachedStats
+     *  \brief This class allows to cache the stats for sections
+     *
+     *  Using this class instead of Section or NeuronMorphologySectionStats when
+     *  constructing the hierarchy allows to call the method stats from base
+     *  NeuronMorphologySection class and get the corresponding volume, surface
+     *  and length. If the cached value is dirty then the actual computation
+     *  process is done. In case is clean the cached value is returned directly.
+     *
+     *  Example: @include examples/sectionStats.cpp
      */
-    NSOL_EXPORT
-    NeuronMorphologySectionCachedStats( void );
+    class NeuronMorphologySectionCachedStats :
+        public NeuronMorphologySectionStats,
+        public Cached<>
+    {
+      public:
+        //! Stats that can be cached for NeuronMorphologySectionStats
+        // typedef enum
+        // {
+        //   SURFACE = 0,
+        //   VOLUME,
+        //   LENGTH,
+        //   SECTION_NUM_CACHED_VALUES
+        // } TNeuronMorphologySectionCachedValues;
 
-    /**
-     * Default destructor
-     */
-    NSOL_EXPORT
-    virtual ~NeuronMorphologySectionCachedStats( void );
+        /**
+         * Default constructor
+         */
+        NSOL_EXPORT
+        NeuronMorphologySectionCachedStats(void);
 
-    /**
-     * Set dirty a cached stat and propagates dirty to parent neurite
-     * @param id_ identifier of the property to set dirty. It also propagates
-     * dirty state to parent neurite. id value has to be one from
-     * TNeuronMorphologySectionCachedValues (checked only on debug compiling).
-     */
-    NSOL_EXPORT
-    virtual void setAndPropagateDirty(unsigned int id_ );
+        /**
+         * Default destructor
+         */
+        NSOL_EXPORT
+        virtual ~NeuronMorphologySectionCachedStats(void);
 
-    /**
-     * Set dirty all cached stats and propagates dirty to parent neurite
-     */
-    NSOL_EXPORT
-    virtual void setAndPropagateDirty( void );
+        /**
+         * Set dirty a cached stat and propagates dirty to parent neurite
+         * @param id_ identifier of the property to set dirty. It also
+         * propagates dirty state to parent neurite. id value has to be one from
+         * TNeuronMorphologySectionCachedValues (checked only on debug
+         * compiling).
+         */
+        NSOL_EXPORT
+        virtual void setAndPropagateDirty(unsigned int id_);
 
-    /**
-     * Adds a node at the end of the section. This method does the same as
-     * Section::addNode but it also sets dirty all stats of parent neurite.
-     * @param node pointer to the node to add.
-     *        Precondition: pointer is not null.
-     * @return pointer to the node added
-     *         (for compatibility with older nsol versions)
-     */
-    NSOL_EXPORT
-    virtual void addNode( NodePtr node = nullptr );
+        /**
+         * Set dirty all cached stats and propagates dirty to parent neurite
+         */
+        NSOL_EXPORT
+        virtual void setAndPropagateDirty(void);
 
-    NSOL_EXPORT
-    virtual void firstNode( NodePtr firstNode_ );
+        /**
+         * Adds a node at the end of the section. This method does the same as
+         * Section::addNode but it also sets dirty all stats of parent neurite.
+         * @param node pointer to the node to add.
+         *        Precondition: pointer is not null.
+         * @return pointer to the node added
+         *         (for compatibility with older nsol versions)
+         */
+        NSOL_EXPORT
+        virtual void addNode(NodePtr node = nullptr);
 
-    NSOL_EXPORT
-    virtual float getStat( TNeuronMorphologySectionStat stat ) const;
+        NSOL_EXPORT
+        virtual void firstNode(NodePtr firstNode_);
 
-    // /**
-    //  * Computes volume of the section
-    //  * @return volume of section
-    //  */
-    // NSOL_EXPORT
-    // virtual float volume( void ) const;
+        NSOL_EXPORT
+        virtual float getStat(TNeuronMorphologySectionStat stat) const;
 
-    // /**
-    //  * Computes surface of the section
-    //  * @return surface of section
-    //  */
-    // NSOL_EXPORT
-    // virtual float surface( void ) const;
+        // /**
+        //  * Computes volume of the section
+        //  * @return volume of section
+        //  */
+        // NSOL_EXPORT
+        // virtual float volume( void ) const;
 
-    // /**
-    //  * Computes length of the section
-    //  * @return length of section
-    //  */
-    // NSOL_EXPORT
-    // virtual float length( void ) const;
+        // /**
+        //  * Computes surface of the section
+        //  * @return surface of section
+        //  */
+        // NSOL_EXPORT
+        // virtual float surface( void ) const;
 
+        // /**
+        //  * Computes length of the section
+        //  * @return length of section
+        //  */
+        // NSOL_EXPORT
+        // virtual float length( void ) const;
 
-  }; // class NeuronMorphologySectionCachedStats
+    }; // class NeuronMorphologySectionCachedStats
 
 } // namespace nsol
 

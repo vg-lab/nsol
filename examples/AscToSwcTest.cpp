@@ -31,99 +31,91 @@ using namespace nsol;
 
 enum
 {
-  ASC_READER_ERROR_INCORRECT_MORPHOLOGY = -1,
-  ASC_READER_ERROR_INCORRECT_PARAMETERS = -2
+    ASC_READER_ERROR_INCORRECT_MORPHOLOGY = -1,
+    ASC_READER_ERROR_INCORRECT_PARAMETERS = -2
 };
 
-
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+    AscReader ascReader;
+    SwcWriter swcWriter;
+    std::string importFilename, exportFilename;
 
-  AscReader ascReader;
-  SwcWriter swcWriter;
-  std::string importFilename,exportFilename;
-
-  if ( argc == 1 )
-  {
-    std::cout << "ASC filename to import: ";
-    std::cin >> importFilename;
-    std::cout << "SWC filename to export: ";
-    std::cin >> exportFilename;
-  }
-  else if ( argc == 2 )
-  {
-    std::cout << "SWC filename to export: ";
-    std::cin >> exportFilename;
-    importFilename = argv[1];
-  }
-  else if ( argc == 3 )
-  {
-    importFilename = argv[1];
-    exportFilename = argv[2];
-  }
-  else
-  {
-    std::cerr << "Incorrect use of nsolAscToSwcTest: [importFilename] [exportFilename]." << std::endl;
-    return ASC_READER_ERROR_INCORRECT_PARAMETERS;
-  }
-  std::cout << "Reading from ASC file: " << importFilename << std::endl;
-
-  NeuronMorphologyPtr neuronMorphology = ascReader.readMorphology( importFilename );
-
-  if ( !neuronMorphology ) {
-    std::cerr << "Error: neuronMorphology not recognised." << std::endl;
-    return ASC_READER_ERROR_INCORRECT_MORPHOLOGY;
-  }
-
-
-  std::cout << "Exporting to SWC file: " << exportFilename << std::endl;
-
-  swcWriter.writeMorphology( exportFilename, neuronMorphology );
-
-  Neurites neurites = neuronMorphology->neurites( );
-
-  int neuriteNumber = 0;
-  for ( const auto& neurite : neurites )
-  {
-    std::cout << "  Neurite " << neuriteNumber << std::endl;;
-    neuriteNumber++;
-
-    int numSections = 0;
-    int numNodes = 1;
-    std::stack< SectionPtr > sectionStack;
-    sectionStack.push( neurite->firstSection( ) );
-
-
-    while( ! sectionStack.empty( ) )
-    {
-      NeuronMorphologySectionPtr section =
-          dynamic_cast< NeuronMorphologySectionPtr >( sectionStack.top( ) );
-      sectionStack.pop( );
-      ++numSections;
-
-      if ( section->firstNode( ) )
-        numNodes += ( unsigned int ) section->nodes( ).size( ) - 1;
-
-      std::cout << "    Section-> number of nodes: "
-                << section->nodes( ).size( ) << std::endl;
-      std::cout << "      First Node: " << section->firstNode( )->id( )
-                << ", End Node: " << section->lastNode( )->id( ) << std::endl;
-
-      if ( !section->children( ).empty( ) )
-        for( auto&  sec : section->children( ) )
-        {
-          if( section->lastNode( ) !=
-              dynamic_cast< NeuronMorphologySectionPtr >
-              ( sec )->firstNode( ) )
-            std::cout << "Node Incoherence." << std::endl;
-          sectionStack.push( sec );
-        }
+    if (argc == 1) {
+        std::cout << "ASC filename to import: ";
+        std::cin >> importFilename;
+        std::cout << "SWC filename to export: ";
+        std::cin >> exportFilename;
+    } else if (argc == 2) {
+        std::cout << "SWC filename to export: ";
+        std::cin >> exportFilename;
+        importFilename = argv[1];
+    } else if (argc == 3) {
+        importFilename = argv[1];
+        exportFilename = argv[2];
+    } else {
+        std::cerr << "Incorrect use of nsolAscToSwcTest: [importFilename] "
+                     "[exportFilename]."
+                  << std::endl;
+        return ASC_READER_ERROR_INCORRECT_PARAMETERS;
     }
-    std::cout << " Number of sections " << numSections;
-    std::cout << " number of nodes " << numNodes << std::endl;
-  }
+    std::cout << "Reading from ASC file: " << importFilename << std::endl;
 
+    NeuronMorphologyPtr neuronMorphology =
+        ascReader.readMorphology(importFilename);
 
-  delete neuronMorphology;
+    if (!neuronMorphology) {
+        std::cerr << "Error: neuronMorphology not recognised." << std::endl;
+        return ASC_READER_ERROR_INCORRECT_MORPHOLOGY;
+    }
+
+    std::cout << "Exporting to SWC file: " << exportFilename << std::endl;
+
+    swcWriter.writeMorphology(exportFilename, neuronMorphology);
+
+    Neurites neurites = neuronMorphology->neurites();
+
+    int neuriteNumber = 0;
+    for (const auto& neurite : neurites) {
+        std::cout << "  Neurite " << neuriteNumber << std::endl;
+        ;
+        neuriteNumber++;
+
+        int numSections = 0;
+        int numNodes = 1;
+        std::stack<SectionPtr> sectionStack;
+        sectionStack.push(neurite->firstSection());
+
+        while (!sectionStack.empty()) {
+            NeuronMorphologySectionPtr section =
+                dynamic_cast<NeuronMorphologySectionPtr>(sectionStack.top());
+            sectionStack.pop();
+            ++numSections;
+
+            if (section->firstNode()) {
+                numNodes += (unsigned int)section->nodes().size() - 1;
+            }
+
+            std::cout << "    Section-> number of nodes: "
+                      << section->nodes().size() << std::endl;
+            std::cout << "      First Node: " << section->firstNode()->id()
+                      << ", End Node: " << section->lastNode()->id()
+                      << std::endl;
+
+            if (!section->children().empty()) {
+                for (auto& sec : section->children()) {
+                    if (section->lastNode()
+                        != dynamic_cast<NeuronMorphologySectionPtr>(sec)
+                               ->firstNode()) {
+                        std::cout << "Node Incoherence." << std::endl;
+                    }
+                    sectionStack.push(sec);
+                }
+            }
+        }
+        std::cout << " Number of sections " << numSections;
+        std::cout << " number of nodes " << numNodes << std::endl;
+    }
+
+    delete neuronMorphology;
 }

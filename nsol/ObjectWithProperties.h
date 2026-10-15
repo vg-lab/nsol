@@ -27,37 +27,35 @@
 #include "NsolTypes.h"
 
 #ifdef NSOL_USE_FIRES
-#include <fires/fires.h>
+    #include <fires/fires.h>
 #endif
 
 namespace nsol
 {
 
-  class ObjectWithProperties
-    : public virtual Object
+    class ObjectWithProperties :
+        public virtual Object
 #ifdef NSOL_USE_FIRES
-    , public fires::Object
+        ,
+        public fires::Object
 #endif
-  {
-  public:
-
-    NSOL_EXPORT
-    ObjectWithProperties( void );
-
-    NSOL_EXPORT
-    virtual ~ObjectWithProperties( void );
-
-    NSOL_EXPORT
-    virtual ObjectWithPropertiesPtr properties( void );
-
-    virtual ObjectPtr create( void )
     {
-      return new ObjectWithProperties;
-    }
-  };
+      public:
+        NSOL_EXPORT
+        ObjectWithProperties(void);
 
+        NSOL_EXPORT
+        virtual ~ObjectWithProperties(void);
+
+        NSOL_EXPORT
+        virtual ObjectWithPropertiesPtr properties(void);
+
+        virtual ObjectPtr create(void)
+        {
+            return new ObjectWithProperties;
+        }
+    };
 
 } // namespace nsol
-
 
 #endif

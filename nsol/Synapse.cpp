@@ -25,54 +25,54 @@
 namespace nsol
 {
 
-  //! Default constructor and destructor
-  Synapse::Synapse( void )
-   : _preSynapticNeuron( 0 )
-   , _postSynapticNeuron( 0 )
-   , _weight( 0.0f )
-   {
-   }
+    //! Default constructor and destructor
+    Synapse::Synapse(void) :
+        _preSynapticNeuron(0),
+        _postSynapticNeuron(0),
+        _weight(0.0f)
+    {
+    }
 
-  Synapse::Synapse( const Synapse& other_ )
-  : _preSynapticNeuron( other_.preSynapticNeuron( ))
-  , _postSynapticNeuron( other_.postSynapticNeuron( ))
-  , _weight( other_.weight( ))
-   {
-   }
+    Synapse::Synapse(const Synapse& other_) :
+        _preSynapticNeuron(other_.preSynapticNeuron()),
+        _postSynapticNeuron(other_.postSynapticNeuron()),
+        _weight(other_.weight())
+    {
+    }
 
-  Synapse::~Synapse( void )
-  {
-  }
+    Synapse::~Synapse(void)
+    {
+    }
 
-  void Synapse::preSynapticNeuron( const uint32_t neuronID_ )
-  {
-    _preSynapticNeuron = neuronID_;
-  }
+    void Synapse::preSynapticNeuron(const uint32_t neuronID_)
+    {
+        _preSynapticNeuron = neuronID_;
+    }
 
-  uint32_t Synapse::preSynapticNeuron( void ) const
-  {
-    return _preSynapticNeuron;
-  }
+    uint32_t Synapse::preSynapticNeuron(void) const
+    {
+        return _preSynapticNeuron;
+    }
 
-  void Synapse::postSynapticNeuron(const uint32_t neuronID_ )
-  {
-    _postSynapticNeuron = neuronID_;
-  }
+    void Synapse::postSynapticNeuron(const uint32_t neuronID_)
+    {
+        _postSynapticNeuron = neuronID_;
+    }
 
-  uint32_t Synapse::postSynapticNeuron( void ) const
-  {
-    return _postSynapticNeuron;
-  }
+    uint32_t Synapse::postSynapticNeuron(void) const
+    {
+        return _postSynapticNeuron;
+    }
 
-  void Synapse::weight( const float weight_ )
-  {
-    _weight = weight_;
-  }
+    void Synapse::weight(const float weight_)
+    {
+        _weight = weight_;
+    }
 
-  float Synapse::weight( void ) const
-  {
-    return _weight;
-  }
+    float Synapse::weight(void) const
+    {
+        return _weight;
+    }
 
 } // namespace nsol
 

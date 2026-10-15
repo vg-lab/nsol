@@ -26,28 +26,27 @@
 namespace nsol
 {
 
-  ImportanceNode::ImportanceNode( const Vec3f & initPoint,
-                                  const int & initId,
-                                  const float & initRadius )
-    : Node( initPoint, initId, initRadius )
-    , _importance( 0 )
-  {
-  }
+    ImportanceNode::ImportanceNode(const Vec3f& initPoint, const int& initId,
+                                   const float& initRadius) :
+        Node(initPoint, initId, initRadius),
+        _importance(0)
+    {
+    }
 
-  unsigned int & ImportanceNode::importance( void )
-  {
-    return _importance;
-  }
+    unsigned int& ImportanceNode::importance(void)
+    {
+        return _importance;
+    }
 
-  unsigned int ImportanceNode::importance( void ) const
-  {
-    return _importance;
-  }
+    unsigned int ImportanceNode::importance(void) const
+    {
+        return _importance;
+    }
 
-  NodePtr ImportanceNode::clone( void ) const
-  {
-    ImportanceNode* newNode = new ImportanceNode( _point, _id, _radius );
-    newNode->importance( ) = _importance;
-    return ( NodePtr ) newNode;
-  }
-}
+    NodePtr ImportanceNode::clone(void) const
+    {
+        ImportanceNode* newNode = new ImportanceNode(_point, _id, _radius);
+        newNode->importance() = _importance;
+        return (NodePtr)newNode;
+    }
+} // namespace nsol

@@ -28,20 +28,16 @@
 namespace nsol
 {
 
-  class Axon
-    : public virtual Neurite
-  {
+    class Axon : public virtual Neurite
+    {
+      public:
+        NSOL_EXPORT
+        Axon(void);
 
-  public:
+        NSOL_EXPORT
+        virtual NeuritePtr clone(void) const final;
+    };
 
-    NSOL_EXPORT
-    Axon ( void );
-
-    NSOL_EXPORT
-    virtual NeuritePtr clone( void ) const final;
-
-  };
-
-}
+} // namespace nsol
 
 #endif

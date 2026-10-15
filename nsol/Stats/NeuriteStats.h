@@ -27,61 +27,57 @@
 namespace nsol
 {
 
-  /** \class NeuriteStats
-   *  \brief This class allows to compute stats for neurites
-   *
-   *  Using this class instead of Neurite when constructing the
-   *  hierarchy allows to call the method stats from base Neurite
-   *  class and get the corresponding volume, surface and length.
-   *
-   * Example: @include examples/neuriteStats.cpp
-   */
-  class NeuriteStats : public virtual Neurite
-  {
-
-  public:
-
-    //! Enumeration of the stats that can be computed for Neurite
-    typedef enum
+    /** \class NeuriteStats
+     *  \brief This class allows to compute stats for neurites
+     *
+     *  Using this class instead of Neurite when constructing the
+     *  hierarchy allows to call the method stats from base Neurite
+     *  class and get the corresponding volume, surface and length.
+     *
+     * Example: @include examples/neuriteStats.cpp
+     */
+    class NeuriteStats : public virtual Neurite
     {
-      SURFACE = 0,
-      VOLUME,
-      LENGTH,
-      BIFURCATIONS,
-      // This should remain the last item
-      NEURITE_NUM_STATS
-    } TNeuriteStat;
+      public:
+        //! Enumeration of the stats that can be computed for Neurite
+        typedef enum
+        {
+            SURFACE = 0,
+            VOLUME,
+            LENGTH,
+            BIFURCATIONS,
+            // This should remain the last item
+            NEURITE_NUM_STATS
+        } TNeuriteStat;
 
+        /**
+         * Default constructor
+         */
+        NSOL_EXPORT
+        NeuriteStats(TNeuriteType neuriteType = DENDRITE);
 
-    /**
-     * Default constructor
-     */
-    NSOL_EXPORT
-    NeuriteStats( TNeuriteType neuriteType = DENDRITE );
+        /**
+         * Returns object as NeuriteStats
+         * @return pointer to NeuriteStats object
+         */
+        NSOL_EXPORT
+        virtual NeuriteStats* stats(void)
+        {
+            return this;
+        }
 
-    /**
-     * Returns object as NeuriteStats
-     * @return pointer to NeuriteStats object
-     */
-    NSOL_EXPORT
-    virtual NeuriteStats * stats( void )
-    {
-      return this;
-    }
+        /**
+         * Computes the stat given
+         * @param stat stat to compute
+         * @param agg aggregation used
+         * @return stat value using the aggregation given
+         */
+        NSOL_EXPORT
+        virtual float getStat(
+            TNeuriteStat stat,
+            TAggregation agg = /*TAggregation::*/ TOTAL) const;
 
-    /**
-     * Computes the stat given
-     * @param stat stat to compute
-     * @param agg aggregation used
-     * @return stat value using the aggregation given
-     */
-    NSOL_EXPORT
-    virtual float getStat( TNeuriteStat stat,
-                           TAggregation agg = /*TAggregation::*/TOTAL ) const;
-
-
-
-  }; // class NeuriteStats
+    }; // class NeuriteStats
 
 } // namespace nsol
 

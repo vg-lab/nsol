@@ -28,31 +28,25 @@
 namespace nsol
 {
 
-  class ImportanceNode
-    : public Node
-  {
-  public:
+    class ImportanceNode : public Node
+    {
+      public:
+        NSOL_EXPORT
+        ImportanceNode(const Vec3f& point = Vec3f(0, 0, 0), const int& id = 0,
+                       const float& radius = 0.0f);
 
-    NSOL_EXPORT
-    ImportanceNode( const Vec3f & point = Vec3f(0,0,0),
-                    const int & id = 0,
-                    const float & radius = 0.0f );
+        NSOL_EXPORT
+        unsigned int& importance(void);
 
+        NSOL_EXPORT
+        unsigned int importance(void) const;
 
-    NSOL_EXPORT
-    unsigned int & importance( void );
+        NSOL_EXPORT
+        virtual NodePtr clone(void) const;
 
-    NSOL_EXPORT
-    unsigned int importance( void ) const;
-
-    NSOL_EXPORT
-    virtual NodePtr clone( void ) const;
-
-  protected:
-
-    unsigned int _importance;
-
-  };
+      protected:
+        unsigned int _importance;
+    };
 
 } // namespace nsol
 
