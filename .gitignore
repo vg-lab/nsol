@@ -13,3 +13,4 @@ build
 .vscode
 .cache
 _CPack_Packages/
+compile_commands.json
