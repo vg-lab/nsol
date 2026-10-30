@@ -47,6 +47,7 @@
 #include <stack>
 #include <tuple>
 #include <thread>
+#include <cassert>
 
 constexpr int TO_MICROMETERS = 1000000;
 
@@ -77,8 +78,21 @@ namespace nsol
                                Circuit& circuit, NeuronsMap& neuronsMap,
                                std::map<std::string, NeuronMorphologyPtr>& morphologies)
         {
+            std::vector<std::string> NEURON_DATASETS = { "network/neurons/neuron_id", "network/neurons/position", "network/neurons/rotation", "network/neurons/morphology" };
+            std::vector<std::string> SYNAPSE_DATASETS = { "meta/simulation_origo", "meta/voxel_size", "network/synapses" };
+
             auto _file = std::make_unique<H5::H5File>(hdf5SceneFile, 0);
-            const std::string _data = dataRepository + "/data";
+            const std::string _data = dataRepository;
+
+            auto checkKeys = [&_file](const std::vector<std::string>& keys) {
+                for (const auto& key : keys) {
+                    if (H5Lexists(_file->getLocId(), key.c_str(), H5P_DEFAULT) < 0) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
 
             // Snudda doesnt define a column or minicolum, but NeuroScheme requires it.
             auto column = new nsol::ColumnStats(0);
@@ -90,261 +104,152 @@ namespace nsol
             // TODO: Snudda doesnt define a type, create defaults. Not correct, has types somewhere
             const auto morphologicalType = nsol::Neuron::PYRAMIDAL;
             const auto functionalType = nsol::Neuron::INHIBITORY;
+            std::vector<uint32_t> ids;
 
-            // Neurons
-            auto idsDS = _file->openDataSet("network/neurons/neuron_id");
-            auto positionDS = _file->openDataSet("network/neurons/position");
-            auto rotationDS = _file->openDataSet("network/neurons/rotation");
+            if (checkKeys(NEURON_DATASETS)) {
+                auto idsDS = _file->openDataSet("network/neurons/neuron_id");
+                auto positionDS = _file->openDataSet("network/neurons/position");
+                auto rotationDS = _file->openDataSet("network/neurons/rotation");
 
-            hsize_t dims[2];
-            idsDS.getSpace().getSimpleExtentDims(dims);
+                // NOTE: read dims of ids separately, as the buffer could be truncated due to
+                // "faked" dataset with less ids for faster delevelopment iteration.
+                hsize_t dims[2];
+                idsDS.getSpace().getSimpleExtentDims(dims);
+                ids.resize(dims[0]);
 
-            std::vector<uint32_t> ids(dims[0]);
-            std::vector<std::array<double, 3>> position(dims[0]);
-            std::vector<std::array<double, 9>> rotation(dims[0]);
+                positionDS.getSpace().getSimpleExtentDims(dims);
+                std::vector<std::array<double, 3>> position(dims[0]);
+                std::vector<std::array<double, 9>> rotation(dims[0]);
 
-            idsDS.read(ids.data(), H5::PredType::INTEL_I32);
-            positionDS.read(position.data(), H5::PredType::IEEE_F64LE);
-            rotationDS.read(rotation.data(), H5::PredType::IEEE_F64LE);
+                idsDS.read(ids.data(), H5::PredType::INTEL_I32);
+                idsDS.close();
 
-            for (size_t i = 0; i < ids.size(); ++i) {
-                nsol::Vec3f pos(position[i][0], position[i][1], position[i][2]);
+                positionDS.read(position.data(), H5::PredType::IEEE_F64LE);
+                positionDS.close();
 
-                Eigen::Matrix4f model;
-                for (size_t c = 0; c < 3; ++c) {
-                    for (size_t r = 0; r < 3; ++r) {
-                        model(c, r) = static_cast<float>(rotation[i][c + r * 3]);
+                rotationDS.read(rotation.data(), H5::PredType::IEEE_F64LE);
+                rotationDS.close();
+
+                for (size_t i = 0; i < ids.size(); ++i) {
+                    nsol::Vec3f pos(position[i][0], position[i][1], position[i][2]);
+
+                    Eigen::Matrix4f model = Eigen::Matrix4f::Zero();
+                    for (size_t c = 0; c < 3; ++c) {
+                        for (size_t r = 0; r < 3; ++r) {
+                            model(r, c) = static_cast<float>(rotation[i][c + r * 3]);
+                        }
+                    }
+
+                    pos *= TO_MICROMETERS;
+                    model(0, 3) = pos[0];
+                    model(1, 3) = pos[1];
+                    model(2, 3) = pos[2];
+                    model(3, 3) = 1.0f;
+
+                    auto neuron =
+                        new nsol::Neuron(nullptr, 0, ids[i], model, minicolumn, morphologicalType, functionalType);
+
+                    if (neuronsMap.addNeuron(neuron)) {
+                        minicolumn->addNeuron(neuron);
                     }
                 }
 
-                pos *= TO_MICROMETERS;
-                model(0, 3) = pos[0];
-                model(1, 3) = pos[1];
-                model(2, 3) = pos[2];
-                model(3, 3) = 1.0f;
-                
-                auto neuron = new nsol::Neuron(nullptr, 0, ids[i], model, minicolumn, morphologicalType, functionalType);
+                // Morphologies
+                static const std::string SNUDDA_PREFIX = "$SNUDDA_DATA";
 
-                if (neuronsMap.addNeuron(neuron)) {
-                    minicolumn->addNeuron(neuron);
-                }
-            }
+                auto morphologiesDS = _file->openDataSet("network/neurons/morphology");
+                auto stringType = morphologiesDS.getStrType();
 
-            idsDS.close();
-            positionDS.close();
-            rotationDS.close();
+                morphologiesDS.getSpace().getSimpleExtentDims(dims);
 
-            // Morphologies
-            static const std::string SNUDDA_PREFIX = "$SNUDDA_DATA";
+                std::vector<char*> cStringArray(dims[0], nullptr);
+                H5::DataSpace dataspace = morphologiesDS.getSpace();
+                morphologiesDS.read(cStringArray.data(), stringType, dataspace);
 
-            auto morphologiesDS = _file->openDataSet("network/neurons/morphology");
-            auto stringType = morphologiesDS.getStrType();
+                std::map<std::string, nsol::NeuronMorphologyPtr> morphMap;
 
-            morphologiesDS.getSpace().getSimpleExtentDims(dims);
+                SnuddaSwcReader reader;
+                for (const auto& pair : neuronsMap) {
+                    const auto id = pair.first;
+                    const auto neuron = pair.second;
+                    const auto name = std::string(cStringArray[id]);
 
-            std::vector<char*> cStringArray(dims[0], nullptr);
-            H5::DataSpace dataspace = morphologiesDS.getSpace();
-            morphologiesDS.read(cStringArray.data(), stringType, dataspace);
+                    if (morphologies.count(name) > 0) {
+                        auto morphology = morphologies[name];
+                        morphMap.emplace(std::to_string(id), morphology);
+                        neuron->morphology(morphology);
+                        morphology->addParentNeuron(neuron);
+                        continue;
+                    }
 
-            std::map<std::string, nsol::NeuronMorphologyPtr> morphMap;
+                    std::string finalFilename = name;
+                    finalFilename.replace(0, SNUDDA_PREFIX.length(), _data);
 
-            SnuddaSwcReaderStats reader;
-            for (const auto& pair : neuronsMap) {
-                const auto id = pair.first;
-                const auto neuron = pair.second;
-                const auto name = std::string(cStringArray[id]);
+                    auto morphology = reader.readMorphology(finalFilename, false);
+                    if (!morphology) {
+                        Log::log(std::string("nsol warning (SnuddaReader): morphology ") + finalFilename +
+                                     std::string(" could not be read"),
+                                 LOG_LEVEL_WARNING);
+                        std::cout << "morphology not found: " << finalFilename << std::endl;
+                        continue;
+                    }
 
-                if (morphologies.count(name) > 0) {
-                    auto morphology = morphologies[name];
+                    morphologies[name] = morphology;
                     morphMap.emplace(std::to_string(id), morphology);
                     neuron->morphology(morphology);
                     morphology->addParentNeuron(neuron);
-                    continue;
                 }
-
-                std::string finalFilename = name;
-                finalFilename.replace(0, SNUDDA_PREFIX.length(), _data);
-
-                auto morphology = reader.readMorphology(finalFilename);
-                if (!morphology) {
-                    Log::log(std::string("nsol warning (SnuddaReader): morphology ") + finalFilename +
-                                 std::string(" could not be read"), LOG_LEVEL_WARNING);
-                    continue;
-                }
-
-                morphologies[name] = morphology;
-                morphMap.emplace(std::to_string(id), morphology);
-                neuron->morphology(morphology);
-                morphology->addParentNeuron(neuron);
+                morphologiesDS.close();
             }
-            morphologiesDS.close();
 
             // Synapses
-            auto origoDS = _file->openDataSet("meta/simulation_origo");
-            Eigen::Vector3d origoPosInt;
-            origoDS.read(origoPosInt.data(), H5::PredType::IEEE_F64LE, origoDS.getSpace());
-            origoDS.close();
+            if (checkKeys(SYNAPSE_DATASETS)) {
+                hsize_t dims[2];
+                auto origoDS = _file->openDataSet("meta/simulation_origo");
+                Eigen::Vector3d origoPosInt;
+                origoDS.read(origoPosInt.data(), H5::PredType::IEEE_F64LE, origoDS.getSpace());
+                origoDS.close();
 
-            Vec3f origoPos = Vec3f{static_cast<float>(origoPosInt[0]), static_cast<float>(origoPosInt[1]),
-                                     static_cast<float>(origoPosInt[2])};
+                Vec3f origoPos = Vec3f{static_cast<float>(origoPosInt[0]), static_cast<float>(origoPosInt[1]),
+                                       static_cast<float>(origoPosInt[2])};
 
-            origoPos *= TO_MICROMETERS;
+                origoPos *= TO_MICROMETERS;
 
-            auto vox_sizeDS = _file->openDataSet("meta/voxel_size");
-            double voxel_size;
-            vox_sizeDS.read(&voxel_size, H5::PredType::IEEE_F64LE, vox_sizeDS.getSpace());
-            vox_sizeDS.close();
+                auto vox_sizeDS = _file->openDataSet("meta/voxel_size");
+                double voxel_size;
+                vox_sizeDS.read(&voxel_size, H5::PredType::IEEE_F64LE, vox_sizeDS.getSpace());
+                vox_sizeDS.close();
 
-            auto synapsesDS = _file->openDataSet("network/synapses");
-            synapsesDS.getSpace().getSimpleExtentDims(dims);
+                auto synapsesDS = _file->openDataSet("network/synapses");
+                synapsesDS.getSpace().getSimpleExtentDims(dims);
 
-            auto buffer = new int32_t[dims[0] * dims[1]];
-            synapsesDS.read(buffer, H5::PredType::INTEL_I32, synapsesDS.getSpace());
-            synapsesDS.close();
+                auto buffer = new int32_t[dims[0] * dims[1]];
+                synapsesDS.read(buffer, H5::PredType::INTEL_I32, synapsesDS.getSpace());
+                synapsesDS.close();
 
-            for (size_t i = 0; i < dims[0] * dims[1];) {
-                const auto synapse = reinterpret_cast<struct synapseData*>(&buffer[i]);
+                for (size_t i = 0; i < dims[0] * dims[1];) {
+                    const auto synapse = reinterpret_cast<struct synapseData*>(&buffer[i]);
+                    if (synapse->source_cell_id < ids.size() && synapse->dest_cell_id < ids.size()) {
+                        Vec3f synapsePos{static_cast<float>(synapse->voxel_x), static_cast<float>(synapse->voxel_y),
+                                         static_cast<float>(synapse->voxel_z)};
 
-                Vec3f synapsePos{static_cast<float>(synapse->voxel_x), static_cast<float>(synapse->voxel_y),
-                                 static_cast<float>(synapse->voxel_z)};
+                        synapsePos = (synapsePos * voxel_size * TO_MICROMETERS) + origoPos;
 
-                synapsePos = (synapsePos * voxel_size) + origoPos;
-                    
-                auto synPtr = new MorphologySynapse();
-                synPtr->preSynapticNeuron(synapse->source_cell_id);
-                synPtr->postSynapticNeuron(synapse->dest_cell_id);
+                        auto synPtr = new MorphologySynapse();
+                        synPtr->preSynapticNeuron(synapse->source_cell_id);
+                        synPtr->postSynapticNeuron(synapse->dest_cell_id);
+                        synPtr->preSynapticSurfacePosition(synapsePos);
+                        synPtr->postSynapticSurfacePosition(synapsePos);
 
-                // auto preData = computeSynapticSectionAndDistance(neuronsMap[synapse->source_cell_id], synapsePos);
-                // synPtr->preSynapticSection(std::get<0>(preData));
-                // auto postData = computeSynapticSectionAndDistance(neuronsMap[synapse->dest_cell_id], synapsePos);
-                // synPtr->postSynapticSection(std::get<0>(postData));
+                        circuit.addSynapse(synPtr);
+                    }
 
-                // synPtr->weight(synapse->conductance); // look python source
-                // synPtr->preSynapticSurfacePosition(std::get<2>(preData));
-                // synPtr->postSynapticSurfacePosition(std::get<2>(postData));
+                    i += 13;
+                }
 
-                synPtr->preSynapticSurfacePosition(synapsePos);
-                synPtr->postSynapticSurfacePosition(synapsePos);
-
-                circuit.addSynapse(synPtr);
-
-                i += 13;
+                delete[] buffer;
             }
-
-            delete[] buffer;
         }
-
-      private:
-      // HERE BE DRAGONS...
-//         static std::tuple<NeuronMorphologySectionPtr, float, Vec3f> computeSynapticSectionAndDistance(const NeuronPtr neuron, const Vec3f &synapsePos)
-//         {
-//             auto point_segment_distance = [](const Vec3f& p, const Vec3f& a, const Vec3f& b) {
-//                 Vec3f ab = b - a;
-//                 Vec3f ap = p - a;
-
-//                 // Calculate the projection factor
-//                 const auto dot_product = ap.dot(ab);
-//                 const auto squared_norm = ab.squaredNorm();
-
-//                 // Handle the case where the segment is a point
-//                 if (squared_norm == 0.0) {
-//                     return std::tuple<float, float, Vec3f>(0, 0, p);
-//                 }
-
-//                 const auto projection_factor = dot_product / squared_norm;
-
-//                 // Clamp the projection factor to the range [0, 1]
-//                 const auto t = std::max(0.f, std::min(1.f, projection_factor));
-
-//                 // Calculate the closest point on the segment
-//                 Vec3f closest_point = a + t * ab;
-
-//                 // Calculate the distance
-//                 return std::tuple<float, float, Vec3f>((p - closest_point).norm(), t, closest_point);
-//             };
-
-//             auto transformPoint = [](const Matrix4_4f& t, const Vec3f& v) {
-//                 Vec4f temp(v[0], v[1], v[2], 1.f);
-//                 const Vec3f transformed = (t * temp).head<3>();
-//                 return transformed;
-//             };
-
-//             const auto morphology = neuron->morphology();
-//             const auto model = neuron->transform();
-//             const auto synapseLocal = transformPoint(model.inverse(), synapsePos);
-
-//             assert(!morphology->sections().empty());
-
-//             float minDistance = std::numeric_limits<float>::max();
-//             NeuronMorphologySectionPtr sectionId = nullptr;
-//             double sectionXDist = 0.f;
-//             Vec3f sectionPoint;
-
-//             for(auto neurite: morphology->neurites())
-//             {
-//                 if(neurite->neuriteType() == nsol::Neurite::TNeuriteType::AXON)
-//                     continue;
-
-//                 std::stack<NeuronMorphologySectionPtr> stack;
-//                 stack.emplace(neurite->firstSection());
-
-//                 while (!stack.empty()) {
-//                     auto section = stack.top();
-//                     stack.pop();
-
-//                     double length = 0.;
-//                     bool found = false;
-// #ifdef LINEAR_SECTION_COMPUTATION
-//                     const auto fNode = section->firstNode();
-//                     const auto lNode = section->lastNode() ? section->lastNode() : section->nodes().back();
-//                     length = (lNode->point() - fNode->point()).norm();
-//                     const std::tuple<float, float, Vec3f> dist =  point_segment_distance(synapseLocalPos, fNode->point(), lNode->point());
-
-//                     if (std::get<0>(dist) < minDistance) {
-//                         minDistance = std::get<0>(dist);
-//                         sectionId = section;
-//                         sectionXDist = length * std::get<1>(dist);
-//                         sectionPoint = std::get<2>(dist);
-//                         found = true;
-//                     }
-// #else
-//                     for (size_t i = 0; i < section->nodes().size() - 1; ++i) {
-//                         auto pA = section->nodes()[i]->point();
-//                         auto pB = section->nodes()[i+1]->point();
-//                         const auto segmentLength = (pB - pA).norm();
-//                         assert(segmentLength > 0.f);
-//                         const std::tuple<float, float, Vec3f> dist =
-//                             point_segment_distance(synapseLocal, pA, pB);
-
-//                         if (std::get<0>(dist) < minDistance) {
-//                             minDistance = std::get<0>(dist);
-//                             sectionId = section;
-//                             sectionXDist = length + (segmentLength * std::get<1>(dist));
-//                             sectionPoint = std::get<2>(dist);
-//                             found = true;
-//                         }
-
-//                         length += segmentLength;
-//                     }
-
-//                     if (found) {
-//                         sectionXDist /= length;
-//                     }
-// #endif
-//                     assert(0. <= sectionXDist && sectionXDist <= 1.);
-
-//                     for (auto next : section->children()) {
-//                         auto sectionPtr = dynamic_cast<NeuronMorphologySectionPtr>(next);
-//                         if (sectionPtr) {
-//                             stack.emplace(sectionPtr);
-//                         }
-//                     }
-//                 }
-//             }
-
-//             const Vec3f transformedPoint = transformPoint(model, sectionPoint);
-//             return {sectionId, sectionXDist, transformedPoint};
-//         }
     };
 } // namespace nsol
 
